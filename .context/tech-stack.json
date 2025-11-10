@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "last_updated": "2025-11-10",
+    "version": "1.0.0",
+    "description": "Approved technology stack and conventions"
+  },
+  "frontend": {
+    "framework": "next.js",
+    "version": "14+",
+    "styling": "tailwind-css",
+    "state_management": "react-context",
+    "state_management_alternatives": ["zustand", "jotai"],
+    "hosting": "vercel"
+  },
+  "backend": {
+    "framework": "fastapi",
+    "language": "python",
+    "alternative": {
+      "framework": "express",
+      "language": "typescript",
+      "use_when": "sharing types with frontend or real-time features"
+    },
+    "hosting": "railway"
+  },
+  "database": {
+    "primary": "postgresql",
+    "hosting": "railway",
+    "patterns": ["normalized_schema", "soft_deletes", "audit_trail"]
+  },
+  "cache": {
+    "technology": "redis",
+    "hosting": "upstash",
+    "use_cases": ["session_storage", "rate_limiting", "job_queue", "cache_aside"]
+  },
+  "storage": {
+    "technology": "s3",
+    "alternative": "cloudflare-r2",
+    "pattern": "presigned_urls"
+  },
+  "ai": {
+    "provider": "anthropic",
+    "models": {
+      "simple_tasks": "claude-haiku",
+      "complex_reasoning": "claude-sonnet"
+    },
+    "pattern": "streaming_responses"
+  },
+  "background_jobs": {
+    "technology": "bullmq",
+    "queue_backend": "redis",
+    "use_for": ["async_workflows", "email_sending", "webhook_delivery"]
+  },
+  "authentication": {
+    "provider": "clerk",
+    "alternative": "auth0",
+    "method": "jwt_bearer_token",
+    "pattern": "auth_required_by_default"
+  },
+  "monitoring": {
+    "errors": "sentry",
+    "analytics": "posthog",
+    "uptime": "better-uptime"
+  },
+  "conventions": {
+    "api_versioning": "/api/v1/",
+    "api_style": "RESTful",
+    "error_format": {
+      "error": {
+        "type": "string",
+        "message": "string",
+        "code": "string"
+      }
+    },
+    "date_format": "ISO8601",
+    "id_format": "uuid",
+    "python_formatter": "black",
+    "typescript_formatter": "prettier"
+  },
+  "principles": {
+    "choose_boring_technology": true,
+    "optimize_for_dx": true,
+    "generous_free_tiers": true,
+    "can_scale_to_millions": true,
+    "avoid_vendor_lock_in_paranoia": true
+  }
+}

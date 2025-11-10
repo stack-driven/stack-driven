@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "last_updated": "2025-11-10",
+    "version": "1.0.0",
+    "description": "Monetization model and pricing - TEMPLATE: Customize for your product",
+    "template": true
+  },
+  "pricing_model": "[freemium | pay_as_you_go | subscription | hybrid]",
+  "value_metric": {
+    "what_we_charge_for": "[Unit that aligns with value delivered]",
+    "what_users_get": "[10x value relative to price]",
+    "example": "$0.10 per assessment = saves $10 in manual review time"
+  },
+  "tiers": {
+    "free": {
+      "limit": "[Generous enough to be useful]",
+      "capabilities": ["[Feature 1]", "[Feature 2]"],
+      "support": "[Support level]",
+      "conversion_target": "2-5% to paid"
+    },
+    "paid": {
+      "price": "$[X]/[period] OR $[Y] per [unit]",
+      "value_delivered": "[Clear outcome]",
+      "limits": "[Higher limits or unlimited]",
+      "support": "[Better support]"
+    },
+    "enterprise": {
+      "trigger": "[When to contact sales]",
+      "custom_pricing": true,
+      "capabilities": ["[Enterprise feature 1]", "[Enterprise feature 2]"],
+      "support": "SLA + dedicated support"
+    }
+  },
+  "unit_economics": {
+    "target_arpu": "$[X]/month",
+    "target_ltv": "$[Y]",
+    "target_cac": "< $[Z] (to achieve 3:1 LTV:CAC)",
+    "gross_margin": "[X]%"
+  },
+  "revenue_targets": {
+    "30_days": "$[X] MRR",
+    "90_days": "$[Y] MRR",
+    "12_months": "$[Z] ARR"
+  },
+  "metering": {
+    "what_to_meter": "[Value unit - assessments, API calls, etc.]",
+    "how_to_track": "[Redis counter, database events, etc.]",
+    "when_to_charge": "[On completion, on success, etc.]",
+    "display": "Show usage counter in [location]",
+    "upgrade_trigger": "In-app prompt at [X]% of free limit"
+  },
+  "billing_implementation": {
+    "provider": "stripe",
+    "subscription_management": "stripe_billing",
+    "usage_based_billing": "stripe_metered_billing",
+    "webhook_events": [
+      "customer.subscription.created",
+      "customer.subscription.updated",
+      "invoice.payment_succeeded",
+      "invoice.payment_failed"
+    ]
+  },
+  "agent_guidance": {
+    "implementation_requirements": [
+      "Meter each value unit delivery accurately",
+      "Enforce free tier limits gracefully (soft then hard)",
+      "Show real-time usage to users",
+      "Make upgrade path obvious and frictionless",
+      "Handle failed payments gracefully"
+    ],
+    "pricing_page_requirements": [
+      "One-sentence explanation",
+      "Users can predict costs easily",
+      "Clear value per tier",
+      "Obvious best value tier"
+    ]
+  }
+}

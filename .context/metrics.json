@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "last_updated": "2025-11-10",
+    "version": "1.0.0",
+    "description": "Success metrics and targets - TEMPLATE: Customize for your product",
+    "template": true
+  },
+  "north_star": {
+    "metric": "[Core action that represents value delivery]",
+    "definition": "[Exact calculation]",
+    "why": "[Connection to mission and user value]",
+    "current": "[Current value]",
+    "target": "[Goal value by date]"
+  },
+  "input_metrics": {
+    "description": "Leading indicators that drive North Star",
+    "metrics": [
+      {
+        "name": "[Input metric 1]",
+        "definition": "[How measured]",
+        "drives_north_star": "[How it influences North Star]",
+        "current": "[Current value]",
+        "target": "[Goal]",
+        "lever": "[How to improve]"
+      },
+      {
+        "name": "[Input metric 2]",
+        "definition": "[How measured]",
+        "drives_north_star": "[How it influences North Star]",
+        "current": "[Current value]",
+        "target": "[Goal]",
+        "lever": "[How to improve]"
+      }
+    ]
+  },
+  "health_metrics": {
+    "acquisition": {
+      "cost_per_acquisition": {
+        "current": "$[X]",
+        "target": "< $[Y]"
+      },
+      "signup_quality": {
+        "current": "[Z]%",
+        "target": "> [A]%"
+      }
+    },
+    "engagement": {
+      "weekly_active_users": {
+        "current": "[X]",
+        "target": "> [Y]"
+      },
+      "sessions_per_user": {
+        "current": "[Z]",
+        "target": "> [A]"
+      }
+    },
+    "retention": {
+      "d7_retention": {
+        "current": "[X]%",
+        "target": "> [Y]%"
+      },
+      "d30_retention": {
+        "current": "[Z]%",
+        "target": "> [A]%"
+      }
+    },
+    "revenue": {
+      "mrr": {
+        "current": "$[X]",
+        "target": "$[Y] by [date]"
+      },
+      "ltv_cac_ratio": {
+        "current": "[Z]:1",
+        "target": "> 3:1"
+      }
+    },
+    "product": {
+      "error_rate": {
+        "current": "[X]%",
+        "target": "< [Y]%"
+      },
+      "p95_response_time": {
+        "current": "[Z]ms",
+        "target": "< [A]ms"
+      }
+    }
+  },
+  "counter_metrics": {
+    "description": "Metrics we will NOT sacrifice to improve North Star",
+    "metrics": [
+      {
+        "name": "[Counter metric 1]",
+        "threshold": "Must stay above [X]",
+        "why_protected": "[Reason]"
+      },
+      {
+        "name": "[Counter metric 2]",
+        "threshold": "Must stay below [Y]",
+        "why_protected": "[Reason]"
+      }
+    ]
+  },
+  "mvp_success_criteria": {
+    "time_to_value": "< [X] minutes",
+    "activation_rate": "> [Y]%",
+    "weekly_frequency": "> [Z] actions per user",
+    "d7_retention": "> [A]%",
+    "user_satisfaction": "NPS > [B] or [C]% would recommend"
+  },
+  "agent_guidance": {
+    "questions_before_coding": [
+      "Which metric does this improve?",
+      "How will we measure success?",
+      "What's the expected impact?",
+      "How do we track this metric?",
+      "What counter-metrics might be affected?"
+    ],
+    "instrumentation_required": {
+      "events_to_track": ["[event_name]", "[event_name]"],
+      "properties": ["user_id", "timestamp", "value"],
+      "aggregation": "[daily/weekly/monthly]"
+    }
+  }
+}

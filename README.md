@@ -1,183 +1,385 @@
-# Stack-Driven Prompt Collection
+# Stack-Driven: AI Product Development Powerhouse
 
-A curated collection of expert-level AI prompts for every aspect of building and operating a successful product or business.
+> **Mission**: Create a curated stack of opinionated guidelines that guide product development from user journey to shipped code—elegantly integrated with agentic coding environments.
 
-> **License:** Apache License 2.0 - See the `LICENSE` file for details.
+**License:** Apache License 2.0 - See the `LICENSE` file for details.
 
 ---
 
-## What's Inside
+## What is Stack-Driven?
 
-This repository contains professional prompts organized by business function. Each prompt is designed to work with AI assistants (Claude, ChatGPT, etc.) to generate comprehensive, actionable deliverables.
+Stack-Driven is a comprehensive framework for building products the right way:
 
-### 📁 Repository Structure
+1. **Start with user experience** (the post-modern axiom)
+2. **Let strategic decisions flow from user value**
+3. **Make opinionated technology choices**
+4. **Enable AI agents to make aligned decisions**
+
+This isn't just a prompt collection—it's a complete product development system that helps you and your AI coding agents ship faster while staying true to your mission.
+
+---
+
+## The Post-Modern Axiom
+
+**User Experience is the Core of Every Product.**
+
+Everything flows from the user journey:
+- Your mission → Promise to deliver value at a specific journey step
+- Your metrics → Measure progress through the journey
+- Your monetization → Charge where value is delivered
+- Your tech stack → Optimize critical journey steps
+- Your architecture → Enable journey optimization
+
+**Start with the user, and everything else follows.**
+
+---
+
+## Repository Structure
+
+### Layer 1: Foundation (Strategic Decisions)
+
+**Start Here** → These strategic documents guide all other decisions.
+
+```
+foundation/
+├── 01-user-journey.md          ⭐ PRIMARY ENTRY POINT
+├── 02-mission-statement.md      → Your promise to users
+├── 03-success-metrics.md        → How you measure success
+└── 04-monetization.md           → Business model aligned with value
+```
+
+**Purpose**: Establish the strategic foundation that informs every decision.
+
+### Layer 2: Stack (Opinionated Implementation)
+
+**Implementation Guidelines** → Concrete recommendations derived from foundation.
+
+```
+stack/
+├── tech-stack.md                → Technology choices (Next.js, FastAPI, etc.)
+├── integration-strategy.md      → API-first approach
+├── architecture-principles.md   → Design patterns for scale
+└── prioritization.md            → Making trade-offs
+```
+
+**Purpose**: Provide battle-tested patterns and guardrails for development.
+
+### Layer 3: Prompts (Detailed Execution)
+
+**Tactical Prompts** → AI-powered prompts for specific tasks.
 
 ```
 prompts/
-├── branding/
-│   ├── naming-discovery.md      # Brand naming research & strategy
-│   ├── brand-strategy.md        # Brand positioning & identity
-│   └── messaging.md             # Messaging framework & voice
-├── design/
-│   ├── design-system.md         # Design tokens & component library
-│   └── user-experience.md       # UX research & design
-├── product/
-│   ├── product-strategy.md      # Product vision & roadmap
-│   └── user-stories.md          # User story writing
-├── technical/
-│   ├── architecture.md          # System architecture design
-│   └── code-review.md           # Code review checklist
-├── operations/
-│   ├── deployment.md            # Deployment strategy & CI/CD
-│   └── monitoring.md            # Observability & SRE
-└── analytics/
-    └── metrics.md               # Product analytics & metrics
+├── branding/                    → Brand strategy, naming, messaging
+├── design/                      → Design systems, UX research
+├── product/                     → Product strategy, user stories
+├── technical/                   → Architecture, code review
+├── operations/                  → Deployment, monitoring
+└── analytics/                   → Metrics, A/B testing
+```
+
+**Purpose**: AI assistant prompts informed by foundation and stack.
+
+### Layer 4: Context (Agentic Integration)
+
+**Machine-Readable Context** → JSON files for AI coding agents.
+
+```
+.context/
+├── README.md                    → How to use context files
+├── user-journey.json            → Structured user journey
+├── mission.json                 → Mission and decision criteria
+├── metrics.json                 → Metrics and targets
+├── monetization.json            → Pricing model and metering
+├── tech-stack.json              → Approved technologies
+├── architecture.json            → Architecture patterns
+└── priorities.json              → Current focus areas
+```
+
+**Purpose**: Enable AI agents (Claude, Cursor, Copilot) to make decisions aligned with your strategy.
+
+---
+
+## Quick Start
+
+### For Product Teams
+
+**3-Step Process:**
+
+1. **Define Your Foundation** (2-4 hours)
+   - Work through `foundation/01-user-journey.md`
+   - Complete your mission, metrics, and monetization
+   - This becomes your product's north star
+
+2. **Choose Your Stack** (1-2 hours)
+   - Review `stack/tech-stack.md` recommendations
+   - Customize based on your needs
+   - Document decisions in `.context/`
+
+3. **Start Building** (minutes)
+   - Use prompts from `prompts/` for specific tasks
+   - Feed `.context/` files to AI coding agents
+   - Ship features aligned with your foundation
+
+**Result**: Clear strategic direction + tactical execution support.
+
+### For AI Coding Agents
+
+**Integration Pattern:**
+
+```markdown
+## Agent Configuration
+
+Before generating code, reference:
+- User Journey: .context/user-journey.json
+- Tech Stack: .context/tech-stack.json
+- Architecture: .context/architecture.json
+- Priorities: .context/priorities.json
+
+Ensure every implementation:
+1. Serves a user journey step
+2. Uses approved technologies
+3. Follows architectural patterns
+4. Advances key metrics
+```
+
+**Supported Agents**: Claude Code, Cursor, GitHub Copilot, any LLM-powered tool.
+
+---
+
+## Key Principles
+
+### 1. User-Centered Development
+Every decision traces back to user value. If it doesn't serve a user journey step, question it.
+
+### 2. Opinionated Yet Adaptable
+We provide strong opinions (Next.js, FastAPI, PostgreSQL) but explain the "why" so you can adapt.
+
+### 3. Strategic Before Tactical
+Foundation (mission, metrics) before Stack (tech choices) before Prompts (execution).
+
+### 4. Agentic-First
+Designed for human-AI collaboration. Context files help AI agents make aligned decisions.
+
+### 5. Dead Simple Execution
+Complex strategy, simple execution. One-sentence pricing. Clear tech choices. Obvious priorities.
+
+---
+
+## The Flow
+
+```
+1. USER JOURNEY (foundation/01-user-journey.md)
+   ↓
+   What problem are we solving for whom?
+
+2. MISSION (foundation/02-mission-statement.md)
+   ↓
+   What outcome do we promise to deliver?
+
+3. METRICS (foundation/03-success-metrics.md)
+   ↓
+   How do we measure if we're succeeding?
+
+4. MONETIZATION (foundation/04-monetization.md)
+   ↓
+   How do we charge for value delivered?
+
+5. TECH STACK (stack/tech-stack.md)
+   ↓
+   What technologies best serve the journey?
+
+6. ARCHITECTURE (stack/architecture-principles.md)
+   ↓
+   What patterns enable scale?
+
+7. PRIORITIZATION (stack/prioritization.md)
+   ↓
+   What do we build first?
+
+8. BUILD (prompts/ + .context/)
+   ↓
+   Ship features using prompts + AI agents
 ```
 
 ---
 
-## How to Use
+## Use Cases
 
-1. **Choose a prompt** from the relevant category
-2. **Copy the prompt** and paste it into your AI assistant (Claude, ChatGPT, etc.)
-3. **Follow the instructions** - the AI will guide you through the process
-4. **Customize as needed** - adapt prompts to your specific context
+### Startup Founders
+Get a complete product development framework without hiring a CPO, CTO, and Head of Design.
 
-Each prompt is designed to:
-- Ask clarifying questions first
-- Guide you through a comprehensive process
-- Generate professional, actionable deliverables
-- Follow industry best practices
+### Product Teams
+Align on strategy before building. Use as shared decision-making framework.
 
----
+### Solo Developers
+Ship products that feel like they were built by a full team.
 
-## Prompt Categories
+### AI Coding Agents
+Reference `.context/` files to generate code aligned with product strategy.
 
-### 🎨 Branding
-Create a strong brand identity with prompts for naming, strategy, and messaging.
-
-**When to use:**
-- Launching a new product or company
-- Rebranding an existing business
-- Developing brand guidelines
-
-### 🎯 Design
-Build user-centered experiences with design systems and UX methodologies.
-
-**When to use:**
-- Creating a design system
-- Designing user flows and wireframes
-- Establishing design standards
-
-### 📦 Product
-Define product strategy and manage development with clear user stories.
-
-**When to use:**
-- Planning product roadmap
-- Writing requirements
-- Prioritizing features
-
-### ⚙️ Technical
-Architect robust systems and maintain code quality.
-
-**When to use:**
-- Designing system architecture
-- Reviewing code
-- Making technical decisions
-
-### 🚀 Operations
-Deploy reliably and monitor effectively with DevOps best practices.
-
-**When to use:**
-- Setting up CI/CD pipelines
-- Implementing monitoring
-- Planning deployments
-
-### 📊 Analytics
-Make data-driven decisions with comprehensive metrics frameworks.
-
-**When to use:**
-- Defining success metrics
-- Setting up analytics
-- Running A/B tests
+### Engineering Teams
+Understand the "why" behind architectural decisions. Maintain coherence as you scale.
 
 ---
 
-## Featured Prompt: Brand Naming Discovery
+## Featured Resources
 
-The **Brand Naming Discovery** prompt (`prompts/branding/naming-discovery.md`) is a comprehensive tool for generating distinctive, memorable brand names.
+### Most Important Document
+**[foundation/01-user-journey.md](./foundation/01-user-journey.md)**
+Start here. Everything flows from understanding your users.
 
-**It includes:**
-- Discovery phase questions
-- 4 naming methodologies (Suggestive, Invented, Compound, Lexical)
-- Trademark availability screening
-- Domain name strategies
-- Global cultural sensitivity checks
-- Top 10 recommendations with rationale
+### Most Practical Guide
+**[stack/tech-stack.md](./stack/tech-stack.md)**
+Opinionated technology recommendations for modern web products.
 
-**Perfect for:** Entrepreneurs, brand strategists, and anyone launching a new product or company.
+### Most Strategic Framework
+**[stack/prioritization.md](./stack/prioritization.md)**
+Say "yes" to the right things and "no" to everything else.
+
+### Most Innovative Feature
+**[.context/](./.context/)**
+Machine-readable context files that make AI agents strategy-aware.
+
+---
+
+## Examples & Templates
+
+### Complete Example: Document Assessment SaaS
+
+```markdown
+Foundation:
+- User: Compliance officers drowning in manual review
+- Mission: Reduce manual review time by 90%
+- Metrics: Weekly assessments completed
+- Monetization: $0.10 per assessment
+
+Stack:
+- Frontend: Next.js + Tailwind
+- Backend: FastAPI + PostgreSQL
+- AI: Claude Sonnet for complex analysis
+- Hosting: Vercel + Railway
+
+Result:
+- MVP shipped in 4 weeks
+- $0-100/month operating costs
+- Scales to 100K assessments/month
+```
+
+### Template Files Included
+
+All `.context/` files are templates. Customize for your product:
+- Replace `[Your Product]` with your actual product name
+- Fill in metrics with real targets
+- Specify your exact tech stack
+- Define your current priorities
+
+---
+
+## Philosophy
+
+### We Believe:
+
+**✓ User experience is the foundation** (not technology)
+**✓ Boring technology is beautiful** (proven > exciting)
+**✓ Simple beats clever** (ship fast, iterate)
+**✓ Metrics must matter** (vanity < actionable)
+**✓ AI amplifies strategy** (agents need context)
+**✓ Focus is the ultimate advantage** (say no often)
+
+### We Reject:
+
+**✗ Feature-first thinking** (builds what's interesting, not valuable)
+**✗ Technology-first thinking** (chooses tech before understanding users)
+**✗ Resume-driven development** (Kubernetes because it's cool)
+**✗ Build-it-all syndrome** (can't say no to features)
+**✗ AI without strategy** (agents making random decisions)
 
 ---
 
 ## Contributing
 
-Have a great prompt to add? Contributions are welcome!
+We welcome contributions that:
+- Add new prompts for different disciplines
+- Improve existing frameworks
+- Share real-world examples
+- Enhance agentic integration
 
-1. Follow the existing prompt format
-2. Include clear instructions and examples
-3. Ensure prompts are actionable and comprehensive
-4. Test with AI assistants before submitting
-
----
-
-## Why Prompts?
-
-Well-crafted prompts enable AI assistants to act as expert consultants across multiple disciplines. This collection saves time by providing battle-tested frameworks that produce professional results.
-
-Instead of generic advice, you get:
-- ✅ Structured methodologies
-- ✅ Industry best practices
-- ✅ Comprehensive checklists
-- ✅ Actionable deliverables
-- ✅ Professional-quality outputs
+**Guidelines:**
+1. Maintain the user-first philosophy
+2. Be opinionated but explain why
+3. Provide templates and examples
+4. Test with AI assistants
+5. Keep it practical and actionable
 
 ---
 
-## Quick Start Examples
+## Community & Support
 
-### Example 1: Create a Brand Name
-```
-1. Open prompts/branding/naming-discovery.md
-2. Copy the prompt
-3. Paste into Claude or ChatGPT
-4. Follow the guided process
-5. Receive 10+ naming options with availability analysis
-```
-
-### Example 2: Design System Architecture
-```
-1. Open prompts/design/design-system.md
-2. Provide your product context
-3. Get comprehensive design tokens, components, and guidelines
-4. Use output to build your design system
-```
-
-### Example 3: Write User Stories
-```
-1. Open prompts/product/user-stories.md
-2. Describe your feature
-3. Receive properly formatted user stories with acceptance criteria
-4. Add to your backlog and start development
-```
+- **Documentation**: You're reading it! Start with `foundation/01-user-journey.md`
+- **Issues**: Found something unclear? Open an issue
+- **Discussions**: Share your experience using Stack-Driven
+- **Examples**: Show us what you built!
 
 ---
 
-## Support
+## Why This Exists
 
-Found these prompts helpful? ⭐ Star this repo!
+Most product teams struggle with:
+- Starting with technology instead of user needs
+- Losing strategic clarity as they build
+- Inconsistent decision-making
+- AI agents that don't understand product context
 
-Have questions or suggestions? Open an issue.
+**Stack-Driven solves this** by providing:
+- Clear starting point (user journey)
+- Strategic framework (foundation)
+- Opinionated guidance (stack)
+- Tactical execution (prompts)
+- Agentic integration (context)
+
+**Result**: Products that feel intentional, not accidental.
 
 ---
 
-**Last Updated:** 2025-11-10
+## Getting Started
+
+1. **Read**: [foundation/01-user-journey.md](./foundation/01-user-journey.md)
+2. **Complete**: Your foundation (user journey → mission → metrics → monetization)
+3. **Customize**: `.context/` files with your specifics
+4. **Build**: Use prompts + AI agents to ship
+5. **Iterate**: Update context as you learn
+
+**Ready?** → [Start with the User Journey](./foundation/01-user-journey.md)
+
+---
+
+## Roadmap
+
+### v1.0 (Current)
+- ✅ Complete foundation layer
+- ✅ Opinionated stack guidelines
+- ✅ Agentic context files
+- ✅ Prompt collection
+
+### v1.1 (Planned)
+- [ ] Real-world case studies
+- [ ] Video walkthroughs
+- [ ] VS Code extension for context integration
+- [ ] Community-contributed prompts
+
+### v2.0 (Future)
+- [ ] Multi-product strategy guidance
+- [ ] Platform/marketplace patterns
+- [ ] Enterprise scaling guides
+- [ ] Advanced AI agent patterns
+
+---
+
+**Last Updated**: 2025-11-10
+**Version**: 1.0.0
+**License**: Apache 2.0
+
+---
+
+**Remember**: The best products start with understanding users, not choosing frameworks. Begin your journey → [foundation/01-user-journey.md](./foundation/01-user-journey.md)
