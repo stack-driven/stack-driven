@@ -1,276 +1,242 @@
-# Stack-Driven: AI Product Development Powerhouse
+# Stack-Driven v2.0: Generative Product Development
 
-> **Mission**: Create a curated stack of opinionated guidelines that guide product development from user journey to shipped code—elegantly integrated with agentic coding environments.
+> **Mission**: A cascading system where AI analyzes your user journey and derives optimal decisions - not prescriptive templates, but generative strategy.
 
 **License:** Apache License 2.0 - See the `LICENSE` file for details.
 
 ---
 
-## What is Stack-Driven?
+## What Changed in v2.0?
 
-Stack-Driven is a comprehensive framework for building products the right way:
+**v1.0 (Old)**: "Use Next.js, FastAPI, and PostgreSQL"
+**v2.0 (New)**: "Tell me about your users, and I'll recommend the optimal stack for YOUR journey"
 
-1. **Start with user experience** (the post-modern axiom)
-2. **Let strategic decisions flow from user value**
-3. **Make opinionated technology choices**
-4. **Enable AI agents to make aligned decisions**
-
-This isn't just a prompt collection—it's a complete product development system that helps you and your AI coding agents ship faster while staying true to your mission.
+Stack-Driven is now a **generative cascade** - each session builds upon previous outputs, deriving decisions from your specific user journey rather than prescribing generic solutions.
 
 ---
 
-## User Experience is the Core of Every Product.
+## The Core Insight
 
-Everything flows from the user journey:
-- Your mission → Promise to deliver value at a specific journey step
-- Your metrics → Measure progress through the journey
-- Your monetization → Charge where value is delivered
-- Your tech stack → Optimize critical journey steps
-- Your architecture → Enable journey optimization
+**Different user journeys require different solutions.**
 
-**Start with the user, and everything else follows.**
+- A real-time multiplayer game needs different tech than a compliance SaaS
+- A mobile-first app needs different architecture than a desktop tool
+- An AI-heavy workflow needs different stack than a CRUD app
+
+**Your user journey dictates your decisions. Let it.**
 
 ---
 
-## Repository Structure
+## The Cascade
 
-### Layer 1: Foundation (Strategic Decisions)
-
-**Start Here** → These strategic documents guide all other decisions.
+Stack-Driven guides you through **6 progressive sessions**, each building on previous outputs:
 
 ```
-foundation/
-├── 01-user-journey.md          ⭐ PRIMARY ENTRY POINT
-├── 02-mission-statement.md      → Your promise to users
-├── 03-success-metrics.md        → How you measure success
-└── 04-monetization.md           → Business model aligned with value
+Session 1: /refine-journey       → output/00-user-journey.md
+  ↓ (AI reads journey, analyzes requirements)
+
+Session 2: /choose-tech-stack    → output/01-tech-stack.md
+  ↓ (AI reads journey + tech, derives strategy)
+
+Session 3: /generate-strategy    → output/02-mission.md
+                                  output/03-metrics.md
+                                  output/04-monetization.md
+                                  output/05-architecture.md
+  ↓ (AI reads all previous, creates design)
+
+Session 4: /create-design         → output/06-design-system.md
+  ↓ (AI reads everything, generates backlog)
+
+Session 5: /generate-backlog      → output/07-backlog/
+  ↓ (Push to GitHub)
+
+Session 6: /create-gh-issues      → GitHub issues
 ```
 
-**Purpose**: Establish the strategic foundation that informs every decision.
-
-### Layer 2: Stack (Opinionated Implementation)
-
-**Implementation Guidelines** → Concrete recommendations derived from foundation.
-
-```
-stack/
-├── tech-stack.md                → Technology choices (Next.js, FastAPI, etc.)
-├── integration-strategy.md      → API-first approach
-├── architecture-principles.md   → Design patterns for scale
-└── prioritization.md            → Making trade-offs
-```
-
-**Purpose**: Provide battle-tested patterns and guardrails for development.
-
-### Layer 3: Prompts (Detailed Execution)
-
-**Tactical Prompts** → AI-powered prompts for specific tasks.
-
-```
-prompts/
-├── branding/                    → Brand strategy, naming, messaging
-├── design/                      → Design systems, UX research
-├── product/                     → Product strategy, user stories
-├── technical/                   → Architecture, code review
-├── operations/                  → Deployment, monitoring
-└── analytics/                   → Metrics, A/B testing
-```
-
-**Purpose**: AI assistant prompts informed by foundation and stack.
-
-### Layer 4: Context (Agentic Integration)
-
-**Machine-Readable Context** → JSON files for AI coding agents.
-
-```
-.context/
-├── README.md                    → How to use context files
-├── user-journey.json            → Structured user journey
-├── mission.json                 → Mission and decision criteria
-├── metrics.json                 → Metrics and targets
-├── monetization.json            → Pricing model and metering
-├── tech-stack.json              → Approved technologies
-├── architecture.json            → Architecture patterns
-└── priorities.json              → Current focus areas
-```
-
-**Purpose**: Enable AI agents (Claude, Cursor, Copilot) to make decisions aligned with your strategy.
+**In 5-6 sessions** (3-5 hours total), you go from idea to production-ready backlog.
 
 ---
 
 ## Quick Start
 
-### For Product Teams
+### 1. Check Your Status
 
-**3-Step Process:**
-
-1. **Define Your Foundation** (2-4 hours)
-   - Work through `foundation/01-user-journey.md`
-   - Complete your mission, metrics, and monetization
-   - This becomes your product's north star
-
-2. **Choose Your Stack** (1-2 hours)
-   - Review `stack/tech-stack.md` recommendations
-   - Customize based on your needs
-   - Document decisions in `.context/`
-
-3. **Start Building** (minutes)
-   - Use prompts from `prompts/` for specific tasks
-   - Feed `.context/` files to AI coding agents
-   - Ship features aligned with your foundation
-
-**Result**: Clear strategic direction + tactical execution support.
-
-### For AI Coding Agents
-
-**Integration Pattern:**
-
-```markdown
-## Agent Configuration
-
-Before generating code, reference:
-- User Journey: .context/user-journey.json
-- Tech Stack: .context/tech-stack.json
-- Architecture: .context/architecture.json
-- Priorities: .context/priorities.json
-
-Ensure every implementation:
-1. Serves a user journey step
-2. Uses approved technologies
-3. Follows architectural patterns
-4. Advances key metrics
+```bash
+/cascade-status
 ```
 
-**Supported Agents**: Claude Code, Cursor, GitHub Copilot, any LLM-powered tool.
+See where you are in the cascade and what to do next.
+
+### 2. Start the Cascade
+
+```bash
+/refine-journey
+```
+
+I'll ask questions about your users, their problems, and their journey. Through progressive interrogation, we'll map your complete user flow.
+
+### 3. Follow the Flow
+
+After each session, I'll tell you exactly what to run next:
+- `/choose-tech-stack` - Analyzes your journey, recommends optimal tech
+- `/generate-strategy` - Derives mission, metrics, monetization, architecture
+- `/create-design` - Creates design system for your journey
+- `/generate-backlog` - Generates 30-50 prioritized user stories
+- `/create-gh-issues` - Pushes backlog to GitHub
+
+### 4. Build
+
+Your backlog is prioritized (P0/P1/P2), traced to user value, and ready for development.
+
+**Total time**: 3-5 hours to go from idea to validated backlog.
+
+---
+
+## How It's Different
+
+### Old Way (Prescriptive)
+```
+"Use Next.js for frontend"
+"Use FastAPI for backend"
+"Use PostgreSQL for database"
+```
+→ Same stack for everyone, regardless of needs
+
+### New Way (Generative)
+```
+"Your journey requires real-time <100ms updates + mobile-first..."
+→ "I recommend React Native + Node.js + Socket.io because..."
+
+"Different journey: SEO-critical + document processing..."
+→ "I recommend Next.js + FastAPI + PostgreSQL because..."
+```
+→ Optimal stack for YOUR journey
 
 ---
 
 ## Key Principles
 
-### 1. User-Centered Development
-Every decision traces back to user value. If it doesn't serve a user journey step, question it.
+### 1. User Journey First
 
-### 2. Opinionated Yet Adaptable
-We provide strong opinions (Next.js, FastAPI, PostgreSQL) but explain the "why" so you can adapt.
+Everything flows from understanding users:
+- Not "I want to build X technology"
+- But "Users struggle with Y problem, here's their journey..."
 
-### 3. Strategic Before Tactical
-Foundation (mission, metrics) before Stack (tech choices) before Prompts (execution).
+### 2. Cascading Decisions
 
-### 4. Agentic-First
-Designed for human-AI collaboration. Context files help AI agents make aligned decisions.
+Each session builds on previous outputs:
+- Journey → Tech Stack (requirements drive choices)
+- Journey + Tech → Strategy (mission, metrics, monetization)
+- Journey + Strategy → Design (components for specific flows)
+- Everything → Backlog (stories that deliver journey value)
 
-### 5. Dead Simple Execution
-Complex strategy, simple execution. One-sentence pricing. Clear tech choices. Obvious priorities.
+### 3. Generative, Not Prescriptive
+
+We don't prescribe Next.js. We:
+1. Analyze your journey requirements
+2. Evaluate technology options
+3. Recommend best fit with reasoning
+4. Explain trade-offs
+
+### 4. Traced to Value
+
+Every decision references user value:
+- Tech choice? Serves journey step X
+- Feature priority? Improves metric Y
+- Design decision? Reduces friction at step Z
+
+### 5. Self-Documenting
+
+At any point, run `/cascade-status` to see:
+- What you've completed
+- What comes next
+- How sessions connect
 
 ---
 
-## The Flow
+## Repository Structure
+
+### `/examples/` - Reference Implementations
+
+**Don't copy these** - they show the cascade in action with DIFFERENT journeys leading to DIFFERENT stacks.
 
 ```
-1. USER JOURNEY (foundation/01-user-journey.md)
-   ↓
-   What problem are we solving for whom?
-
-2. MISSION (foundation/02-mission-statement.md)
-   ↓
-   What outcome do we promise to deliver?
-
-3. METRICS (foundation/03-success-metrics.md)
-   ↓
-   How do we measure if we're succeeding?
-
-4. MONETIZATION (foundation/04-monetization.md)
-   ↓
-   How do we charge for value delivered?
-
-5. TECH STACK (stack/tech-stack.md)
-   ↓
-   What technologies best serve the journey?
-
-6. ARCHITECTURE (stack/architecture-principles.md)
-   ↓
-   What patterns enable scale?
-
-7. PRIORITIZATION (stack/prioritization.md)
-   ↓
-   What do we build first?
-
-8. BUILD (prompts/ + .context/)
-   ↓
-   Ship features using prompts + AI agents
+examples/
+├── README.md (explains examples)
+├── compliance-saas/ (Next.js, FastAPI, PostgreSQL)
+│   ├── foundation/ (journey, mission, metrics, monetization)
+│   ├── stack/ (tech decisions, architecture)
+│   ├── design/ (design system)
+│   └── backlog/ (generated issues)
+└── [future: real-time-collaboration, etc.]
 ```
 
----
+**Use them to**: See how journey requirements drove specific tech choices.
 
-## Use Cases
+### `/templates/` - Blank Starting Points
 
-### Startup Founders
-Get a complete product development framework without hiring a CPO, CTO, and Head of Design.
+Used by slash commands to generate your outputs. You don't edit these directly.
 
-### Product Teams
-Align on strategy before building. Use as shared decision-making framework.
+### `/output/` - YOUR Generated Strategy
 
-### Solo Developers
-Ship products that feel like they were built by a full team.
-
-### AI Coding Agents
-Reference `.context/` files to generate code aligned with product strategy.
-
-### Engineering Teams
-Understand the "why" behind architectural decisions. Maintain coherence as you scale.
-
----
-
-## Featured Resources
-
-### Most Important Document
-**[foundation/01-user-journey.md](./foundation/01-user-journey.md)**
-Start here. Everything flows from understanding your users.
-
-### Most Practical Guide
-**[stack/tech-stack.md](./stack/tech-stack.md)**
-Opinionated technology recommendations for modern web products.
-
-### Most Strategic Framework
-**[stack/prioritization.md](./stack/prioritization.md)**
-Say "yes" to the right things and "no" to everything else.
-
-### Most Innovative Feature
-**[.context/](./.context/)**
-Machine-readable context files that make AI agents strategy-aware.
-
----
-
-## Examples & Templates
-
-### Complete Example: Document Assessment SaaS
-
-```markdown
-Foundation:
-- User: Compliance officers drowning in manual review
-- Mission: Reduce manual review time by 90%
-- Metrics: Weekly assessments completed
-- Monetization: $0.10 per assessment
-
-Stack:
-- Frontend: Next.js + Tailwind
-- Backend: FastAPI + PostgreSQL
-- AI: Claude Sonnet for complex analysis
-- Hosting: Vercel + Railway
-
-Result:
-- MVP shipped in 4 weeks
-- $0-100/month operating costs
-- Scales to 100K assessments/month
+**This is gitignored** - each user generates their own cascade:
+```
+output/
+├── 00-user-journey.md (Session 1)
+├── 01-tech-stack.md (Session 2)
+├── 02-mission.md (Session 3)
+├── 03-metrics.md (Session 3)
+├── 04-monetization.md (Session 3)
+├── 05-architecture.md (Session 3)
+├── 06-design-system.md (Session 4)
+└── 07-backlog/ (Session 5)
 ```
 
-### Template Files Included
+### `/foundation/` & `/stack/` - Framework Guides
 
-All `.context/` files are templates. Customize for your product:
-- Replace `[Your Product]` with your actual product name
-- Fill in metrics with real targets
-- Specify your exact tech stack
-- Define your current priorities
+High-level frameworks explaining concepts. NOT prescriptive. Use as reference.
+
+### `/.claude/commands/` - The Cascade Commands
+
+The slash commands that power the cascade. These prompt AI to read previous outputs and generate next steps.
+
+---
+
+## Example: How Cascade Adapts
+
+### Scenario 1: Compliance Document SaaS
+
+**Journey**:
+- Step 1: Upload 100-page PDF
+- Step 2: Select compliance frameworks
+- Step 3: AI assesses in 60 seconds
+- Step 4: Review shareable report (SEO matters)
+
+**Tech Stack Derived**:
+- Frontend: Next.js (SSR for shareable reports)
+- Backend: FastAPI (Python for document processing + AI)
+- Database: PostgreSQL (JSONB for flexible assessment results)
+- AI: Claude Sonnet (deep reasoning for compliance)
+
+**Why This Stack**: Journey requires document processing + AI reasoning + shareable reports → Python ecosystem + SSR
+
+### Scenario 2: Real-Time Multiplayer Game
+
+**Journey**:
+- Step 1: Join room on mobile
+- Step 2: 10 players draw simultaneously
+- Step 3: See changes <100ms
+- Step 4: Save game replay
+
+**Tech Stack Derived**:
+- Frontend: React Native (mobile-first requirement)
+- Backend: Node.js + Socket.io (real-time WebSockets)
+- Database: Redis (fast state) + PostgreSQL (history)
+- Hosting: Railway (WebSocket support)
+
+**Why This Stack**: Journey requires mobile + real-time <100ms → React Native + Node.js + WebSockets
+
+**Same framework. Different journeys. Different stacks.**
 
 ---
 
@@ -278,106 +244,149 @@ All `.context/` files are templates. Customize for your product:
 
 ### We Believe:
 
-**✓ User experience is the foundation** (not technology)
-**✓ Boring technology is beautiful** (proven > exciting)
-**✓ Simple beats clever** (ship fast, iterate)
-**✓ Metrics must matter** (vanity < actionable)
-**✓ AI amplifies strategy** (agents need context)
-**✓ Focus is the ultimate advantage** (say no often)
+✅ **User experience is the foundation** (not technology)
+✅ **Journey dictates stack** (not generic "best practices")
+✅ **Every decision traces to value** (no arbitrary choices)
+✅ **Boring is beautiful** (proven tech > exotic tech)
+✅ **Generative > Prescriptive** (analyze → recommend, don't dictate)
+✅ **Simple execution** (5-6 clear sessions, not 50 fragmented tasks)
 
 ### We Reject:
 
-**✗ Feature-first thinking** (builds what's interesting, not valuable)
-**✗ Technology-first thinking** (chooses tech before understanding users)
-**✗ Resume-driven development** (Kubernetes because it's cool)
-**✗ Build-it-all syndrome** (can't say no to features)
-**✗ AI without strategy** (agents making random decisions)
+❌ **One-size-fits-all stacks** (Next.js isn't always the answer)
+❌ **Feature-first thinking** (builds what's interesting, not valuable)
+❌ **Resume-driven development** (Kubernetes because it's trendy)
+❌ **Technology-first thinking** (choosing tech before understanding users)
 
 ---
 
-## Contributing
+## Real-World Results
 
-We welcome contributions that:
-- Add new prompts for different disciplines
-- Improve existing frameworks
-- Share real-world examples
-- Enhance agentic integration
+**After completing the cascade, you have**:
 
-**Guidelines:**
-1. Maintain the user-first philosophy
-2. Be opinionated but explain why
-3. Provide templates and examples
-4. Test with AI assistants
-5. Keep it practical and actionable
+📋 **Strategic Foundation**:
+- Mission statement (derived from journey aha moment)
+- North Star metric (measures mission fulfillment)
+- Pricing strategy (aligned with value delivery)
+
+🛠️ **Technical Decisions**:
+- Tech stack (optimized for YOUR requirements)
+- Architecture principles (journey-optimized)
+- Design system (components for your specific flows)
+
+🎯 **Execution Backlog**:
+- 30-50 user stories (prioritized with RICE)
+- Every story traced to journey step
+- Dependencies mapped
+- Ready for GitHub
+
+**Time investment**: 3-5 hours
+**Output**: Production-ready strategy + backlog
+**Approach**: Generative (analyzed), not templated (copy-pasted)
 
 ---
 
-## Community & Support
+## Frequently Asked Questions
 
-- **Documentation**: You're reading it! Start with `foundation/01-user-journey.md`
-- **Issues**: Found something unclear? Open an issue
-- **Discussions**: Share your experience using Stack-Driven
-- **Examples**: Show us what you built!
+### "Is this just templates?"
 
----
+No. Templates are static. The cascade is **generative**:
+- I ask questions about YOUR users
+- I analyze YOUR journey requirements
+- I recommend optimal tech for YOUR needs
+- I derive strategy from YOUR journey
 
-## Why This Exists
+Same cascade, different journeys → different outputs.
 
-Most product teams struggle with:
-- Starting with technology instead of user needs
-- Losing strategic clarity as they build
-- Inconsistent decision-making
-- AI agents that don't understand product context
+### "What if I disagree with a recommendation?"
 
-**Stack-Driven solves this** by providing:
-- Clear starting point (user journey)
-- Strategic framework (foundation)
-- Opinionated guidance (stack)
-- Tactical execution (prompts)
-- Agentic integration (context)
+The cascade shows reasoning for every decision:
+- "I chose X because your journey requires Y"
+- You can override any choice
+- Run sessions again to regenerate with new constraints
 
-**Result**: Products that feel intentional, not accidental.
+### "Can I use my own tech stack?"
+
+Yes! In Session 2 (/choose-tech-stack), you can:
+- Specify team expertise ("we know Python")
+- Note constraints ("must use AWS")
+- I'll adapt recommendations to your context
+
+### "Do I have to do all 6 sessions?"
+
+Sessions 1-3 are critical (journey → stack → strategy).
+Sessions 4-5 are highly valuable (design → backlog).
+Session 6 is convenience (push to GitHub).
+
+Minimum viable cascade: Sessions 1-3 (1-2 hours).
 
 ---
 
 ## Getting Started
 
-1. **Read**: [foundation/01-user-journey.md](./foundation/01-user-journey.md)
-2. **Complete**: Your foundation (user journey → mission → metrics → monetization)
-3. **Customize**: `.context/` files with your specifics
-4. **Build**: Use prompts + AI agents to ship
-5. **Iterate**: Update context as you learn
+```bash
+# 1. Check your cascade status
+/cascade-status
 
-**Ready?** → [Start with the User Journey](./foundation/01-user-journey.md)
+# 2. Start Session 1 (define your user journey)
+/refine-journey
+
+# 3. Follow the cascade (each session tells you what's next)
+# /choose-tech-stack
+# /generate-strategy
+# /create-design
+# /generate-backlog
+# /create-gh-issues
+
+# 4. Build your product!
+```
+
+**Ready?** → Run `/cascade-status` to begin.
 
 ---
 
-## Roadmap
+## Contributing
 
-### v1.0 (Current)
-- ✅ Complete foundation layer
-- ✅ Opinionated stack guidelines
-- ✅ Agentic context files
-- ✅ Prompt collection
+We welcome:
+- Additional example implementations (different journeys)
+- Improvements to cascade prompts
+- Better decision frameworks
+- Documentation enhancements
 
-### v1.1 (Planned)
-- [ ] Real-world case studies
-- [ ] Video walkthroughs
-- [ ] VS Code extension for context integration
-- [ ] Community-contributed prompts
+**Guidelines**:
+1. Maintain generative (not prescriptive) approach
+2. Always trace decisions to user journey
+3. Provide clear reasoning for recommendations
+4. Test cascade with diverse journey types
 
-### v2.0 (Future)
-- [ ] Multi-product strategy guidance
-- [ ] Platform/marketplace patterns
-- [ ] Enterprise scaling guides
-- [ ] Advanced AI agent patterns
+---
+
+## Support & Community
+
+- **Issues**: Found a bug or unclear prompt? Open an issue
+- **Discussions**: Share your cascade results
+- **Examples**: Completed a cascade? Consider contributing as example
+
+---
+
+## Version History
+
+**v2.0 (Current)**: Generative cascade approach
+- Removed prescriptive stack recommendations
+- Added 6-session cascade flow
+- Slash commands for AI-guided sessions
+- Examples showing different journeys → different stacks
+
+**v1.0**: Opinionated guidelines (prescriptive approach)
+
+---
+
+**Remember**: The best products start with understanding users, not choosing frameworks.
+
+**Start your cascade** → Run `/cascade-status`
 
 ---
 
 **Last Updated**: 2025-11-10
-**Version**: 1.0.0
+**Version**: 2.0.0
 **License**: Apache 2.0
-
----
-
-**Remember**: The best products start with understanding users, not choosing frameworks. Begin your journey → [foundation/01-user-journey.md](./foundation/01-user-journey.md)
