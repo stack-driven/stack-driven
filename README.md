@@ -19,9 +19,7 @@ This isn't just a prompt collection—it's a complete product development system
 
 ---
 
-## The Post-Modern Axiom
-
-**User Experience is the Core of Every Product.**
+## User Experience is the Core of Every Product.
 
 Everything flows from the user journey:
 - Your mission → Promise to deliver value at a specific journey step
