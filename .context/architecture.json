@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "last_updated": "2025-11-10",
+    "version": "1.0.0",
+    "description": "Architecture patterns and principles"
+  },
+  "core_principles": {
+    "start_simple": "Use simplest architecture that could work, evolve deliberately",
+    "api_first": "Every feature has an API before UI",
+    "stateless_servers": "All state in databases, caches, or queues",
+    "async_long_operations": "Operations >2 seconds should be asynchronous",
+    "idempotent_operations": "Repeating same request has same effect",
+    "fail_fast_loud": "Validate inputs immediately, propagate errors clearly",
+    "observability_built_in": "Logs, metrics, traces by default",
+    "security_by_design": "Security is a constraint, not an afterthought"
+  },
+  "patterns": {
+    "long_running_operations": {
+      "pattern": "async_job_queue",
+      "implementation": "bullmq + redis",
+      "flow": "API accepts job → Returns job_id → Worker processes → Webhook/poll for result"
+    },
+    "state_management": {
+      "pattern": "stateless_servers_stateful_data",
+      "implementation": "No in-memory state, use Redis/PostgreSQL",
+      "example": "Sessions in Redis, not server memory"
+    },
+    "caching": {
+      "pattern": "cache_aside",
+      "implementation": "Check Redis → Cache miss → Query DB → Populate cache",
+      "ttl": "3600 seconds for most data"
+    },
+    "authentication": {
+      "pattern": "jwt_bearer_token",
+      "implementation": "Clerk/Auth0",
+      "verification": "Every request verifies JWT"
+    },
+    "authorization": {
+      "pattern": "resource_ownership_check",
+      "implementation": "Filter by user_id in queries",
+      "example": "WHERE user_id = :current_user_id"
+    },
+    "error_handling": {
+      "pattern": "structured_errors",
+      "http_codes": {
+        "400": "Bad request (client error)",
+        "401": "Unauthorized",
+        "403": "Forbidden",
+        "404": "Not found",
+        "422": "Validation error",
+        "429": "Rate limit exceeded",
+        "500": "Server error"
+      }
+    },
+    "logging": {
+      "format": "structured_json",
+      "library": "structlog",
+      "context": ["user_id", "request_id", "duration_ms"]
+    },
+    "database": {
+      "migrations": "alembic",
+      "soft_deletes": "deleted_at column",
+      "audit_trail": "created_at, updated_at, created_by, updated_by",
+      "optimistic_locking": "version column for concurrent updates"
+    }
+  },
+  "feature_structure": {
+    "organization": "by_user_flow",
+    "example": "/features/assessment/",
+    "contains": ["api.py", "models.py", "schemas.py", "service.py", "tests.py"]
+  },
+  "security_checklist": {
+    "authentication_required": true,
+    "authorization_enforced": true,
+    "input_validated": true,
+    "rate_limited": true,
+    "sensitive_data_encrypted": true,
+    "audit_logged": true
+  },
+  "observability": {
+    "logging": {
+      "level": "INFO in prod, DEBUG in dev",
+      "include": ["user_id", "request_id", "duration", "error"]
+    },
+    "metrics": {
+      "track": ["request_count", "duration", "error_rate"],
+      "labels": ["endpoint", "status_code", "user_tier"]
+    },
+    "tracing": {
+      "enabled": true,
+      "sample_rate": "100% in dev, 10% in prod"
+    }
+  }
+}
