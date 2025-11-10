@@ -1,29 +1,42 @@
-# Stack-Driven v2.0: Generative Product Development
+# Stack-Driven: AI Product Development Powerhouse
 
-> **Mission**: A cascading system where AI analyzes your user journey and derives optimal decisions - not prescriptive templates, but generative strategy.
+> **Mission**: A cascading system where AI analyzes your user journey and derives optimal decisions for your product—from strategy to shipped code.
 
 **License:** Apache License 2.0 - See the `LICENSE` file for details.
 
 ---
 
-## What Changed in v2.0?
+## What's New in v2.0?
 
-**v1.0 (Old)**: "Use Next.js, FastAPI, and PostgreSQL"
-**v2.0 (New)**: "Tell me about your users, and I'll recommend the optimal stack for YOUR journey"
+**v2.0** transforms Stack-Driven from a prescriptive template collection into a **generative cascade**—AI analyzes YOUR specific user journey and recommends the optimal stack, strategy, and architecture for your needs (not generic templates).
 
-Stack-Driven is now a **generative cascade** - each session builds upon previous outputs, deriving decisions from your specific user journey rather than prescribing generic solutions.
+Previous versions prescribed "use Next.js, FastAPI, and PostgreSQL" for everyone. v2.0 says "tell me about your users, and I'll recommend the optimal stack for YOUR journey."
 
 ---
 
-## The Core Insight
+## What is Stack-Driven?
 
-**Different user journeys require different solutions.**
+Stack-Driven is a comprehensive framework for building products the right way:
 
-- A real-time multiplayer game needs different tech than a compliance SaaS
-- A mobile-first app needs different architecture than a desktop tool
-- An AI-heavy workflow needs different stack than a CRUD app
+1. **Start with user experience** (the post-modern axiom)
+2. **Let strategic decisions flow from user value**
+3. **Derive technology choices from journey requirements**
+4. **Generate a complete product strategy in 3-5 hours**
 
-**Your user journey dictates your decisions. Let it.**
+This isn't just a prompt collection—it's a complete product development system that guides you through **6 progressive sessions**, each building on previous outputs, to go from idea to production-ready backlog.
+
+---
+
+## User Experience is the Core of Every Product.
+
+Everything flows from the user journey:
+- Your mission → Promise to deliver value at a specific journey step
+- Your metrics → Measure progress through the journey
+- Your monetization → Charge where value is delivered
+- Your tech stack → Optimize critical journey steps
+- Your architecture → Enable journey optimization
+
+**Start with the user, and everything else follows.**
 
 ---
 
@@ -92,25 +105,51 @@ Your backlog is prioritized (P0/P1/P2), traced to user value, and ready for deve
 
 ---
 
-## How It's Different
+## Repository Structure
 
-### Old Way (Prescriptive)
-```
-"Use Next.js for frontend"
-"Use FastAPI for backend"
-"Use PostgreSQL for database"
-```
-→ Same stack for everyone, regardless of needs
+### `/output/` - YOUR Generated Strategy
 
-### New Way (Generative)
+**This is gitignored** - each user generates their own cascade:
 ```
-"Your journey requires real-time <100ms updates + mobile-first..."
-→ "I recommend React Native + Node.js + Socket.io because..."
+output/
+├── 00-user-journey.md (Session 1)
+├── 01-tech-stack.md (Session 2)
+├── 02-mission.md (Session 3)
+├── 03-metrics.md (Session 3)
+├── 04-monetization.md (Session 3)
+├── 05-architecture.md (Session 3)
+├── 06-design-system.md (Session 4)
+└── 07-backlog/ (Session 5)
+```
 
-"Different journey: SEO-critical + document processing..."
-→ "I recommend Next.js + FastAPI + PostgreSQL because..."
+### `/examples/` - Reference Implementations
+
+**Don't copy these** - they show the cascade in action with DIFFERENT journeys leading to DIFFERENT stacks.
+
 ```
-→ Optimal stack for YOUR journey
+examples/
+├── README.md (explains examples)
+├── compliance-saas/ (Next.js, FastAPI, PostgreSQL)
+│   ├── foundation/ (journey, mission, metrics, monetization)
+│   ├── stack/ (tech decisions, architecture)
+│   ├── design/ (design system)
+│   └── backlog/ (generated issues)
+└── [future: real-time-collaboration, etc.]
+```
+
+**Use them to**: See how journey requirements drove specific tech choices.
+
+### `/.claude/commands/` - The Cascade Commands
+
+The slash commands that power the cascade. These prompt AI to read previous outputs and generate next steps.
+
+### `/templates/` - Blank Starting Points
+
+Used by slash commands to generate your outputs. You don't edit these directly.
+
+### `/foundation/` & `/stack/` - Framework Guides
+
+High-level frameworks explaining concepts. NOT prescriptive. Use as reference.
 
 ---
 
@@ -154,51 +193,55 @@ At any point, run `/cascade-status` to see:
 
 ---
 
-## Repository Structure
-
-### `/examples/` - Reference Implementations
-
-**Don't copy these** - they show the cascade in action with DIFFERENT journeys leading to DIFFERENT stacks.
+## The Flow
 
 ```
-examples/
-├── README.md (explains examples)
-├── compliance-saas/ (Next.js, FastAPI, PostgreSQL)
-│   ├── foundation/ (journey, mission, metrics, monetization)
-│   ├── stack/ (tech decisions, architecture)
-│   ├── design/ (design system)
-│   └── backlog/ (generated issues)
-└── [future: real-time-collaboration, etc.]
+1. USER JOURNEY (/refine-journey)
+   ↓
+   What problem are we solving for whom?
+
+2. TECH STACK (/choose-tech-stack)
+   ↓
+   What technologies best serve the journey?
+
+3. STRATEGY (/generate-strategy)
+   ↓
+   Mission: What outcome do we promise?
+   Metrics: How do we measure success?
+   Monetization: How do we charge for value?
+   Architecture: What patterns enable scale?
+
+4. DESIGN (/create-design)
+   ↓
+   What components serve specific user flows?
+
+5. BACKLOG (/generate-backlog)
+   ↓
+   What do we build first?
+
+6. GITHUB (/create-gh-issues)
+   ↓
+   Ship features aligned with strategy
 ```
 
-**Use them to**: See how journey requirements drove specific tech choices.
+---
 
-### `/templates/` - Blank Starting Points
+## Use Cases
 
-Used by slash commands to generate your outputs. You don't edit these directly.
+### Startup Founders
+Get a complete product development framework without hiring a CPO, CTO, and Head of Design. In 3-5 hours.
 
-### `/output/` - YOUR Generated Strategy
+### Product Teams
+Align on strategy before building. Use as shared decision-making framework.
 
-**This is gitignored** - each user generates their own cascade:
-```
-output/
-├── 00-user-journey.md (Session 1)
-├── 01-tech-stack.md (Session 2)
-├── 02-mission.md (Session 3)
-├── 03-metrics.md (Session 3)
-├── 04-monetization.md (Session 3)
-├── 05-architecture.md (Session 3)
-├── 06-design-system.md (Session 4)
-└── 07-backlog/ (Session 5)
-```
+### Solo Developers
+Ship products that feel like they were built by a full team.
 
-### `/foundation/` & `/stack/` - Framework Guides
+### AI Coding Agents
+Reference generated strategy files to make decisions aligned with your product vision.
 
-High-level frameworks explaining concepts. NOT prescriptive. Use as reference.
-
-### `/.claude/commands/` - The Cascade Commands
-
-The slash commands that power the cascade. These prompt AI to read previous outputs and generate next steps.
+### Engineering Teams
+Understand the "why" behind architectural decisions. Maintain coherence as you scale.
 
 ---
 
@@ -244,19 +287,21 @@ The slash commands that power the cascade. These prompt AI to read previous outp
 
 ### We Believe:
 
-✅ **User experience is the foundation** (not technology)
-✅ **Journey dictates stack** (not generic "best practices")
-✅ **Every decision traces to value** (no arbitrary choices)
-✅ **Boring is beautiful** (proven tech > exotic tech)
-✅ **Generative > Prescriptive** (analyze → recommend, don't dictate)
-✅ **Simple execution** (5-6 clear sessions, not 50 fragmented tasks)
+**✓ User experience is the foundation** (not technology)
+**✓ Journey dictates stack** (not generic "best practices")
+**✓ Every decision traces to value** (no arbitrary choices)
+**✓ Boring is beautiful** (proven tech > exotic tech)
+**✓ Generative > Prescriptive** (analyze → recommend, don't dictate)
+**✓ Simple execution** (5-6 clear sessions, not 50 fragmented tasks)
+**✓ Focus is the ultimate advantage** (say no often)
 
 ### We Reject:
 
-❌ **One-size-fits-all stacks** (Next.js isn't always the answer)
-❌ **Feature-first thinking** (builds what's interesting, not valuable)
-❌ **Resume-driven development** (Kubernetes because it's trendy)
-❌ **Technology-first thinking** (choosing tech before understanding users)
+**✗ One-size-fits-all stacks** (Next.js isn't always the answer)
+**✗ Feature-first thinking** (builds what's interesting, not valuable)
+**✗ Resume-driven development** (Kubernetes because it's trendy)
+**✗ Technology-first thinking** (choosing tech before understanding users)
+**✗ Build-it-all syndrome** (can't say no to features)
 
 ---
 
@@ -347,46 +392,55 @@ Minimum viable cascade: Sessions 1-3 (1-2 hours).
 
 ## Contributing
 
-We welcome:
-- Additional example implementations (different journeys)
-- Improvements to cascade prompts
-- Better decision frameworks
-- Documentation enhancements
+We welcome contributions that:
+- Add new example implementations (different journeys)
+- Improve cascade prompts and decision frameworks
+- Enhance documentation
+- Share real-world case studies
 
-**Guidelines**:
-1. Maintain generative (not prescriptive) approach
-2. Always trace decisions to user journey
-3. Provide clear reasoning for recommendations
-4. Test cascade with diverse journey types
+**Guidelines:**
+1. Maintain the user-first philosophy
+2. Keep the generative (not prescriptive) approach
+3. Always trace decisions to user journey
+4. Provide clear reasoning for recommendations
+5. Test with diverse journey types
 
 ---
 
-## Support & Community
+## Community & Support
 
+- **Documentation**: You're reading it! Start with `/cascade-status`
 - **Issues**: Found a bug or unclear prompt? Open an issue
 - **Discussions**: Share your cascade results
 - **Examples**: Completed a cascade? Consider contributing as example
 
 ---
 
-## Version History
+## Why This Exists
 
-**v2.0 (Current)**: Generative cascade approach
-- Removed prescriptive stack recommendations
-- Added 6-session cascade flow
-- Slash commands for AI-guided sessions
-- Examples showing different journeys → different stacks
+Most product teams struggle with:
+- Starting with technology instead of user needs
+- Losing strategic clarity as they build
+- Inconsistent decision-making
+- Generic advice that doesn't fit their specific context
 
-**v1.0**: Opinionated guidelines (prescriptive approach)
+**Stack-Driven solves this** by providing:
+- Clear starting point (user journey)
+- AI-guided analysis (generative cascade)
+- Opinionated recommendations (with reasoning)
+- Complete strategy (in 3-5 hours)
+- Execution backlog (ready for development)
 
----
-
-**Remember**: The best products start with understanding users, not choosing frameworks.
-
-**Start your cascade** → Run `/cascade-status`
+**Result**: Products that feel intentional, not accidental.
 
 ---
 
 **Last Updated**: 2025-11-10
 **Version**: 2.0.0
 **License**: Apache 2.0
+
+---
+
+**Remember**: The best products start with understanding users, not choosing frameworks.
+
+**Start your cascade** → Run `/cascade-status`
