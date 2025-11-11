@@ -72,6 +72,9 @@ Session 7: /scaffold-project      → output/07-project-scaffold.md
 
 16. /design-observability      → output/16-observability-strategy.md
     (Monitoring & SLOs - monitors journey success)
+
+17. /design-database-schema    → output/17-database-schema.md
+    (Database schema - complete ERD, migrations, and data modeling)
 ```
 
 **During Development**:
@@ -92,7 +95,7 @@ ls -la /home/user/stack-driven/output/
 Look for:
 - **Core cascade**: `00-user-journey.md`, `01-tech-stack.md`, `02-mission.md`, `03-metrics.md`, `04-monetization.md`, `05-architecture.md`, `06-design-system.md`, `07-backlog/`, `07-project-scaffold.md`
 - **Post-core (After Session 3+)**: `11-product-strategy.md`, `13-user-experience.md`, `14-analytics-plan.md`
-- **Post-core (After Session 5+)**: `08-brand-strategy.md`, `09-brand-naming.md`, `10-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`
+- **Post-core (After Session 5+)**: `08-brand-strategy.md`, `09-brand-naming.md`, `10-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`, `17-database-schema.md`
 
 ### Step 2: Display Complete Progress
 
@@ -131,8 +134,9 @@ After Session 5+:
 ❌ 12-content-guidelines.md  (Content style guide)
 ❌ 15-deployment-plan.md     (Deployment strategy)
 ❌ 16-observability-strategy.md (Monitoring & SLOs)
+❌ 17-database-schema.md     (Database schema)
 
-Status: 0 of 9 post-core extensions complete (optional)
+Status: 0 of 10 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -226,7 +230,8 @@ After Session 5 (Backlog Complete), consider:
 ├─ /define-messaging → Communicate journey value (output/10-brand-messaging.md)
 ├─ /create-content-guidelines → Journey-aligned content (output/12-content-guidelines.md)
 ├─ /plan-deployment → Ship journey value via CI/CD (output/15-deployment-plan.md)
-└─ /design-observability → Monitor journey success (output/16-observability-strategy.md)
+├─ /design-observability → Monitor journey success (output/16-observability-strategy.md)
+└─ /design-database-schema → Complete ERD, migrations, data modeling (output/17-database-schema.md)
 
 During development:
 └─ /review-code → Code review framework (use anytime)
@@ -390,6 +395,7 @@ After Session 5+:
 - `/create-content-guidelines` - Content style guide (output/12-content-guidelines.md)
 - `/plan-deployment` - Deployment & CI/CD (output/15-deployment-plan.md)
 - `/design-observability` - Monitoring & SLOs (output/16-observability-strategy.md)
+- `/design-database-schema` - Database schema & migrations (output/17-database-schema.md)
 
 Dev-time:
 - `/review-code` - Code review framework (anytime)
