@@ -15,7 +15,7 @@ You are helping the user navigate the Stack-Driven framework - core cascade (Ses
 
 ## Complete Framework Structure
 
-### Core Cascade (Required - Sessions 1-6 - ALWAYS START HERE)
+### Core Cascade (Required - Sessions 1-7 - ALWAYS START HERE)
 
 **The main Stack-Driven flow**:
 
@@ -29,6 +29,8 @@ Session 3: /generate-strategy    → output/02-mission.md
 Session 4: /create-design         → output/06-design-system.md
 Session 5: /generate-backlog      → output/07-backlog/
 Session 6: /create-gh-issues      → GitHub issues
+Session 7: /scaffold-project      → output/07-project-scaffold.md
+                                   output/07-project-scaffold/ (actual code files)
 ```
 
 **This is the core** - ALWAYS start here. User journey comes first, everything else flows from it.
@@ -88,7 +90,7 @@ ls -la /home/user/stack-driven/output/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-tech-stack.md`, `02-mission.md`, `03-metrics.md`, `04-monetization.md`, `05-architecture.md`, `06-design-system.md`, `07-backlog/`
+- **Core cascade**: `00-user-journey.md`, `01-tech-stack.md`, `02-mission.md`, `03-metrics.md`, `04-monetization.md`, `05-architecture.md`, `06-design-system.md`, `07-backlog/`, `07-project-scaffold.md`
 - **Post-core (After Session 3+)**: `11-product-strategy.md`, `13-user-experience.md`, `14-analytics-plan.md`
 - **Post-core (After Session 5+)**: `08-brand-strategy.md`, `09-brand-naming.md`, `10-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`
 
@@ -111,8 +113,9 @@ CORE CASCADE (Required - Always Start Here)
 ❌ 05-architecture.md        (Not started)
 ❌ 06-design-system.md       (Not started)
 ❌ 07-backlog/               (Not started)
+❌ 07-project-scaffold.md    (Not started)
 
-Progress: ████░░░░░░░░ 33% (2 of 6 core sessions complete)
+Progress: ████░░░░░░░░ 29% (2 of 7 core sessions complete)
 
 POST-CORE EXTENSIONS (Optional - Journey-Informed)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -160,17 +163,20 @@ Based on what files exist, determine the next recommended action:
 **If 00-06 exist (Session 4 complete)**:
 - **Recommend**: Session 5 (`/generate-backlog`)
 
-**If 00-07 exist (Session 5 complete)**:
+**If 00-07 backlog exists (Session 5 complete)**:
 - **Recommend**: Session 6 (`/create-gh-issues`)
+
+**If 00-06 + GitHub issues exist (Session 6 complete)**:
+- **Recommend**: Session 7 (`/scaffold-project`)
 - **Also suggest** (optional):
   - `/create-brand-strategy` (express journey value through brand)
   - `/plan-deployment` (deployment strategy)
   - `/design-observability` (monitoring & SLOs)
 
-**If all core cascade complete**:
+**If all core cascade complete (Sessions 1-7)**:
 - **Congratulate** them!
-- **Recommend**: Post-core extensions (branding, UX, analytics, ops)
-- **Or**: Start building! Backlog is ready.
+- **Recommend**: Copy scaffold files and start building!
+- **Also suggest**: Post-core extensions (branding, UX, analytics, ops) for comprehensive planning
 
 ### Step 4: Show Next Step Details
 
@@ -300,25 +306,28 @@ Recommendation: Either fill in the gaps or accept that later sessions won't have
 ```
 🎉 Core Cascade Complete!
 
-You've successfully completed all 6 Stack-Driven core sessions:
+You've successfully completed all 7 Stack-Driven core sessions:
 ✅ User Journey defined
 ✅ Tech stack chosen
 ✅ Strategy established (mission, metrics, monetization, architecture)
 ✅ Design system created
 ✅ Backlog generated
-✅ GitHub issues created (or ready to create)
+✅ GitHub issues created
+✅ Project scaffold ready (working development environment)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 What's next?
 
 Option 1: Start Building 🚀
-→ Your backlog is prioritized and ready
-→ Reference output files to guide development
+→ Copy files from output/07-project-scaffold/ to your project root
+→ Follow README.md setup instructions
+→ Run docker-compose up && npm install && npm run dev
+→ Start implementing P0 stories from your backlog
 
 Option 2: Add Optional Extensions 📊
 → /setup-analytics (plan analytics implementation)
-→ /plan-deployment (CI/CD and deployment strategy)
+→ /plan-deployment (advanced deployment strategy)
 → /design-observability (monitoring and alerting)
 → /design-user-experience (detailed UX flows)
 → /create-content-guidelines (content style guide)
@@ -330,7 +339,7 @@ Option 3: Iterate & Refine 🔄
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The framework is complete. Now go build something amazing! 🎯
+You have everything from idea to working dev environment. Now go ship! 🎯
 ```
 
 ### If post-cascade files exist
@@ -365,6 +374,7 @@ You're well-prepared for production! Consider completing observability for full 
 - `/create-design` - Session 4: Design system
 - `/generate-backlog` - Session 5: User stories
 - `/create-gh-issues` - Session 6: GitHub issues
+- `/scaffold-project` - Session 7: Working development environment
 
 **Post-Core Extensions (Optional - Journey-Informed)**:
 
