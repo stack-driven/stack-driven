@@ -23,7 +23,7 @@ Stack-Driven is a comprehensive framework for building products the right way:
 3. **Derive technology choices from journey requirements**
 4. **Generate a complete product strategy in 3-5 hours**
 
-This isn't just a prompt collection—it's a complete product development system that guides you through **6 progressive sessions**, each building on previous outputs, to go from idea to production-ready backlog.
+This isn't just a prompt collection—it's a complete product development system that guides you through **7 progressive sessions**, each building on previous outputs, to go from idea to working development environment.
 
 ---
 
@@ -42,7 +42,7 @@ Everything flows from the user journey:
 
 ## The Cascade
 
-Stack-Driven guides you through **6 progressive sessions**, each building on previous outputs:
+Stack-Driven guides you through **7 progressive sessions**, each building on previous outputs:
 
 ```
 Session 1: /refine-journey       → output/00-user-journey.md
@@ -64,9 +64,13 @@ Session 5: /generate-backlog      → output/07-backlog/
   ↓ (Push to GitHub)
 
 Session 6: /create-gh-issues      → GitHub issues
+  ↓ (Generate working development environment)
+
+Session 7: /scaffold-project      → output/07-project-scaffold.md
+                                  output/07-project-scaffold/ (actual code files)
 ```
 
-**In 5-6 sessions** (3-5 hours total), you go from idea to production-ready backlog.
+**In 7 sessions** (4-6 hours total), you go from idea to working development environment with prioritized backlog.
 
 ---
 
@@ -96,12 +100,13 @@ After each session, I'll tell you exactly what to run next:
 - `/create-design` - Creates design system for your journey
 - `/generate-backlog` - Generates 30-50 prioritized user stories
 - `/create-gh-issues` - Pushes backlog to GitHub
+- `/scaffold-project` - Generates working development environment with actual code files
 
 ### 4. Build
 
-Your backlog is prioritized (P0/P1/P2), traced to user value, and ready for development.
+Your development environment is ready with package configs, Docker Compose, CI/CD pipeline, and setup documentation. Copy the scaffold files and start implementing your prioritized backlog.
 
-**Total time**: 3-5 hours to go from idea to validated backlog.
+**Total time**: 4-6 hours to go from idea to working dev environment.
 
 ---
 
@@ -119,7 +124,14 @@ output/
 ├── 04-monetization.md (Session 3)
 ├── 05-architecture.md (Session 3)
 ├── 06-design-system.md (Session 4)
-└── 07-backlog/ (Session 5)
+├── 07-backlog/ (Session 5)
+└── 07-project-scaffold/ (Session 7 - actual code files)
+    ├── 07-project-scaffold.md (decisions documentation)
+    ├── package.json (or pyproject.toml)
+    ├── docker-compose.yml
+    ├── .env.template
+    ├── .github/workflows/ci.yml
+    └── README.md (setup instructions)
 ```
 
 ### `/examples/` - Reference Implementations
@@ -222,6 +234,10 @@ At any point, run `/cascade-status` to see:
 6. GITHUB (/create-gh-issues)
    ↓
    Ship features aligned with strategy
+
+7. SCAFFOLD (/scaffold-project)
+   ↓
+   Generate working development environment
 ```
 
 ---
@@ -325,8 +341,16 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 - Dependencies mapped
 - Ready for GitHub
 
-**Time investment**: 3-5 hours
-**Output**: Production-ready strategy + backlog
+💻 **Development Environment**:
+- Complete project scaffold (monorepo or single-repo)
+- Package manager configs (package.json / pyproject.toml)
+- Docker Compose for local development
+- CI/CD pipeline (GitHub Actions)
+- Environment configuration templates
+- Setup documentation
+
+**Time investment**: 4-6 hours
+**Output**: Production-ready strategy + backlog + working dev environment
 **Approach**: Generative (analyzed), not templated (copy-pasted)
 
 ---
@@ -357,13 +381,15 @@ Yes! In Session 2 (/choose-tech-stack), you can:
 - Note constraints ("must use AWS")
 - I'll adapt recommendations to your context
 
-### "Do I have to do all 6 sessions?"
+### "Do I have to do all 7 sessions?"
 
 Sessions 1-3 are critical (journey → stack → strategy).
 Sessions 4-5 are highly valuable (design → backlog).
 Session 6 is convenience (push to GitHub).
+Session 7 bridges strategy to code (scaffold dev environment).
 
 Minimum viable cascade: Sessions 1-3 (1-2 hours).
+Complete cascade: Sessions 1-7 (4-6 hours).
 
 ---
 
@@ -382,8 +408,9 @@ Minimum viable cascade: Sessions 1-3 (1-2 hours).
 # /create-design
 # /generate-backlog
 # /create-gh-issues
+# /scaffold-project
 
-# 4. Build your product!
+# 4. Copy scaffold files and start building!
 ```
 
 **Ready?** → Run `/cascade-status` to begin.
