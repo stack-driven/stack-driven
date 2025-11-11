@@ -1,44 +1,21 @@
 ---
-description: Show complete Stack-Driven framework progress (pre-cascade, core, post-cascade)
+description: Show complete Stack-Driven framework progress (core, post-core)
 ---
 
 # Complete Framework Status Check
 
-You are helping the user navigate the complete Stack-Driven framework - including optional pre-cascade branding/strategy, core cascade (Sessions 1-6), and post-cascade extensions (UX, analytics, operations).
+You are helping the user navigate the Stack-Driven framework - core cascade (Sessions 1-6) and optional post-core extensions (branding, UX, analytics, operations).
 
 ## Your Task
 
 1. **Check which output files exist** in the `/output` directory
-2. **Display a visual progress tracker** showing pre-cascade, core cascade, and post-cascade
+2. **Display a visual progress tracker** showing core cascade and post-core extensions
 3. **Tell the user exactly what to do next** (which command to run and why)
 4. **Show how everything connects** - what reads what
 
 ## Complete Framework Structure
 
-### Pre-Cascade (Optional - Branding & Strategy)
-
-**Run BEFORE Session 1 if you want branding and strategic foundation**:
-
-```
-0a. /create-brand-strategy    → output/0a-brand-strategy.md
-0b. /discover-naming           → output/0b-brand-naming.md
-0c. /define-messaging          → output/0c-brand-messaging.md
-0d. /create-product-strategy   → output/0d-product-strategy.md
-```
-
-**When to use**:
-- New product needing brand identity
-- Need market analysis and competitive positioning
-- Want strategic context before tactical execution
-
-**When to skip**:
-- Already have established branding
-- Want to start with user journey and add branding later
-- Building internal tool without brand needs
-
----
-
-### Core Cascade (Required - Sessions 1-6)
+### Core Cascade (Required - Sessions 1-6 - ALWAYS START HERE)
 
 **The main Stack-Driven flow**:
 
@@ -54,31 +31,50 @@ Session 5: /generate-backlog      → output/07-backlog/
 Session 6: /create-gh-issues      → GitHub issues
 ```
 
-**This is the core** - journey through to backlog. Always recommend starting here unless user explicitly wants branding first.
+**This is the core** - ALWAYS start here. User journey comes first, everything else flows from it.
 
 ---
 
-### Post-Cascade (Optional - Extensions)
+### Post-Core Extensions (Optional - Journey-Informed)
 
-**Run AFTER core cascade to add detailed planning**:
+**Run AFTER core cascade to add comprehensive planning**. All these commands READ the journey and core outputs.
 
+**After Session 3+** (Strategy Complete):
 ```
-08. /create-content-guidelines  → output/08-content-guidelines.md
-    (Run after 0c or Session 4 - detailed content style guide)
+11. /create-product-strategy   → output/11-product-strategy.md
+    (Market validation - validates journey with TAM/SAM/SOM, competitive analysis)
 
-09. /design-user-experience     → output/09-user-experience.md
-    (Run after Session 3 - detailed UX research, flows, wireframes)
+13. /design-user-experience    → output/13-user-experience.md
+    (Detailed UX flows - expands journey with research, flows, wireframes)
 
-10. /setup-analytics            → output/10-analytics-plan.md
-    (Run after Session 3 - detailed analytics implementation)
+14. /setup-analytics           → output/14-analytics-plan.md
+    (Analytics implementation - implements metrics from Session 3)
+```
 
-11. /plan-deployment            → output/11-deployment-plan.md
-    (Run after Session 5 - deployment strategy and CI/CD)
+**After Session 5+** (Backlog Complete):
+```
+08. /create-brand-strategy     → output/08-brand-strategy.md
+    (Brand foundation - expresses journey value through brand lens)
 
-12. /design-observability       → output/12-observability-strategy.md
-    (Run after Session 5 - monitoring, alerts, SLOs)
+09. /discover-naming           → output/09-brand-naming.md
+    (Brand naming - names the journey solution)
 
-XX. /review-code                → (No output file - use during development)
+10. /define-messaging          → output/10-brand-messaging.md
+    (Messaging framework - communicates journey value in brand voice)
+
+12. /create-content-guidelines → output/12-content-guidelines.md
+    (Content style guide - journey-aligned content standards)
+
+15. /plan-deployment           → output/15-deployment-plan.md
+    (Deployment strategy - ships journey value via CI/CD)
+
+16. /design-observability      → output/16-observability-strategy.md
+    (Monitoring & SLOs - monitors journey success)
+```
+
+**During Development**:
+```
+XX. /review-code               → (No output file - code review framework)
 ```
 
 ## Steps to Execute
@@ -92,9 +88,9 @@ ls -la /home/user/stack-driven/output/
 ```
 
 Look for:
-- **Pre-cascade**: `0a-brand-strategy.md`, `0b-brand-naming.md`, `0c-brand-messaging.md`, `0d-product-strategy.md`
 - **Core cascade**: `00-user-journey.md`, `01-tech-stack.md`, `02-mission.md`, `03-metrics.md`, `04-monetization.md`, `05-architecture.md`, `06-design-system.md`, `07-backlog/`
-- **Post-cascade**: `08-content-guidelines.md`, `09-user-experience.md`, `10-analytics-plan.md`, `11-deployment-plan.md`, `12-observability-strategy.md`
+- **Post-core (After Session 3+)**: `11-product-strategy.md`, `13-user-experience.md`, `14-analytics-plan.md`
+- **Post-core (After Session 5+)**: `08-brand-strategy.md`, `09-brand-naming.md`, `10-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`
 
 ### Step 2: Display Complete Progress
 
@@ -102,19 +98,10 @@ Create a comprehensive visual status display:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 Stack-Driven Complete Framework Status
+📊 Stack-Driven Framework Status
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-PRE-CASCADE (Optional - Branding & Strategy)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ 0a-brand-strategy.md      (Branding foundation)
-❌ 0b-brand-naming.md         (Not started)
-❌ 0c-brand-messaging.md      (Not started)
-❌ 0d-product-strategy.md     (Not started)
-
-Status: 1 of 4 pre-cascade sessions complete (optional)
-
-CORE CASCADE (Required - Sessions 1-6)
+CORE CASCADE (Required - Always Start Here)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ 00-user-journey.md        (Session 1 ✓)
 ✅ 01-tech-stack.md          (Session 2 ✓)
@@ -127,15 +114,22 @@ CORE CASCADE (Required - Sessions 1-6)
 
 Progress: ████░░░░░░░░ 33% (2 of 6 core sessions complete)
 
-POST-CASCADE (Optional - Extensions)
+POST-CORE EXTENSIONS (Optional - Journey-Informed)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-❌ 08-content-guidelines.md  (Not started - run after messaging/design)
-❌ 09-user-experience.md     (Not started - run after Session 3)
-❌ 10-analytics-plan.md      (Not started - run after Session 3)
-❌ 11-deployment-plan.md     (Not started - run after Session 5)
-❌ 12-observability-strategy.md (Not started - run after Session 5)
+After Session 3+:
+❌ 11-product-strategy.md    (Market validation)
+❌ 13-user-experience.md     (Detailed UX design)
+❌ 14-analytics-plan.md      (Analytics implementation)
 
-Status: 0 of 5 post-cascade sessions complete (optional)
+After Session 5+:
+❌ 08-brand-strategy.md      (Brand foundation)
+❌ 09-brand-naming.md        (Brand naming)
+❌ 10-brand-messaging.md     (Messaging framework)
+❌ 12-content-guidelines.md  (Content style guide)
+❌ 15-deployment-plan.md     (Deployment strategy)
+❌ 16-observability-strategy.md (Monitoring & SLOs)
+
+Status: 0 of 9 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -148,11 +142,7 @@ Based on what files exist, determine the next recommended action:
 
 **If no core cascade files exist**:
 - **Recommend**: Start with Session 1 (`/refine-journey`)
-- **Alternative**: If they want branding first, suggest `/create-brand-strategy`
-
-**If pre-cascade started but incomplete**:
-- **Recommend**: Continue pre-cascade OR skip to Session 1
-- Explain: Pre-cascade is optional and can be done later
+- **NEVER suggest branding first** - journey ALWAYS comes first
 
 **If only 00-user-journey.md exists**:
 - **Recommend**: Session 2 (`/choose-tech-stack`)
@@ -162,20 +152,24 @@ Based on what files exist, determine the next recommended action:
 
 **If 00-05 exist (Session 3 complete)**:
 - **Recommend**: Session 4 (`/create-design`)
-- **Also suggest** (optional): `/design-user-experience` (detailed UX before design system)
-- **Also suggest** (optional): `/setup-analytics` (plan analytics implementation)
+- **Also suggest** (optional):
+  - `/create-product-strategy` (validate journey with market analysis)
+  - `/design-user-experience` (detailed UX flows)
+  - `/setup-analytics` (implement metrics tracking)
 
 **If 00-06 exist (Session 4 complete)**:
 - **Recommend**: Session 5 (`/generate-backlog`)
-- **Also suggest** (optional): `/create-content-guidelines` (if messaging exists)
 
 **If 00-07 exist (Session 5 complete)**:
 - **Recommend**: Session 6 (`/create-gh-issues`)
-- **Also suggest** (optional): `/plan-deployment` and `/design-observability` (ops planning)
+- **Also suggest** (optional):
+  - `/create-brand-strategy` (express journey value through brand)
+  - `/plan-deployment` (deployment strategy)
+  - `/design-observability` (monitoring & SLOs)
 
 **If all core cascade complete**:
 - **Congratulate** them!
-- **Recommend**: Post-cascade extensions (analytics, deployment, observability)
+- **Recommend**: Post-core extensions (branding, UX, analytics, ops)
 - **Or**: Start building! Backlog is ready.
 
 ### Step 4: Show Next Step Details
@@ -210,26 +204,28 @@ Ready? Run: /generate-strategy
 
 ### Step 5: Show Optional Extensions
 
-If appropriate, suggest optional post-cascade commands:
+If appropriate, suggest optional post-core commands:
 
 ```
-💡 Optional Extensions (After Core Cascade)
+💡 Optional Post-Core Extensions (Journey-Informed)
 
-After Session 3, consider:
-├─ /design-user-experience → Detailed UX research, flows, wireframes
-└─ /setup-analytics → Detailed analytics implementation plan
+After Session 3 (Strategy Complete), consider:
+├─ /create-product-strategy → Validate journey with market analysis (output/11-product-strategy.md)
+├─ /design-user-experience → Detailed UX flows & wireframes (output/13-user-experience.md)
+└─ /setup-analytics → Implement metrics tracking (output/14-analytics-plan.md)
 
-After Session 4, consider:
-└─ /create-content-guidelines → Comprehensive content style guide
-
-After Session 5, consider:
-├─ /plan-deployment → Deployment strategy and CI/CD pipelines
-└─ /design-observability → Monitoring, alerts, SLOs, incident response
+After Session 5 (Backlog Complete), consider:
+├─ /create-brand-strategy → Express journey value through brand (output/08-brand-strategy.md)
+├─ /discover-naming → Name the journey solution (output/09-brand-naming.md)
+├─ /define-messaging → Communicate journey value (output/10-brand-messaging.md)
+├─ /create-content-guidelines → Journey-aligned content (output/12-content-guidelines.md)
+├─ /plan-deployment → Ship journey value via CI/CD (output/15-deployment-plan.md)
+└─ /design-observability → Monitor journey success (output/16-observability-strategy.md)
 
 During development:
 └─ /review-code → Code review framework (use anytime)
 
-These are optional but valuable for comprehensive product planning.
+All post-core extensions READ the journey - nothing precedes the user journey.
 ```
 
 ## Example Output
@@ -281,26 +277,6 @@ Ready? Run: /choose-tech-stack
 5. **Keep it visual** - Use emojis, progress bars, clear sections
 
 ## Edge Cases
-
-### If pre-cascade files exist but core cascade not started
-
-**Message**:
-```
-I see you've started with branding/strategy (pre-cascade). Great foundation!
-
-Now you have two options:
-
-Option 1 (Recommended): Start the core cascade
-→ Run /refine-journey to begin Sessions 1-6
-→ Your brand strategy will inform the user journey
-
-Option 2: Complete pre-cascade first
-→ Run /discover-naming (if you need a brand name)
-→ Run /define-messaging (to create messaging framework)
-→ Then start /refine-journey
-
-Most teams go with Option 1 and complete branding in parallel.
-```
 
 ### If they've skipped sessions
 
@@ -382,13 +358,7 @@ You're well-prepared for production! Consider completing observability for full 
 
 ## Summary of All Commands
 
-**Pre-Cascade (Optional - Branding/Strategy)**:
-- `/create-brand-strategy` - Brand foundation
-- `/discover-naming` - Brand name generation
-- `/define-messaging` - Messaging framework
-- `/create-product-strategy` - Market analysis and strategic planning
-
-**Core Cascade (Required)**:
+**Core Cascade (Required - Always Start Here)**:
 - `/refine-journey` - Session 1: User journey
 - `/choose-tech-stack` - Session 2: Tech stack
 - `/generate-strategy` - Session 3: Mission, metrics, monetization, architecture
@@ -396,13 +366,23 @@ You're well-prepared for production! Consider completing observability for full 
 - `/generate-backlog` - Session 5: User stories
 - `/create-gh-issues` - Session 6: GitHub issues
 
-**Post-Cascade (Optional - Extensions)**:
-- `/create-content-guidelines` - Content style guide
-- `/design-user-experience` - Detailed UX design
-- `/setup-analytics` - Analytics implementation
-- `/plan-deployment` - Deployment and CI/CD
-- `/design-observability` - Monitoring and observability
-- `/review-code` - Code review framework (dev-time)
+**Post-Core Extensions (Optional - Journey-Informed)**:
+
+After Session 3+:
+- `/create-product-strategy` - Market validation (output/11-product-strategy.md)
+- `/design-user-experience` - Detailed UX flows (output/13-user-experience.md)
+- `/setup-analytics` - Analytics implementation (output/14-analytics-plan.md)
+
+After Session 5+:
+- `/create-brand-strategy` - Brand foundation (output/08-brand-strategy.md)
+- `/discover-naming` - Brand naming (output/09-brand-naming.md)
+- `/define-messaging` - Messaging framework (output/10-brand-messaging.md)
+- `/create-content-guidelines` - Content style guide (output/12-content-guidelines.md)
+- `/plan-deployment` - Deployment & CI/CD (output/15-deployment-plan.md)
+- `/design-observability` - Monitoring & SLOs (output/16-observability-strategy.md)
+
+Dev-time:
+- `/review-code` - Code review framework (anytime)
 
 **Meta**:
 - `/cascade-status` - Show this status (what you're running now!)
@@ -411,7 +391,7 @@ You're well-prepared for production! Consider completing observability for full 
 
 Mention if helpful:
 - `/examples/compliance-saas/` - Complete cascade example
-- `/templates/` - All template files (including new pre/post-cascade templates)
+- `/templates/` - All template files
 - `README.md` - Framework overview
 - `GETTING-STARTED.md` - Onboarding guide
 

@@ -1,84 +1,120 @@
 ---
-description: PRE-CASCADE - Create brand messaging framework and voice guidelines
+description: POST-CASCADE - Create brand messaging framework and voice guidelines
 ---
 
-# Define Brand Messaging (Pre-Cascade Optional)
+# Define Brand Messaging (Post-Core Extension)
 
-You are helping the user create a comprehensive brand messaging framework that defines how they communicate with customers. This is an optional pre-cascade step.
+You are helping the user create a comprehensive brand messaging framework that communicates the value they deliver through their user journey.
 
 ## When to Use This
 
-**Run BEFORE Session 1** if:
-- You need to establish brand voice and messaging
-- You have a brand name and need messaging to match
-- You want consistent communication across all touchpoints
+**Run AFTER `/create-brand-strategy`** when you have:
+- ✅ User journey defined (`output/00-user-journey.md`)
+- ✅ Mission statement (`output/02-mission.md`)
+- ✅ Brand strategy (`output/08-brand-strategy.md`)
+- ✅ Brand name chosen (from `output/09-brand-naming.md` or already decided)
+
+Your messaging should communicate [journey value] in [brand voice], not be created in isolation.
 
 **Skip this** if:
-- You want to start with user journey and add messaging later
 - You're building an internal tool without marketing needs
-- You prefer to develop voice organically
+- You prefer to develop voice organically through content creation
+- You don't need formal messaging documentation
+
+## Cascade Inputs
+
+This command READS previous outputs to create journey-grounded messaging:
+
+1. **Read the user journey**:
+   ```bash
+   Read output/00-user-journey.md
+   ```
+   - Who is the target audience? (from journey)
+   - What problem do they struggle with?
+   - What transformation do they experience?
+   - What's the value delivered?
+
+2. **Read the mission**:
+   ```bash
+   Read output/02-mission.md
+   ```
+   - This becomes your value proposition foundation
+
+3. **Read the brand strategy**:
+   ```bash
+   Read output/08-brand-strategy.md
+   ```
+   - Brand voice (how you sound)
+   - Brand values (what guides communication)
+   - Brand personality (tone characteristics)
+
+4. **Read the brand name** (if available):
+   ```bash
+   Read output/09-brand-naming.md  # If naming was done
+   ```
+   - Use chosen name in messaging
+
+Your messaging communicates [journey value] to [journey audience] in [brand voice].
 
 ## Your Task
 
-Create a brand messaging framework using the prompt in `/prompts/branding/messaging.md`.
+Create a brand messaging framework that expresses the journey value in your brand voice.
 
 ### Steps to Execute
 
-1. **Read the messaging prompt**:
+1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read /prompts/branding/messaging.md
+   Read output/00-user-journey.md
+   Read output/02-mission.md
+   Read output/08-brand-strategy.md
+   Read output/09-brand-naming.md  # If exists
    ```
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/0c-brand-messaging-template.md
+   Read templates/10-brand-messaging-template.md
    ```
 
-3. **Check for brand inputs** (optional):
+3. **Interview the user** with journey-informed questions:
+
+   **Value Proposition (journey-based)**:
+   - "Your mission is [mission]. How would you express this as a one-sentence value prop for [journey audience]?"
+
+   **Elevator Pitch (journey-grounded)**:
+   - "Let's create your elevator pitch. Start with: [Audience] struggles with [journey problem]. We help them [journey transformation] through [unique approach from brand strategy]."
+
+   **Messaging Pillars (journey-connected)**:
+   - "Your journey delivers value at [key moments]. What are the 3-5 core themes we should communicate about this value?"
+
+   **Voice (brand-aligned)**:
+   - "Your brand personality is [from brand strategy]. How should this show up in copy? Let's define specific do's and don'ts."
+
+4. **Develop messaging framework** grounded in journey:
+   - Value proposition = [Mission statement] for [journey audience]
+   - Elevator pitch = [Journey problem] → [Journey solution] → [Journey value]
+   - Messaging pillars = Key themes from [journey moments]
+   - Voice guidelines = [Brand personality] applied to copy
+   - EVERY element traces back to journey
+
+5. **Create sample copy** that demonstrates journey value:
+   - Homepage hero: Speaks to [journey problem], promises [journey value]
+   - About us: Tells story of WHY you solve [journey problem]
+   - Product description: Explains HOW you deliver [journey transformation]
+   - All copy in [brand voice], addressing [journey audience]
+
+6. **Write the output**:
    ```bash
-   Read output/0a-brand-strategy.md
-   Read output/0b-brand-naming.md
-   ```
-   - If exist: Use brand strategy and chosen name to inform messaging
-   - If not exist: Ask user directly about brand direction and name
-
-4. **Interview the user** following the messaging prompt:
-   - Target audience (who are you talking to?)
-   - Value proposition (what's the core promise?)
-   - Brand voice (how do you sound? formal? casual? witty?)
-   - Key messages (what do you need to communicate?)
-   - Elevator pitch (15-second version)
-   - Messaging pillars (3-5 core themes)
-
-5. **Develop messaging framework**:
-   - Value proposition (one sentence)
-   - Elevator pitch (15-30 seconds)
-   - Extended pitch (1 minute)
-   - Messaging pillars (3-5 themes with supporting points)
-   - Voice and tone guidelines (with examples)
-   - Sample copy for key scenarios
-
-6. **Create sample copy** for:
-   - Homepage hero headline
-   - About us summary
-   - Product descriptions
-   - Email outreach
-   - Social media bio
-   - Customer support responses
-
-7. **Write the output**:
-   ```bash
-   Write output/0c-brand-messaging.md
+   Write output/10-brand-messaging.md
    ```
 
 ## Output Location
 
-`output/0c-brand-messaging.md`
+`output/10-brand-messaging.md`
 
 This will be read by:
-- `/create-content-guidelines` (Session 08) - Uses messaging for detailed content guide
-- `/refine-journey` (Session 1) - Can reference messaging in journey thinking
-- User's marketing and content creation efforts
+- `/create-content-guidelines` - Uses messaging for detailed content style guide
+- Marketing and content creation efforts
+- Sales and customer support training
 
 ## Template Structure
 
@@ -104,49 +140,51 @@ The output follows this structure:
 ## Example Prompt Flow
 
 ```
-You: Let's define your brand messaging. First, let me check if you have brand strategy...
+You: I've read your user journey, mission, brand strategy, and chosen name. Let me create messaging that expresses this journey value.
 
-[Check for outputs]
+Your journey shows [audience] struggling with [problem] at [step]. You help them [transformation], and your brand personality is [traits].
 
-You: I see your brand emphasizes [values] and you're considering names like [finalists]. Now, who is your primary audience? Be specific - title, pain points, context.
+Let's start with your value proposition. Your mission is "[mission]". How would you express this as one sentence for [audience]?
 
-User: [Describes audience]
+User: [Proposes value prop]
 
-You: Perfect. Now, in one sentence: what's the core value you deliver to this audience? What changes for them when they use your product?
+You: Great! That connects directly to the journey transformation. Now let's build your elevator pitch:
 
-User: [Explains value]
+"[Audience] struggles with [journey problem]. [Brand name] helps them [journey transformation] through [unique approach from brand]. The result? [Journey value outcome]."
 
-You: Great value prop. Now let's develop your voice. On a scale, where do you fall?
-- Formal ←→ Casual
-- Professional ←→ Playful
-- Serious ←→ Witty
-- Corporate ←→ Rebellious
+Does that feel right?
 
-User: [Describes voice]
+User: [Feedback]
 
-[Continue developing messaging...]
+[Continue developing messaging pillars, voice, sample copy...]
 
-You: Excellent. Let me create sample copy to demonstrate this voice...
+You: Perfect! Let me create sample copy that demonstrates this. Here's your homepage hero:
 
-[Generate examples]
+Headline: "[Speaks directly to journey problem]"
+Subhead: "[Promises journey transformation in brand voice]"
 
-You: I've captured your complete messaging framework in output/0c-brand-messaging.md, including:
-- Your value proposition: "[specific one-liner]"
-- Elevator pitches (15s, 30s, 1min)
-- 4 messaging pillars
-- Voice guidelines with 10+ examples
-- Sample copy for key scenarios
+Notice how it connects to [journey step] and speaks in [brand personality].
 
-Try reading the homepage hero out loud - does it sound like YOU?
+[Show more examples]
+
+You: I've captured everything in output/10-brand-messaging.md:
+- Value proposition: "[specific one-liner tied to mission]"
+- Elevator pitches (all grounded in journey)
+- 4 messaging pillars (each connects to journey value)
+- Voice guidelines (brand personality applied to copy)
+- Sample copy for key scenarios (all journey-informed)
+
+Every line traces back to your user journey. Try the homepage hero - does it speak to [journey audience]?
 ```
 
 ## After This Session
 
-**Recommended next**: `/create-content-guidelines` (Session 08) for detailed content style guide
-**Or skip to**: `/refine-journey` (Session 1) to start the core cascade
+**Recommended next**:
+- `/create-content-guidelines` - Detailed content style guide with journey-aligned messaging
+- Apply messaging to website, product, and marketing materials
 
-Your messaging framework will serve as the foundation for all customer communication.
+Your messaging framework expresses journey value in brand voice - grounded, not generic.
 
 ---
 
-**Remember**: This is OPTIONAL. Messaging can evolve over time. Some teams prefer to develop voice through real content creation rather than upfront planning.
+**Remember**: This is POST-CORE. Messaging communicates journey value, it doesn't precede it. Every message traces back to the user journey.

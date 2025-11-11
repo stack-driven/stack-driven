@@ -4,7 +4,7 @@ description: POST-CASCADE - Create detailed content style guide and microcopy pa
 
 # Create Content Guidelines (Post-Cascade Optional)
 
-You are helping the user create a comprehensive content style guide that covers voice, tone, grammar, microcopy patterns, and localization. This is an optional post-cascade or pre-cascade step.
+You are helping the user create a comprehensive content style guide that covers voice, tone, grammar, microcopy patterns, and localization. This is an optional post-core extension that expands on brand messaging.
 
 ## When to Use This
 
@@ -35,12 +35,12 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/08-content-guidelines-template.md
+   Read templates/12-content-guidelines-template.md
    ```
 
 3. **Check for messaging inputs** (recommended):
    ```bash
-   Read output/0c-brand-messaging.md
+   Read output/10-brand-messaging.md
    ```
    - If exists: Expand messaging framework into detailed guidelines
    - If not exists: Create guidelines from scratch with user input
@@ -71,12 +71,12 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 7. **Write the output**:
    ```bash
-   Write output/08-content-guidelines.md
+   Write output/12-content-guidelines.md
    ```
 
 ## Output Location
 
-`output/08-content-guidelines.md`
+`output/12-content-guidelines.md`
 
 This will be used by:
 - Content writers and marketers
@@ -114,7 +114,7 @@ The output follows this structure:
 ```
 You: Let's create your content guidelines. First, let me check if you have brand messaging...
 
-[Check for output/0c-brand-messaging.md]
+[Check for output/10-brand-messaging.md]
 
 You: Great! I see your voice is [casual/witty/professional]. Now let's get specific. Which style guide do you follow? AP? Chicago? Or custom rules?
 
@@ -138,7 +138,7 @@ User: [Describes tone shifts]
 
 [Continue through patterns...]
 
-You: Perfect. I've created your comprehensive content guidelines in output/08-content-guidelines.md, including:
+You: Perfect. I've created your comprehensive content guidelines in output/12-content-guidelines.md, including:
 - Voice/tone foundation with 15 examples
 - Grammar rules (capitalization, numbers, dates)
 - Word list (20+ prefer/avoid pairs)

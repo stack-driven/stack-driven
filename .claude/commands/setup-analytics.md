@@ -36,7 +36,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/10-analytics-plan-template.md
+   Read templates/14-analytics-plan-template.md
    ```
 
 3. **Check for metrics from Session 3** (required):
@@ -81,12 +81,12 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 7. **Write the output**:
    ```bash
-   Write output/10-analytics-plan.md
+   Write output/14-analytics-plan.md
    ```
 
 ## Output Location
 
-`output/10-analytics-plan.md`
+`output/14-analytics-plan.md`
 
 This will be used by:
 - Engineers implementing event tracking
@@ -166,7 +166,7 @@ User: [Describes tool preferences]
 
 [Continue through A/B testing, privacy, implementation phases...]
 
-You: Excellent! I've created your comprehensive analytics plan in output/10-analytics-plan.md:
+You: Excellent! I've created your comprehensive analytics plan in output/14-analytics-plan.md:
 - Event taxonomy with strict naming conventions
 - 42 events with detailed properties
 - 12 user properties

@@ -5,7 +5,24 @@
 
 ## Overview
 
-This document captures the brand naming discovery process, including candidates, trademark research, and finalist recommendations.
+This document captures the brand naming discovery process, including candidates, trademark research, and finalist recommendations. All names trace back to the user journey and brand strategy.
+
+## How This Traces to User Journey
+
+**Journey problem** (from `output/00-user-journey.md`):
+- [What problem do users struggle with?]
+
+**Journey transformation** (from `output/00-user-journey.md`):
+- [What transformation do users experience? From what → to what?]
+
+**Mission promise** (from `output/02-mission.md`):
+- [What's your mission statement?]
+
+**Brand personality** (from `output/08-brand-strategy.md`):
+- [Key personality traits - formal/casual, professional/playful, etc.]
+
+**Naming Goal**:
+- Names must express [journey value/transformation] through the lens of [brand personality]
 
 ---
 
