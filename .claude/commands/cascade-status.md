@@ -93,6 +93,7 @@ Look for:
 - **Core cascade**: `00-user-journey.md`, `01-tech-stack.md`, `02-mission.md`, `03-metrics.md`, `04-monetization.md`, `05-architecture.md`, `06-design-system.md`, `07-backlog/`, `07-project-scaffold.md`
 - **Post-core (After Session 3+)**: `11-product-strategy.md`, `13-user-experience.md`, `14-analytics-plan.md`
 - **Post-core (After Session 5+)**: `08-brand-strategy.md`, `09-brand-naming.md`, `10-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`
+- **Validation files**: `00-user-journey-validation.md` OR `00-validation-skipped.md`, `11-product-strategy-validation.md` OR `11-validation-skipped.md`, `07-backlog-feasibility.md` OR `07-backlog-rescope.md`
 
 ### Step 2: Display Complete Progress
 
@@ -106,6 +107,7 @@ Create a comprehensive visual status display:
 CORE CASCADE (Required - Always Start Here)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ 00-user-journey.md        (Session 1 ✓)
+   🚦 Validation: ✅ (00-user-journey-validation.md) / ⚠️ (00-validation-skipped.md) / ❌ (pending)
 ✅ 01-tech-stack.md          (Session 2 ✓)
 ❌ 02-mission.md             (Not started)
 ❌ 03-metrics.md             (Not started)
@@ -113,14 +115,22 @@ CORE CASCADE (Required - Always Start Here)
 ❌ 05-architecture.md        (Not started)
 ❌ 06-design-system.md       (Not started)
 ❌ 07-backlog/               (Not started)
+   🚦 Validation: ✅ (07-backlog-feasibility.md) / ⚠️ (07-backlog-rescope.md) / ❌ (pending)
 ❌ 07-project-scaffold.md    (Not started)
 
 Progress: ████░░░░░░░░ 29% (2 of 7 core sessions complete)
+
+VALIDATION STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Customer Discovery:     ✅ VALIDATED / ⚠️ SKIPPED / ❌ PENDING
+Market Demand:          ✅ VALIDATED / ⚠️ SKIPPED / ❌ PENDING
+Build Feasibility:      ✅ VALIDATED / ⚠️ RESCOPED / ❌ PENDING
 
 POST-CORE EXTENSIONS (Optional - Journey-Informed)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 After Session 3+:
 ❌ 11-product-strategy.md    (Market validation)
+   🚦 Validation: ✅ (11-product-strategy-validation.md) / ⚠️ (11-validation-skipped.md) / ❌ (pending)
 ❌ 13-user-experience.md     (Detailed UX design)
 ❌ 14-analytics-plan.md      (Analytics implementation)
 
@@ -352,6 +362,49 @@ POST-CASCADE EXTENSIONS COMPLETE:
 ❌ 12-observability-strategy.md (Not started)
 
 You're well-prepared for production! Consider completing observability for full operational readiness.
+```
+
+### Validation Status Display
+
+**Always show validation status** with appropriate messaging:
+
+```
+🚦 VALIDATION CHECKPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Customer Discovery (After Session 1)
+   Status: ✅ VALIDATED (10 interviews, 8/10 score)
+   File: output/00-user-journey-validation.md
+
+2. Market Demand (After /create-product-strategy)
+   Status: ⚠️ SKIPPED - HIGH RISK
+   File: output/11-validation-skipped.md
+   Action: Get 5 LOIs before building (use 11-demand-validation-playbook.md)
+
+3. Build Feasibility (After Session 5)
+   Status: ✅ VALIDATED (Realistic 8-week timeline)
+   File: output/07-backlog-feasibility.md
+```
+
+**Validation warnings** if skipped:
+
+```
+⚠️ VALIDATION DEBT DETECTED
+
+You've skipped customer validation checkpoints. This is high risk:
+- 70% of startups fail due to "no market need" (CB Insights)
+- Validation debt accumulates 10x cost per stage
+- Pivoting at code stage is 10x more expensive than at planning stage
+
+Recommended action:
+1. Pause development
+2. Get 5 user interviews OR 3 LOIs
+3. Document findings in validation files
+4. Resume with validated assumptions
+
+Files to review:
+- output/00-validation-skipped.md (customer discovery debt)
+- output/11-validation-skipped.md (market demand debt)
 ```
 
 ## Important Guidelines

@@ -149,7 +149,264 @@ Once you've created the file:
    - "Aha moment: [Step 3 description]"
    - "Value ratio: [X:1]"
 
-3. **Next steps**:
+3. **Run the validation checkpoint** (see next section)
+
+## Validation Checkpoint: Customer Discovery
+
+**⚠️ CRITICAL: Do not proceed without customer validation**
+
+Before moving to Session 2, the user must validate their journey with real target users. This prevents building the wrong product.
+
+### Checkpoint Requirements
+
+Ask the user:
+
+```
+🚦 VALIDATION CHECKPOINT
+
+Before we proceed to tech stack selection, let's validate this journey with real customers.
+
+Have you interviewed at least 10 target users who match your persona?
+
+Required evidence:
+- [ ] 10+ user interviews completed
+- [ ] Users confirmed the pain point exists
+- [ ] Users confirmed current workarounds are painful
+- [ ] Users expressed willingness to pay for a solution
+- [ ] Journey validation score: ≥7/10
+
+If you haven't done this yet, I can help you create an interview guide based on your journey.
+
+Please respond with:
+1. "Yes, completed" - with summary of findings
+2. "No, need interview guide" - I'll create one
+3. "Skip for now" - (not recommended, but I'll note this)
+```
+
+### If User Says "Yes, completed"
+
+Ask them to provide:
+1. **Interview Summary**: Brief overview of who they talked to
+2. **Key Findings**: What validated or invalidated from the journey
+3. **Journey Validation Score (1-10)**: How confident are they this journey is correct?
+4. **Adjustments Needed**: Any changes to the journey based on feedback
+
+**Create validation file**:
+```bash
+Write output/00-user-journey-validation.md
+```
+
+**Contents**:
+```markdown
+# User Journey Validation
+
+**Validation Date**: [Date]
+**Interviews Completed**: [Number]
+**Validation Score**: [X]/10
+
+## Interview Summary
+[Who they talked to, roles, companies]
+
+## Key Findings
+
+### What We Validated ✅
+- [Finding 1]
+- [Finding 2]
+
+### What We Learned ❌
+- [Assumption that was wrong]
+- [Adjustment needed]
+
+### Willingness to Pay
+- [Evidence: quotes, emails, pre-orders, LOIs]
+- [Price sensitivity insights]
+
+## Journey Adjustments
+[Any changes made to 00-user-journey.md based on feedback]
+
+## Confidence Level
+[Why they scored X/10, what would increase confidence]
+
+---
+
+**Gate Status**: ✅ PASS (Score ≥7/10) / ❌ FAIL (Score <7)
+
+**Recommendation**: [Proceed to Session 2 / Refine journey and re-interview]
+```
+
+**Gate Logic**:
+- **Score ≥7/10**: ✅ Proceed to Session 2
+- **Score <7/10**: ❌ Recommend refining journey and re-interviewing
+- **Score not provided**: ⚠️ Warn but allow proceed (note risk)
+
+### If User Says "No, need interview guide"
+
+**Create interview guide**:
+```bash
+Write output/00-interview-guide.md
+```
+
+**Contents based on their journey**:
+```markdown
+# Customer Interview Guide
+
+Use this guide to validate your user journey with 10+ target users.
+
+## Interview Goals
+1. Validate [primary pain point from journey]
+2. Understand current workarounds
+3. Test willingness to pay for [solution]
+4. Confirm [journey Step 3 - aha moment] delivers value
+
+## Target Interviewees
+**Persona**: [from 00-user-journey.md]
+**Where to find them**: [LinkedIn groups, communities, conferences]
+**How to reach**: [Cold email, warm intro, community posts]
+
+## Interview Script (30 minutes)
+
+### Opening (2 min)
+"Hi [name], thanks for taking time. I'm researching [problem area] and want to understand how [persona type] currently handle [situation]. No sales pitch - just learning. Sound good?"
+
+### Problem Validation (10 min)
+1. "Walk me through your current process for [journey trigger situation]?"
+   - Listen for: Pain points, time spent, frustration level
+
+2. "What's frustrating about that?"
+   - Listen for: Severity, frequency, impact
+
+3. "What have you tried to solve this?"
+   - Listen for: Current workarounds, tools tried, budget spent
+
+4. "What would it be worth to you if [journey outcome] happened automatically?"
+   - Listen for: Value quantification, willingness to pay
+
+### Solution Validation (10 min)
+5. "If I told you there was a tool that [journey Step 1-3], would that interest you?"
+   - Listen for: Genuine interest vs politeness
+
+6. "Walk me through how you'd use that. What's step 1?"
+   - Listen for: Whether their mental model matches your journey
+
+7. "What concerns would you have about using something like this?"
+   - Listen for: Objections, barriers, friction points
+
+### Closing (8 min)
+8. "On a scale of 1-10, how painful is [problem] for you today?"
+   - Look for: 7+ (urgent problem)
+
+9. "Would you pay for a solution? What's a fair price?"
+   - Listen for: Price sensitivity, budget availability
+
+10. "If I build this, would you be willing to try an early version?"
+   - Listen for: Commitment level (email signup, pre-order, LOI)
+
+### Thank You
+"This is super helpful. Can I follow up if I have more questions?"
+[Get email, offer to share findings]
+
+## After Each Interview
+
+Document in `output/00-interview-notes/`:
+- Interview-[number]-[name].md
+- Key quotes
+- Pain level (1-10)
+- Willingness to pay (Y/N, amount)
+- Commitment level (just talking / email signup / pre-order / LOI)
+
+## Validation Criteria
+
+After 10 interviews, score your journey:
+- 8-10: "This is a hair-on-fire problem, I'd pay today"
+- 7: "Yes, this is painful and I'd consider a solution"
+- 4-6: "Mild annoyance, not urgent"
+- 1-3: "Not really a problem for me"
+
+**Gate**: Need average score ≥7 across 10 interviews to proceed.
+
+If score <7, refine journey and interview 10 more people.
+```
+
+**Then tell user**:
+```
+✅ Interview guide created!
+
+I've created output/00-interview-guide.md with:
+- Who to interview (based on your persona)
+- 10 questions to ask
+- What to listen for
+- How to score validation
+
+Next steps:
+1. Interview 10 target users using this guide
+2. Document findings in output/00-interview-notes/
+3. Come back and tell me your validation score
+4. If score ≥7/10, we'll proceed to Session 2
+
+This feels like extra work, but it's the most important step. Better to learn "this isn't painful enough" now than after building for 6 months.
+
+Good luck with interviews! 🎯
+```
+
+### If User Says "Skip for now"
+
+**Warning message**:
+```
+⚠️ WARNING: Proceeding without customer validation
+
+You're choosing to skip customer interviews. This is high risk because:
+- 70% of startups fail due to "no market need" (CB Insights)
+- You might build the wrong solution for the wrong problem
+- Pivoting after 6 months of dev is expensive
+
+I'll note this in your cascade, but I strongly recommend:
+1. Interview at least 5 users before you write code
+2. Get 1 pre-order or LOI before building
+3. Validate willingness to pay before launch
+
+I'm documenting this decision in output/00-validation-skipped.md so you remember this risk.
+
+Proceed to Session 2? (type "yes" to continue, "no" to create interview guide)
+```
+
+**Create skip documentation**:
+```bash
+Write output/00-validation-skipped.md
+```
+
+```markdown
+# ⚠️ Customer Validation Skipped
+
+**Date**: [Date]
+**Reason**: User chose to skip validation checkpoint
+
+## Risk Assessment
+
+By skipping customer validation, you accept these risks:
+1. **No Market Need**: Building solution for problem that isn't painful enough
+2. **Wrong Target User**: Persona assumptions might be incorrect
+3. **Pricing Mismatch**: Willingness to pay unvalidated
+4. **Wasted Development**: 6+ months building wrong product
+
+## Recommendation
+
+Before writing ANY code:
+- [ ] Interview 5 target users minimum
+- [ ] Get 1 LOI (Letter of Intent) or pre-order
+- [ ] Validate pricing with real budget holders
+
+## Validation Debt
+
+This is "validation debt" - it must be paid eventually. The longer you wait, the more expensive it becomes.
+
+**When to validate**: Before Session 6 (backlog) at the latest.
+
+---
+
+**Status**: ⚠️ VALIDATION SKIPPED (HIGH RISK)
+```
+
+4. **Next steps**:
    ```
    ✅ Session 1 complete!
 

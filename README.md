@@ -74,6 +74,77 @@ Session 7: /scaffold-project      → output/07-project-scaffold.md
 
 ---
 
+## Validation Checkpoints: Prevent the "Perfect Plan, No Customers" Trap
+
+Stack-Driven includes **3 critical validation checkpoints** to ensure you're building something people actually want:
+
+### 🚦 Checkpoint 1: Customer Discovery (After Session 1)
+**After `/refine-journey`** - Before choosing tech stack
+
+**Requirement**: Interview 10 target users who match your persona
+- Validate the pain point exists
+- Confirm current workarounds are painful
+- Test willingness to pay
+- **Gate**: Journey validation score ≥7/10
+
+**Why this matters**: 70% of startups fail due to "no market need" (CB Insights). Better to learn your journey is wrong before building than after 6 months of development.
+
+**Outputs**:
+- `output/00-user-journey-validation.md` - Interview findings and validation score
+- `output/00-interview-guide.md` - Question guide based on your journey
+- `output/00-validation-skipped.md` - Risk documentation if skipped
+
+### 🚦 Checkpoint 2: Market Demand (After `/create-product-strategy`)
+**After product strategy (optional post-core command)**
+
+**Requirement**: Collect evidence of real demand
+- 5+ Letters of Intent (LOIs) from potential customers, OR
+- 10+ serious email signups, OR
+- 3+ pre-orders or paid pilots, OR
+- 50+ survey respondents willing to pay
+
+**Why this matters**: Product strategy without demand evidence is just hypothesis. You need signal that people will actually buy this.
+
+**Outputs**:
+- `output/11-product-strategy-validation.md` - Demand evidence and signal strength
+- `output/11-demand-validation-playbook.md` - How to get LOIs in 3 weeks
+- `output/11-validation-skipped.md` - Risk documentation if skipped
+
+### 🚦 Checkpoint 3: Build Feasibility (After Session 5)
+**After `/generate-backlog`** - Before pushing to GitHub
+
+**Requirement**: Validate you can actually build this
+- Can you build 1 P0 epic in 2 weeks?
+- Team capacity vs backlog scope assessment
+- Technical complexity and risk factors
+- **Gate**: Capacity buffer >10% (realistic timeline)
+
+**Why this matters**: Prevents burnout and abandoned projects. Better to rescope now than give up halfway through.
+
+**Outputs**:
+- `output/07-backlog-feasibility.md` - Capacity assessment and 2-week sprint plan
+- `output/07-backlog-rescope.md` - Documented rescope decisions if needed
+- `output/07-feasibility-assessment-guide.md` - Self-assessment guide
+
+### Validation Philosophy
+
+**Validation is NOT optional.** These checkpoints prevent three common failure modes:
+1. **Building the wrong thing** (no customer validation)
+2. **Building for nobody** (no demand validation)
+3. **Building what you can't finish** (no feasibility validation)
+
+**Validation debt compounds 10x per stage:**
+- Cost to validate NOW: 3 weeks
+- Cost to pivot at backlog: 1 month wasted
+- Cost to pivot after coding: 3-6 months wasted
+- Cost to pivot after launch: 6-12 months + morale damage
+
+**You can skip checkpoints** (we'll document the risk), but we strongly recommend completing all three before writing code.
+
+Check validation status anytime with `/cascade-status`.
+
+---
+
 ## Quick Start
 
 ### 1. Check Your Status
