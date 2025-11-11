@@ -7,9 +7,35 @@
 
 ## Overview
 
-This document defines the product strategy including vision, market analysis, competitive positioning, strategic goals, and roadmap themes.
+This document defines the product strategy including vision, market analysis, competitive positioning, strategic goals, and roadmap themes. This validates the user journey with market reality.
 
-**Note**: This is strategic context. For tactical execution, see the Stack-Driven cascade (Sessions 1-6).
+**Note**: This is strategic validation of tactical foundation. All elements trace back to the user journey and Session 3 outputs.
+
+## How This Traces to User Journey
+
+**Journey audience** (from `output/00-user-journey.md`):
+- [Who is the target audience? This defines your market segment.]
+
+**Journey problem** (from `output/00-user-journey.md`):
+- [What problem do they struggle with? This defines market need.]
+
+**Journey solution** (from `output/00-user-journey.md`):
+- [How do you solve it? This defines competitive differentiation.]
+
+**Mission** (from `output/02-mission.md`):
+- [Your mission statement - foundation for vision]
+
+**Metrics** (from `output/03-metrics.md`):
+- [Key metrics - foundation for strategic goals]
+
+**Architecture** (from `output/05-architecture.md`):
+- [Technical approach - foundation for roadmap themes]
+
+**Strategy Goal**:
+- Validate [journey audience] represents viable market
+- Confirm [journey problem] is significant enough to solve
+- Differentiate [journey solution] from competitive alternatives
+- Project [mission] forward 3-5 years into product vision
 
 ---
 

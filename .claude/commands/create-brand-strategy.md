@@ -1,22 +1,52 @@
 ---
-description: PRE-CASCADE - Create comprehensive brand strategy foundation
+description: POST-CASCADE - Create comprehensive brand strategy foundation
 ---
 
-# Create Brand Strategy (Pre-Cascade Optional)
+# Create Brand Strategy (Post-Core Extension)
 
-You are helping the user create a comprehensive brand strategy BEFORE they start the Stack-Driven cascade. This is an optional pre-cascade step that establishes brand identity.
+You are helping the user create a comprehensive brand strategy AFTER they have completed the core cascade. This strategy expresses the value they deliver through their user journey.
 
 ## When to Use This
 
-**Run BEFORE Session 1** if:
-- You're starting a new product from scratch
-- You need to establish brand identity before defining user journey
-- You want brand thinking to inform all downstream decisions
+**Run AFTER Session 5** (`/generate-backlog`) when you have:
+- ✅ User journey defined (`output/00-user-journey.md`)
+- ✅ Mission statement (`output/02-mission.md`)
+- ✅ Metrics identified (`output/03-metrics.md`)
+- ✅ Backlog created (`output/07-backlog/`)
+
+Your brand should EXPRESS the value you deliver in the user journey, not be created in a vacuum.
 
 **Skip this** if:
 - You already have established branding
 - You're building an internal tool without brand needs
-- You want to start with user journey and add branding later
+- You don't need formal brand strategy documentation
+
+## Cascade Inputs
+
+This command READS previous outputs to ground your brand in reality:
+
+1. **Read the user journey**:
+   ```bash
+   Read output/00-user-journey.md
+   ```
+   - Identify: What problem do users struggle with?
+   - Identify: What's the "aha moment" in the journey?
+   - Identify: Where does value get delivered?
+
+2. **Read the mission**:
+   ```bash
+   Read output/02-mission.md
+   ```
+   - Your mission = the promise to deliver journey value
+   - Brand purpose should express WHY you keep this promise
+
+3. **Read the metrics** (optional):
+   ```bash
+   Read output/03-metrics.md
+   ```
+   - What defines success? Brand should communicate this.
+
+Your brand strategy must connect to these inputs. Don't create brand in isolation.
 
 ## Your Task
 
@@ -24,42 +54,57 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 
 ### Steps to Execute
 
-1. **Read the brand strategy prompt**:
+1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read /prompts/branding/brand-strategy.md
+   Read output/00-user-journey.md
+   Read output/02-mission.md
+   Read output/03-metrics.md  # Optional
    ```
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/0a-brand-strategy-template.md
+   Read templates/08-brand-strategy-template.md
    ```
 
-3. **Interview the user** following the brand strategy prompt:
-   - Brand purpose (why the brand exists beyond profit)
-   - Core values (3-5 values that guide decisions)
-   - Brand personality (tone, voice, character traits)
-   - Brand promise (what customers can count on)
-   - Visual direction (aesthetic, mood, references)
-   - Differentiation (how you're different from competitors)
+3. **Interview the user** with journey-informed questions:
+
+   **Brand Purpose (journey-grounded)**:
+   - "I've read your user journey. Users struggle with [X problem] at [journey step]. Your mission is to [mission from output/02]. Why are YOU the one solving this problem? What drives you to deliver this value?"
+
+   **Core Values (journey-connected)**:
+   - "Your user journey shows value gets delivered when [aha moment]. What 3-5 values guide how you deliver this? What won't you compromise on?"
+
+   **Brand Personality**:
+   - "When users experience [journey moment], how should your brand show up? Formal or casual? Professional or playful?"
+
+   **Brand Promise (journey-specific)**:
+   - "Users move through [journey steps] to get [outcome]. What can they ALWAYS count on from you? What will never change?"
+
+   **Visual Direction**:
+   - "What aesthetic fits the [problem domain] and [audience] from your journey?"
+
+   **Differentiation**:
+   - "Others solve [problem] differently. How is your approach to [journey value] unique?"
 
 4. **Generate the brand strategy**:
-   - Fill out the template with specific, actionable content
-   - Ensure all sections connect to the brand purpose
-   - Make it memorable and distinctive
+   - Fill out the template connecting EVERY section back to journey/mission
+   - Show how brand PURPOSE = WHY you solve [journey problem]
+   - Show how brand VALUES = HOW you deliver [journey value]
+   - Make it journey-traceable, not generic
 
 5. **Write the output**:
    ```bash
-   Write output/0a-brand-strategy.md
+   Write output/08-brand-strategy.md
    ```
 
 ## Output Location
 
-`output/0a-brand-strategy.md`
+`output/08-brand-strategy.md`
 
 This will be read by:
-- `/discover-naming` (Session 0b) - Uses brand strategy to generate names
-- `/define-messaging` (Session 0c) - Uses brand strategy for messaging framework
-- `/refine-journey` (Session 1) - Can reference brand values in journey thinking
+- `/discover-naming` - Uses brand strategy to generate journey-aligned names
+- `/define-messaging` - Uses brand strategy for messaging framework
+- `/create-content-guidelines` - References brand for content style
 
 ## Template Structure
 
@@ -83,30 +128,36 @@ The output follows this structure:
 ## Example Prompt Flow
 
 ```
-You: Let's create your brand strategy. First, why does this product exist beyond making money? What problem in the world does it solve?
+You: I've read your user journey and mission. Your users struggle with [problem from journey] at [journey step], and your mission is to [mission statement].
 
-User: [Explains purpose]
+Let me help you create a brand strategy that expresses this value. First, WHY are YOU the one solving this problem? What drives you beyond profit?
 
-You: Great. Now, what are 3-5 core values that will guide every decision you make? Think about trade-offs - what won't you compromise on?
+User: [Explains purpose connected to journey]
 
-User: [Lists values]
+You: Perfect - that connects directly to the [journey value]. Now, what 3-5 core values guide HOW you deliver this value? Think about trade-offs at [critical journey moment].
 
-[Continue through all sections...]
+User: [Lists values connected to journey delivery]
 
-You: Perfect! I've captured your brand strategy in output/0a-brand-strategy.md.
+[Continue through all sections with journey context...]
+
+You: Excellent! I've captured your brand strategy in output/08-brand-strategy.md. Every section traces back to your user journey and mission.
 
 Next steps:
-- Run /discover-naming to generate brand names that fit this strategy
-- Or skip to /refine-journey if you already have a name
+- Run /discover-naming to generate a brand name that expresses this journey value
+- Run /define-messaging to create journey-aligned messaging
 ```
 
 ## After This Session
 
-**Recommended next**: `/discover-naming` (to generate a name that fits your brand)
-**Or skip to**: `/refine-journey` (Session 1) if you already have a name
+**Recommended next**:
+- `/discover-naming` - Generate brand name that expresses journey value
+- `/define-messaging` - Create messaging framework from brand + journey
 
-Your brand strategy will inform naming, messaging, and can be referenced throughout the cascade.
+**Alternative**:
+- `/create-content-guidelines` - Skip naming and go straight to content strategy
+
+Your brand strategy is now grounded in the user journey and can inform all downstream brand work.
 
 ---
 
-**Remember**: This is OPTIONAL. Many users start with `/refine-journey` and add branding later. Use your judgment based on the user's needs.
+**Remember**: This is POST-CORE. Only run after you have user journey, mission, and strategy defined. Brand expresses journey value, it doesn't precede it.

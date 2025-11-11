@@ -113,50 +113,36 @@ Because each session READS previous outputs:
 - Traces to: Optimizing specific journey steps
 - Pattern: Generative (analyzes journey → designs UX)
 
-### Examples of QUESTIONABLE Commands:
+### Examples of Previously Questionable Commands (Now Fixed):
 
-**⚠️ `/create-brand-strategy` (pre-cascade)**:
-- Problem: Runs BEFORE understanding users
-- Why questionable: Branding should express journey value, not precede it
-- Better approach: Derive brand from journey (post Session 3?)
-- Current status: Optional, but philosophically backwards
+**✅ `/create-brand-strategy` (now post-core at 08)**:
+- Fixed: Now runs AFTER Session 5 (backlog complete)
+- Reads: User journey, mission, metrics, backlog
+- Purpose: Express journey value through brand lens
+- All brand elements trace back to journey
 
-**⚠️ `/create-product-strategy` (pre-cascade)**:
-- Problem: Product strategy without user journey is abstract
-- Why questionable: Market analysis should validate journey, not precede it
-- Better approach: Validate journey with market data (post Session 1?)
-- Current status: Optional, but philosophically backwards
+**✅ `/create-product-strategy` (now post-core at 11)**:
+- Fixed: Now runs AFTER Session 3 (strategy complete)
+- Reads: User journey, mission, metrics, architecture
+- Purpose: Validate journey with market analysis
+- Market sizing based on journey audience
 
 ---
 
-## The Pre-Cascade Problem
+## The Pre-Cascade Problem (SOLVED)
 
-**Current state**: We have 4 pre-cascade commands (branding, naming, messaging, product strategy) that run BEFORE Session 1.
+**Previous state**: We had 4 pre-cascade commands (branding, naming, messaging, product strategy) that ran BEFORE Session 1.
 
-**The problem**: This violates the core axiom. You cannot create authentic brand strategy, messaging, or product strategy without understanding users first.
+**The problem was**: This violated the core axiom. You cannot create authentic brand strategy, messaging, or product strategy without understanding users first.
 
-**Why they exist**: Good intentions - comprehensive planning.
-
-**Why they're wrong**: They put the cart before the horse.
-
-### Three Options for Pre-Cascade Commands:
-
-**Option 1: Delete them entirely**
-- Most philosophically pure
-- Forces users to start with journey (as intended)
-- Removes temptation to skip to "fun stuff"
-
-**Option 2: Move them post-cascade**
-- `/create-brand-strategy` becomes post-Session 3 (derive brand from mission)
-- `/create-product-strategy` becomes post-Session 3 (validate strategy with market)
-- Makes them journey-informed instead of journey-ignorant
-
-**Option 3: Keep but clearly mark as "anti-pattern"**
-- Useful for legacy brands with existing identity
-- Document that they're exceptions, not the norm
-- Always recommend starting with journey instead
-
-**Recommendation**: Choose Option 2. Make branding and strategy commands journey-informed.
+**The solution (Option 2 - IMPLEMENTED)**:
+- ✅ Moved all commands to POST-CORE positions
+- ✅ `/create-brand-strategy` → 08 (after Session 5)
+- ✅ `/discover-naming` → 09 (after brand strategy)
+- ✅ `/define-messaging` → 10 (after naming)
+- ✅ `/create-product-strategy` → 11 (after Session 3)
+- ✅ All commands now READ journey as input
+- ✅ Framework philosophy is now consistent: User journey ALWAYS comes first
 
 ---
 
@@ -305,21 +291,19 @@ We're not there yet. Pre-cascade commands are a deviation. Consider fixing them.
 - `/generate-backlog` - Journey value stories
 - `/create-gh-issues` - Ships journey value
 
-### ✅ GOOD (Post-Cascade Extensions):
-- `/setup-analytics` - Implements journey metrics
-- `/design-user-experience` - Deep dive on journey flows
-- `/plan-deployment` - Ships journey value faster
-- `/design-observability` - Monitors journey success
-- `/create-content-guidelines` - Journey-aligned communication
-- `/review-code` - Maintains journey alignment
+### ✅ GOOD (Post-Core Extensions - Journey-Informed):
+- `/create-brand-strategy` - Expresses journey value (post Session 5)
+- `/discover-naming` - Names journey solution (post brand strategy)
+- `/define-messaging` - Communicates journey value (post naming)
+- `/create-product-strategy` - Validates journey with market (post Session 3)
+- `/create-content-guidelines` - Journey-aligned content (post messaging)
+- `/design-user-experience` - Deep dive on journey flows (post Session 3)
+- `/setup-analytics` - Implements journey metrics (post Session 3)
+- `/plan-deployment` - Ships journey value (post Session 5)
+- `/design-observability` - Monitors journey success (post Session 5)
+- `/review-code` - Maintains journey alignment (anytime)
 
-### ⚠️ QUESTIONABLE (Pre-Cascade - Philosophy Violation):
-- `/create-brand-strategy` - Before knowing users?
-- `/discover-naming` - Before understanding value?
-- `/define-messaging` - Before defining journey?
-- `/create-product-strategy` - Before validating with users?
-
-**Recommendation**: Move these post-Session 3 or delete them.
+**All post-core extensions READ the journey** - philosophy preserved.
 
 ---
 

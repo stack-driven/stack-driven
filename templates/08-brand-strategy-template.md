@@ -7,6 +7,24 @@
 
 This document defines the brand strategy that guides all brand decisions, visual identity, messaging, and customer experience.
 
+## How This Traces to User Journey
+
+**IMPORTANT**: This brand strategy must connect to your core cascade outputs.
+
+**Journey problem** (from `output/00-user-journey.md`):
+- [What problem do users struggle with? Where in the journey?]
+
+**Journey value moment** (from `output/00-user-journey.md`):
+- [What's the "aha moment"? When does value get delivered?]
+
+**Mission promise** (from `output/02-mission.md`):
+- [What's your mission statement?]
+
+**Connection**:
+- Brand purpose = WHY you solve [journey problem]
+- Brand values = HOW you deliver [journey value]
+- Brand personality = How you show up during [journey moments]
+
 ---
 
 ## Brand Purpose
@@ -192,11 +210,11 @@ If the answer to any question is "no," reconsider the decision.
 
 ## Next Steps
 
-- [ ] Run `/discover-naming` to generate brand names that fit this strategy
-- [ ] Run `/define-messaging` to create messaging framework
+- [ ] Run `/discover-naming` to generate brand names that express journey value
+- [ ] Run `/define-messaging` to create messaging framework aligned with journey
 - [ ] Share with team for feedback and alignment
 - [ ] Use as input for visual identity design
-- [ ] Reference throughout product development
+- [ ] Reference during product development to stay brand-consistent
 
 ---
 

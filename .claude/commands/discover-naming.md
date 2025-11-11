@@ -1,83 +1,121 @@
 ---
-description: PRE-CASCADE - Generate and evaluate brand name candidates
+description: POST-CASCADE - Generate and evaluate brand name candidates
 ---
 
-# Discover Brand Naming (Pre-Cascade Optional)
+# Discover Brand Naming (Post-Core Extension)
 
-You are helping the user discover the perfect brand name through systematic generation, trademark research, and evaluation. This is an optional pre-cascade step.
+You are helping the user discover the perfect brand name through systematic generation, trademark research, and evaluation. The name should express the value they deliver in their user journey.
 
 ## When to Use This
 
-**Run BEFORE Session 1** if:
-- You need a brand name for your product
-- You want to explore naming options systematically
-- You need trademark availability checking
+**Run AFTER `/create-brand-strategy`** when you have:
+- ✅ User journey defined (`output/00-user-journey.md`)
+- ✅ Mission statement (`output/02-mission.md`)
+- ✅ Brand strategy (`output/08-brand-strategy.md`)
+
+Your brand name should express the value delivered in the user journey, grounded in your brand strategy.
 
 **Skip this** if:
 - You already have a validated brand name
 - You're building an internal tool without branding needs
-- You want to start with user journey and name later
+- Your project doesn't require formal naming
+
+## Cascade Inputs
+
+This command READS previous outputs to create journey-aligned names:
+
+1. **Read the user journey**:
+   ```bash
+   Read output/00-user-journey.md
+   ```
+   - What's the core problem being solved?
+   - What's the transformation users experience?
+   - What keywords describe the journey value?
+
+2. **Read the mission**:
+   ```bash
+   Read output/02-mission.md
+   ```
+   - What promise are you making?
+   - What outcome do users achieve?
+
+3. **Read the brand strategy**:
+   ```bash
+   Read output/08-brand-strategy.md
+   ```
+   - Brand purpose (why you exist)
+   - Brand personality (how you show up)
+   - Brand values (what guides you)
+   - Visual direction (aesthetic fit)
+
+Your names must express [journey value] through the lens of [brand personality].
 
 ## Your Task
 
-Generate brand name candidates and evaluate them using the prompt in `/prompts/branding/naming-discovery.md`.
+Generate brand name candidates that express the value from the user journey through your brand lens.
 
 ### Steps to Execute
 
-1. **Read the naming discovery prompt**:
+1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read /prompts/branding/naming-discovery.md
+   Read output/00-user-journey.md
+   Read output/02-mission.md
+   Read output/08-brand-strategy.md
    ```
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/0b-brand-naming-template.md
+   Read templates/09-brand-naming-template.md
    ```
 
-3. **Check for brand strategy** (optional input):
-   ```bash
-   Read output/0a-brand-strategy.md
-   ```
-   - If exists: Use brand purpose, values, personality to guide naming
-   - If not exists: Ask user directly about brand direction
+3. **Interview the user** with journey-informed questions:
 
-4. **Interview the user** following the naming prompt:
-   - Naming direction (descriptive? abstract? metaphorical?)
-   - Keywords and themes to explore
-   - Names to avoid (competitor names, styles)
-   - Domain requirements (.com required? ok with .io?)
-   - Trademark concerns (geography, industry)
+   **Naming Direction**:
+   - "Your journey helps users [problem → solution]. Should your name be descriptive (explain what you do), metaphorical (suggest the benefit), or abstract (create new meaning)?"
 
-5. **Generate 20-30 name candidates** across categories:
-   - Descriptive names (say what you do)
-   - Metaphorical names (suggest the benefit)
-   - Abstract names (invented words)
-   - Compound names (two words combined)
-   - Acronyms (if appropriate)
+   **Keywords from Journey**:
+   - "From your journey, we have keywords like [X, Y, Z]. Which resonate? What others come to mind?"
 
-6. **Trademark research** for top candidates:
+   **Brand Personality Fit**:
+   - "Your brand personality is [personality from 08]. Should the name be [formal/casual], [serious/playful] to match?"
+
+   **Domain Requirements**:
+   - "Is .com essential, or are you open to .io, .ai, etc?"
+
+   **Trademark Concerns**:
+   - "What geography and industry do we need to check trademark clearance for?"
+
+4. **Generate 20-30 name candidates** that connect to journey:
+   - Descriptive names (express what you do in the journey)
+   - Metaphorical names (suggest the journey transformation)
+   - Abstract names (create new meaning for journey value)
+   - Compound names (combine journey keywords)
+   - All names must trace back to [journey problem/value]
+
+5. **Trademark research** for top candidates:
    - Check USPTO database (use WebSearch or guide user to check)
    - Check domain availability (guide user to check key TLDs)
    - Flag high-risk names (too similar to existing brands)
 
-7. **Narrow to 10 finalists** with:
-   - Rationale for each name
+6. **Narrow to 10 finalists** with:
+   - How each name expresses journey value
+   - How each name fits brand personality
    - Trademark risk assessment
    - Domain availability
    - Pros and cons
 
-8. **Write the output**:
+7. **Write the output**:
    ```bash
-   Write output/0b-brand-naming.md
+   Write output/09-brand-naming.md
    ```
 
 ## Output Location
 
-`output/0b-brand-naming.md`
+`output/09-brand-naming.md`
 
 This will be read by:
-- `/define-messaging` (Session 0c) - Uses chosen name in messaging
-- User's decision-making process (narrow to final name)
+- `/define-messaging` - Uses chosen name in journey-aligned messaging
+- Decision-making process (narrow to final name)
 
 ## Template Structure
 
@@ -100,41 +138,40 @@ The output follows this structure:
 ## Example Prompt Flow
 
 ```
-You: Let's discover your brand name. First, do you have a brand strategy document?
+You: I've read your user journey, mission, and brand strategy. Your users struggle with [journey problem] and you help them [journey transformation]. Your brand personality is [personality traits].
 
-[Check for output/0a-brand-strategy.md]
-
-You: Great, I see your brand strategy emphasizes [values]. Now, what naming direction appeals to you? Descriptive (like "Salesforce"), abstract (like "Google"), or metaphorical (like "Amazon")?
+Let's discover a name that expresses this value. Should your name be descriptive (explains what you do), metaphorical (suggests the transformation), or abstract (creates new meaning)?
 
 User: [Explains preference]
 
-You: Perfect. Let me generate 20-30 candidates across different styles...
+You: Perfect. Your journey has keywords like [X, Y, Z from journey]. Let me generate 20-30 candidates that connect these journey concepts to your [brand personality]...
 
-[Generate names]
+[Generate journey-connected names]
 
-You: Here are 30 candidates organized by category. Now let me research trademark availability for the most promising ones...
+You: Here are 30 candidates organized by category. Each one connects back to [journey value]. Now let me research trademark availability for the most promising ones...
 
 [Research]
 
-You: Based on trademark research and brand fit, here are your 10 finalists...
+You: Based on trademark research, journey fit, and brand alignment, here are your 10 finalists...
 
-[Show finalists with analysis]
+[Show finalists with journey traceability]
 
-You: I've saved everything to output/0b-brand-naming.md. My top 3 recommendations are:
-1. [Name] - Available, memorable, fits brand
-2. [Name] - Strong differentiation, .com available
-3. [Name] - Safe trademark, easy to say
+You: I've saved everything to output/09-brand-naming.md. My top 3 recommendations are:
+1. [Name] - Expresses [journey value], fits [brand personality], available
+2. [Name] - Metaphor for [journey transformation], .com available
+3. [Name] - Clear connection to [journey problem], safe trademark
 
-Which direction do you want to explore further?
+Each name traces back to your user journey. Which direction resonates?
 ```
 
 ## After This Session
 
-**Recommended next**: `/define-messaging` (to create messaging for your chosen name)
-**Or skip to**: `/refine-journey` (Session 1) if ready to start cascade
+**Recommended next**:
+- `/define-messaging` - Create messaging framework using chosen name + journey
+- `/create-content-guidelines` - Develop content style with journey-aligned name
 
 **Important**: User doesn't need to finalize name immediately. This document serves as a reference for decision-making.
 
 ---
 
-**Remember**: This is OPTIONAL. Use only if naming is a current need. Many products evolve names over time.
+**Remember**: This is POST-CORE. The name expresses journey value, not created in isolation. All names trace back to the user journey.

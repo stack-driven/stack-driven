@@ -470,7 +470,7 @@ Before publishing any content, verify:
 
 **Style guide**: [Link to full style guide if applicable]
 
-**Brand messaging**: [Link to 0c-brand-messaging.md]
+**Brand messaging**: [Link to 10-brand-messaging.md]
 
 **Writing tools**:
 - [Tool 1 - e.g., "Hemingway Editor for readability"]

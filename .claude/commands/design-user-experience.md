@@ -40,7 +40,7 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/09-user-experience-template.md
+   Read templates/13-user-experience-template.md
    ```
 
 3. **Check for cascade inputs** (required):
@@ -80,12 +80,12 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
 
 7. **Write the output**:
    ```bash
-   Write output/09-user-experience.md
+   Write output/13-user-experience.md
    ```
 
 ## Output Location
 
-`output/09-user-experience.md`
+`output/13-user-experience.md`
 
 This will be used by:
 - Designers creating visual design (Session 4 or after)
@@ -156,7 +156,7 @@ User: [Describes responsive strategy]
 
 [Continue through accessibility, testing plan...]
 
-You: Excellent! I've documented your complete UX design in output/09-user-experience.md:
+You: Excellent! I've documented your complete UX design in output/13-user-experience.md:
 - User research summary (3 personas, key pain points)
 - Information architecture (site map, 3-level navigation)
 - 7 critical user flows with decision points

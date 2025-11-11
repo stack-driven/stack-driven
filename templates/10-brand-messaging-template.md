@@ -6,7 +6,31 @@
 
 ## Overview
 
-This document defines the brand messaging framework that guides all customer communication - from marketing copy to product UI to customer support.
+This document defines the brand messaging framework that guides all customer communication - from marketing copy to product UI to customer support. All messaging expresses the value delivered through the user journey.
+
+## How This Traces to User Journey
+
+**Journey audience** (from `output/00-user-journey.md`):
+- [Who are they? What's their role/context?]
+
+**Journey problem** (from `output/00-user-journey.md`):
+- [What do they struggle with? Where does friction occur?]
+
+**Journey transformation** (from `output/00-user-journey.md`):
+- [From what state → to what state?]
+
+**Journey value** (from `output/00-user-journey.md`):
+- [What value gets delivered? When is the "aha moment"?]
+
+**Mission foundation** (from `output/02-mission.md`):
+- [Your mission statement]
+
+**Brand voice** (from `output/08-brand-strategy.md`):
+- [Key personality traits - how you sound]
+
+**Messaging Goal**:
+- Communicate [journey transformation] to [journey audience] in [brand voice]
+- Every message connects back to the user journey
 
 ---
 

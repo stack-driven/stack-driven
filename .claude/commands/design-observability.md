@@ -31,7 +31,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 2. **Read the template structure**:
    ```bash
-   Read /templates/12-observability-strategy-template.md
+   Read templates/16-observability-strategy-template.md
    ```
 
 3. **Check for architecture from Session 3** (recommended):
@@ -48,7 +48,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 5. **Check for deployment plan** (recommended):
    ```bash
-   Read output/11-deployment-plan.md
+   Read output/15-deployment-plan.md
    ```
    - Monitoring integrates with deployment
 
@@ -81,12 +81,12 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 8. **Write the output**:
    ```bash
-   Write output/12-observability-strategy.md
+   Write output/16-observability-strategy.md
    ```
 
 ## Output Location
 
-`output/12-observability-strategy.md`
+`output/16-observability-strategy.md`
 
 This will be used by:
 - Engineers implementing monitoring
@@ -178,7 +178,7 @@ User: [Describes incident process]
 
 [Continue through post-mortems, tools, costs...]
 
-You: Excellent! I've created your observability strategy in output/12-observability-strategy.md:
+You: Excellent! I've created your observability strategy in output/16-observability-strategy.md:
 - Observability philosophy (three pillars, alert on symptoms)
 - Golden signals for 4 services (latency, traffic, errors, saturation)
 - Structured logging (JSON format, 30-day retention, key fields)
