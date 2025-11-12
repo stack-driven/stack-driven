@@ -1,30 +1,31 @@
 ---
-description: POST-CASCADE - Create comprehensive product strategy (market, competitive, roadmap)
+description: Session 2 - Create comprehensive product strategy (market, competitive, roadmap)
 ---
 
-# Create Product Strategy (Post-Core Extension)
+# Session 2: Create Product Strategy
 
-You are helping the user create a comprehensive product strategy that validates their user journey with market analysis, competitive positioning, vision, goals, and roadmap.
+This is **Session 2** of the cascade. You'll create a comprehensive product strategy that validates the user journey with market analysis, competitive positioning, vision, goals, and roadmap.
 
-## When to Use This
+## Your Role
 
-**Run AFTER Session 3** (`/generate-strategy`) when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Mission statement (`output/02-mission.md`)
-- ✅ Metrics identified (`output/03-metrics.md`)
-- ✅ Architecture outlined (`output/05-architecture.md`)
+You are a product strategist creating market-validated strategy. Your job is to:
 
-Use this to validate and expand your journey with market reality, competitive analysis, and long-term vision.
+1. **Read and analyze** the user journey (`output/00-user-journey.md`)
+2. **Validate market opportunity** through TAM/SAM/SOM analysis
+3. **Analyze competitive landscape** and identify differentiation
+4. **Define product vision** and positioning
+5. **Establish strategic goals** and success criteria
+6. **Create roadmap themes** that deliver journey value
 
-**Skip this** if:
-- You're building an MVP without needing investor/stakeholder documentation
-- You prefer emergent strategy over planned roadmaps
-- You don't need comprehensive market analysis
+## Critical Philosophy
 
-**How This Differs from Session 3** (`/generate-strategy`):
-- **Session 3**: Derives mission, metrics, monetization, architecture FROM user journey (tactical foundation)
-- **This command**: Validates journey with market analysis, competitive positioning, product vision, roadmap (strategic validation)
-- **Both are valuable**: Session 3 provides tactical foundation; this validates with market context
+**Product strategy must validate and extend the user journey with market reality.**
+
+- Vision = User journey outcome at scale
+- Market sizing = Bottom-up calculation for journey audience
+- Competitive analysis = How others solve journey problem, our differentiation
+- Strategic goals = What must be true to achieve journey value at scale
+- Roadmap themes = Major initiatives to deliver journey value
 
 ## Cascade Inputs
 
@@ -38,101 +39,77 @@ This command READS previous outputs to ground product strategy in reality:
    - What problem are they solving? (market need validation)
    - What value do you deliver? (competitive differentiation)
 
-2. **Read the mission**:
-   ```bash
-   Read output/02-mission.md
-   ```
-   - Mission = foundation for product vision
-   - What's your 3-5 year mission trajectory?
-
-3. **Read the metrics**:
-   ```bash
-   Read output/03-metrics.md
-   ```
-   - What defines success? (strategic goal basis)
-   - What should you measure? (success metrics)
-
-4. **Read the architecture**:
-   ```bash
-   Read output/05-architecture.md
-   ```
-   - What technical bets are you making? (assumptions to validate)
-   - What's the technical roadmap? (informs product themes)
-
-5. **Read brand strategy** (if exists):
-   ```bash
-   Read output/08-brand-strategy.md  # If exists
-   ```
-   - Align product positioning with brand purpose
-
 Your product strategy validates and extends the journey with market context.
 
-## Your Task
+## Process
 
-Create a comprehensive product strategy that validates your journey with market analysis and competitive positioning.
+### Step 1: Read User Journey
 
-### Steps to Execute
+Use the Read tool to read `output/00-user-journey.md`.
 
-1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
-   ```bash
-   Read output/00-user-journey.md
-   Read output/02-mission.md
-   Read output/03-metrics.md
-   Read output/05-architecture.md
-   Read output/08-brand-strategy.md  # If exists
-   ```
+**Extract**:
+- Core user flow (Steps 1-5)
+- Target audience (who are we serving?)
+- Problem being solved (market need)
+- Value delivered (differentiation opportunity)
+- Economic value (time/money saved, ROI)
 
-2. **Read the template structure**:
-   ```bash
-   Read templates/11-product-strategy-template.md
-   ```
+### Step 2: Read Template Structure
 
-3. **Interview the user** with journey-informed questions:
+```bash
+Read templates/01-product-strategy-template.md
+```
 
-   **Vision (journey-grounded)**:
-   - "Your mission is [mission]. Project this forward: 3-5 years from now, how has [journey audience] been transformed at scale? What's the aspirational future?"
+### Step 3: Interview the User
 
-   **Market Analysis (journey-based)**:
-   - "Your journey targets [audience]. Let's size this: How many [audience] exist? What would they pay to solve [journey problem]? Show me bottom-up math."
+Ask journey-informed questions to develop comprehensive product strategy:
 
-   **Competitive Landscape (journey-differentiated)**:
-   - "You solve [journey problem] with [journey solution]. Who else solves this today? How do they position? What's YOUR unique approach from the journey?"
+**Vision (journey-grounded)**:
+- "Your journey shows [audience] achieving [outcome]. Project this forward: 3-5 years from now, how has [journey audience] been transformed at scale? What's the aspirational future?"
 
-   **Strategic Goals (mission-aligned)**:
-   - "Your mission is [mission], metrics are [metrics]. What 3-5 things MUST be true in 12-24 months to get there?"
+**Market Analysis (journey-based)**:
+- "Your journey targets [audience]. Let's size this: How many [audience] exist? What would they pay to solve [journey problem]? Show me bottom-up math."
 
-   **Product Principles (journey-derived)**:
-   - "Your journey shows [key moments]. What principles guide decisions about THIS journey? What won't you compromise?"
+**Competitive Landscape (journey-differentiated)**:
+- "You solve [journey problem] with [journey solution]. Who else solves this today? How do they position? What's YOUR unique approach from the journey?"
 
-   **Roadmap Themes (architecture-informed)**:
-   - "Your architecture is [architecture]. What are the major initiative areas to deliver [journey value]?"
+**Strategic Goals (journey-aligned)**:
+- "Your journey delivers [value]. What 3-5 things MUST be true in 12-24 months to deliver this value at scale?"
 
-4. **Develop product strategy** grounded in journey:
-   - Vision statement = [Mission] projected 3-5 years forward
-   - Market sizing = Bottom-up calculation for [journey audience]
-   - Competitive analysis = How others solve [journey problem], your differentiation
-   - Positioning = Who ([journey audience]) + What ([journey solution]) + How (unique approach) + Why (mission)
-   - Strategic goals = What must be true to achieve [mission] given [metrics]
-   - Product principles = Decision guides derived from [journey insights]
-   - Roadmap themes = Major initiatives to deliver [journey value] with [architecture]
-   - Risks = Assumptions about [journey], [market], [architecture] that could be wrong
+**Product Principles (journey-derived)**:
+- "Your journey shows [key moments]. What principles guide decisions about THIS journey? What won't you compromise?"
 
-5. **Write the output**:
-   ```bash
-   Write output/11-product-strategy.md
-   ```
+**Roadmap Themes (journey-informed)**:
+- "What are the major initiative areas to deliver [journey value]?"
+
+### Step 4: Develop Product Strategy
+
+Grounded in journey, develop:
+
+- **Vision statement**: Journey outcome projected 3-5 years forward
+   - **Market sizing**: Bottom-up calculation for [journey audience]
+   - **Competitive analysis**: How others solve [journey problem], your differentiation
+   - **Positioning**: Who ([journey audience]) + What ([journey solution]) + How (unique approach) + Why (journey value)
+   - **Strategic goals**: What must be true to achieve journey value at scale
+   - **Product principles**: Decision guides derived from [journey insights]
+   - **Roadmap themes**: Major initiatives to deliver [journey value]
+   - **Risks**: Assumptions about [journey], [market] that could be wrong
+
+### Step 5: Write the Output
+
+```bash
+Write output/01-product-strategy.md
+```
 
 ## Output Location
 
-`output/11-product-strategy.md`
+`output/01-product-strategy.md`
 
 This validates:
 - User journey (with market sizing and competitive analysis)
-- Mission (with 3-5 year vision)
-- Metrics (with strategic goals)
-- Architecture (with roadmap themes)
+- Creates foundation for tech stack decisions (understanding market and competitive landscape informs technical requirements)
 
-Use for investor/stakeholder conversations and long-term planning.
+Use for investor/stakeholder conversations and strategic alignment.
 
 ## Template Structure
 
@@ -179,14 +156,14 @@ User: [Lists strategic goals]
 
 [Continue through product principles, roadmap themes, risks...]
 
-You: Excellent. I've captured your product strategy in output/11-product-strategy.md:
-- Vision: [mission projected forward]
+You: Excellent. I've captured your product strategy in output/01-product-strategy.md:
+- Vision: [journey outcome at scale]
 - Market: [TAM/SAM/SOM for journey audience]
 - Positioning: [journey differentiation vs. competitors]
-- 5 strategic goals (aligned with metrics)
+- 5 strategic goals (aligned with journey value)
 - 4 product principles (from journey insights)
-- 6 roadmap themes (from architecture)
-- Risk register (journey/market/architecture assumptions)
+- 6 roadmap themes (major initiatives)
+- Risk register (journey/market assumptions)
 
 This validates your journey with market context. Everything traces back to the user journey.
 ```
@@ -194,12 +171,12 @@ This validates your journey with market context. Everything traces back to the u
 ## After This Session
 
 **Recommended next**:
+- Continue with Session 3: `/choose-tech-stack` to select optimal technologies
 - Use this for investor/stakeholder presentations
-- Run `/create-brand-strategy` if you need brand positioning
-- Continue with Session 4-6 if you haven't completed core cascade
+- Reference this when making product decisions
 
-**Important**: This validates your journey with market reality. It's strategic documentation of the tactical foundation you built in Sessions 1-3.
+**Important**: This validates your journey with market reality. Understanding the competitive landscape and market opportunity informs technical decisions in Session 3.
 
 ---
 
-**Remember**: This is POST-CORE. It validates journey with market context, not created in isolation. Everything connects back to the user journey.
+**Remember**: Product strategy is now CORE (Session 2). It validates journey with market context before choosing technology. Everything connects back to the user journey.

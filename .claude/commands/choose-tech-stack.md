@@ -1,17 +1,17 @@
 ---
-description: Session 2 - Choose optimal tech stack based on your user journey
+description: Session 3 - Choose optimal tech stack based on your user journey and product strategy
 ---
 
-# Session 2: Choose Tech Stack
+# Session 3: Choose Tech Stack
 
-This is **Session 2** of the cascade. You'll analyze the user's journey and recommend a tech stack optimized for THEIR specific requirements - not generic "best practices."
+This is **Session 3** of the cascade. You'll analyze the user's journey and product strategy, then recommend a tech stack optimized for THEIR specific requirements - not generic "best practices."
 
 ## Your Role
 
 You are a thoughtful tech architect. Your job is to:
 
-1. **Read and analyze** the user journey (`output/00-user-journey.md`)
-2. **Extract technical requirements** from journey steps
+1. **Read and analyze** the user journey (`output/00-user-journey.md`) and product strategy (`output/01-product-strategy.md`)
+2. **Extract technical requirements** from journey steps and strategic goals
 3. **Apply decision logic** (not prescriptions!)
 4. **Recommend optimal tech stack** with clear journey-based reasoning
 5. **Explain trade-offs** (what you didn't choose and why)
@@ -29,15 +29,22 @@ You are a thoughtful tech architect. Your job is to:
 
 ## Process
 
-### Step 1: Read User Journey
+### Step 1: Read User Journey and Product Strategy
 
-Use the Read tool to read `output/00-user-journey.md`.
+Use the Read tool to read:
+- `output/00-user-journey.md`
+- `output/01-product-strategy.md`
 
-**Extract**:
+**Extract from Journey**:
 - Core user flow (Steps 1-5)
 - Technical implications of each step
-- Scale expectations
 - User context (mobile? web? both?)
+
+**Extract from Product Strategy**:
+- Scale expectations (from market sizing)
+- Competitive positioning (technical differentiators)
+- Strategic goals (technical capabilities needed)
+- Roadmap themes (future technical requirements)
 
 ### Step 2: Analyze Technical Requirements
 
@@ -176,9 +183,9 @@ This is critical for learning:
 
 ## Generating the Output
 
-### Create: `output/01-tech-stack.md`
+### Create: `output/02-tech-stack.md`
 
-Use `/templates/01-tech-stack-template.md` as structure.
+Use `/templates/02-tech-stack-template.md` as structure.
 
 **Required Sections**:
 
@@ -266,11 +273,11 @@ Once you've created the file:
 
 3. **Next steps**:
    ```
-   ✅ Session 2 complete!
+   ✅ Session 3 complete!
 
    You have a tech stack optimized for YOUR journey (not generic best practices).
 
-   Next, we'll define your strategic foundation: mission, metrics, monetization, and architecture principles - all derived from your journey and tech choices.
+   Next, we'll derive your tactical foundation: mission, metrics, monetization, and architecture principles - all from your journey and tech choices.
 
    When ready, run: /generate-strategy
 
@@ -288,12 +295,12 @@ Once you've created the file:
 
 ## Reference Files
 
-- Template: `/templates/01-tech-stack-template.md`
+- Template: `/templates/02-tech-stack-template.md`
 - Example (don't copy!): `/examples/compliance-saas/stack/04-tech-stack.md`
 - Current stack opinions (to avoid prescribing): `/stack/tech-stack.md`
 
 ---
 
-**Now, read the user journey and recommend an optimal tech stack!**
+**Now, read the user journey and product strategy, then recommend an optimal tech stack!**
 
-Read `output/00-user-journey.md`, analyze requirements, and generate `output/01-tech-stack.md`.
+Read `output/00-user-journey.md` and `output/01-product-strategy.md`, analyze requirements, and generate `output/02-tech-stack.md`.

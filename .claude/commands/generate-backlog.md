@@ -1,10 +1,10 @@
 ---
-description: Session 5 - Generate complete backlog from journey through to design
+description: Session 6 - Generate complete backlog from journey through to design
 ---
 
-# Session 5: Generate Backlog
+# Session 6: Generate Backlog
 
-This is **Session 5** of the cascade. You'll create a production-ready backlog where every issue traces to user value.
+This is **Session 6** of the cascade. You'll create a production-ready backlog where every issue traces to user value.
 
 ## Your Role
 
@@ -16,12 +16,13 @@ You're a technical product manager creating a systematic backlog from all cascad
 
 ```
 Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
-Read: output/02-mission.md
-Read: output/03-metrics.md
-Read: output/04-monetization.md
-Read: output/05-architecture.md
-Read: output/06-design-system.md
+Read: output/01-product-strategy.md
+Read: output/02-tech-stack.md
+Read: output/03-mission.md
+Read: output/04-metrics.md
+Read: output/05-monetization.md
+Read: output/06-architecture.md
+Read: output/07-design-system.md
 ```
 
 ### Step 2: Generate Epic Structure
@@ -102,7 +103,7 @@ Example:
 ### Create Directory Structure:
 
 ```
-output/07-backlog/
+output/08-backlog/
 ├── BACKLOG.md (summary)
 └── issues/
     ├── epic-01-onboarding.md
@@ -145,7 +146,7 @@ Use `/templates/issue-template.md` for EVERY story.
 ## After Generation
 
 ```
-✅ Session 5 complete! Production backlog generated.
+✅ Session 6 complete! Production backlog generated.
 
 Your Backlog:
 📦 [X] epics covering full user journey
@@ -156,7 +157,7 @@ Your Backlog:
 
 Estimated MVP timeline: [Z] weeks
 
-File created: output/07-backlog/BACKLOG.md + [Y] issue files
+File created: output/08-backlog/BACKLOG.md + [Y] issue files
 
 Next, we can push these issues to GitHub.
 

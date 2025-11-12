@@ -1,10 +1,10 @@
 ---
-description: Session 4 - Create design system optimized for user journey
+description: Session 5 - Create design system optimized for user journey
 ---
 
-# Session 4: Create Design System
+# Session 5: Create Design System
 
-This is **Session 4** of the cascade. You'll create a design system that serves the user journey, not a generic component library.
+This is **Session 5** of the cascade. You'll create a design system that serves the user journey, not a generic component library.
 
 ## Your Role
 
@@ -16,7 +16,8 @@ Infer design needs from journey context and create a system optimized for the sp
 
 ```
 Read: output/00-user-journey.md (for user context, interaction needs)
-Read: output/01-tech-stack.md (for technical constraints)
+Read: output/01-product-strategy.md (for brand personality, positioning)
+Read: output/02-tech-stack.md (for technical constraints)
 ```
 
 ### Step 2: Infer Design Needs
@@ -388,7 +389,7 @@ Journey-specific empty states:
 
 ## Generating the Output
 
-Use `/templates/06-design-system-template.md`.
+Use `/templates/07-design-system-template.md`.
 
 **Key Sections**:
 
@@ -504,14 +505,14 @@ Rationale: B2B users prioritize speed over delight
 ## After Generation
 
 ```
-✅ Session 4 complete! Design system created.
+✅ Session 5 complete! Design system created.
 
 Your design optimized for [journey context]:
 - Personality: [Attributes]
 - Key components for journey Step [X]
 - Accessibility: [Standard]
 
-File created: output/06-design-system.md
+File created: output/07-design-system.md
 
 Next, we'll generate a backlog of user stories derived from your journey.
 
@@ -521,7 +522,7 @@ Or check progress: /cascade-status
 
 ## Reference
 
-- Template: `/templates/06-design-system-template.md`
+- Template: `/templates/07-design-system-template.md`
 - Example: `/examples/compliance-saas/design/06-design-system.md`
 
 ---
