@@ -1,16 +1,16 @@
 ---
-description: Session 3 - Generate strategic foundation (mission, metrics, monetization, architecture)
+description: Session 4 - Generate tactical foundation (mission, metrics, monetization, architecture)
 ---
 
-# Session 3: Generate Strategy
+# Session 4: Generate Strategy
 
-This is **Session 3** of the cascade. You'll synthesize the user journey and tech stack into a complete strategic foundation.
+This is **Session 4** of the cascade. You'll synthesize the user journey, product strategy, and tech stack into a complete tactical foundation.
 
 ## Your Role
 
-You are a product strategist deriving strategic decisions from previous cascade outputs. Your job is to:
+You are a product strategist deriving tactical decisions from previous cascade outputs. Your job is to:
 
-1. **Read** journey (`output/00-user-journey.md`) and tech stack (`output/01-tech-stack.md`)
+1. **Read** journey (`output/00-user-journey.md`), product strategy (`output/01-product-strategy.md`), and tech stack (`output/02-tech-stack.md`)
 2. **Derive mission** from the journey's aha moment (usually Step 3)
 3. **Define North Star metric** that measures mission fulfillment
 4. **Design monetization** aligned with value delivery
@@ -31,7 +31,8 @@ You are a product strategist deriving strategic decisions from previous cascade 
 
 ```
 Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
+Read: output/01-product-strategy.md
+Read: output/02-tech-stack.md
 ```
 
 **Extract from Journey**:
@@ -39,6 +40,12 @@ Read: output/01-tech-stack.md
 - Economic value (time/money saved, ROI)
 - Primary user persona
 - Success metrics already defined
+
+**Extract from Product Strategy**:
+- Product vision (3-5 year aspirational future)
+- Market sizing (TAM/SAM/SOM)
+- Strategic goals
+- Product principles
 
 **Extract from Tech Stack**:
 - Core technologies chosen
@@ -140,9 +147,9 @@ Read: output/01-tech-stack.md
 
 Create 4 files:
 
-### 1. `output/02-mission.md`
+### 1. `output/03-mission.md`
 
-Use `/templates/02-mission-template.md`.
+Use `/templates/03-mission-template.md`.
 
 **Key Sections**:
 - Mission statement (one sentence)
@@ -150,9 +157,9 @@ Use `/templates/02-mission-template.md`.
 - Mission tests (feature, partnership, hiring decisions)
 - Connection to journey (which step), to metrics (North Star), to monetization
 
-### 2. `output/03-metrics.md`
+### 2. `output/04-metrics.md`
 
-Use `/templates/03-metrics-template.md`.
+Use `/templates/04-metrics-template.md`.
 
 **Key Sections**:
 - North Star metric (definition, why, targets)
@@ -161,9 +168,9 @@ Use `/templates/03-metrics-template.md`.
 - Counter-metrics (what won't sacrifice)
 - Connection to journey steps, to monetization
 
-### 3. `output/04-monetization.md`
+### 3. `output/05-monetization.md`
 
-Use `/templates/04-monetization-template.md`.
+Use `/templates/05-monetization-template.md`.
 
 **Key Sections**:
 - Pricing model (with rationale from journey)
@@ -173,9 +180,9 @@ Use `/templates/04-monetization-template.md`.
 - Revenue targets (30/90/365 days)
 - Connection to journey (where charged), mission (what charged for)
 
-### 4. `output/05-architecture.md`
+### 4. `output/06-architecture.md`
 
-Use `/templates/05-architecture-template.md`.
+Use `/templates/06-architecture-template.md`.
 
 **Key Sections**:
 - Architecture overview (diagram if helpful)
@@ -199,7 +206,7 @@ Before writing files:
 
 Show summary:
 ```
-✅ Session 3 complete! Strategic foundation established.
+✅ Session 4 complete! Tactical foundation established.
 
 Your Strategy:
 📋 Mission: [One-sentence mission]
@@ -208,10 +215,10 @@ Your Strategy:
 🏗️  Architecture: [Key principle]
 
 Files created:
-- output/02-mission.md
-- output/03-metrics.md
-- output/04-monetization.md
-- output/05-architecture.md
+- output/03-mission.md
+- output/04-metrics.md
+- output/05-monetization.md
+- output/06-architecture.md
 
 Next, we'll create a design system optimized for your journey.
 
@@ -229,9 +236,9 @@ Or check progress: /cascade-status
 
 ## Reference Files
 
-- Templates: `/templates/02-mission-template.md`, etc.
+- Templates: `/templates/03-mission-template.md`, `/templates/04-metrics-template.md`, `/templates/05-monetization-template.md`, `/templates/06-architecture-template.md`
 - Examples: `/examples/compliance-saas/foundation/` and `/examples/compliance-saas/stack/`
 
 ---
 
-**Now, read the journey and tech stack, then generate all 4 strategy files!**
+**Now, read the journey, product strategy, and tech stack, then generate all 4 tactical foundation files!**

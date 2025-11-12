@@ -1,10 +1,10 @@
 ---
-description: Session 7 - Project scaffold from backlog to working codebase
+description: Session 8 - Project scaffold from backlog to working codebase
 ---
 
-# Session 7: Scaffold Project
+# Session 8: Scaffold Project
 
-This is **Session 7** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
+This is **Session 8** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
 
 ## Your Role
 
@@ -30,7 +30,7 @@ After 6 sessions, users have:
 
 **What they DON'T have**: A single line of working code.
 
-**Session 7 fixes this.** Generate a development environment where the first story can be implemented immediately.
+**Session 8 fixes this.** Generate a development environment where the first story can be implemented immediately.
 
 ---
 
@@ -40,9 +40,10 @@ After 6 sessions, users have:
 
 ```
 Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
-Read: output/05-architecture.md
-Read: output/07-backlog/BACKLOG.md
+Read: output/01-product-strategy.md
+Read: output/02-tech-stack.md
+Read: output/06-architecture.md
+Read: output/08-backlog/BACKLOG.md
 ```
 
 **Extract**:
@@ -666,13 +667,13 @@ npm-debug.log*
 
 Create two outputs:
 
-#### A. Documentation (output/07-project-scaffold.md)
+#### A. Documentation (output/08-project-scaffold.md)
 
 ```markdown
 # Project Scaffold
 
 **Generated**: [Date]
-**Based on**: Sessions 1-6 outputs
+**Based on**: Sessions 1-7 outputs
 
 ## Decisions Made
 
@@ -716,7 +717,7 @@ Create two outputs:
 
 ## Setup Instructions
 
-1. Copy all files from `output/07-project-scaffold/` to your project root
+1. Copy all files from `output/08-project-scaffold/` to your project root
 2. Run `docker-compose up -d` to start local services
 3. Copy `.env.template` to `.env` and fill in values
 4. Run `npm install` (or `poetry install`)
@@ -741,7 +742,7 @@ After copying the scaffold:
    ```
 
 3. **Start implementing backlog**
-   - Reference `output/07-backlog/` for prioritized stories
+   - Reference `output/08-backlog/` for prioritized stories
    - Start with P0 (critical) stories
    - Each story references tech stack and design system
 
@@ -751,12 +752,12 @@ After copying the scaffold:
    - Update CI/CD to deploy on merge to main
 ```
 
-#### B. Actual Files (output/07-project-scaffold/)
+#### B. Actual Files (output/08-project-scaffold/)
 
 Create a directory with ALL generated files:
 
 ```
-output/07-project-scaffold/
+output/08-project-scaffold/
 ├── package.json
 ├── docker-compose.yml
 ├── .env.template
@@ -903,7 +904,7 @@ output/07-project-scaffold/
 ## After Generation
 
 ```
-✅ Session 7 complete! Development environment ready.
+✅ Session 8 complete! Development environment ready.
 
 Your Scaffold:
 📁 Complete directory structure
@@ -913,10 +914,10 @@ Your Scaffold:
 🐳 Local development services (Docker Compose)
 
 Next Steps:
-1. Copy files from output/07-project-scaffold/ to your project root
+1. Copy files from output/08-project-scaffold/ to your project root
 2. Follow README.md setup instructions
 3. Verify environment works (docker-compose up, npm run dev)
-4. Start implementing P0 stories from output/07-backlog/
+4. Start implementing P0 stories from output/08-backlog/
 
 When ready, start building or run: /cascade-status
 ```
@@ -926,16 +927,16 @@ When ready, start building or run: /cascade-status
 ## Important Guidelines
 
 1. **Generate REAL files**: Not templates with placeholders - actual working configs
-2. **Match tech stack**: Every generated file must reflect Session 2 tech choices
-3. **Match architecture**: Structure must align with Session 3 architecture decisions
+2. **Match tech stack**: Every generated file must reflect Session 3 tech choices
+3. **Match architecture**: Structure must align with Session 4 architecture decisions
 4. **Developer experience**: Setup should take <15 minutes from clone to running
 5. **One command to rule them all**: `docker-compose up` should start everything needed
 6. **Documentation is critical**: README must be complete, step-by-step, tested
 
 ## Reference
 
-- Previous session: `/generate-backlog` (Session 5)
-- Next session: Start building! Reference backlog in `output/07-backlog/`
+- Previous session: `/create-gh-issues` (Session 7)
+- Next: Start building! Reference backlog in `output/08-backlog/` or GitHub issues
 - Example: `/examples/compliance-saas/scaffold/` (if created)
 
 ---
