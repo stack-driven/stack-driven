@@ -88,12 +88,7 @@ Read: output/17-database-schema.md
 - What relationships need API exposure?
 - What query patterns should be supported?
 
-**Example (from compliance-saas):**
-- Journey actions: Upload document, select frameworks, view assessment results, share report
-- Tech stack: FastAPI (Python), JWT authentication, REST API, OpenAPI 3.0
-- Architecture: Multi-tenant (team-based), rate-limited (100 req/min), RESTful principles
-- Key entities: Users, Teams, Documents, Assessments, Frameworks
-- Critical operations: Document upload (multipart/form-data), assessment status polling, results retrieval
+**Example**: compliance-saas needs document upload, framework selection, assessment results, report sharing → FastAPI REST API with JWT auth, multi-tenant, rate-limited
 
 ---
 
@@ -121,33 +116,7 @@ For each entity in database schema or backlog, ask:
    - NO → Standard REST operations suffice
 ```
 
-**Example (compliance-saas):**
-
-```
-Journey Step 1: User uploads document
-→ Resource: Documents
-→ Needs: Create (upload), Read (get document), List (user's documents), Delete
-
-Journey Step 2: User selects frameworks
-→ Resource: Frameworks (system resource, read-only for users)
-→ Needs: List (all available frameworks), Read (framework details)
-
-Journey Step 3: AI assesses document
-→ Resource: Assessments
-→ Needs: Create (trigger assessment), Read (get results), List (user's assessments)
-→ Special: Status polling endpoint, cancel operation
-
-Journey Step 4: User shares report
-→ Special endpoint: /api/assessments/:id/share (generate public URL)
-→ Public endpoint: /public/reports/:token (view shared report)
-```
-
-**Core resources identified:**
-- `/api/documents` - User-uploaded compliance documents
-- `/api/frameworks` - System frameworks (SOC2, GDPR, etc.)
-- `/api/assessments` - Document assessment jobs and results
-- `/api/teams` - Team management (multi-tenancy)
-- `/api/usage` - Usage tracking for billing
+**Example**: compliance-saas journey → Resources: `/api/documents` (upload, CRUD), `/api/frameworks` (read-only), `/api/assessments` (create, poll status, results), `/api/teams` (multi-tenancy), special endpoints for sharing (`/api/assessments/:id/share`, `/public/reports/:token`)
 
 ---
 
@@ -184,39 +153,12 @@ Journey Step 4: User shares report
       - "Get assessments, optionally filtered by document"
 ```
 
-**Example endpoint structure (compliance-saas):**
-
-```yaml
-# Documents
-GET    /api/documents           # List user's documents
-POST   /api/documents           # Upload new document
-GET    /api/documents/:id       # Get document details
-DELETE /api/documents/:id       # Delete document
-GET    /api/documents/:id/download  # Download original file
-
-# Frameworks (system resources)
-GET    /api/frameworks          # List all frameworks
-GET    /api/frameworks/:id      # Get framework details
-
-# Assessments
-GET    /api/assessments         # List user's assessments
-POST   /api/assessments         # Create new assessment
-GET    /api/assessments/:id     # Get assessment details & results
-POST   /api/assessments/:id/cancel  # Cancel running assessment
-POST   /api/assessments/:id/share   # Generate shareable link
-
-# Public (no auth)
-GET    /public/reports/:token   # View shared assessment report
-
-# Teams (admin only)
-GET    /api/teams/:id           # Get team details
-PATCH  /api/teams/:id           # Update team settings
-GET    /api/teams/:id/usage     # Get team usage stats (billing)
-
-# User management
-GET    /api/users/me            # Get current user profile
-PATCH  /api/users/me            # Update profile
-```
+**Example**: compliance-saas endpoints:
+- Documents: GET/POST `/api/documents`, GET/DELETE `/api/documents/:id`
+- Frameworks: GET `/api/frameworks`, GET `/api/frameworks/:id`
+- Assessments: GET/POST `/api/assessments`, GET/POST `/api/assessments/:id/{cancel,share}`
+- Public: GET `/public/reports/:token` (no auth)
+- Teams: GET/PATCH `/api/teams/:id`, GET `/api/teams/:id/usage`
 
 ---
 
@@ -253,85 +195,19 @@ For EACH endpoint, define:
    └─ Include actionable error messages
 ```
 
-**Example schema (Document Upload):**
+**Example schemas:**
 
 ```yaml
-POST /api/documents
-Content-Type: multipart/form-data
+# Document Upload
+POST /api/documents (multipart/form-data)
+→ 201: {id, name, fileSize, status, uploadedAt, userId, frameworks}
+→ 400: {error: {code: "INVALID_FILE_TYPE", message, field}}
+→ 413: {error: {code: "FILE_TOO_LARGE", message, limit, received}}
 
-Request:
-  file: [binary]           # Required, PDF or DOCX, max 50MB
-  name: string             # Optional, defaults to filename
-  frameworks: string[]     # Optional, framework IDs to assess against
-
-Response 201 Created:
-{
-  "id": "doc_abc123",
-  "name": "Privacy Policy 2025.pdf",
-  "fileSize": 2456789,
-  "status": "processing",
-  "uploadedAt": "2025-11-11T10:30:00Z",
-  "userId": "user_xyz",
-  "frameworks": ["fw_gdpr", "fw_soc2"]
-}
-
-Response 400 Bad Request:
-{
-  "error": {
-    "code": "INVALID_FILE_TYPE",
-    "message": "File must be PDF or DOCX",
-    "field": "file"
-  }
-}
-
-Response 413 Payload Too Large:
-{
-  "error": {
-    "code": "FILE_TOO_LARGE",
-    "message": "File size exceeds 50MB limit",
-    "limit": 52428800,
-    "received": 62914560
-  }
-}
-```
-
-**Example schema (Assessment Status):**
-
-```yaml
+# Assessment Status
 GET /api/assessments/:id
-
-Response 200 OK:
-{
-  "id": "asmt_def456",
-  "documentId": "doc_abc123",
-  "status": "completed",        # "pending" | "processing" | "completed" | "failed"
-  "progress": 100,               # 0-100
-  "frameworks": ["fw_gdpr", "fw_soc2"],
-  "results": {
-    "score": 85,
-    "findings": [
-      {
-        "framework": "fw_gdpr",
-        "section": "Article 32",
-        "severity": "high",
-        "issue": "Missing encryption specification",
-        "location": "Page 12, Section 4.2"
-      }
-    ],
-    "summary": "Document is 85% compliant..."
-  },
-  "startedAt": "2025-11-11T10:31:00Z",
-  "completedAt": "2025-11-11T10:32:15Z",
-  "durationMs": 75000
-}
-
-Response 404 Not Found:
-{
-  "error": {
-    "code": "ASSESSMENT_NOT_FOUND",
-    "message": "Assessment with ID 'asmt_def456' not found"
-  }
-}
+→ 200: {id, documentId, status, progress, frameworks, results: {score, findings[], summary}, timing}
+→ 404: {error: {code: "ASSESSMENT_NOT_FOUND", message}}
 ```
 
 ---
@@ -369,56 +245,13 @@ From tech stack, determine auth method:
    └─ Public → No auth required
 ```
 
-**Example auth specification (compliance-saas):**
+**Example auth**: Clerk JWT in `Authorization: Bearer <token>` header, applied to all endpoints except `/public/*`
 
-```yaml
-# Authentication
-securitySchemes:
-  bearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
-    description: |
-      JWT token from Clerk authentication.
-
-      Obtain token by:
-      1. User signs in via Clerk
-      2. Frontend gets session token
-      3. Include in Authorization header
-
-      Example: Authorization: Bearer eyJhbGc...
-
-# Apply to all endpoints (except public)
-security:
-  - bearerAuth: []
-
-# Endpoints that DON'T require auth:
-/public/reports/{token}:
-  security: []  # Override: no auth needed
-```
-
-**Authorization Patterns:**
-
-```typescript
-// Example authorization checks
-
-// Pattern 1: User owns resource
-GET /api/documents/:id
-→ Query: SELECT * FROM documents WHERE id = :id AND user_id = :current_user_id
-
-// Pattern 2: Team resource
-GET /api/assessments
-→ Query: SELECT * FROM assessments
-         WHERE user_id IN (SELECT id FROM users WHERE team_id = :current_user_team_id)
-
-// Pattern 3: Admin only
-GET /api/teams/:id/usage
-→ Check: current_user.role === 'admin' OR current_user.team_id === :id
-
-// Pattern 4: Rate limit by tier
-POST /api/assessments
-→ Check: usage_this_month < team.plan_limits.assessments_per_month
-```
+**Authorization patterns:**
+- User-owned: `WHERE user_id = :current_user_id`
+- Team resource: `WHERE team_id = :current_user_team_id`
+- Admin only: `WHERE role = 'admin' OR team_id = :id`
+- Rate limit: Check `usage < plan_limits`
 
 ---
 
@@ -466,62 +299,11 @@ Server Errors:
 504 Gateway Timeout       - Upstream service timeout
 ```
 
-**Example error definitions:**
-
-```yaml
-# Validation Error
-400 Bad Request:
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Request validation failed",
-    "details": {
-      "file": "File must be PDF or DOCX",
-      "frameworks": "At least one framework is required"
-    }
-  }
-}
-
-# Authentication Error
-401 Unauthorized:
-{
-  "error": {
-    "code": "INVALID_TOKEN",
-    "message": "Authentication token is invalid or expired",
-    "details": {
-      "expiredAt": "2025-11-11T10:00:00Z"
-    }
-  }
-}
-
-# Rate Limit Error
-429 Too Many Requests:
-{
-  "error": {
-    "code": "RATE_LIMIT_EXCEEDED",
-    "message": "You have exceeded your rate limit",
-    "details": {
-      "limit": 100,
-      "remaining": 0,
-      "resetAt": "2025-11-11T11:00:00Z"
-    }
-  }
-}
-
-# Business Logic Error
-422 Unprocessable Entity:
-{
-  "error": {
-    "code": "INSUFFICIENT_CREDITS",
-    "message": "Your team has insufficient credits for this operation",
-    "details": {
-      "required": 10,
-      "available": 3,
-      "upgradeUrl": "/billing/upgrade"
-    }
-  }
-}
-```
+**Example errors**: All use format `{error: {code, message, details?, field?, requestId?}}`
+- 400: `VALIDATION_ERROR` (invalid input)
+- 401: `INVALID_TOKEN` (auth failed)
+- 429: `RATE_LIMIT_EXCEEDED` (includes limit, remaining, resetAt)
+- 422: `INSUFFICIENT_CREDITS` (business logic error)
 
 ---
 
@@ -549,30 +331,7 @@ Server Errors:
    └─ Public endpoints → Strictest limit (prevent abuse)
 ```
 
-**Example rate limit specification:**
-
-```yaml
-# Rate Limit Headers (include in all responses)
-X-RateLimit-Limit: 100          # Max requests per window
-X-RateLimit-Remaining: 47       # Requests remaining
-X-RateLimit-Reset: 1699704000   # Unix timestamp when limit resets
-
-# Rate Limits by Endpoint Type
-GET /api/*:
-  - Free tier: 100 requests/min
-  - Pro tier: 1000 requests/min
-  - Enterprise: 10000 requests/min
-
-POST /api/documents:
-  - Free tier: 10 uploads/hour
-  - Pro tier: 100 uploads/hour
-  - Enterprise: Unlimited
-
-POST /api/assessments:
-  - Free tier: 5 assessments/day
-  - Pro tier: 100 assessments/day
-  - Enterprise: Unlimited
-```
+**Example**: Headers `X-RateLimit-{Limit,Remaining,Reset}` on all responses. Limits by tier: Free (100 req/min), Pro (1000 req/min), Enterprise (unlimited). Expensive ops (uploads, assessments) have stricter per-hour/day limits.
 
 **Pagination Strategy:**
 
@@ -593,309 +352,40 @@ POST /api/assessments:
    ├─ NO → Cursor pagination (next/previous only)
 ```
 
-**Example pagination:**
-
-```yaml
-# Cursor-based pagination (recommended)
-GET /api/documents?cursor=abc123&limit=20
-
-Response:
-{
-  "data": [
-    { "id": "doc_001", "name": "Policy.pdf", ... },
-    { "id": "doc_002", "name": "Agreement.pdf", ... }
-  ],
-  "pagination": {
-    "nextCursor": "def456",      # Use this for next page
-    "prevCursor": "xyz789",      # Use this for previous page
-    "hasMore": true,             # Are there more results?
-    "total": null                # Optional: total count (expensive)
-  }
-}
-
-# Offset-based pagination (simpler)
-GET /api/frameworks?page=1&limit=20
-
-Response:
-{
-  "data": [...],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 45,
-    "totalPages": 3
-  }
-}
-```
+**Example**: Cursor-based for large datasets (`?cursor=abc&limit=20` → `{data[], pagination: {nextCursor, prevCursor, hasMore}}`), offset-based for small datasets (`?page=1&limit=20` → `{data[], pagination: {page, limit, total, totalPages}}`)
 
 ---
 
 ### Step 8: Generate OpenAPI Specification
 
-Create complete OpenAPI 3.0 specification file.
+Create complete OpenAPI 3.0 specification. Use template at `.claude/templates/18-api-contracts-template.md` for detailed structure.
 
-**OpenAPI Structure:**
+**Key sections to include:**
+- `info`: title, description (with auth/rate limit/error conventions), version, contact
+- `servers`: production, staging, local development URLs
+- `tags`: group endpoints by resource type
+- `paths`: each endpoint with summary, description, tags, security, parameters, requestBody, responses
+- `components`: securitySchemes (bearerAuth), schemas (all data models), responses (reusable error responses)
 
-```yaml
-openapi: 3.0.3
-info:
-  title: [Project Name] API
-  description: |
-    [Project description from user journey]
-
-    ## Authentication
-    [Auth instructions]
-
-    ## Rate Limiting
-    [Rate limit policy]
-
-    ## Errors
-    [Error handling conventions]
-  version: 1.0.0
-  contact:
-    name: [Team Name]
-    email: support@example.com
-
-servers:
-  - url: https://api.example.com
-    description: Production
-  - url: https://staging-api.example.com
-    description: Staging
-  - url: http://localhost:3000
-    description: Local development
-
-tags:
-  - name: Documents
-    description: Document upload and management
-  - name: Assessments
-    description: Compliance assessment operations
-  - name: Frameworks
-    description: Compliance framework definitions
-
-paths:
-  /api/documents:
-    get:
-      summary: List documents
-      description: Get all documents for the authenticated user
-      tags: [Documents]
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: status
-          in: query
-          schema:
-            type: string
-            enum: [processing, ready, error]
-        - name: cursor
-          in: query
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentList'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-
-    post:
-      summary: Upload document
-      description: Upload a new compliance document for assessment
-      tags: [Documents]
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - file
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: PDF or DOCX file (max 50MB)
-                name:
-                  type: string
-                  description: Custom document name
-                frameworks:
-                  type: array
-                  items:
-                    type: string
-                  description: Framework IDs to assess against
-      responses:
-        '201':
-          description: Document uploaded successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Document'
-        '400':
-          $ref: '#/components/responses/ValidationError'
-        '413':
-          $ref: '#/components/responses/PayloadTooLarge'
-
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-  schemas:
-    Document:
-      type: object
-      required:
-        - id
-        - name
-        - status
-        - uploadedAt
-      properties:
-        id:
-          type: string
-          example: doc_abc123
-        name:
-          type: string
-          example: Privacy Policy 2025.pdf
-        fileSize:
-          type: integer
-          example: 2456789
-        status:
-          type: string
-          enum: [processing, ready, error]
-        uploadedAt:
-          type: string
-          format: date-time
-        userId:
-          type: string
-        frameworks:
-          type: array
-          items:
-            type: string
-
-    Error:
-      type: object
-      required:
-        - error
-      properties:
-        error:
-          type: object
-          required:
-            - code
-            - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Request validation failed
-            details:
-              type: object
-            field:
-              type: string
-
-  responses:
-    UnauthorizedError:
-      description: Authentication token is missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-
-    ValidationError:
-      description: Request validation failed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-```
+**Best practices:**
+- Use `$ref` for reusable schemas and responses
+- Include examples in schemas
+- Mark required fields explicitly
+- Use JSON Schema validation (formats, min/max, enums)
+- Document all error responses (4xx, 5xx)
 
 ---
 
 ### Step 9: Document API Design Decisions
 
-Create comprehensive documentation explaining:
-- Why these endpoints (traces to journey)
-- Why this structure (alternatives considered)
-- Why these schemas (trade-offs)
-- Why this auth pattern (security vs convenience)
-- How to version (breaking changes strategy)
-
-**Template structure:**
-
-```markdown
-# API Contracts
-
-## Overview
-[High-level description, endpoint count, key patterns]
-
-## API Architecture
-
-### Style: REST
-**Why REST**: [Journey-based reasoning]
-**Alternatives Considered**: GraphQL, gRPC, tRPC
-
-### Base URL
-Production: https://api.example.com
-Staging: https://staging-api.example.com
-
-### Versioning
-Strategy: URL versioning (/v1/, /v2/)
-Current version: v1
-
-## Authentication
-[Method, token format, how to obtain, refresh strategy]
-
-## Core Resources
-
-### Documents
-**Purpose**: [Why this resource exists - journey connection]
-
-**Endpoints**:
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /api/documents | List user's documents |
-| POST | /api/documents | Upload new document |
-| GET | /api/documents/:id | Get document details |
-| DELETE | /api/documents/:id | Delete document |
-
-**Schema**: [Link to OpenAPI schema]
-
-**Design Decisions**:
-- Why multipart/form-data upload
-- Why cursor-based pagination
-- Why soft delete vs hard delete
-
-## Rate Limiting
-[Policy, headers, by tier]
-
-## Error Handling
-[Format, status codes, examples]
-
-## Pagination
-[Strategy, format, when to use]
-
-## OpenAPI Specification
-[Link to openapi.yaml file]
-
-## Testing
-[How to test endpoints, example requests with curl/httpie]
-
-## Changelog
-[Version history, breaking changes]
-```
+Write `output/18-api-contracts.md` with:
+- **Overview**: API style, base URLs, versioning strategy, endpoint count
+- **Authentication**: Method and how to use it
+- **Core Resources**: For each resource: purpose (journey connection), endpoints table, key design decisions
+- **Patterns**: Rate limiting, error handling, pagination
+- **OpenAPI Spec**: Link to `openapi.yaml` file
+- **Testing**: Example curl/httpie commands
+- **"What We DIDN'T Choose"**: Alternatives considered (GraphQL, gRPC, etc.) with reasoning
 
 ---
 
@@ -948,214 +438,51 @@ Current version: v1
 ## What We DIDN'T Choose (And Why)
 
 ### GraphQL API
-
-**What it is**: Query language for APIs that lets clients request exactly the data they need
-
-**Why not (for this journey)**:
-- **Journey has simple CRUD operations** - documents, assessments, results are straightforward entities
-- **No over-fetching problem** - compliance data is not deeply nested or graph-like
-- **Team expertise** (from tech stack) - team more familiar with REST
-- **"Boring is beautiful"** - REST is proven, well-understood, simpler to debug
-- **Compliance domain** - predictable data shapes, not complex querying needs
-
-**When to reconsider**:
-- IF mobile app needs precise data control (minimize bandwidth)
-- IF UI needs highly variable data shapes (different views need different fields)
-- IF building public API where clients want query flexibility
-- IF team gains GraphQL expertise
-
-**Example**: If compliance documents had 50+ optional fields and different dashboards needed completely different subsets, GraphQL would shine. Compliance assessments have predictable structure.
-
----
+**What**: Query language letting clients request exact data needed
+**Why not**: Journey has simple CRUD (not complex graphs), team knows REST better, no over-fetching problem
+**Reconsider if**: Mobile app needs bandwidth optimization, UI needs highly variable data shapes, 50+ optional fields per entity
 
 ### gRPC API
+**What**: High-performance RPC with Protocol Buffers (binary)
+**Why not**: Web-based journey (browsers need grpc-web proxy), no network bottleneck, REST/JSON easier to debug
+**Reconsider if**: Microservices with service-to-service calls, need bidirectional streaming, internal-only APIs
 
-**What it is**: High-performance RPC framework using Protocol Buffers, binary protocol
+### Header-Based API Versioning
+**What**: Version in `Accept: application/vnd.myapi.v2+json` header instead of URL
+**Why not**: URL versioning (`/v1/`, `/v2/`) is simpler, more explicit, easier to debug
+**Reconsider if**: Building hypermedia API (HATEOAS), version applies to entire surface
 
-**Why not (for this journey)**:
-- **Journey is web-based** - browsers don't natively support gRPC (need grpc-web proxy)
-- **No performance bottleneck** - compliance assessment is IO-bound (AI processing), not network-bound
-- **Developer experience** - REST/JSON is easier to debug, test, document
-- **Integration complexity** - harder for third-party integrations (REST is ubiquitous)
+### Full OAuth 2.0 Server
+**What**: OAuth with authorization code flow, client credentials, refresh tokens
+**Why not**: B2B SaaS uses Clerk/Auth0 (not app authorization), high complexity, no third-party app integrations yet
+**Reconsider if**: Building platform with third-party apps (Slack/GitHub-style), need programmatic API access
 
-**When to reconsider**:
-- IF building microservices with service-to-service communication (gRPC excels here)
-- IF hitting network bandwidth limits (binary is more compact)
-- IF need bidirectional streaming (live updates)
-- IF team is building internal APIs only (not public-facing)
+### WebSocket for Real-Time
+**What**: Persistent bidirectional connection
+**Why not**: Polling every 2-5 seconds is acceptable for document processing, WebSocket adds complexity (scaling, connection mgmt)
+**Reconsider if**: Need <500ms updates (real-time collab), many users watching same resource, mobile app (battery)
 
-**Example**: Internal microservice for document parsing service calling assessment service 1000x/sec - gRPC would reduce latency. Public-facing user API - stick with REST.
-
----
-
-### API Versioning in Headers
-
-**What it is**: Version specified in Accept header instead of URL path
-
-```
-Accept: application/vnd.myapi.v2+json
-```
-
-**Why not (for this journey)**:
-- **URL versioning is simpler** - /v1/documents vs /v2/documents is explicit
-- **Better for public APIs** - users can see version in URL
-- **Easier debugging** - version visible in logs, browser dev tools
-- **Framework support** - most REST frameworks have built-in URL versioning
-
-**When to reconsider**:
-- IF building hypermedia API (HATEOAS) where version is negotiated
-- IF version applies to entire API surface (not individual resources)
-- IF following strict REST purist principles
-
-**Example**: Internal API with sophisticated clients that negotiate capabilities - header versioning makes sense. Public SaaS API for developers - URL versioning is clearer.
-
----
-
-### OAuth 2.0 with Multiple Flows
-
-**What it is**: Full OAuth 2.0 server with authorization code, client credentials, refresh tokens, etc.
-
-**Why not (for this journey)**:
-- **Journey is B2B SaaS** - users sign in through Clerk/Auth0, not OAuth app authorization
-- **Complexity is high** - OAuth 2.0 server implementation is significant effort
-- **No third-party app integrations** (yet) - don't need app authorization flow
-- **JWT tokens from Clerk are sufficient** for user authentication
-
-**When to reconsider**:
-- IF building platform with third-party apps (Slack/GitHub-style integrations)
-- IF need programmatic API access for automation tools
-- IF enterprise customers require custom OAuth flows
-- IF exposing public API for external developers
-
-**Example**: Platform where users build custom integrations (Zapier-style) - full OAuth 2.0 is necessary. Internal SaaS product - Clerk JWT is simpler and sufficient.
-
----
-
-### WebSocket API for Real-Time Updates
-
-**What it is**: Persistent connection for bidirectional real-time communication
-
-**Why not (for this journey)**:
-- **Polling is sufficient** - assessment status checked every 2-5 seconds is acceptable
-- **Complexity vs benefit** - WebSocket infrastructure (scaling, connection management) is complex
-- **Journey doesn't require instant updates** - 2-second delay is tolerable for document processing
-- **REST + polling is simpler** - no connection state management
-
-**When to reconsider**:
-- IF journey requires <500ms updates (real-time collaboration, live chat)
-- IF many users watch same resource (broadcast updates efficiently)
-- IF building mobile app (WebSocket reduces battery drain vs aggressive polling)
-- IF scale justifies complexity (10K+ concurrent connections)
-
-**Example**: Real-time collaborative document editing where users see each other's changes instantly - WebSocket essential. Asynchronous document processing with status checks - polling is fine.
-
----
-
-### API Gateway (Kong, AWS API Gateway)
-
-**What it is**: Centralized gateway for rate limiting, auth, logging, routing
-
-**Why not (for this journey)**:
-- **Journey is MVP stage** - single API service, no microservices yet
-- **Premature optimization** - framework-level rate limiting (FastAPI, Express) is sufficient
-- **Operational complexity** - another service to deploy, monitor, debug
-- **Cost** - managed API gateways add monthly cost
-
-**When to reconsider**:
-- IF building microservices (gateway routes to multiple backend services)
-- IF need advanced rate limiting (per-customer quotas, complex policies)
-- IF need API analytics (detailed usage tracking across services)
-- IF enterprise customers require IP whitelisting, custom auth
-
-**Example**: 5+ microservices with complex routing and auth requirements - API gateway centralizes logic. Single FastAPI service - built-in middleware is simpler.
+### API Gateway (Kong, AWS)
+**What**: Centralized gateway for rate limiting, auth, logging, routing
+**Why not**: MVP stage (single service), framework middleware sufficient, operational complexity, cost
+**Reconsider if**: Microservices architecture, advanced rate limiting needs, detailed API analytics
 
 ---
 
 ## Setup Instructions
 
-After generating API contracts:
-
-### For FastAPI (Python):
-
-```bash
-# 1. Copy OpenAPI spec to your project
-cp output/18-api-contracts/openapi.yaml ./docs/openapi.yaml
-
-# 2. Install FastAPI with OpenAPI support
-pip install fastapi[all]
-
-# 3. View interactive docs (auto-generated from OpenAPI)
-# Start server, then visit:
-http://localhost:8000/docs        # Swagger UI
-http://localhost:8000/redoc       # ReDoc
-
-# 4. Generate client SDKs (optional)
-npm install -g openapi-generator-cli
-openapi-generator-cli generate -i openapi.yaml -g typescript-axios -o ./sdk/typescript
-```
-
-### For Express (Node.js):
-
-```bash
-# 1. Copy OpenAPI spec
-cp output/18-api-contracts/openapi.yaml ./docs/openapi.yaml
-
-# 2. Install Swagger tools
-npm install swagger-ui-express yamljs
-
-# 3. Serve Swagger UI
-# Add to your Express app:
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./docs/openapi.yaml');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-# 4. Visit docs at http://localhost:3000/api-docs
-```
-
-### For Django (Python):
-
-```bash
-# 1. Install DRF with OpenAPI
-pip install djangorestframework drf-spectacular
-
-# 2. Configure in settings.py
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
-
-# 3. Generate schema
-python manage.py spectacular --file openapi.yaml
-
-# 4. Serve UI at /api/docs/
-```
+**FastAPI**: `pip install fastapi[all]` → auto-generated docs at `/docs` (Swagger) and `/redoc`
+**Express**: `npm i swagger-ui-express yamljs` → serve with `app.use('/api-docs', swaggerUi.setup(openapi))`
+**Django**: `pip install drf-spectacular` → configure in settings → `python manage.py spectacular`
+**Client SDKs**: Use `openapi-generator-cli generate -i openapi.yaml -g typescript-axios` (or python, java, etc.)
 
 ---
 
 ## Output Files
 
-This command generates:
-
-**1. Documentation** (`output/18-api-contracts.md`):
-- API architecture overview
-- Design decisions and rationale
-- Endpoint documentation with examples
-- Authentication and authorization guide
-- Error handling conventions
-- Testing examples (curl, httpie)
-
-**2. OpenAPI Specification** (`output/18-api-contracts/openapi.yaml`):
-- Complete OpenAPI 3.0 specification
-- All endpoints with request/response schemas
-- Authentication schemes
-- Reusable components
-- Examples for each endpoint
-
-**3. Testing Collection** (optional) (`output/18-api-contracts/postman-collection.json`):
-- Postman/Insomnia collection
-- Pre-configured requests for all endpoints
-- Environment variables for different stages
-- Test scripts for validation
+1. **`output/18-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
+2. **`output/18-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
+3. **`output/18-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -1201,25 +528,11 @@ Before completing this session, verify:
 
 ## After This Session
 
-**Next steps:**
-1. **Copy OpenAPI spec** to your project docs folder
-2. **Set up API documentation UI** (Swagger/ReDoc)
-3. **Generate client SDKs** (optional, for frontend/mobile)
-4. **Implement endpoints** following the spec
-5. **Write API tests** using the documented examples
+**Next steps**: Copy `openapi.yaml` to project → set up Swagger/ReDoc UI → generate client SDKs → implement endpoints → write API tests
 
-**Use these contracts for:**
-- Backend implementation (reference for building endpoints)
-- Frontend development (know what APIs are available)
-- API documentation (Swagger UI for developers)
-- Client SDK generation (TypeScript, Python, etc.)
-- Contract testing (validate implementation matches spec)
+**Use contracts for**: Backend implementation, frontend dev (know available APIs), API docs, client SDK generation, contract testing
 
-**Future extensions:**
-- Add webhooks for async events (assessment completed, etc.)
-- Add GraphQL layer if query complexity grows
-- Add API versioning strategy when breaking changes needed
-- Consider API gateway when microservices architecture is adopted
+**Future extensions**: Webhooks for async events, GraphQL layer if complexity grows, API versioning for breaking changes, API gateway for microservices
 
 ---
 
