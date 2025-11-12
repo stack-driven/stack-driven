@@ -1,10 +1,10 @@
 ---
-description: Session 5 - Create design system optimized for user journey
+description: Session 6 - Create design system optimized for user journey
 ---
 
-# Session 5: Create Design System
+# Session 6: Create Design System
 
-This is **Session 5** of the cascade. You'll create a design system that serves the user journey, not a generic component library.
+This is **Session 6** of the cascade. You'll create a design system that serves the user journey and brings your brand strategy to life. This is not a generic component library, but a design system optimized for your specific journey and brand.
 
 ## Your Role
 
@@ -16,16 +16,28 @@ Infer design needs from journey context and create a system optimized for the sp
 
 ```
 Read: output/00-user-journey.md (for user context, interaction needs)
-Read: output/01-product-strategy.md (for brand personality, positioning)
+Read: output/01-product-strategy.md (for market positioning)
 Read: output/02-tech-stack.md (for technical constraints)
+Read: output/07-brand-strategy.md (for brand personality, values, visual direction)
+Read: output/06-architecture.md (for architecture principles)
 ```
 
-### Step 2: Infer Design Needs
+### Step 2: Extract Brand Personality & Visual Direction
 
-**Brand Personality** (from journey context):
-- B2B SaaS compliance tool? → Trustworthy, professional, efficient
-- Consumer creative app? → Playful, inspiring, expressive
-- Internal enterprise tool? → Efficient, clear, minimal friction
+**From Brand Strategy** (`output/07-brand-strategy.md`):
+- **Brand Personality**: What attributes are defined? (Professional, playful, trustworthy, innovative, etc.)
+- **Core Values**: What values should the design express? (Speed, clarity, trust, creativity, etc.)
+- **Visual Direction**: What aesthetic guidance is provided? (Color preferences, mood, style)
+- **Brand Promise**: What should users always experience?
+
+Use these as the foundation for design decisions. Don't infer brand—read it from Session 5 output.
+
+### Step 3: Map Brand to Design Needs
+
+**Apply Brand Personality to Design**:
+- Trustworthy + Professional → Blues, clear hierarchy, conservative spacing
+- Playful + Creative → Vibrant colors, organic shapes, generous whitespace
+- Efficient + Technical → Monochrome + accent, tight spacing, monospace fonts
 
 **Component Requirements** (from journey steps):
 - Step 1 (Upload)? → File upload component, drag-drop zone
@@ -48,9 +60,9 @@ Read: output/02-tech-stack.md (for technical constraints)
 - Keyboard navigation for all journey-critical actions
 - Screen reader support with semantic HTML and ARIA labels
 
-### Step 3: Define Design Tokens
+### Step 4: Define Design Tokens
 
-**Colors**: Match brand personality
+**Colors**: Implement brand personality from Session 5
 - Trust-focused? → Blues
 - Creative? → Vibrant multi-color
 - Efficient? → Monochrome + accent
@@ -114,7 +126,7 @@ xl:   25px (1.563rem) → Section headings
 - Card padding: `space-4` (mobile), `space-5` (desktop)
 - Page margins: `space-6` to `space-8` depending on density needs
 
-### Step 4: Map Components to Journey
+### Step 5: Map Components to Journey
 
 Create table showing:
 | Journey Step | UI Components Needed | Design Priority |
@@ -124,7 +136,7 @@ Create table showing:
 | Step 3 | Progress bar, status | Real-time updates, clear ETA |
 | Step 4 | Data cards, filters | Scannable, information density |
 
-### Step 5: Component Decision Trees
+### Step 6: Component Decision Trees
 
 Apply these rules to determine when to create reusable components vs inline implementations:
 
@@ -183,7 +195,7 @@ Does new design differ only in:
 | Onboarding Card | 1 | High context | Inline component |
 | Modal Dialog | 5+ | Content | Core component + slots |
 
-### Step 6: Accessibility Standards & Implementation
+### Step 7: Accessibility Standards & Implementation
 
 Accessibility is non-negotiable for journey-critical actions. Define standards based on your user context:
 
@@ -237,7 +249,7 @@ Label patterns by journey step:
 - [ ] Focus never trapped (can always Esc or Tab out)
 - [ ] Error messages are announced and clear
 
-### Step 7: Responsive Strategy & Breakpoints
+### Step 8: Responsive Strategy & Breakpoints
 
 Define responsive behavior based on which journey steps happen on mobile vs desktop:
 
@@ -313,7 +325,7 @@ Content-Heavy (documentation, reading):
   xl: 1440px (wider for readability)
 ```
 
-### Step 8: Component Patterns & States (Compliance SaaS Examples)
+### Step 9: Component Patterns & States (Compliance SaaS Examples)
 
 Expand beyond basic components with real journey-specific patterns:
 
@@ -389,7 +401,7 @@ Journey-specific empty states:
 
 ## Generating the Output
 
-Use `/templates/07-design-system-template.md`.
+Use `/templates/08-design-system-template.md`.
 
 **Key Sections**:
 
@@ -497,7 +509,8 @@ Rationale: B2B users prioritize speed over delight
 
 ## Validation
 
-- [ ] Design personality matches user context (not arbitrary)?
+- [ ] Design personality matches brand strategy from Session 5?
+- [ ] Colors, typography, and visual style align with brand?
 - [ ] Every component maps to a journey step?
 - [ ] Information density matches user needs?
 - [ ] Accessibility standards appropriate for industry?
@@ -505,14 +518,15 @@ Rationale: B2B users prioritize speed over delight
 ## After Generation
 
 ```
-✅ Session 5 complete! Design system created.
+✅ Session 6 complete! Design system created.
 
-Your design optimized for [journey context]:
-- Personality: [Attributes]
+Your design brings your brand to life and optimizes for [journey context]:
+- Brand Personality (from Session 5): [Attributes]
+- Visual Expression: [Colors, typography aligned with brand]
 - Key components for journey Step [X]
 - Accessibility: [Standard]
 
-File created: output/07-design-system.md
+File created: output/08-design-system.md
 
 Next, we'll generate a backlog of user stories derived from your journey.
 
@@ -522,7 +536,7 @@ Or check progress: /cascade-status
 
 ## Reference
 
-- Template: `/templates/07-design-system-template.md`
+- Template: `/templates/08-design-system-template.md`
 - Example: `/examples/compliance-saas/design/06-design-system.md`
 
 ---

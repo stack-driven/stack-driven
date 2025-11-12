@@ -1,10 +1,10 @@
 ---
-description: Session 8 - Project scaffold from backlog to working codebase
+description: Session 9 - Project scaffold from backlog to working codebase
 ---
 
-# Session 8: Scaffold Project
+# Session 9: Scaffold Project
 
-This is **Session 8** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
+This is **Session 9** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
 
 ## Your Role
 
@@ -20,17 +20,19 @@ You are a senior engineer setting up a new project. Your job is to:
 
 **This is where strategy meets reality.**
 
-After 6 sessions, users have:
+After 8 sessions, users have:
 - ✅ Validated user journey
+- ✅ Validated product strategy
 - ✅ Chosen optimal tech stack
 - ✅ Defined strategy (mission, metrics, monetization, architecture)
+- ✅ Created brand strategy
 - ✅ Created design system
 - ✅ Generated prioritized backlog
 - ✅ Created GitHub issues
 
 **What they DON'T have**: A single line of working code.
 
-**Session 8 fixes this.** Generate a development environment where the first story can be implemented immediately.
+**Session 9 fixes this.** Generate a development environment where the first story can be implemented immediately.
 
 ---
 
@@ -43,7 +45,9 @@ Read: output/00-user-journey.md
 Read: output/01-product-strategy.md
 Read: output/02-tech-stack.md
 Read: output/06-architecture.md
-Read: output/08-backlog/BACKLOG.md
+Read: output/07-brand-strategy.md
+Read: output/08-design-system.md
+Read: output/09-backlog/BACKLOG.md
 ```
 
 **Extract**:
@@ -667,7 +671,7 @@ npm-debug.log*
 
 Create two outputs:
 
-#### A. Documentation (output/08-project-scaffold.md)
+#### A. Documentation (output/09-project-scaffold.md)
 
 ```markdown
 # Project Scaffold
@@ -717,7 +721,7 @@ Create two outputs:
 
 ## Setup Instructions
 
-1. Copy all files from `output/08-project-scaffold/` to your project root
+1. Copy all files from `output/09-project-scaffold/` to your project root
 2. Run `docker-compose up -d` to start local services
 3. Copy `.env.template` to `.env` and fill in values
 4. Run `npm install` (or `poetry install`)
@@ -742,7 +746,7 @@ After copying the scaffold:
    ```
 
 3. **Start implementing backlog**
-   - Reference `output/08-backlog/` for prioritized stories
+   - Reference `output/09-backlog/` for prioritized stories
    - Start with P0 (critical) stories
    - Each story references tech stack and design system
 
@@ -752,12 +756,12 @@ After copying the scaffold:
    - Update CI/CD to deploy on merge to main
 ```
 
-#### B. Actual Files (output/08-project-scaffold/)
+#### B. Actual Files (output/09-project-scaffold/)
 
 Create a directory with ALL generated files:
 
 ```
-output/08-project-scaffold/
+output/09-project-scaffold/
 ├── package.json
 ├── docker-compose.yml
 ├── .env.template
@@ -914,10 +918,10 @@ Your Scaffold:
 🐳 Local development services (Docker Compose)
 
 Next Steps:
-1. Copy files from output/08-project-scaffold/ to your project root
+1. Copy files from output/09-project-scaffold/ to your project root
 2. Follow README.md setup instructions
 3. Verify environment works (docker-compose up, npm run dev)
-4. Start implementing P0 stories from output/08-backlog/
+4. Start implementing P0 stories from output/09-backlog/
 
 When ready, start building or run: /cascade-status
 ```
@@ -936,7 +940,7 @@ When ready, start building or run: /cascade-status
 ## Reference
 
 - Previous session: `/create-gh-issues` (Session 7)
-- Next: Start building! Reference backlog in `output/08-backlog/` or GitHub issues
+- Next: Start building! Reference backlog in `output/09-backlog/` or GitHub issues
 - Example: `/examples/compliance-saas/scaffold/` (if created)
 
 ---

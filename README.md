@@ -23,7 +23,7 @@ Stack-Driven is a comprehensive framework for building products the right way:
 3. **Derive technology choices from journey requirements**
 4. **Generate a complete product strategy in 3-5 hours**
 
-This isn't just a prompt collection—it's a complete product development system that guides you through **7 progressive sessions**, each building on previous outputs, to go from idea to working development environment.
+This isn't just a prompt collection—it's a complete product development system that guides you through **9 progressive sessions**, each building on previous outputs, to go from idea to working development environment.
 
 ---
 
@@ -42,7 +42,7 @@ Everything flows from the user journey:
 
 ## The Cascade
 
-Stack-Driven guides you through **8 progressive sessions**, each building on previous outputs:
+Stack-Driven guides you through **9 progressive sessions**, each building on previous outputs:
 
 ```
 Session 1: /refine-journey         → output/00-user-journey.md
@@ -58,22 +58,25 @@ Session 4: /generate-strategy      → output/03-mission.md
                                     output/04-metrics.md
                                     output/05-monetization.md
                                     output/06-architecture.md
-  ↓ (AI reads all previous, creates design)
+  ↓ (AI reads all previous, creates brand strategy)
 
-Session 5: /create-design           → output/07-design-system.md
+Session 5: /create-brand-strategy  → output/07-brand-strategy.md
+  ↓ (AI reads brand, creates design system)
+
+Session 6: /create-design           → output/08-design-system.md
   ↓ (AI reads everything, generates backlog)
 
-Session 6: /generate-backlog        → output/08-backlog/
+Session 7: /generate-backlog        → output/09-backlog/
   ↓ (Push to GitHub)
 
-Session 7: /create-gh-issues        → GitHub issues
+Session 8: /create-gh-issues        → GitHub issues
   ↓ (Generate working development environment)
 
-Session 8: /scaffold-project        → output/08-project-scaffold.md
-                                    output/08-project-scaffold/ (actual code files)
+Session 9: /scaffold-project        → output/09-project-scaffold.md
+                                    output/09-project-scaffold/ (actual code files)
 ```
 
-**In 8 sessions** (5-7 hours total), you go from idea to working development environment with prioritized backlog.
+**In 9 sessions** (5-7 hours total), you go from idea to working development environment with prioritized backlog.
 
 ---
 
@@ -101,7 +104,8 @@ After each session, I'll tell you exactly what to run next:
 - `/create-product-strategy` - Validates journey with market analysis and competitive positioning
 - `/choose-tech-stack` - Analyzes your journey and strategy, recommends optimal tech
 - `/generate-strategy` - Derives mission, metrics, monetization, architecture
-- `/create-design` - Creates design system for your journey
+- `/create-brand-strategy` - Creates brand foundation that expresses journey value
+- `/create-design` - Creates design system that brings brand to life
 - `/generate-backlog` - Generates 30-50 prioritized user stories
 - `/create-gh-issues` - Pushes backlog to GitHub
 - `/scaffold-project` - Generates working development environment with actual code files
@@ -128,10 +132,11 @@ output/
 ├── 04-metrics.md (Session 4)
 ├── 05-monetization.md (Session 4)
 ├── 06-architecture.md (Session 4)
-├── 07-design-system.md (Session 5)
-├── 08-backlog/ (Session 6)
-└── 08-project-scaffold/ (Session 8 - actual code files)
-    ├── 08-project-scaffold.md (decisions documentation)
+├── 07-brand-strategy.md (Session 5)
+├── 08-design-system.md (Session 6)
+├── 09-backlog/ (Session 7)
+└── 09-project-scaffold/ (Session 9 - actual code files)
+    ├── 09-project-scaffold.md (decisions documentation)
     ├── package.json (or pyproject.toml)
     ├── docker-compose.yml
     ├── .env.template
@@ -391,15 +396,15 @@ Yes! In Session 2 (/choose-tech-stack), you can:
 - Note constraints ("must use AWS")
 - I'll adapt recommendations to your context
 
-### "Do I have to do all 8 sessions?"
+### "Do I have to do all 9 sessions?"
 
 Sessions 1-4 are critical (journey → strategy → stack → tactics).
-Sessions 5-6 are highly valuable (design → backlog).
-Session 7 is convenience (push to GitHub).
-Session 8 bridges strategy to code (scaffold dev environment).
+Sessions 5-7 are highly valuable (brand → design → backlog).
+Session 8 is convenience (push to GitHub).
+Session 9 bridges strategy to code (scaffold dev environment).
 
 Minimum viable cascade: Sessions 1-4 (2-3 hours).
-Complete cascade: Sessions 1-8 (5-7 hours).
+Complete cascade: Sessions 1-9 (5-7 hours).
 
 ---
 
