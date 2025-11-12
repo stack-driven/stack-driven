@@ -78,6 +78,9 @@ Session 7: /scaffold-project      → output/07-project-scaffold.md
 
 18. /generate-api-contracts    → output/18-api-contracts.md
     (API contracts - OpenAPI specs, endpoints, schemas, and authentication)
+
+19. /create-test-strategy      → output/19-test-strategy.md
+    (Testing strategy - unit, integration, E2E, performance, and security testing)
 ```
 
 **During Development**:
@@ -139,8 +142,9 @@ After Session 5+:
 ❌ 16-observability-strategy.md (Monitoring & SLOs)
 ❌ 17-database-schema.md     (Database schema)
 ❌ 18-api-contracts.md       (API contracts)
+❌ 19-test-strategy.md       (Testing strategy)
 
-Status: 0 of 11 post-core extensions complete (optional)
+Status: 0 of 12 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -236,7 +240,8 @@ After Session 5 (Backlog Complete), consider:
 ├─ /plan-deployment → Ship journey value via CI/CD (output/15-deployment-plan.md)
 ├─ /design-observability → Monitor journey success (output/16-observability-strategy.md)
 ├─ /design-database-schema → Complete ERD, migrations, data modeling (output/17-database-schema.md)
-└─ /generate-api-contracts → OpenAPI specs, endpoints, schemas (output/18-api-contracts.md)
+├─ /generate-api-contracts → OpenAPI specs, endpoints, schemas (output/18-api-contracts.md)
+└─ /create-test-strategy → Comprehensive testing strategy (output/19-test-strategy.md)
 
 During development:
 └─ /review-code → Code review framework (use anytime)
@@ -402,6 +407,7 @@ After Session 5+:
 - `/design-observability` - Monitoring & SLOs (output/16-observability-strategy.md)
 - `/design-database-schema` - Database schema & migrations (output/17-database-schema.md)
 - `/generate-api-contracts` - API contracts & OpenAPI specs (output/18-api-contracts.md)
+- `/create-test-strategy` - Testing strategy (output/19-test-strategy.md)
 
 Dev-time:
 - `/review-code` - Code review framework (anytime)
