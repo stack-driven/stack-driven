@@ -52,6 +52,9 @@ Session 11: /design-observability    → output/11-observability-strategy.md
 
 17. /setup-analytics           → output/17-analytics-plan.md
     (Analytics implementation - implements metrics from Session 4)
+
+21. /design-growth-strategy    → output/21-growth-strategy.md
+    (Growth strategy - acquisition channels, growth loops, and experiments)
 ```
 
 **After Session 7+** (Backlog Complete):
@@ -95,7 +98,7 @@ ls -la /home/user/stack-driven/output/
 
 Look for:
 - **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`, `07-brand-strategy.md`, `08-design-system.md`, `09-backlog/`, `09-project-scaffold.md`, `10-deployment-plan.md`, `11-observability-strategy.md`
-- **Post-core (After Session 4+)**: `16-user-experience.md`, `17-analytics-plan.md`
+- **Post-core (After Session 4+)**: `16-user-experience.md`, `17-analytics-plan.md`, `21-growth-strategy.md`
 - **Post-core (After Session 7+)**: `12-brand-naming.md`, `13-brand-messaging.md`, `14-brand-identity.md`, `15-content-guidelines.md`, `18-database-schema.md`, `19-api-contracts.md`, `20-test-strategy.md`
 
 ### Step 2: Display Complete Progress
@@ -130,6 +133,7 @@ POST-CORE EXTENSIONS (Optional - Journey-Informed)
 After Session 4+:
 ❌ 16-user-experience.md     (Detailed UX design)
 ❌ 17-analytics-plan.md      (Analytics implementation)
+❌ 21-growth-strategy.md     (Growth strategy)
 
 After Session 7+:
 ❌ 12-brand-naming.md        (Brand naming)
@@ -140,7 +144,7 @@ After Session 7+:
 ❌ 19-api-contracts.md       (API contracts)
 ❌ 20-test-strategy.md       (Testing strategy)
 
-Status: 0 of 9 post-core extensions complete (optional)
+Status: 0 of 10 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -169,6 +173,7 @@ Based on what files exist, determine the next recommended action:
 - **Also suggest** (optional):
   - `/design-user-experience` (detailed UX flows)
   - `/setup-analytics` (implement metrics tracking)
+  - `/design-growth-strategy` (acquisition channels and growth loops)
 
 **If 00-07 exist (Session 5 complete)**:
 - **Recommend**: Session 6 (`/create-design`)
@@ -239,7 +244,8 @@ If appropriate, suggest optional post-core commands:
 
 After Session 4 (Tactical Foundation Complete), consider:
 ├─ /design-user-experience → Detailed UX flows & wireframes (output/16-user-experience.md)
-└─ /setup-analytics → Implement metrics tracking (output/17-analytics-plan.md)
+├─ /setup-analytics → Implement metrics tracking (output/17-analytics-plan.md)
+└─ /design-growth-strategy → Acquisition channels & growth loops (output/21-growth-strategy.md)
 
 After Session 7 (Backlog Complete), consider:
 ├─ /discover-naming → Extend brand with name generation (output/12-brand-naming.md)
@@ -417,6 +423,7 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 After Session 4+:
 - `/design-user-experience` - Detailed UX flows (output/16-user-experience.md)
 - `/setup-analytics` - Analytics implementation (output/17-analytics-plan.md)
+- `/design-growth-strategy` - Growth strategy (output/21-growth-strategy.md)
 
 After Session 7+:
 - `/discover-naming` - Brand naming (output/12-brand-naming.md)
