@@ -1,22 +1,22 @@
 ---
-description: POST-CASCADE - Create monitoring, alerting, and observability strategy
+description: Session 11 - Create monitoring, alerting, and observability strategy
 ---
 
-# Design Observability (Post-Cascade Optional)
+# Design Observability (Session 11 - Core)
 
-You are helping the user create a comprehensive observability strategy including metrics, logs, traces, dashboards, alerts, SLOs, and incident response. This is typically done alongside or after deployment planning.
+You are helping the user create a comprehensive observability strategy including metrics, logs, traces, dashboards, alerts, SLOs, and incident response. This is a core session that ensures you can monitor and maintain production systems.
 
 ## When to Use This
 
-**Run AFTER Session 5** (`/generate-backlog`) or with `/plan-deployment`:
-- You're ready to deploy and need to monitor production
+**Run AFTER Session 10** (`/plan-deployment`):
+- You've planned deployment and now need monitoring strategy
 - You want observability from day one
 - You need to define SLOs and error budgets
 
-**Skip this** if:
-- You're pre-MVP and not deploying yet
-- You have a dedicated SRE team that handles this
-- Your platform provides built-in monitoring (and it's sufficient)
+**This is now a CORE session** because:
+- You can't improve what you can't measure
+- Observability is essential for reliable production systems
+- Monitoring ensures continuous delivery of journey value
 
 ## Your Task
 
@@ -31,24 +31,24 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 2. **Read the template structure**:
    ```bash
-   Read templates/16-observability-strategy-template.md
+   Read templates/11-observability-strategy-template.md
    ```
 
-3. **Check for architecture from Session 3** (recommended):
+3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read output/05-architecture.md
+   Read output/06-architecture.md
    ```
    - Understand system components to monitor
 
-4. **Check for metrics from Session 3** (recommended):
+4. **Check for metrics from Session 4** (recommended):
    ```bash
-   Read output/03-metrics.md
+   Read output/04-metrics.md
    ```
    - Business metrics inform technical monitoring
 
 5. **Check for deployment plan** (recommended):
    ```bash
-   Read output/15-deployment-plan.md
+   Read output/10-deployment-plan.md
    ```
    - Monitoring integrates with deployment
 
@@ -81,12 +81,12 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 8. **Write the output**:
    ```bash
-   Write output/16-observability-strategy.md
+   Write output/11-observability-strategy.md
    ```
 
 ## Output Location
 
-`output/16-observability-strategy.md`
+`output/11-observability-strategy.md`
 
 This will be used by:
 - Engineers implementing monitoring
@@ -128,7 +128,7 @@ The output follows this structure:
 ```
 You: Let's design your observability strategy. First, let me check your architecture and metrics...
 
-[Read output/05-architecture.md and output/03-metrics.md]
+[Read output/06-architecture.md and output/04-metrics.md]
 
 You: Got it - you have [services] and care about [business metrics]. What monitoring do you have today? What's missing?
 
@@ -178,7 +178,7 @@ User: [Describes incident process]
 
 [Continue through post-mortems, tools, costs...]
 
-You: Excellent! I've created your observability strategy in output/16-observability-strategy.md:
+You: Excellent! I've created your observability strategy in output/11-observability-strategy.md:
 - Observability philosophy (three pillars, alert on symptoms)
 - Golden signals for 4 services (latency, traffic, errors, saturation)
 - Structured logging (JSON format, 30-day retention, key fields)
@@ -213,4 +213,4 @@ Ready to implement? Start with golden signals and critical alerts.
 
 ---
 
-**Remember**: This is OPTIONAL but critical for production systems. You can't improve what you can't measure. Good observability = good reliability.
+**Remember**: This is a CORE session. You can't improve what you can't measure. Good observability = good reliability and continuous delivery of journey value.
