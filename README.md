@@ -23,7 +23,7 @@ Stack-Driven is a comprehensive framework for building products the right way:
 3. **Derive technology choices from journey requirements**
 4. **Generate a complete product strategy in 3-5 hours**
 
-This isn't just a prompt collection—it's a complete product development system that guides you through **9 progressive sessions**, each building on previous outputs, to go from idea to working development environment.
+This isn't just a prompt collection—it's a complete product development system that guides you through **11 progressive sessions**, each building on previous outputs, to go from idea to production-ready system.
 
 ---
 
@@ -42,41 +42,47 @@ Everything flows from the user journey:
 
 ## The Cascade
 
-Stack-Driven guides you through **9 progressive sessions**, each building on previous outputs:
+Stack-Driven guides you through **11 progressive sessions**, each building on previous outputs:
 
 ```
-Session 1: /refine-journey         → output/00-user-journey.md
+Session 1: /refine-journey          → output/00-user-journey.md
   ↓ (AI reads journey, validates with market)
 
-Session 2: /create-product-strategy → output/01-product-strategy.md
+Session 2: /create-product-strategy  → output/01-product-strategy.md
   ↓ (AI reads journey + strategy, chooses tech)
 
-Session 3: /choose-tech-stack      → output/02-tech-stack.md
+Session 3: /choose-tech-stack       → output/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, derives tactics)
 
-Session 4: /generate-strategy      → output/03-mission.md
-                                    output/04-metrics.md
-                                    output/05-monetization.md
-                                    output/06-architecture.md
+Session 4: /generate-strategy       → output/03-mission.md
+                                     output/04-metrics.md
+                                     output/05-monetization.md
+                                     output/06-architecture.md
   ↓ (AI reads all previous, creates brand strategy)
 
-Session 5: /create-brand-strategy  → output/07-brand-strategy.md
+Session 5: /create-brand-strategy   → output/07-brand-strategy.md
   ↓ (AI reads brand, creates design system)
 
-Session 6: /create-design           → output/08-design-system.md
+Session 6: /create-design            → output/08-design-system.md
   ↓ (AI reads everything, generates backlog)
 
-Session 7: /generate-backlog        → output/09-backlog/
+Session 7: /generate-backlog         → output/09-backlog/
   ↓ (Push to GitHub)
 
-Session 8: /create-gh-issues        → GitHub issues
+Session 8: /create-gh-issues         → GitHub issues
   ↓ (Generate working development environment)
 
-Session 9: /scaffold-project        → output/09-project-scaffold.md
-                                    output/09-project-scaffold/ (actual code files)
+Session 9: /scaffold-project         → output/09-project-scaffold.md
+                                     output/09-project-scaffold/ (actual code files)
+  ↓ (Plan deployment strategy)
+
+Session 10: /plan-deployment         → output/10-deployment-plan.md
+  ↓ (Design observability)
+
+Session 11: /design-observability    → output/11-observability-strategy.md
 ```
 
-**In 9 sessions** (5-7 hours total), you go from idea to working development environment with prioritized backlog.
+**In 11 sessions** (6-8 hours total), you go from idea to production-ready system with deployment and monitoring strategy.
 
 ---
 
@@ -109,12 +115,14 @@ After each session, I'll tell you exactly what to run next:
 - `/generate-backlog` - Generates 30-50 prioritized user stories
 - `/create-gh-issues` - Pushes backlog to GitHub
 - `/scaffold-project` - Generates working development environment with actual code files
+- `/plan-deployment` - Creates deployment strategy with CI/CD and environments
+- `/design-observability` - Designs monitoring, alerting, and SLO strategy
 
 ### 4. Build
 
-Your development environment is ready with package configs, Docker Compose, CI/CD pipeline, and setup documentation. Copy the scaffold files and start implementing your prioritized backlog.
+Your production-ready system is ready with package configs, Docker Compose, CI/CD pipeline, deployment strategy, observability setup, and documentation. Copy the scaffold files and start implementing your prioritized backlog.
 
-**Total time**: 5-7 hours to go from idea to working dev environment.
+**Total time**: 6-8 hours to go from idea to production-ready system.
 
 ---
 
@@ -135,13 +143,15 @@ output/
 ├── 07-brand-strategy.md (Session 5)
 ├── 08-design-system.md (Session 6)
 ├── 09-backlog/ (Session 7)
-└── 09-project-scaffold/ (Session 9 - actual code files)
-    ├── 09-project-scaffold.md (decisions documentation)
-    ├── package.json (or pyproject.toml)
-    ├── docker-compose.yml
-    ├── .env.template
-    ├── .github/workflows/ci.yml
-    └── README.md (setup instructions)
+├── 09-project-scaffold/ (Session 9 - actual code files)
+│   ├── 09-project-scaffold.md (decisions documentation)
+│   ├── package.json (or pyproject.toml)
+│   ├── docker-compose.yml
+│   ├── .env.template
+│   ├── .github/workflows/ci.yml
+│   └── README.md (setup instructions)
+├── 10-deployment-plan.md (Session 10)
+└── 11-observability-strategy.md (Session 11)
 ```
 
 ### `/examples/` - Reference Implementations
@@ -238,21 +248,33 @@ At any point, run `/cascade-status` to see:
    Monetization: How do we charge for value?
    Architecture: What patterns enable scale?
 
-5. DESIGN (/create-design)
+5. BRAND (/create-brand-strategy)
+   ↓
+   How do we express journey value?
+
+6. DESIGN (/create-design)
    ↓
    What components serve specific user flows?
 
-6. BACKLOG (/generate-backlog)
+7. BACKLOG (/generate-backlog)
    ↓
    What do we build first?
 
-7. GITHUB (/create-gh-issues)
+8. GITHUB (/create-gh-issues)
    ↓
    Ship features aligned with strategy
 
-8. SCAFFOLD (/scaffold-project)
+9. SCAFFOLD (/scaffold-project)
    ↓
    Generate working development environment
+
+10. DEPLOYMENT (/plan-deployment)
+    ↓
+    How do we ship reliably?
+
+11. OBSERVABILITY (/design-observability)
+    ↓
+    How do we monitor and maintain?
 ```
 
 ---
@@ -364,8 +386,14 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 - Environment configuration templates
 - Setup documentation
 
-**Time investment**: 4-6 hours
-**Output**: Production-ready strategy + backlog + working dev environment
+🚀 **Production Readiness**:
+- Deployment strategy (environments, CI/CD, rollout)
+- Observability strategy (metrics, logs, traces, SLOs)
+- Incident response procedures
+- Rollback and recovery plans
+
+**Time investment**: 6-8 hours
+**Output**: Production-ready system from idea to deployment + monitoring
 **Approach**: Generative (analyzed), not templated (copy-pasted)
 
 ---
@@ -396,15 +424,16 @@ Yes! In Session 2 (/choose-tech-stack), you can:
 - Note constraints ("must use AWS")
 - I'll adapt recommendations to your context
 
-### "Do I have to do all 9 sessions?"
+### "Do I have to do all 11 sessions?"
 
 Sessions 1-4 are critical (journey → strategy → stack → tactics).
 Sessions 5-7 are highly valuable (brand → design → backlog).
 Session 8 is convenience (push to GitHub).
 Session 9 bridges strategy to code (scaffold dev environment).
+Sessions 10-11 are essential for production (deployment + observability).
 
 Minimum viable cascade: Sessions 1-4 (2-3 hours).
-Complete cascade: Sessions 1-9 (5-7 hours).
+Complete core cascade: Sessions 1-11 (6-8 hours).
 
 ---
 
@@ -418,14 +447,18 @@ Complete cascade: Sessions 1-9 (5-7 hours).
 /refine-journey
 
 # 3. Follow the cascade (each session tells you what's next)
+# /create-product-strategy
 # /choose-tech-stack
 # /generate-strategy
+# /create-brand-strategy
 # /create-design
 # /generate-backlog
 # /create-gh-issues
 # /scaffold-project
+# /plan-deployment
+# /design-observability
 
-# 4. Copy scaffold files and start building!
+# 4. Copy scaffold files, set up CI/CD, implement monitoring, and start building!
 ```
 
 **Ready?** → Run `/cascade-status` to begin.

@@ -1,26 +1,22 @@
 ---
-description: POST-CASCADE - Create deployment strategy and CI/CD pipeline plan
+description: Session 10 - Create deployment strategy and CI/CD pipeline plan
 ---
 
-# Plan Deployment (Post-Cascade Optional)
+# Plan Deployment (Session 10 - Core)
 
-You are helping the user create a comprehensive deployment strategy including CI/CD pipelines, environments, rollout procedures, and rollback plans. This is typically done after Session 5 when you're ready to ship.
+You are helping the user create a comprehensive deployment strategy including CI/CD pipelines, environments, rollout procedures, and rollback plans. This is a core session that prepares your product for production deployment.
 
 ## When to Use This
 
-**Run AFTER Session 5** (`/generate-backlog`) if:
-- You have a backlog and are ready to start building/deploying
-- You need to plan infrastructure and deployment strategy
+**Run AFTER Session 9** (`/scaffold-project`):
+- You have a working development environment and need deployment strategy
+- You're ready to plan production infrastructure
 - You want CI/CD automation from day one
 
-**Or run AFTER Session 2** if:
-- You've chosen your tech stack and want to plan deployment early
-- You're setting up infrastructure before building features
-
-**Skip this** if:
-- You're pre-MVP and not deploying yet
-- You have a DevOps team that handles this
-- You're using a fully managed platform (Vercel, Heroku, etc.)
+**This is now a CORE session** because:
+- Every product needs a deployment strategy to ship
+- CI/CD and infrastructure decisions are foundational, not optional
+- Deployment planning ensures reliable delivery of journey value
 
 ## Your Task
 
@@ -35,19 +31,19 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 2. **Read the template structure**:
    ```bash
-   Read templates/15-deployment-plan-template.md
+   Read templates/10-deployment-plan-template.md
    ```
 
-3. **Check for architecture from Session 3** (recommended):
+3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read output/05-architecture.md
+   Read output/06-architecture.md
    ```
    - Understand system components and dependencies
    - Identify deployment requirements
 
-4. **Check for tech stack from Session 2** (recommended):
+4. **Check for tech stack from Session 3** (recommended):
    ```bash
-   Read output/01-tech-stack.md
+   Read output/02-tech-stack.md
    ```
    - Know what needs to be deployed (frontend, backend, database, etc.)
 
@@ -78,12 +74,12 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 7. **Write the output**:
    ```bash
-   Write output/15-deployment-plan.md
+   Write output/10-deployment-plan.md
    ```
 
 ## Output Location
 
-`output/15-deployment-plan.md`
+`output/10-deployment-plan.md`
 
 This will be used by:
 - Engineers setting up CI/CD
@@ -124,7 +120,7 @@ The output follows this structure:
 ```
 You: Let's plan your deployment strategy. First, let me check your tech stack and architecture...
 
-[Read output/01-tech-stack.md and output/05-architecture.md]
+[Read output/02-tech-stack.md and output/06-architecture.md]
 
 You: Got it - you have [frontend] + [backend] + [database]. How do you deploy today? What's painful?
 
@@ -169,7 +165,7 @@ User: [Describes rollback]
 
 [Continue through monitoring, runbooks, security...]
 
-You: Excellent! I've created your deployment plan in output/15-deployment-plan.md:
+You: Excellent! I've created your deployment plan in output/10-deployment-plan.md:
 - 3 environments (dev, staging, prod) with ephemeral preview environments
 - CI/CD pipeline (GitHub Actions): lint → test → build → deploy
 - Canary deployment pattern (5% → 50% → 100% with auto-rollback)
@@ -204,4 +200,4 @@ Ready to implement? Start with the CI/CD pipeline setup.
 
 ---
 
-**Remember**: This is OPTIONAL but highly recommended for any production system. Good deployment strategy = faster shipping and less stress.
+**Remember**: This is a CORE session. Good deployment strategy = faster shipping and less stress. Deployment planning is essential for reliably delivering journey value to users.
