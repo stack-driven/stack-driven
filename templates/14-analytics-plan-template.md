@@ -8,7 +8,7 @@
 
 This document defines the comprehensive analytics implementation plan including event tracking, funnels, dashboards, and tooling.
 
-**Based on**: Session 3 Metrics (output/03-metrics.md)
+**Based on**: Session 3 Metrics (product-guidelines/03-metrics.md)
 - Session 3: **WHAT** to measure (North Star, success metrics) - the strategy
 - This doc: **HOW** to measure (events, properties, dashboards, tools) - the implementation
 

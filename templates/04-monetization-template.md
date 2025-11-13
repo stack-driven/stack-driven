@@ -1,6 +1,6 @@
 # Monetization Strategy: [Your Product Name]
 
-> **Derived from**: output/00-user-journey.md (Charge where value is delivered)
+> **Derived from**: product-guidelines/00-user-journey.md (Charge where value is delivered)
 
 ---
 

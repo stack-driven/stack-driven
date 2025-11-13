@@ -9,9 +9,9 @@ You are helping the user discover the perfect brand name through systematic gene
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Mission statement (`output/02-mission.md`)
-- ✅ Brand strategy (`output/08-brand-strategy.md`)
+- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
+- ✅ Mission statement (`product-guidelines/02-mission.md`)
+- ✅ Brand strategy (`product-guidelines/08-brand-strategy.md`)
 
 Your brand name should express the value delivered in the user journey, grounded in your brand strategy.
 
@@ -26,7 +26,7 @@ This command READS previous outputs to create journey-aligned names:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - What's the core problem being solved?
    - What's the transformation users experience?
@@ -34,14 +34,14 @@ This command READS previous outputs to create journey-aligned names:
 
 2. **Read the mission**:
    ```bash
-   Read output/02-mission.md
+   Read product-guidelines/02-mission.md
    ```
    - What promise are you making?
    - What outcome do users achieve?
 
 3. **Read the brand strategy**:
    ```bash
-   Read output/08-brand-strategy.md
+   Read product-guidelines/08-brand-strategy.md
    ```
    - Brand purpose (why you exist)
    - Brand personality (how you show up)
@@ -58,9 +58,9 @@ Generate brand name candidates that express the value from the user journey thro
 
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read output/00-user-journey.md
-   Read output/02-mission.md
-   Read output/08-brand-strategy.md
+   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/02-mission.md
+   Read product-guidelines/08-brand-strategy.md
    ```
 
 2. **Read the template structure**:
@@ -106,12 +106,12 @@ Generate brand name candidates that express the value from the user journey thro
 
 7. **Write the output**:
    ```bash
-   Write output/09-brand-naming.md
+   Write product-guidelines/09-brand-naming.md
    ```
 
 ## Output Location
 
-`output/09-brand-naming.md`
+`product-guidelines/09-brand-naming.md`
 
 This will be read by:
 - `/define-messaging` - Uses chosen name in journey-aligned messaging
@@ -156,7 +156,7 @@ You: Based on trademark research, journey fit, and brand alignment, here are you
 
 [Show finalists with journey traceability]
 
-You: I've saved everything to output/09-brand-naming.md. My top 3 recommendations are:
+You: I've saved everything to product-guidelines/09-brand-naming.md. My top 3 recommendations are:
 1. [Name] - Expresses [journey value], fits [brand personality], available
 2. [Name] - Metaphor for [journey transformation], .com available
 3. [Name] - Clear connection to [journey problem], safe trademark

@@ -63,7 +63,7 @@ Guide the user through code review using the framework in `/prompts/technical/co
 
 ## No Output File
 
-This command does NOT write to `/output`. It provides immediate feedback in the conversation.
+This command does NOT write to `/product-guidelines`. It provides immediate feedback in the conversation.
 
 ## Code Review Checklist
 

@@ -1,6 +1,6 @@
 # Mission Statement: [Your Product Name]
 
-> **Derived from**: output/00-user-journey.md (Step [X] - the aha moment)
+> **Derived from**: product-guidelines/00-user-journey.md (Step [X] - the aha moment)
 
 ---
 

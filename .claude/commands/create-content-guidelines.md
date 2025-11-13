@@ -40,14 +40,14 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 3. **Check for messaging inputs** (recommended):
    ```bash
-   Read output/10-brand-messaging.md
+   Read product-guidelines/10-brand-messaging.md
    ```
    - If exists: Expand messaging framework into detailed guidelines
    - If not exists: Create guidelines from scratch with user input
 
 4. **Check for design system** (optional):
    ```bash
-   Read output/06-design-system.md
+   Read product-guidelines/06-design-system.md
    ```
    - If exists: Ensure content guidelines align with visual design tone
 
@@ -71,12 +71,12 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 7. **Write the output**:
    ```bash
-   Write output/12-content-guidelines.md
+   Write product-guidelines/12-content-guidelines.md
    ```
 
 ## Output Location
 
-`output/12-content-guidelines.md`
+`product-guidelines/12-content-guidelines.md`
 
 This will be used by:
 - Content writers and marketers
@@ -114,7 +114,7 @@ The output follows this structure:
 ```
 You: Let's create your content guidelines. First, let me check if you have brand messaging...
 
-[Check for output/10-brand-messaging.md]
+[Check for product-guidelines/10-brand-messaging.md]
 
 You: Great! I see your voice is [casual/witty/professional]. Now let's get specific. Which style guide do you follow? AP? Chicago? Or custom rules?
 
@@ -138,7 +138,7 @@ User: [Describes tone shifts]
 
 [Continue through patterns...]
 
-You: Perfect. I've created your comprehensive content guidelines in output/12-content-guidelines.md, including:
+You: Perfect. I've created your comprehensive content guidelines in product-guidelines/12-content-guidelines.md, including:
 - Voice/tone foundation with 15 examples
 - Grammar rules (capitalization, numbers, dates)
 - Word list (20+ prefer/avoid pairs)

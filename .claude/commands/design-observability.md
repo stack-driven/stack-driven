@@ -36,19 +36,19 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read output/06-architecture.md
+   Read product-guidelines/06-architecture.md
    ```
    - Understand system components to monitor
 
 4. **Check for metrics from Session 4** (recommended):
    ```bash
-   Read output/04-metrics.md
+   Read product-guidelines/04-metrics.md
    ```
    - Business metrics inform technical monitoring
 
 5. **Check for deployment plan** (recommended):
    ```bash
-   Read output/10-deployment-plan.md
+   Read product-guidelines/10-deployment-plan.md
    ```
    - Monitoring integrates with deployment
 
@@ -81,12 +81,12 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 8. **Write the output**:
    ```bash
-   Write output/11-observability-strategy.md
+   Write product-guidelines/11-observability-strategy.md
    ```
 
 ## Output Location
 
-`output/11-observability-strategy.md`
+`product-guidelines/11-observability-strategy.md`
 
 This will be used by:
 - Engineers implementing monitoring
@@ -128,7 +128,7 @@ The output follows this structure:
 ```
 You: Let's design your observability strategy. First, let me check your architecture and metrics...
 
-[Read output/06-architecture.md and output/04-metrics.md]
+[Read product-guidelines/06-architecture.md and product-guidelines/04-metrics.md]
 
 You: Got it - you have [services] and care about [business metrics]. What monitoring do you have today? What's missing?
 
@@ -178,7 +178,7 @@ User: [Describes incident process]
 
 [Continue through post-mortems, tools, costs...]
 
-You: Excellent! I've created your observability strategy in output/11-observability-strategy.md:
+You: Excellent! I've created your observability strategy in product-guidelines/11-observability-strategy.md:
 - Observability philosophy (three pillars, alert on symptoms)
 - Golden signals for 4 services (latency, traffic, errors, saturation)
 - Structured logging (JSON format, 30-day retention, key fields)

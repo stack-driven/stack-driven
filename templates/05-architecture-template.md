@@ -1,6 +1,6 @@
 # Architecture Principles: [Your Product Name]
 
-> **Derived from**: output/01-tech-stack.md and journey requirements
+> **Derived from**: product-guidelines/01-tech-stack.md and journey requirements
 
 ---
 

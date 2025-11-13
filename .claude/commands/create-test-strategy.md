@@ -48,18 +48,18 @@ Create comprehensive testing strategy including:
 **Required inputs:**
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
-Read: output/05-architecture.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-tech-stack.md
+Read: product-guidelines/05-architecture.md
 ```
 
 **Highly recommended inputs:**
 
 ```
-Read: output/07-backlog/BACKLOG.md
-Read: output/07-project-scaffold.md (if available)
-Read: output/17-database-schema.md (if available)
-Read: output/18-api-contracts.md (if available)
+Read: product-guidelines/07-backlog/BACKLOG.md
+Read: product-guidelines/07-project-scaffold.md (if available)
+Read: product-guidelines/17-database-schema.md (if available)
+Read: product-guidelines/18-api-contracts.md (if available)
 ```
 
 **Extract from Journey**:
@@ -1191,7 +1191,7 @@ jobs:
 
 This command generates:
 
-**1. Testing Strategy Document** (`output/19-test-strategy.md`):
+**1. Testing Strategy Document** (`product-guidelines/19-test-strategy.md`):
 - Testing philosophy and principles
 - Unit, integration, E2E testing strategies
 - Test coverage goals and quality gates
@@ -1201,14 +1201,14 @@ This command generates:
 - Testing workflows (TDD, regression)
 - "What We DIDN'T Choose" analysis
 
-**2. Test Configuration Files** (`output/19-test-strategy/`):
+**2. Test Configuration Files** (`product-guidelines/19-test-strategy/`):
 - `pytest.ini` or `vitest.config.ts` (test runner config)
 - `.coveragerc` (coverage configuration)
 - `tests/conftest.py` (pytest fixtures)
 - `tests/factories.py` (test data factories)
 - `tests/fixtures/` (sample test data files)
 
-**3. Example Tests** (`output/19-test-strategy/examples/`):
+**3. Example Tests** (`product-guidelines/19-test-strategy/examples/`):
 - `example_unit_test.py` or `.test.ts`
 - `example_integration_test.py`
 - `example_e2e_test.py` or `.spec.ts`
@@ -1301,11 +1301,11 @@ Don't waste time on:
 - 100% coverage goals
 
 **Reference files:**
-- Journey: `output/00-user-journey.md`
-- Tech stack: `output/01-tech-stack.md`
-- Architecture: `output/05-architecture.md`
-- Backlog: `output/07-backlog/BACKLOG.md`
-- Scaffold: `output/07-project-scaffold.md`
+- Journey: `product-guidelines/00-user-journey.md`
+- Tech stack: `product-guidelines/01-tech-stack.md`
+- Architecture: `product-guidelines/05-architecture.md`
+- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
+- Scaffold: `product-guidelines/07-project-scaffold.md`
 
 ---
 

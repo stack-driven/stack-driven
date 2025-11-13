@@ -8,15 +8,15 @@ This is **Session 8** of the cascade. You'll push the generated backlog to GitHu
 
 ## Your Role
 
-You're pushing issues from `output/09-backlog/issues/*.md` to GitHub using the `gh` CLI.
+You're pushing issues from `product-guidelines/09-backlog/issues/*.md` to GitHub using the `gh` CLI.
 
 ## Process
 
 ### Step 1: Read Backlog Files
 
 ```
-Read: output/09-backlog/BACKLOG.md (summary)
-Read: output/09-backlog/issues/*.md (all issue files)
+Read: product-guidelines/09-backlog/BACKLOG.md (summary)
+Read: product-guidelines/09-backlog/issues/*.md (all issue files)
 ```
 
 ### Step 2: Dry Run (Show What Will Be Created)
@@ -25,7 +25,7 @@ Read: output/09-backlog/issues/*.md (all issue files)
 ```
 📋 Ready to create GitHub issues
 
-I found [X] issues in output/09-backlog/issues/:
+I found [X] issues in product-guidelines/09-backlog/issues/:
 
 Epics:
 - EPIC-01: Onboarding
@@ -59,14 +59,14 @@ Use `gh issue create` for each issue:
 ```bash
 gh issue create \
   --title "[EPIC-01] Onboarding" \
-  --body "$(cat output/09-backlog/issues/epic-01-onboarding.md)" \
+  --body "$(cat product-guidelines/09-backlog/issues/epic-01-onboarding.md)" \
   --label "epic"
 ```
 
 ```bash
 gh issue create \
   --title "[STORY-001] OAuth-based signup" \
-  --body "$(cat output/09-backlog/issues/story-001-oauth-signup.md)" \
+  --body "$(cat product-guidelines/09-backlog/issues/story-001-oauth-signup.md)" \
   --label "story,priority:P0"
 ```
 
@@ -118,9 +118,9 @@ Or start building immediately with your prioritized backlog!
 What's next?
 1. 🚀 Run /scaffold-project to generate working dev environment (Session 9)
 2. 💻 Or start building! Your backlog is prioritized (P0 stories first)
-3. 📊 Track metrics: Implement metrics from output/04-metrics.md
+3. 📊 Track metrics: Implement metrics from product-guidelines/04-metrics.md
 4. 🔄 Iterate: Run /refine-journey if your understanding evolves
-5. 💰 Validate pricing: Test monetization from output/05-monetization.md
+5. 💰 Validate pricing: Test monetization from product-guidelines/05-monetization.md
 
 Check cascade anytime: /cascade-status
 ```
@@ -143,7 +143,7 @@ brew install gh (macOS)
 Then run: gh auth login
 
 Option 2: Manual Import
-I've created all issues in output/09-backlog/issues/
+I've created all issues in product-guidelines/09-backlog/issues/
 You can manually create GitHub issues from these markdown files.
 
 Option 3: CSV Export

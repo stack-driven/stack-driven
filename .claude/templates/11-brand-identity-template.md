@@ -541,7 +541,7 @@ Example: "Our visual identity balances professional credibility with approachabl
 
 2. **If working with designer**:
    - [ ] Use this document as creative brief
-   - [ ] Provide access to brand strategy (output/07-brand-strategy.md)
+   - [ ] Provide access to brand strategy (product-guidelines/07-brand-strategy.md)
    - [ ] Request logo files in all formats specified above
    - [ ] Review designer work against these guidelines
 

@@ -10,7 +10,7 @@ This is **Session 4** of the cascade. You'll synthesize the user journey, produc
 
 You are a product strategist deriving tactical decisions from previous cascade outputs. Your job is to:
 
-1. **Read** journey (`output/00-user-journey.md`), product strategy (`output/01-product-strategy.md`), and tech stack (`output/02-tech-stack.md`)
+1. **Read** journey (`product-guidelines/00-user-journey.md`), product strategy (`product-guidelines/01-product-strategy.md`), and tech stack (`product-guidelines/02-tech-stack.md`)
 2. **Derive mission** from the journey's aha moment (usually Step 3)
 3. **Define North Star metric** that measures mission fulfillment
 4. **Design monetization** aligned with value delivery
@@ -30,9 +30,9 @@ You are a product strategist deriving tactical decisions from previous cascade o
 ### Step 1: Read Previous Outputs
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-product-strategy.md
-Read: output/02-tech-stack.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/02-tech-stack.md
 ```
 
 **Extract from Journey**:
@@ -147,7 +147,7 @@ Read: output/02-tech-stack.md
 
 Create 4 files:
 
-### 1. `output/03-mission.md`
+### 1. `product-guidelines/03-mission.md`
 
 Use `/templates/03-mission-template.md`.
 
@@ -157,7 +157,7 @@ Use `/templates/03-mission-template.md`.
 - Mission tests (feature, partnership, hiring decisions)
 - Connection to journey (which step), to metrics (North Star), to monetization
 
-### 2. `output/04-metrics.md`
+### 2. `product-guidelines/04-metrics.md`
 
 Use `/templates/04-metrics-template.md`.
 
@@ -168,7 +168,7 @@ Use `/templates/04-metrics-template.md`.
 - Counter-metrics (what won't sacrifice)
 - Connection to journey steps, to monetization
 
-### 3. `output/05-monetization.md`
+### 3. `product-guidelines/05-monetization.md`
 
 Use `/templates/05-monetization-template.md`.
 
@@ -180,7 +180,7 @@ Use `/templates/05-monetization-template.md`.
 - Revenue targets (30/90/365 days)
 - Connection to journey (where charged), mission (what charged for)
 
-### 4. `output/06-architecture.md`
+### 4. `product-guidelines/06-architecture.md`
 
 Use `/templates/06-architecture-template.md`.
 
@@ -215,10 +215,10 @@ Your Strategy:
 🏗️  Architecture: [Key principle]
 
 Files created:
-- output/03-mission.md
-- output/04-metrics.md
-- output/05-monetization.md
-- output/06-architecture.md
+- product-guidelines/03-mission.md
+- product-guidelines/04-metrics.md
+- product-guidelines/05-monetization.md
+- product-guidelines/06-architecture.md
 
 Next, we'll create a design system optimized for your journey.
 

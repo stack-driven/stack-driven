@@ -45,41 +45,41 @@ Everything flows from the user journey:
 Stack-Driven guides you through **11 progressive sessions**, each building on previous outputs:
 
 ```
-Session 1: /refine-journey          → output/00-user-journey.md
+Session 1: /refine-journey          → product-guidelines/00-user-journey.md
   ↓ (AI reads journey, validates with market)
 
-Session 2: /create-product-strategy  → output/01-product-strategy.md
+Session 2: /create-product-strategy  → product-guidelines/01-product-strategy.md
   ↓ (AI reads journey + strategy, chooses tech)
 
-Session 3: /choose-tech-stack       → output/02-tech-stack.md
+Session 3: /choose-tech-stack       → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, derives tactics)
 
-Session 4: /generate-strategy       → output/03-mission.md
-                                     output/04-metrics.md
-                                     output/05-monetization.md
-                                     output/06-architecture.md
+Session 4: /generate-strategy       → product-guidelines/03-mission.md
+                                     product-guidelines/04-metrics.md
+                                     product-guidelines/05-monetization.md
+                                     product-guidelines/06-architecture.md
   ↓ (AI reads all previous, creates brand strategy)
 
-Session 5: /create-brand-strategy   → output/07-brand-strategy.md
+Session 5: /create-brand-strategy   → product-guidelines/07-brand-strategy.md
   ↓ (AI reads brand, creates design system)
 
-Session 6: /create-design            → output/08-design-system.md
+Session 6: /create-design            → product-guidelines/08-design-system.md
   ↓ (AI reads everything, generates backlog)
 
-Session 7: /generate-backlog         → output/09-backlog/
+Session 7: /generate-backlog         → product-guidelines/09-backlog/
   ↓ (Push to GitHub)
 
 Session 8: /create-gh-issues         → GitHub issues
   ↓ (Generate working development environment)
 
-Session 9: /scaffold-project         → output/09-project-scaffold.md
-                                     output/09-project-scaffold/ (actual code files)
+Session 9: /scaffold-project         → product-guidelines/09-project-scaffold.md
+                                     product-guidelines/09-project-scaffold/ (actual code files)
   ↓ (Plan deployment strategy)
 
-Session 10: /plan-deployment         → output/10-deployment-plan.md
+Session 10: /plan-deployment         → product-guidelines/10-deployment-plan.md
   ↓ (Design observability)
 
-Session 11: /design-observability    → output/11-observability-strategy.md
+Session 11: /design-observability    → product-guidelines/11-observability-strategy.md
 ```
 
 **In 11 sessions** (6-8 hours total), you go from idea to production-ready system with deployment and monitoring strategy.
@@ -128,11 +128,11 @@ Your production-ready system is ready with package configs, Docker Compose, CI/C
 
 ## Repository Structure
 
-### `/output/` - YOUR Generated Strategy
+### `/product-guidelines/` - YOUR Generated Strategy
 
 **This is gitignored** - each user generates their own cascade:
 ```
-output/
+product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
 ├── 02-tech-stack.md (Session 3)

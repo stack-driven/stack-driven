@@ -83,7 +83,7 @@ Before generating the output, confirm you have:
 
 Once you have complete information, use the template at `/templates/00-user-journey-template.md` as a structure guide.
 
-### Create: `output/00-user-journey.md`
+### Create: `product-guidelines/00-user-journey.md`
 
 **Structure**:
 1. Primary User Persona
@@ -125,7 +125,7 @@ Before writing the file, verify:
 
 ## Writing the File
 
-Use the Write tool to create `output/00-user-journey.md`.
+Use the Write tool to create `product-guidelines/00-user-journey.md`.
 
 **Tone**:
 - Specific, not generic
@@ -182,7 +182,7 @@ Once you've created the file:
 
 **You**: "Got it. Walk me through how they'd use your solution. What's step 1?"
 
-[Continue conversation until you have the complete journey, then generate output/00-user-journey.md]
+[Continue conversation until you have the complete journey, then generate product-guidelines/00-user-journey.md]
 
 ## Important Reminders
 
