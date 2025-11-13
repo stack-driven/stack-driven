@@ -23,13 +23,14 @@ Read: product-guidelines/04-metrics.md
 Read: product-guidelines/05-monetization.md
 Read: product-guidelines/06-architecture.md
 Read: product-guidelines/17-database-schema-essentials.md
-Read: product-guidelines/08-api-contracts.md
+Read: product-guidelines/08-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy.md
 ```
 
 **Context Optimization**: We read essentials files for significant context reduction:
 - `11-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
 - `17-database-schema-essentials.md` (not `17-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
+- `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 

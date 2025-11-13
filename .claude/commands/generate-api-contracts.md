@@ -383,7 +383,57 @@ Write `product-guidelines/08-api-contracts.md` with:
 
 ---
 
-### Step 10: Validate API Design
+### Step 10: Create Essentials Version for Backlog Generation
+
+**IMPORTANT**: Create a condensed essentials version optimized for Session 10 (backlog generation).
+
+Use template at `templates/18-api-contracts-essentials-template.md` to create `product-guidelines/08-api-contracts-essentials.md` with:
+
+**What to include** (target: 100-150 lines):
+- API configuration (style, auth, pagination, rate limiting)
+- Endpoint lists organized by journey step
+- Brief description for each endpoint (one line)
+- Common patterns (pagination params, response codes)
+- Story scoping guidance for backlog generation
+
+**What to EXCLUDE** (these belong in full `08-api-contracts.md`):
+- Complete OpenAPI 3.0 specification
+- Request/response schemas
+- Error response definitions
+- Authentication flow details
+- Component schemas
+- Example requests/responses
+- Validation rules
+- Rate limit headers
+
+**Why**: Session 10 (backlog generation) only needs the endpoint list to create stories. Loading the full 782-line OpenAPI spec bloats context by ~3,128 tokens when only ~280 tokens are needed.
+
+**Format**:
+```markdown
+# API Contracts Essentials (For Backlog Generation)
+
+> See `08-api-contracts.md` for complete OpenAPI 3.0 specification
+
+## API Configuration
+- API Style: [REST/GraphQL]
+- Authentication: [JWT/OAuth]
+...
+
+## Endpoints by Journey Step
+
+### Authentication (Journey Step 0)
+- `POST /api/auth/login` - User login
+...
+
+### [Resource] Endpoints (Journey Step X)
+- `POST /api/[resource]` - Create [resource]
+- `GET /api/[resource]` - List [resource] (paginated)
+...
+```
+
+---
+
+### Step 11: Validate API Design
 
 **Quality Checklist:**
 
@@ -474,9 +524,10 @@ Write `product-guidelines/08-api-contracts.md` with:
 
 ## Output Files
 
-1. **`product-guidelines/08-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
-2. **`product-guidelines/08-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
-3. **`product-guidelines/08-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
+1. **`product-guidelines/08-api-contracts.md`**: Full documentation (architecture, design decisions, endpoints, auth, errors, testing, OpenAPI spec)
+2. **`product-guidelines/08-api-contracts-essentials.md`**: Condensed version for Session 10 (backlog generation) - endpoint lists only (~150 lines)
+3. **`product-guidelines/08-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
+4. **`product-guidelines/08-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -517,6 +568,13 @@ Before completing this session, verify:
 - [ ] Design decisions reference journey
 - [ ] Testing examples provided
 - [ ] Setup instructions clear
+
+**Essentials Version (for backlog generation):**
+- [ ] Essentials file created at `08-api-contracts-essentials.md`
+- [ ] All endpoints listed with journey step mapping
+- [ ] File is 100-200 lines (not bloated with schemas)
+- [ ] Includes API config, pagination patterns, response codes
+- [ ] References full file for complete specification
 
 ---
 
