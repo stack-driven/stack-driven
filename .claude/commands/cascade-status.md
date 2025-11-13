@@ -54,11 +54,14 @@ Session 9: /scaffold-project        → output/09-project-scaffold.md
 
 **After Session 7+** (Backlog Complete):
 ```
-10. /discover-naming           → output/10-brand-naming.md
+09. /discover-naming           → output/09-brand-naming.md
     (Brand naming - names the journey solution, extends Session 5 brand)
 
-11. /define-messaging          → output/11-brand-messaging.md
+10. /define-messaging          → output/10-brand-messaging.md
     (Messaging framework - communicates journey value in brand voice)
+
+11. /design-brand-identity     → output/11-brand-identity.md
+    (Brand identity - logo, visual system, and usage guidelines)
 
 12. /create-content-guidelines → output/12-content-guidelines.md
     (Content style guide - journey-aligned content standards)
@@ -97,7 +100,7 @@ ls -la /home/user/stack-driven/output/
 Look for:
 - **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`, `07-brand-strategy.md`, `08-design-system.md`, `09-backlog/`, `09-project-scaffold.md`
 - **Post-core (After Session 4+)**: `13-user-experience.md`, `14-analytics-plan.md`
-- **Post-core (After Session 7+)**: `10-brand-naming.md`, `11-brand-messaging.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`, `17-database-schema.md`, `18-api-contracts.md`, `19-test-strategy.md`
+- **Post-core (After Session 7+)**: `09-brand-naming.md`, `10-brand-messaging.md`, `11-brand-identity.md`, `12-content-guidelines.md`, `15-deployment-plan.md`, `16-observability-strategy.md`, `17-database-schema.md`, `18-api-contracts.md`, `19-test-strategy.md`
 
 ### Step 2: Display Complete Progress
 
@@ -131,8 +134,9 @@ After Session 4+:
 ❌ 14-analytics-plan.md      (Analytics implementation)
 
 After Session 7+:
-❌ 10-brand-naming.md        (Brand naming)
-❌ 11-brand-messaging.md     (Messaging framework)
+❌ 09-brand-naming.md        (Brand naming)
+❌ 10-brand-messaging.md     (Messaging framework)
+❌ 11-brand-identity.md      (Brand identity)
 ❌ 12-content-guidelines.md  (Content style guide)
 ❌ 15-deployment-plan.md     (Deployment strategy)
 ❌ 16-observability-strategy.md (Monitoring & SLOs)
@@ -140,7 +144,7 @@ After Session 7+:
 ❌ 18-api-contracts.md       (API contracts)
 ❌ 19-test-strategy.md       (Testing strategy)
 
-Status: 0 of 11 post-core extensions complete (optional)
+Status: 0 of 12 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -236,8 +240,9 @@ After Session 4 (Tactical Foundation Complete), consider:
 └─ /setup-analytics → Implement metrics tracking (output/14-analytics-plan.md)
 
 After Session 7 (Backlog Complete), consider:
-├─ /discover-naming → Extend brand with name generation (output/10-brand-naming.md)
-├─ /define-messaging → Communicate journey value (output/11-brand-messaging.md)
+├─ /discover-naming → Extend brand with name generation (output/09-brand-naming.md)
+├─ /define-messaging → Communicate journey value (output/10-brand-messaging.md)
+├─ /design-brand-identity → Logo and visual identity system (output/11-brand-identity.md)
 ├─ /create-content-guidelines → Journey-aligned content (output/12-content-guidelines.md)
 ├─ /plan-deployment → Ship journey value via CI/CD (output/15-deployment-plan.md)
 ├─ /design-observability → Monitor journey success (output/16-observability-strategy.md)
@@ -367,9 +372,10 @@ You have everything from idea to working dev environment. Now go ship! 🎯
 **Track and display** them:
 ```
 POST-CASCADE EXTENSIONS COMPLETE:
-✅ 10-analytics-plan.md (Analytics implementation ready)
-✅ 11-deployment-plan.md (Deployment strategy defined)
-❌ 12-observability-strategy.md (Not started)
+✅ 14-analytics-plan.md (Analytics implementation ready)
+✅ 15-deployment-plan.md (Deployment strategy defined)
+✅ 11-brand-identity.md (Brand identity created)
+❌ 16-observability-strategy.md (Not started)
 
 You're well-prepared for production! Consider completing observability for full operational readiness.
 ```
@@ -405,8 +411,9 @@ After Session 4+:
 - `/setup-analytics` - Analytics implementation (output/14-analytics-plan.md)
 
 After Session 7+:
-- `/discover-naming` - Brand naming (output/10-brand-naming.md)
-- `/define-messaging` - Messaging framework (output/11-brand-messaging.md)
+- `/discover-naming` - Brand naming (output/09-brand-naming.md)
+- `/define-messaging` - Messaging framework (output/10-brand-messaging.md)
+- `/design-brand-identity` - Brand identity system (output/11-brand-identity.md)
 - `/create-content-guidelines` - Content style guide (output/12-content-guidelines.md)
 - `/plan-deployment` - Deployment & CI/CD (output/15-deployment-plan.md)
 - `/design-observability` - Monitoring & SLOs (output/16-observability-strategy.md)
