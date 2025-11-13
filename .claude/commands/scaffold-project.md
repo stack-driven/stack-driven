@@ -1,10 +1,10 @@
 ---
-description: Session 9 - Project scaffold from backlog to working codebase
+description: Session 12 - Project scaffold from backlog to working codebase
 ---
 
-# Session 9: Scaffold Project
+# Session 12: Scaffold Project
 
-This is **Session 9** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
+This is **Session 12** of the cascade. You'll generate a complete, runnable development environment that bridges the gap between your strategic backlog and actual code implementation.
 
 ## Your Role
 
@@ -20,19 +20,20 @@ You are a senior engineer setting up a new project. Your job is to:
 
 **This is where strategy meets reality.**
 
-After 8 sessions, users have:
+After 11 sessions, users have:
 - ✅ Validated user journey
 - ✅ Validated product strategy
 - ✅ Chosen optimal tech stack
 - ✅ Defined strategy (mission, metrics, monetization, architecture)
-- ✅ Created brand strategy
-- ✅ Created design system
+- ✅ Designed database schema
+- ✅ Generated API contracts
+- ✅ Created testing strategy
 - ✅ Generated prioritized backlog
 - ✅ Created GitHub issues
 
 **What they DON'T have**: A single line of working code.
 
-**Session 9 fixes this.** Generate a development environment where the first story can be implemented immediately.
+**Session 12 fixes this.** Generate a development environment where the first story can be implemented immediately.
 
 ---
 
@@ -45,9 +46,10 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/06-architecture.md
-Read: product-guidelines/07-brand-strategy.md
-Read: product-guidelines/08-design-system.md
-Read: product-guidelines/09-backlog/BACKLOG.md
+Read: product-guidelines/07-database-schema.md
+Read: product-guidelines/08-api-contracts.md
+Read: product-guidelines/09-test-strategy.md
+Read: product-guidelines/10-backlog/BACKLOG.md
 ```
 
 **Extract**:
@@ -671,7 +673,7 @@ npm-debug.log*
 
 Create two outputs:
 
-#### A. Documentation (product-guidelines/09-project-scaffold.md)
+#### A. Documentation (product-guidelines/12-project-scaffold.md)
 
 ```markdown
 # Project Scaffold
@@ -721,7 +723,7 @@ Create two outputs:
 
 ## Setup Instructions
 
-1. Copy all files from `product-guidelines/09-project-scaffold/` to your project root
+1. Copy all files from `product-guidelines/12-project-scaffold/` to your project root
 2. Run `docker-compose up -d` to start local services
 3. Copy `.env.template` to `.env` and fill in values
 4. Run `npm install` (or `poetry install`)
@@ -746,7 +748,7 @@ After copying the scaffold:
    ```
 
 3. **Start implementing backlog**
-   - Reference `product-guidelines/09-backlog/` for prioritized stories
+   - Reference `product-guidelines/10-backlog/` for prioritized stories
    - Start with P0 (critical) stories
    - Each story references tech stack and design system
 
@@ -756,12 +758,12 @@ After copying the scaffold:
    - Update CI/CD to deploy on merge to main
 ```
 
-#### B. Actual Files (product-guidelines/09-project-scaffold/)
+#### B. Actual Files (product-guidelines/12-project-scaffold/)
 
 Create a directory with ALL generated files:
 
 ```
-product-guidelines/09-project-scaffold/
+product-guidelines/12-project-scaffold/
 ├── package.json
 ├── docker-compose.yml
 ├── .env.template
@@ -918,10 +920,10 @@ Your Scaffold:
 🐳 Local development services (Docker Compose)
 
 Next Steps:
-1. Copy files from product-guidelines/09-project-scaffold/ to your project root
+1. Copy files from product-guidelines/12-project-scaffold/ to your project root
 2. Follow README.md setup instructions
 3. Verify environment works (docker-compose up, npm run dev)
-4. Start implementing P0 stories from product-guidelines/09-backlog/
+4. Start implementing P0 stories from product-guidelines/10-backlog/
 
 When ready, start building or run: /cascade-status
 ```
@@ -940,7 +942,7 @@ When ready, start building or run: /cascade-status
 ## Reference
 
 - Previous session: `/create-gh-issues` (Session 7)
-- Next: Start building! Reference backlog in `product-guidelines/09-backlog/` or GitHub issues
+- Next: Start building! Reference backlog in `product-guidelines/10-backlog/` or GitHub issues
 - Example: `/examples/compliance-saas/scaffold/` (if created)
 
 ---

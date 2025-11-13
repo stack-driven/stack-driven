@@ -1,10 +1,10 @@
 ---
-description: Session 7 - Generate complete backlog from journey through to design
+description: Session 10 - Generate complete backlog from journey through to technical specs
 ---
 
-# Session 7: Generate Backlog
+# Session 10: Generate Backlog
 
-This is **Session 7** of the cascade. You'll create a production-ready backlog where every issue traces to user value.
+This is **Session 10** of the cascade. You'll create a production-ready backlog where every issue traces to user value and is informed by technical specifications (database schema, API contracts, testing strategy).
 
 ## Your Role
 
@@ -22,9 +22,12 @@ Read: product-guidelines/03-mission.md
 Read: product-guidelines/04-metrics.md
 Read: product-guidelines/05-monetization.md
 Read: product-guidelines/06-architecture.md
-Read: product-guidelines/07-brand-strategy.md
-Read: product-guidelines/08-design-system.md
+Read: product-guidelines/07-database-schema.md
+Read: product-guidelines/08-api-contracts.md
+Read: product-guidelines/09-test-strategy.md
 ```
+
+Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 
 ### Step 2: Generate Epic Structure
 
@@ -104,7 +107,7 @@ Example:
 ### Create Directory Structure:
 
 ```
-product-guidelines/09-backlog/
+product-guidelines/10-backlog/
 ├── BACKLOG.md (summary)
 └── issues/
     ├── epic-01-onboarding.md
@@ -158,7 +161,7 @@ Your Backlog:
 
 Estimated MVP timeline: [Z] weeks
 
-File created: product-guidelines/09-backlog/BACKLOG.md + [Y] issue files
+File created: product-guidelines/10-backlog/BACKLOG.md + [Y] issue files
 
 Next, we can push these issues to GitHub.
 

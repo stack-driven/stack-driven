@@ -1,23 +1,17 @@
 ---
-description: POST-CASCADE - Create comprehensive testing strategy (unit, integration, E2E, performance)
+description: Session 9 - Create comprehensive testing strategy (unit, integration, E2E, performance)
 ---
 
-# Create Test Strategy (Post-Cascade Development)
+# Create Test Strategy (Session 9)
 
-You are helping the user create a comprehensive testing strategy including unit tests, integration tests, E2E tests, test coverage goals, testing frameworks, CI/CD integration, test data management, performance testing, and security testing. This is typically done after Session 7 when you have a project scaffold, or after Session 5 if you want to plan testing before implementation.
+You are helping the user create a comprehensive testing strategy including unit tests, integration tests, E2E tests, test coverage goals, testing frameworks, CI/CD integration, test data management, performance testing, and security testing. This happens after defining database schema (Session 7) and API contracts (Session 8), but BEFORE generating the backlog, so that backlog items can be informed by the testing approach and quality gates.
 
 ## When to Use This
 
-**Run AFTER Session 7** (`/scaffold-project`) if:
-- You have a working development environment
-- You're ready to implement features with TDD/BDD
-- You want comprehensive testing before building features
-- You need testing strategy for team onboarding
-
-**Or run AFTER Session 5** (`/generate-backlog`) if:
-- You want to plan testing strategy early
-- You need test requirements for architecture decisions
-- You're defining quality gates before development
+**This is Session 9** in the core Stack-Driven cascade. Run it:
+- After Session 8 (`/generate-api-contracts` - API surface)
+- Before Session 10 (`/generate-backlog` - implementation planning)
+- When you need to define testing strategy based on journey, architecture, database, and APIs
 
 **Skip this** if:
 - You're pre-MVP and validating quickly (test later)
@@ -49,17 +43,17 @@ Create comprehensive testing strategy including:
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-tech-stack.md
-Read: product-guidelines/05-architecture.md
+Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/06-architecture.md
+Read: product-guidelines/07-database-schema.md (from Session 7)
+Read: product-guidelines/08-api-contracts.md (from Session 8)
 ```
 
-**Highly recommended inputs:**
+**Optional inputs (if available):**
 
 ```
-Read: product-guidelines/07-backlog/BACKLOG.md
-Read: product-guidelines/07-project-scaffold.md (if available)
-Read: product-guidelines/17-database-schema.md (if available)
-Read: product-guidelines/18-api-contracts.md (if available)
+Read: product-guidelines/10-backlog/BACKLOG.md (if exists - backlog comes after test strategy in Session 10)
+Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes after in Session 12)
 ```
 
 **Extract from Journey**:
@@ -81,10 +75,11 @@ Read: product-guidelines/18-api-contracts.md (if available)
 - Performance requirements (what needs performance tests?)
 - Security requirements (what needs security tests?)
 
-**Extract from Backlog**:
+**Extract from Backlog (if available)**:
 - What features are P0? (These need tests first)
 - What features are complex? (These need more test coverage)
 - What features handle critical data? (These need thorough testing)
+- Note: Backlog is generated AFTER this session, so focus on journey and architecture if backlog doesn't exist yet
 
 **Example (from compliance-saas):**
 - Journey critical path: Upload document → Select frameworks → View assessment → Share report
@@ -1191,7 +1186,7 @@ jobs:
 
 This command generates:
 
-**1. Testing Strategy Document** (`product-guidelines/19-test-strategy.md`):
+**1. Testing Strategy Document** (`product-guidelines/09-test-strategy.md`):
 - Testing philosophy and principles
 - Unit, integration, E2E testing strategies
 - Test coverage goals and quality gates
@@ -1201,14 +1196,14 @@ This command generates:
 - Testing workflows (TDD, regression)
 - "What We DIDN'T Choose" analysis
 
-**2. Test Configuration Files** (`product-guidelines/19-test-strategy/`):
+**2. Test Configuration Files** (`product-guidelines/09-test-strategy/`):
 - `pytest.ini` or `vitest.config.ts` (test runner config)
 - `.coveragerc` (coverage configuration)
 - `tests/conftest.py` (pytest fixtures)
 - `tests/factories.py` (test data factories)
 - `tests/fixtures/` (sample test data files)
 
-**3. Example Tests** (`product-guidelines/19-test-strategy/examples/`):
+**3. Example Tests** (`product-guidelines/09-test-strategy/examples/`):
 - `example_unit_test.py` or `.test.ts`
 - `example_integration_test.py`
 - `example_e2e_test.py` or `.spec.ts`
@@ -1302,10 +1297,12 @@ Don't waste time on:
 
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
-- Tech stack: `product-guidelines/01-tech-stack.md`
-- Architecture: `product-guidelines/05-architecture.md`
-- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
-- Scaffold: `product-guidelines/07-project-scaffold.md`
+- Tech stack: `product-guidelines/02-tech-stack.md`
+- Architecture: `product-guidelines/06-architecture.md`
+- Database schema: `product-guidelines/07-database-schema.md` (from Session 7)
+- API contracts: `product-guidelines/08-api-contracts.md` (from Session 8)
+- Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
+- Scaffold: `product-guidelines/12-project-scaffold.md` (generated after in Session 12)
 
 ---
 

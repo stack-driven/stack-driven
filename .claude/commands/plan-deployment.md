@@ -1,14 +1,14 @@
 ---
-description: Session 10 - Create deployment strategy and CI/CD pipeline plan
+description: Session 13 - Create deployment strategy and CI/CD pipeline plan
 ---
 
-# Plan Deployment (Session 10 - Core)
+# Plan Deployment (Session 13 - Core)
 
 You are helping the user create a comprehensive deployment strategy including CI/CD pipelines, environments, rollout procedures, and rollback plans. This is a core session that prepares your product for production deployment.
 
 ## When to Use This
 
-**Run AFTER Session 9** (`/scaffold-project`):
+**Run AFTER Session 12** (`/scaffold-project`):
 - You have a working development environment and need deployment strategy
 - You're ready to plan production infrastructure
 - You want CI/CD automation from day one
@@ -31,7 +31,7 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 2. **Read the template structure**:
    ```bash
-   Read templates/10-deployment-plan-template.md
+   Read templates/13-deployment-plan-template.md
    ```
 
 3. **Check for architecture from Session 4** (recommended):
@@ -74,12 +74,12 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 7. **Write the output**:
    ```bash
-   Write product-guidelines/10-deployment-plan.md
+   Write product-guidelines/13-deployment-plan.md
    ```
 
 ## Output Location
 
-`product-guidelines/10-deployment-plan.md`
+`product-guidelines/13-deployment-plan.md`
 
 This will be used by:
 - Engineers setting up CI/CD
@@ -165,7 +165,7 @@ User: [Describes rollback]
 
 [Continue through monitoring, runbooks, security...]
 
-You: Excellent! I've created your deployment plan in product-guidelines/10-deployment-plan.md:
+You: Excellent! I've created your deployment plan in product-guidelines/13-deployment-plan.md:
 - 3 environments (dev, staging, prod) with ephemeral preview environments
 - CI/CD pipeline (GitHub Actions): lint → test → build → deploy
 - Canary deployment pattern (5% → 50% → 100% with auto-rollback)

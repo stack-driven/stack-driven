@@ -1,24 +1,17 @@
 ---
-description: POST-CASCADE - Generate comprehensive API contracts with OpenAPI specification
+description: Session 8 - Generate comprehensive API contracts with OpenAPI specification
 ---
 
-# Generate API Contracts (Post-Cascade Development)
+# Generate API Contracts (Session 8)
 
-You are helping the user create comprehensive API contracts including OpenAPI/Swagger specifications, endpoint definitions, request/response schemas, authentication patterns, and error handling. This is typically done after Session 7 when you have a project scaffold and are ready to implement the API layer.
+You are helping the user create comprehensive API contracts including OpenAPI/Swagger specifications, endpoint definitions, request/response schemas, authentication patterns, and error handling. This happens after defining the database schema (Session 7), but BEFORE generating the backlog, so that backlog items can be informed by the API surface area.
 
 ## When to Use This
 
-**Run AFTER Session 7** (`/scaffold-project`) if:
-- You have a working development environment
-- You're ready to implement the API layer
-- You want detailed API specifications before building features
-- You need API documentation for frontend/mobile teams
-
-**Or run AFTER Session 5** if:
-- You want to design APIs early in the process
-- You're planning integration architecture before scaffolding
-- You have clear backlog requirements
-- You need API contracts for external partners
+**This is Session 8** in the core Stack-Driven cascade. Run it:
+- After Session 7 (`/design-database-schema` - data model)
+- Before Session 10 (`/generate-backlog` - implementation planning)
+- When you need to define your API contracts based on journey, architecture, and data model
 
 **Skip this** if:
 - You're building a frontend-only application (no backend)
@@ -47,16 +40,16 @@ Create comprehensive API contracts including:
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-tech-stack.md
-Read: product-guidelines/05-architecture.md
-Read: product-guidelines/07-backlog/BACKLOG.md
+Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/06-architecture.md
+Read: product-guidelines/07-database-schema.md (from previous session)
 ```
 
 **Optional inputs (if available):**
 
 ```
-Read: product-guidelines/07-project-scaffold.md
-Read: product-guidelines/17-database-schema.md
+Read: product-guidelines/10-backlog/BACKLOG.md (if exists - backlog comes after API contracts in Session 10)
+Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes after in Session 12)
 ```
 
 **Extract from Journey**:
@@ -78,12 +71,13 @@ Read: product-guidelines/17-database-schema.md
 - Caching approach
 - Multi-tenancy implementation
 
-**Extract from Backlog**:
+**Extract from Backlog (if available)**:
 - What features need what endpoints?
 - What data operations are required (CRUD, search, bulk)?
 - What integrations are planned (webhooks, third-party APIs)?
+- Note: Backlog is generated AFTER this session, so focus on journey and architecture if backlog doesn't exist yet
 
-**Extract from Database Schema** (if available):
+**Extract from Database Schema (required):**
 - What entities exist?
 - What relationships need API exposure?
 - What query patterns should be supported?
@@ -378,7 +372,7 @@ Create complete OpenAPI 3.0 specification. Use template at `.claude/templates/18
 
 ### Step 9: Document API Design Decisions
 
-Write `product-guidelines/18-api-contracts.md` with:
+Write `product-guidelines/08-api-contracts.md` with:
 - **Overview**: API style, base URLs, versioning strategy, endpoint count
 - **Authentication**: Method and how to use it
 - **Core Resources**: For each resource: purpose (journey connection), endpoints table, key design decisions
@@ -480,9 +474,9 @@ Write `product-guidelines/18-api-contracts.md` with:
 
 ## Output Files
 
-1. **`product-guidelines/18-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
-2. **`product-guidelines/18-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
-3. **`product-guidelines/18-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
+1. **`product-guidelines/08-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
+2. **`product-guidelines/08-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
+3. **`product-guidelines/08-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -550,10 +544,10 @@ If you can't trace an endpoint back to a journey step or backlog feature, you pr
 
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
-- Tech stack: `product-guidelines/01-tech-stack.md`
-- Architecture: `product-guidelines/05-architecture.md`
-- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
-- Database schema: `product-guidelines/17-database-schema.md`
+- Tech stack: `product-guidelines/02-tech-stack.md`
+- Architecture: `product-guidelines/06-architecture.md`
+- Database schema: `product-guidelines/07-database-schema.md` (from previous session)
+- Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 
 ---
 
