@@ -352,7 +352,7 @@ Server Errors:
 
 ### Step 8: Generate OpenAPI Specification
 
-Create complete OpenAPI 3.0 specification. Use template at `.claude/templates/18-api-contracts-template.md` for detailed structure.
+Create complete OpenAPI 3.0 specification. Use template at `templates/18-api-contracts-template.md` for detailed structure.
 
 **Key sections to include:**
 - `info`: title, description (with auth/rate limit/error conventions), version, contact

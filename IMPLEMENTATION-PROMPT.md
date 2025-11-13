@@ -132,7 +132,7 @@ After completing this session:
 
 ### 2. Template File Structure
 
-Every template (`.claude/templates/*.md`) provides the schema for outputs:
+Every template (`templates/*.md`) provides the schema for outputs:
 
 ```markdown
 # [Template Name]
@@ -390,7 +390,7 @@ When implementing a new command (e.g., `/scaffold-project`):
 6. Write quality checklist
 
 ### Phase 4: Write Template (1 hour)
-1. Create `.claude/templates/[name].md`
+1. Create `templates/[name].md`
 2. Define output structure
 3. Document all fields
 4. Add validation criteria
@@ -892,7 +892,7 @@ After completing this session:
 
 ### Implementation Checklist
 - [ ] Create command file (`.claude/commands/[name].md`)
-- [ ] Create template file (`.claude/templates/[name].md`)
+- [ ] Create template file (`templates/[name].md`)
 - [ ] Update `/cascade-status` command
 - [ ] Update `README.md`
 - [ ] Create example output (`examples/compliance-saas/`)
