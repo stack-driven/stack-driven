@@ -62,6 +62,9 @@ Session 14: /design-observability      → product-guidelines/14-observability-s
 
 /design-growth-strategy     → product-guidelines/growth-strategy.md
     (Growth strategy - acquisition channels, growth loops, and experiments)
+
+/create-financial-model     → product-guidelines/financial-model.md
+    (Financial model - unit economics, revenue projections, profitability pathways)
 ```
 
 **After Backlog (Session 10+)**:
@@ -96,7 +99,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 
 Look for:
 - **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
-- **Post-core extensions (optional)**: `brand-strategy.md`, `design-system.md`, `user-experience.md`, `analytics-plan.md`, `growth-strategy.md`, `brand-naming.md`, `brand-messaging.md`, `brand-identity.md`, `content-guidelines.md`
+- **Post-core extensions (optional)**: `brand-strategy.md`, `design-system.md`, `user-experience.md`, `analytics-plan.md`, `growth-strategy.md`, `financial-model.md`, `brand-naming.md`, `brand-messaging.md`, `brand-identity.md`, `content-guidelines.md`
 
 ### Step 2: Display Complete Progress
 
@@ -134,6 +137,7 @@ After Session 4+ (Optional branding/UX/growth):
 ❌ user-experience.md        (Detailed UX flows)
 ❌ analytics-plan.md         (Analytics implementation)
 ❌ growth-strategy.md        (Growth strategy)
+❌ financial-model.md        (Financial model & unit economics)
 
 After Session 10+ (Optional marketing polish):
 ❌ brand-naming.md           (Brand naming)
@@ -141,7 +145,7 @@ After Session 10+ (Optional marketing polish):
 ❌ brand-identity.md         (Brand identity)
 ❌ content-guidelines.md     (Content style guide)
 
-Status: 0 of 9 post-core extensions complete (optional)
+Status: 0 of 10 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -171,6 +175,7 @@ Based on what files exist, determine the next recommended action:
   - `/design-user-experience` (detailed UX flows)
   - `/setup-analytics` (implement metrics tracking)
   - `/design-growth-strategy` (acquisition channels and growth loops)
+  - `/create-financial-model` (unit economics and revenue projections)
 
 **If 00-07 exist (Session 5 complete)**:
 - **Recommend**: Session 6 (`/create-design`)
