@@ -9,13 +9,13 @@ This is a **post-core extension** that creates a comprehensive, data-driven grow
 ## When to Run This
 
 **Run AFTER Session 4+** when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Product strategy validated (`output/01-product-strategy.md`)
-- ✅ Metrics established (`output/04-metrics.md`)
-- ✅ Monetization model defined (`output/05-monetization.md`)
+- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
+- ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
+- ✅ Metrics established (`product-guidelines/04-metrics.md`)
+- ✅ Monetization model defined (`product-guidelines/05-monetization.md`)
 
 **Ideally after Session 7+** when you also have:
-- ✅ Backlog generated (`output/09-backlog/`)
+- ✅ Backlog generated (`product-guidelines/09-backlog/`)
 - So growth experiments can be prioritized in development
 
 **Skip this** if:
@@ -49,7 +49,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - What's the "aha moment"? (activation target)
    - Where does value get delivered? (retention hook)
@@ -57,7 +57,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 2. **Read the product strategy**:
    ```bash
-   Read output/01-product-strategy.md
+   Read product-guidelines/01-product-strategy.md
    ```
    - Who's the target audience? (channel selection)
    - What's the competitive landscape? (positioning in channels)
@@ -65,7 +65,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 3. **Read the metrics**:
    ```bash
-   Read output/04-metrics.md
+   Read product-guidelines/04-metrics.md
    ```
    - What's the North Star metric? (primary growth goal)
    - What are the input metrics? (growth levers)
@@ -73,7 +73,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 4. **Read the monetization model**:
    ```bash
-   Read output/05-monetization.md
+   Read product-guidelines/05-monetization.md
    ```
    - What's the pricing model? (freemium, trial, paid)
    - Where's the conversion point? (free→paid optimization)
@@ -81,7 +81,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 5. **Read analytics plan** (if available):
    ```bash
-   Read output/17-analytics-plan.md
+   Read product-guidelines/17-analytics-plan.md
    ```
    - What events are tracked? (measurement capability)
    - What funnels exist? (conversion tracking)
@@ -383,7 +383,7 @@ Retention metrics:
 
 ### Step 7: Design Monetization Optimization
 
-**Read monetization model** (`output/05-monetization.md`) and optimize for growth.
+**Read monetization model** (`product-guidelines/05-monetization.md`) and optimize for growth.
 
 **Conversion optimization**:
 
@@ -562,7 +562,7 @@ Example:
 ### Step 10: Write the Output
 
 ```bash
-Write output/21-growth-strategy.md
+Write product-guidelines/21-growth-strategy.md
 ```
 
 Use the template structure and fill in all sections with journey-informed, data-driven decisions.
@@ -581,7 +581,7 @@ Use the template structure and fill in all sections with journey-informed, data-
 
 ## Output Location
 
-`output/21-growth-strategy.md`
+`product-guidelines/21-growth-strategy.md`
 
 This will be read by:
 - `/generate-backlog` - Growth experiments can be prioritized as stories
@@ -647,7 +647,7 @@ You: Perfect, that points to [specific channels]. Let's prioritize 2-3 primary c
 
 [Continue through all sections: channels → loops → activation → retention → experiments...]
 
-You: Excellent. I've captured your growth strategy in output/21-growth-strategy.md:
+You: Excellent. I've captured your growth strategy in product-guidelines/21-growth-strategy.md:
 
 Growth Model: [Model type, tied to journey]
 Primary Channels: [2-3 channels with rationale]
@@ -691,9 +691,9 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 ## Reference
 
 - Template: `/templates/21-growth-strategy-template.md`
-- Related: `/output/04-metrics.md` (North Star and input metrics)
-- Related: `/output/05-monetization.md` (conversion and expansion)
-- Related: `/output/17-analytics-plan.md` (measurement capability)
+- Related: `/product-guidelines/04-metrics.md` (North Star and input metrics)
+- Related: `/product-guidelines/05-monetization.md` (conversion and expansion)
+- Related: `/product-guidelines/17-analytics-plan.md` (measurement capability)
 
 ---
 

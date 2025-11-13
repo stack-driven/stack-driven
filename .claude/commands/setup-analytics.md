@@ -41,7 +41,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 3. **Check for metrics from Session 3** (required):
    ```bash
-   Read output/03-metrics.md
+   Read product-guidelines/03-metrics.md
    ```
    - North Star metric
    - Input metrics
@@ -50,7 +50,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 4. **Check for user journey** (recommended):
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - Identify key moments to track
 
@@ -81,12 +81,12 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 7. **Write the output**:
    ```bash
-   Write output/14-analytics-plan.md
+   Write product-guidelines/14-analytics-plan.md
    ```
 
 ## Output Location
 
-`output/14-analytics-plan.md`
+`product-guidelines/14-analytics-plan.md`
 
 This will be used by:
 - Engineers implementing event tracking
@@ -126,7 +126,7 @@ The output follows this structure:
 ```
 You: Let's setup your analytics. First, let me check your metrics from Session 3...
 
-[Read output/03-metrics.md]
+[Read product-guidelines/03-metrics.md]
 
 You: Perfect! Your North Star is [metric] and you have [X] input metrics. Now, what analytics do you currently have? Google Analytics? Custom events? Nothing?
 
@@ -166,7 +166,7 @@ User: [Describes tool preferences]
 
 [Continue through A/B testing, privacy, implementation phases...]
 
-You: Excellent! I've created your comprehensive analytics plan in output/14-analytics-plan.md:
+You: Excellent! I've created your comprehensive analytics plan in product-guidelines/14-analytics-plan.md:
 - Event taxonomy with strict naming conventions
 - 42 events with detailed properties
 - 12 user properties

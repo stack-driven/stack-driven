@@ -9,10 +9,10 @@ You are helping the user design a comprehensive visual brand identity including 
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** (Session 5) when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Brand strategy established (`output/07-brand-strategy.md`)
-- ✅ Design system created (`output/08-design-system.md`) - recommended but optional
-- ✅ Brand name chosen (from `output/09-brand-naming.md` or already decided) - optional but helpful
+- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
+- ✅ Brand strategy established (`product-guidelines/07-brand-strategy.md`)
+- ✅ Design system created (`product-guidelines/08-design-system.md`) - recommended but optional
+- ✅ Brand name chosen (from `product-guidelines/09-brand-naming.md` or already decided) - optional but helpful
 
 Your visual identity should express the brand personality and values defined in your brand strategy, not be created in a vacuum.
 
@@ -27,7 +27,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - Who is the target audience? (influences aesthetic)
    - What problem domain? (industry conventions vs. disruption)
@@ -35,7 +35,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 2. **Read the brand strategy**:
    ```bash
-   Read output/07-brand-strategy.md
+   Read product-guidelines/07-brand-strategy.md
    ```
    - Brand personality (professional/playful, serious/friendly, etc.)
    - Brand values (what guides design decisions)
@@ -44,7 +44,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 3. **Read the design system** (if exists):
    ```bash
-   Read output/08-design-system.md
+   Read product-guidelines/08-design-system.md
    ```
    - Color palette (brand colors to incorporate)
    - Typography (font choices for logo/brand materials)
@@ -52,7 +52,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 4. **Read the brand name** (if exists):
    ```bash
-   Read output/09-brand-naming.md
+   Read product-guidelines/09-brand-naming.md
    ```
    - Chosen name to incorporate into logo
    - Name meaning and associations
@@ -67,10 +67,10 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read output/00-user-journey.md
-   Read output/07-brand-strategy.md
-   Read output/08-design-system.md  # If exists
-   Read output/09-brand-naming.md   # If exists
+   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/07-brand-strategy.md
+   Read product-guidelines/08-design-system.md  # If exists
+   Read product-guidelines/09-brand-naming.md   # If exists
    ```
 
 2. **Read the template structure**:
@@ -241,12 +241,12 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 11. **Write the output**:
     ```bash
-    Write output/11-brand-identity.md
+    Write product-guidelines/11-brand-identity.md
     ```
 
 ## Output Location
 
-`output/11-brand-identity.md`
+`product-guidelines/11-brand-identity.md`
 
 This will be read by:
 - `/create-content-guidelines` - Uses identity for visual content standards
@@ -311,7 +311,7 @@ You: Great! I'll develop [chosen concept] into a complete brand identity system 
 
 [Create comprehensive identity system]
 
-You: I've created your complete brand identity system in output/11-brand-identity.md:
+You: I've created your complete brand identity system in product-guidelines/11-brand-identity.md:
 
 ✅ Logo system (primary + variations)
 ✅ Color palette application
@@ -323,7 +323,7 @@ You: I've created your complete brand identity system in output/11-brand-identit
 
 Every design decision traces back to your brand strategy: [key connections]
 
-File created: output/11-brand-identity.md
+File created: product-guidelines/11-brand-identity.md
 
 This visual identity expresses [brand personality] and will help [journey audience] recognize and trust your brand.
 ```
@@ -378,9 +378,9 @@ This visual identity expresses [brand personality] and will help [journey audien
 
 - Template: `/templates/11-brand-identity-template.md`
 - Example: `/examples/compliance-saas/branding/` (if available)
-- Related: `output/07-brand-strategy.md` (conceptual foundation)
-- Related: `output/08-design-system.md` (UI implementation)
-- Related: `output/09-brand-naming.md` (name to incorporate)
+- Related: `product-guidelines/07-brand-strategy.md` (conceptual foundation)
+- Related: `product-guidelines/08-design-system.md` (UI implementation)
+- Related: `product-guidelines/09-brand-naming.md` (name to incorporate)
 
 ---
 

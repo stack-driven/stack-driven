@@ -45,15 +45,15 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
 
 3. **Check for cascade inputs** (required):
    ```bash
-   Read output/00-user-journey.md
-   Read output/05-architecture.md
+   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/05-architecture.md
    ```
    - User journey shows the high-level flow
    - Architecture shows technical constraints and patterns
 
 4. **Check for backlog** (recommended):
    ```bash
-   Read output/07-backlog/
+   Read product-guidelines/07-backlog/
    ```
    - Backlog shows specific features to design for
 
@@ -80,12 +80,12 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
 
 7. **Write the output**:
    ```bash
-   Write output/13-user-experience.md
+   Write product-guidelines/13-user-experience.md
    ```
 
 ## Output Location
 
-`output/13-user-experience.md`
+`product-guidelines/13-user-experience.md`
 
 This will be used by:
 - Designers creating visual design (Session 4 or after)
@@ -124,7 +124,7 @@ The output follows this structure:
 ```
 You: Let's design your user experience. First, let me check your user journey and architecture...
 
-[Read output/00-user-journey.md and output/05-architecture.md]
+[Read product-guidelines/00-user-journey.md and product-guidelines/05-architecture.md]
 
 You: Great! Your journey shows [key insight]. Now, what user research do you have? Have you interviewed users? Run surveys? What do you KNOW vs ASSUME?
 
@@ -156,7 +156,7 @@ User: [Describes responsive strategy]
 
 [Continue through accessibility, testing plan...]
 
-You: Excellent! I've documented your complete UX design in output/13-user-experience.md:
+You: Excellent! I've documented your complete UX design in product-guidelines/13-user-experience.md:
 - User research summary (3 personas, key pain points)
 - Information architecture (site map, 3-level navigation)
 - 7 critical user flows with decision points

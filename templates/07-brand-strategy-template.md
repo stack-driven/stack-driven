@@ -11,13 +11,13 @@ This document defines the brand strategy that guides all brand decisions, visual
 
 **IMPORTANT**: This brand strategy must connect to your core cascade outputs.
 
-**Journey problem** (from `output/00-user-journey.md`):
+**Journey problem** (from `product-guidelines/00-user-journey.md`):
 - [What problem do users struggle with? Where in the journey?]
 
-**Journey value moment** (from `output/00-user-journey.md`):
+**Journey value moment** (from `product-guidelines/00-user-journey.md`):
 - [What's the "aha moment"? When does value get delivered?]
 
-**Mission promise** (from `output/02-mission.md`):
+**Mission promise** (from `product-guidelines/02-mission.md`):
 - [What's your mission statement?]
 
 **Connection**:

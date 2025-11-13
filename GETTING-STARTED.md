@@ -81,7 +81,7 @@ This shows:
 **What Happens**:
 I'll ask you questions about your users, their problems, and their journey.
 
-**What You'll Create**: `output/00-user-journey.md`
+**What You'll Create**: `product-guidelines/00-user-journey.md`
 
 **Tips**:
 - Be specific about your user ("compliance officers" not "businesses")
@@ -100,7 +100,7 @@ I'll ask you questions about your users, their problems, and their journey.
 **What Happens**:
 I read your journey, analyze requirements, and recommend optimal tech.
 
-**What You'll Create**: `output/01-tech-stack.md`
+**What You'll Create**: `product-guidelines/01-tech-stack.md`
 
 **Important**: Different journeys → different stacks!
 
@@ -116,10 +116,10 @@ I read your journey, analyze requirements, and recommend optimal tech.
 I derive mission, metrics, monetization, and architecture from your journey.
 
 **What You'll Create**:
-- `output/02-mission.md`
-- `output/03-metrics.md`
-- `output/04-monetization.md`
-- `output/05-architecture.md`
+- `product-guidelines/02-mission.md`
+- `product-guidelines/03-metrics.md`
+- `product-guidelines/04-monetization.md`
+- `product-guidelines/05-architecture.md`
 
 **Next**: Run `/create-design`
 
@@ -132,7 +132,7 @@ I derive mission, metrics, monetization, and architecture from your journey.
 **What Happens**:
 I create a design system optimized for YOUR user flows.
 
-**What You'll Create**: `output/06-design-system.md`
+**What You'll Create**: `product-guidelines/06-design-system.md`
 
 **Next**: Run `/generate-backlog`
 
@@ -145,7 +145,7 @@ I create a design system optimized for YOUR user flows.
 **What Happens**:
 I generate 30-50 prioritized user stories traced to journey value.
 
-**What You'll Create**: `output/07-backlog/` (with all issue files)
+**What You'll Create**: `product-guidelines/07-backlog/` (with all issue files)
 
 **Next**: Run `/create-gh-issues` (optional)
 
@@ -167,7 +167,7 @@ I push all backlog issues to GitHub.
 ### Start Building!
 
 1. Tackle P0 stories first (critical for MVP)
-2. Track metrics defined in `output/03-metrics.md`
+2. Track metrics defined in `product-guidelines/03-metrics.md`
 3. Reference journey anytime to stay aligned
 
 ### Iterate

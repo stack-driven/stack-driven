@@ -8,7 +8,7 @@
 
 This document defines the detailed UX design including research, information architecture, user flows, wireframes, and interaction specifications.
 
-**Complements**: Session 4 Design System (output/06-design-system.md)
+**Complements**: Session 4 Design System (product-guidelines/06-design-system.md)
 - This doc: **UX structure and behavior** (what happens, how it works)
 - Design system: **Visual language** (how it looks, design tokens, components)
 

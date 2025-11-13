@@ -36,14 +36,14 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read output/06-architecture.md
+   Read product-guidelines/06-architecture.md
    ```
    - Understand system components and dependencies
    - Identify deployment requirements
 
 4. **Check for tech stack from Session 3** (recommended):
    ```bash
-   Read output/02-tech-stack.md
+   Read product-guidelines/02-tech-stack.md
    ```
    - Know what needs to be deployed (frontend, backend, database, etc.)
 
@@ -74,12 +74,12 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 7. **Write the output**:
    ```bash
-   Write output/10-deployment-plan.md
+   Write product-guidelines/10-deployment-plan.md
    ```
 
 ## Output Location
 
-`output/10-deployment-plan.md`
+`product-guidelines/10-deployment-plan.md`
 
 This will be used by:
 - Engineers setting up CI/CD
@@ -120,7 +120,7 @@ The output follows this structure:
 ```
 You: Let's plan your deployment strategy. First, let me check your tech stack and architecture...
 
-[Read output/02-tech-stack.md and output/06-architecture.md]
+[Read product-guidelines/02-tech-stack.md and product-guidelines/06-architecture.md]
 
 You: Got it - you have [frontend] + [backend] + [database]. How do you deploy today? What's painful?
 
@@ -165,7 +165,7 @@ User: [Describes rollback]
 
 [Continue through monitoring, runbooks, security...]
 
-You: Excellent! I've created your deployment plan in output/10-deployment-plan.md:
+You: Excellent! I've created your deployment plan in product-guidelines/10-deployment-plan.md:
 - 3 environments (dev, staging, prod) with ephemeral preview environments
 - CI/CD pipeline (GitHub Actions): lint → test → build → deploy
 - Canary deployment pattern (5% → 50% → 100% with auto-rollback)

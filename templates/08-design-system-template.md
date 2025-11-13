@@ -1,6 +1,6 @@
 # Design System: [Your Product Name]
 
-> **Derived from**: output/00-user-journey.md (user context informs brand personality)
+> **Derived from**: product-guidelines/00-user-journey.md (user context informs brand personality)
 
 ---
 

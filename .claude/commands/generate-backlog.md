@@ -15,15 +15,15 @@ You're a technical product manager creating a systematic backlog from all cascad
 ### Step 1: Read ALL Previous Outputs
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-product-strategy.md
-Read: output/02-tech-stack.md
-Read: output/03-mission.md
-Read: output/04-metrics.md
-Read: output/05-monetization.md
-Read: output/06-architecture.md
-Read: output/07-brand-strategy.md
-Read: output/08-design-system.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/03-mission.md
+Read: product-guidelines/04-metrics.md
+Read: product-guidelines/05-monetization.md
+Read: product-guidelines/06-architecture.md
+Read: product-guidelines/07-brand-strategy.md
+Read: product-guidelines/08-design-system.md
 ```
 
 ### Step 2: Generate Epic Structure
@@ -104,7 +104,7 @@ Example:
 ### Create Directory Structure:
 
 ```
-output/09-backlog/
+product-guidelines/09-backlog/
 ├── BACKLOG.md (summary)
 └── issues/
     ├── epic-01-onboarding.md
@@ -158,7 +158,7 @@ Your Backlog:
 
 Estimated MVP timeline: [Z] weeks
 
-File created: output/09-backlog/BACKLOG.md + [Y] issue files
+File created: product-guidelines/09-backlog/BACKLOG.md + [Y] issue files
 
 Next, we can push these issues to GitHub.
 

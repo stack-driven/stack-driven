@@ -15,16 +15,16 @@ Infer design needs from journey context and create a system optimized for the sp
 ### Step 1: Read Previous Outputs
 
 ```
-Read: output/00-user-journey.md (for user context, interaction needs)
-Read: output/01-product-strategy.md (for market positioning)
-Read: output/02-tech-stack.md (for technical constraints)
-Read: output/07-brand-strategy.md (for brand personality, values, visual direction)
-Read: output/06-architecture.md (for architecture principles)
+Read: product-guidelines/00-user-journey.md (for user context, interaction needs)
+Read: product-guidelines/01-product-strategy.md (for market positioning)
+Read: product-guidelines/02-tech-stack.md (for technical constraints)
+Read: product-guidelines/07-brand-strategy.md (for brand personality, values, visual direction)
+Read: product-guidelines/06-architecture.md (for architecture principles)
 ```
 
 ### Step 2: Extract Brand Personality & Visual Direction
 
-**From Brand Strategy** (`output/07-brand-strategy.md`):
+**From Brand Strategy** (`product-guidelines/07-brand-strategy.md`):
 - **Brand Personality**: What attributes are defined? (Professional, playful, trustworthy, innovative, etc.)
 - **Core Values**: What values should the design express? (Speed, clarity, trust, creativity, etc.)
 - **Visual Direction**: What aesthetic guidance is provided? (Color preferences, mood, style)
@@ -526,7 +526,7 @@ Your design brings your brand to life and optimizes for [journey context]:
 - Key components for journey Step [X]
 - Accessibility: [Standard]
 
-File created: output/08-design-system.md
+File created: product-guidelines/08-design-system.md
 
 Next, we'll generate a backlog of user stories derived from your journey.
 

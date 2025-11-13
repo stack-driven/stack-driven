@@ -10,7 +10,7 @@ This is **Session 2** of the cascade. You'll create a comprehensive product stra
 
 You are a product strategist creating market-validated strategy. Your job is to:
 
-1. **Read and analyze** the user journey (`output/00-user-journey.md`)
+1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.md`)
 2. **Validate market opportunity** through TAM/SAM/SOM analysis
 3. **Analyze competitive landscape** and identify differentiation
 4. **Define product vision** and positioning
@@ -33,7 +33,7 @@ This command READS previous outputs to ground product strategy in reality:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - Who is the target audience? (market segment to size)
    - What problem are they solving? (market need validation)
@@ -45,7 +45,7 @@ Your product strategy validates and extends the journey with market context.
 
 ### Step 1: Read User Journey
 
-Use the Read tool to read `output/00-user-journey.md`.
+Use the Read tool to read `product-guidelines/00-user-journey.md`.
 
 **Extract**:
 - Core user flow (Steps 1-5)
@@ -98,12 +98,12 @@ Grounded in journey, develop:
 ### Step 5: Write the Output
 
 ```bash
-Write output/01-product-strategy.md
+Write product-guidelines/01-product-strategy.md
 ```
 
 ## Output Location
 
-`output/01-product-strategy.md`
+`product-guidelines/01-product-strategy.md`
 
 This validates:
 - User journey (with market sizing and competitive analysis)
@@ -156,7 +156,7 @@ User: [Lists strategic goals]
 
 [Continue through product principles, roadmap themes, risks...]
 
-You: Excellent. I've captured your product strategy in output/01-product-strategy.md:
+You: Excellent. I've captured your product strategy in product-guidelines/01-product-strategy.md:
 - Vision: [journey outcome at scale]
 - Market: [TAM/SAM/SOM for journey audience]
 - Positioning: [journey differentiation vs. competitors]

@@ -1,6 +1,6 @@
 # Tech Stack: [Your Product Name]
 
-> **Derived from**: output/00-user-journey.md
+> **Derived from**: product-guidelines/00-user-journey.md
 
 ---
 

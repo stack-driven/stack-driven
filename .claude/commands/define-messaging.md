@@ -9,10 +9,10 @@ You are helping the user create a comprehensive brand messaging framework that c
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Mission statement (`output/02-mission.md`)
-- ✅ Brand strategy (`output/08-brand-strategy.md`)
-- ✅ Brand name chosen (from `output/09-brand-naming.md` or already decided)
+- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
+- ✅ Mission statement (`product-guidelines/02-mission.md`)
+- ✅ Brand strategy (`product-guidelines/08-brand-strategy.md`)
+- ✅ Brand name chosen (from `product-guidelines/09-brand-naming.md` or already decided)
 
 Your messaging should communicate [journey value] in [brand voice], not be created in isolation.
 
@@ -27,7 +27,7 @@ This command READS previous outputs to create journey-grounded messaging:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - Who is the target audience? (from journey)
    - What problem do they struggle with?
@@ -36,13 +36,13 @@ This command READS previous outputs to create journey-grounded messaging:
 
 2. **Read the mission**:
    ```bash
-   Read output/02-mission.md
+   Read product-guidelines/02-mission.md
    ```
    - This becomes your value proposition foundation
 
 3. **Read the brand strategy**:
    ```bash
-   Read output/08-brand-strategy.md
+   Read product-guidelines/08-brand-strategy.md
    ```
    - Brand voice (how you sound)
    - Brand values (what guides communication)
@@ -50,7 +50,7 @@ This command READS previous outputs to create journey-grounded messaging:
 
 4. **Read the brand name** (if available):
    ```bash
-   Read output/09-brand-naming.md  # If naming was done
+   Read product-guidelines/09-brand-naming.md  # If naming was done
    ```
    - Use chosen name in messaging
 
@@ -64,10 +64,10 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read output/00-user-journey.md
-   Read output/02-mission.md
-   Read output/08-brand-strategy.md
-   Read output/09-brand-naming.md  # If exists
+   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/02-mission.md
+   Read product-guidelines/08-brand-strategy.md
+   Read product-guidelines/09-brand-naming.md  # If exists
    ```
 
 2. **Read the template structure**:
@@ -104,12 +104,12 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 6. **Write the output**:
    ```bash
-   Write output/10-brand-messaging.md
+   Write product-guidelines/10-brand-messaging.md
    ```
 
 ## Output Location
 
-`output/10-brand-messaging.md`
+`product-guidelines/10-brand-messaging.md`
 
 This will be read by:
 - `/create-content-guidelines` - Uses messaging for detailed content style guide
@@ -167,7 +167,7 @@ Notice how it connects to [journey step] and speaks in [brand personality].
 
 [Show more examples]
 
-You: I've captured everything in output/10-brand-messaging.md:
+You: I've captured everything in product-guidelines/10-brand-messaging.md:
 - Value proposition: "[specific one-liner tied to mission]"
 - Elevator pitches (all grounded in journey)
 - 4 messaging pillars (each connects to journey value)

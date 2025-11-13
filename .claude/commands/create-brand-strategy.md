@@ -9,10 +9,10 @@ This is **Session 5** of the cascade. You'll create a comprehensive brand strate
 ## When to Use This
 
 **Run AFTER Session 4** (`/generate-strategy`) when you have:
-- ✅ User journey defined (`output/00-user-journey.md`)
-- ✅ Product strategy validated (`output/01-product-strategy.md`)
-- ✅ Tech stack chosen (`output/02-tech-stack.md`)
-- ✅ Tactical foundation established (`output/03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`)
+- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
+- ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
+- ✅ Tech stack chosen (`product-guidelines/02-tech-stack.md`)
+- ✅ Tactical foundation established (`product-guidelines/03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`)
 
 Your brand should EXPRESS the value you deliver in the user journey, not be created in a vacuum.
 
@@ -25,7 +25,7 @@ This command READS previous outputs to ground your brand in reality:
 
 1. **Read the user journey**:
    ```bash
-   Read output/00-user-journey.md
+   Read product-guidelines/00-user-journey.md
    ```
    - Identify: What problem do users struggle with?
    - Identify: What's the "aha moment" in the journey?
@@ -33,20 +33,20 @@ This command READS previous outputs to ground your brand in reality:
 
 2. **Read the product strategy**:
    ```bash
-   Read output/01-product-strategy.md
+   Read product-guidelines/01-product-strategy.md
    ```
    - Understand your market positioning and competitive differentiation
 
 3. **Read the mission**:
    ```bash
-   Read output/03-mission.md
+   Read product-guidelines/03-mission.md
    ```
    - Your mission = the promise to deliver journey value
    - Brand purpose should express WHY you keep this promise
 
 4. **Read the metrics** (optional):
    ```bash
-   Read output/04-metrics.md
+   Read product-guidelines/04-metrics.md
    ```
    - What defines success? Brand should communicate this.
 
@@ -60,11 +60,11 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read output/00-user-journey.md
-   Read output/01-product-strategy.md
-   Read output/03-mission.md
-   Read output/04-metrics.md  # Optional
-   Read output/06-architecture.md  # For technical constraints
+   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/01-product-strategy.md
+   Read product-guidelines/03-mission.md
+   Read product-guidelines/04-metrics.md  # Optional
+   Read product-guidelines/06-architecture.md  # For technical constraints
    ```
 
 2. **Read the template structure**:
@@ -75,7 +75,7 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 3. **Interview the user** with journey-informed questions:
 
    **Brand Purpose (journey-grounded)**:
-   - "I've read your user journey. Users struggle with [X problem] at [journey step]. Your mission is to [mission from output/03]. Why are YOU the one solving this problem? What drives you to deliver this value?"
+   - "I've read your user journey. Users struggle with [X problem] at [journey step]. Your mission is to [mission from product-guidelines/03]. Why are YOU the one solving this problem? What drives you to deliver this value?"
 
    **Core Values (journey-connected)**:
    - "Your user journey shows value gets delivered when [aha moment]. What 3-5 values guide how you deliver this? What won't you compromise on?"
@@ -100,12 +100,12 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 
 5. **Write the output**:
    ```bash
-   Write output/07-brand-strategy.md
+   Write product-guidelines/07-brand-strategy.md
    ```
 
 ## Output Location
 
-`output/07-brand-strategy.md`
+`product-guidelines/07-brand-strategy.md`
 
 This will be read by:
 - `/create-design` (Session 6) - Uses brand strategy to inform design decisions (colors, typography, personality)
@@ -147,7 +147,7 @@ User: [Lists values connected to journey delivery]
 
 [Continue through all sections with journey context...]
 
-You: Excellent! I've captured your brand strategy in output/07-brand-strategy.md. Every section traces back to your user journey and mission.
+You: Excellent! I've captured your brand strategy in product-guidelines/07-brand-strategy.md. Every section traces back to your user journey and mission.
 
 ✅ Session 5 complete! Brand strategy created.
 
@@ -156,7 +156,7 @@ Your brand expresses the value from your user journey:
 - Values: [How you deliver value]
 - Personality: [How you show up]
 
-File created: output/07-brand-strategy.md
+File created: product-guidelines/07-brand-strategy.md
 
 Next, we'll create a design system that brings your brand to life.
 

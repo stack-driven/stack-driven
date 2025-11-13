@@ -46,17 +46,17 @@ Create comprehensive API contracts including:
 **Required inputs:**
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
-Read: output/05-architecture.md
-Read: output/07-backlog/BACKLOG.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-tech-stack.md
+Read: product-guidelines/05-architecture.md
+Read: product-guidelines/07-backlog/BACKLOG.md
 ```
 
 **Optional inputs (if available):**
 
 ```
-Read: output/07-project-scaffold.md
-Read: output/17-database-schema.md
+Read: product-guidelines/07-project-scaffold.md
+Read: product-guidelines/17-database-schema.md
 ```
 
 **Extract from Journey**:
@@ -378,7 +378,7 @@ Create complete OpenAPI 3.0 specification. Use template at `.claude/templates/18
 
 ### Step 9: Document API Design Decisions
 
-Write `output/18-api-contracts.md` with:
+Write `product-guidelines/18-api-contracts.md` with:
 - **Overview**: API style, base URLs, versioning strategy, endpoint count
 - **Authentication**: Method and how to use it
 - **Core Resources**: For each resource: purpose (journey connection), endpoints table, key design decisions
@@ -480,9 +480,9 @@ Write `output/18-api-contracts.md` with:
 
 ## Output Files
 
-1. **`output/18-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
-2. **`output/18-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
-3. **`output/18-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
+1. **`product-guidelines/18-api-contracts.md`**: Documentation (architecture, design decisions, endpoints, auth, errors, testing)
+2. **`product-guidelines/18-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
+3. **`product-guidelines/18-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -549,11 +549,11 @@ Don't create endpoints "just in case". Design APIs based on:
 If you can't trace an endpoint back to a journey step or backlog feature, you probably don't need it.
 
 **Reference files:**
-- Journey: `output/00-user-journey.md`
-- Tech stack: `output/01-tech-stack.md`
-- Architecture: `output/05-architecture.md`
-- Backlog: `output/07-backlog/BACKLOG.md`
-- Database schema: `output/17-database-schema.md`
+- Journey: `product-guidelines/00-user-journey.md`
+- Tech stack: `product-guidelines/01-tech-stack.md`
+- Architecture: `product-guidelines/05-architecture.md`
+- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
+- Database schema: `product-guidelines/17-database-schema.md`
 
 ---
 

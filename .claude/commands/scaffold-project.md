@@ -41,13 +41,13 @@ After 8 sessions, users have:
 ### Step 1: Read ALL Previous Outputs
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-product-strategy.md
-Read: output/02-tech-stack.md
-Read: output/06-architecture.md
-Read: output/07-brand-strategy.md
-Read: output/08-design-system.md
-Read: output/09-backlog/BACKLOG.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/06-architecture.md
+Read: product-guidelines/07-brand-strategy.md
+Read: product-guidelines/08-design-system.md
+Read: product-guidelines/09-backlog/BACKLOG.md
 ```
 
 **Extract**:
@@ -671,7 +671,7 @@ npm-debug.log*
 
 Create two outputs:
 
-#### A. Documentation (output/09-project-scaffold.md)
+#### A. Documentation (product-guidelines/09-project-scaffold.md)
 
 ```markdown
 # Project Scaffold
@@ -721,7 +721,7 @@ Create two outputs:
 
 ## Setup Instructions
 
-1. Copy all files from `output/09-project-scaffold/` to your project root
+1. Copy all files from `product-guidelines/09-project-scaffold/` to your project root
 2. Run `docker-compose up -d` to start local services
 3. Copy `.env.template` to `.env` and fill in values
 4. Run `npm install` (or `poetry install`)
@@ -746,7 +746,7 @@ After copying the scaffold:
    ```
 
 3. **Start implementing backlog**
-   - Reference `output/09-backlog/` for prioritized stories
+   - Reference `product-guidelines/09-backlog/` for prioritized stories
    - Start with P0 (critical) stories
    - Each story references tech stack and design system
 
@@ -756,12 +756,12 @@ After copying the scaffold:
    - Update CI/CD to deploy on merge to main
 ```
 
-#### B. Actual Files (output/09-project-scaffold/)
+#### B. Actual Files (product-guidelines/09-project-scaffold/)
 
 Create a directory with ALL generated files:
 
 ```
-output/09-project-scaffold/
+product-guidelines/09-project-scaffold/
 ├── package.json
 ├── docker-compose.yml
 ├── .env.template
@@ -918,10 +918,10 @@ Your Scaffold:
 🐳 Local development services (Docker Compose)
 
 Next Steps:
-1. Copy files from output/09-project-scaffold/ to your project root
+1. Copy files from product-guidelines/09-project-scaffold/ to your project root
 2. Follow README.md setup instructions
 3. Verify environment works (docker-compose up, npm run dev)
-4. Start implementing P0 stories from output/09-backlog/
+4. Start implementing P0 stories from product-guidelines/09-backlog/
 
 When ready, start building or run: /cascade-status
 ```
@@ -940,7 +940,7 @@ When ready, start building or run: /cascade-status
 ## Reference
 
 - Previous session: `/create-gh-issues` (Session 7)
-- Next: Start building! Reference backlog in `output/09-backlog/` or GitHub issues
+- Next: Start building! Reference backlog in `product-guidelines/09-backlog/` or GitHub issues
 - Example: `/examples/compliance-saas/scaffold/` (if created)
 
 ---

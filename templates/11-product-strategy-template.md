@@ -13,22 +13,22 @@ This document defines the product strategy including vision, market analysis, co
 
 ## How This Traces to User Journey
 
-**Journey audience** (from `output/00-user-journey.md`):
+**Journey audience** (from `product-guidelines/00-user-journey.md`):
 - [Who is the target audience? This defines your market segment.]
 
-**Journey problem** (from `output/00-user-journey.md`):
+**Journey problem** (from `product-guidelines/00-user-journey.md`):
 - [What problem do they struggle with? This defines market need.]
 
-**Journey solution** (from `output/00-user-journey.md`):
+**Journey solution** (from `product-guidelines/00-user-journey.md`):
 - [How do you solve it? This defines competitive differentiation.]
 
-**Mission** (from `output/02-mission.md`):
+**Mission** (from `product-guidelines/02-mission.md`):
 - [Your mission statement - foundation for vision]
 
-**Metrics** (from `output/03-metrics.md`):
+**Metrics** (from `product-guidelines/03-metrics.md`):
 - [Key metrics - foundation for strategic goals]
 
-**Architecture** (from `output/05-architecture.md`):
+**Architecture** (from `product-guidelines/05-architecture.md`):
 - [Technical approach - foundation for roadmap themes]
 
 **Strategy Goal**:

@@ -42,16 +42,16 @@ Create a comprehensive database schema design including:
 **Required inputs:**
 
 ```
-Read: output/00-user-journey.md
-Read: output/01-tech-stack.md
-Read: output/05-architecture.md
-Read: output/07-backlog/BACKLOG.md
+Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/01-tech-stack.md
+Read: product-guidelines/05-architecture.md
+Read: product-guidelines/07-backlog/BACKLOG.md
 ```
 
 **Optional inputs (if available):**
 
 ```
-Read: output/07-project-scaffold.md
+Read: product-guidelines/07-project-scaffold.md
 ```
 
 **Extract from Journey**:
@@ -807,7 +807,7 @@ After generating schema files:
 
 ```bash
 # 1. Copy schema to your project
-cp output/17-database-schema/prisma/schema.prisma ./prisma/schema.prisma
+cp product-guidelines/17-database-schema/prisma/schema.prisma ./prisma/schema.prisma
 
 # 2. Create initial migration
 npx prisma migrate dev --name initial_schema
@@ -823,7 +823,7 @@ npx prisma studio
 
 ```bash
 # 1. Copy migration to your project
-cp output/17-database-schema/alembic/versions/001_initial_schema.py ./alembic/versions/
+cp product-guidelines/17-database-schema/alembic/versions/001_initial_schema.py ./alembic/versions/
 
 # 2. Run migration
 alembic upgrade head
@@ -836,7 +836,7 @@ alembic revision --autogenerate -m "description"
 
 ```bash
 # 1. Copy schema file
-cp output/17-database-schema/schema.sql ./
+cp product-guidelines/17-database-schema/schema.sql ./
 
 # 2. Apply to database
 psql $DATABASE_URL -f schema.sql
@@ -851,14 +851,14 @@ mysql -u user -p database_name < schema.sql
 
 This command generates:
 
-**1. Documentation** (`output/17-database-schema.md`):
+**1. Documentation** (`product-guidelines/17-database-schema.md`):
 - Entity relationship diagram
 - Design decisions and rationale
 - Table definitions with detailed explanations
 - Query patterns and examples
 - Scaling strategy
 
-**2. Migration Files** (`output/17-database-schema/migrations/`):
+**2. Migration Files** (`product-guidelines/17-database-schema/migrations/`):
 - Prisma schema (if TypeScript)
 - Alembic migration (if Python)
 - Raw SQL (as fallback)
@@ -951,10 +951,10 @@ Don't create tables "just in case". Design schema based on:
 If you can't trace a table back to a journey step, you probably don't need it.
 
 **Reference files:**
-- Journey: `output/00-user-journey.md`
-- Tech stack: `output/01-tech-stack.md`
-- Architecture: `output/05-architecture.md`
-- Backlog: `output/07-backlog/BACKLOG.md`
+- Journey: `product-guidelines/00-user-journey.md`
+- Tech stack: `product-guidelines/01-tech-stack.md`
+- Architecture: `product-guidelines/05-architecture.md`
+- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
 
 ---
 
