@@ -5,6 +5,14 @@
 **Priority**: [P0 / P1 / P2]
 **RICE Score**: [Score] (R:[X] × I:[X] × C:[X]% ÷ E:[X])
 
+> **Context**: Reference `product-guidelines/` for strategic context:
+> - `00-user-journey.md` - User journey and value delivery
+> - `02-tech-stack.md` - Technology choices and rationale
+> - `06-design-system.md` - Design components and patterns
+> - `04-metrics.md` - Success metrics and tracking
+> - `07-database-schema.md` - Database schema and relationships
+> - `08-api-contracts.md` - API specifications
+
 ---
 
 ## User Value
