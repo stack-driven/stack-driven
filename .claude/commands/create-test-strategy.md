@@ -1186,24 +1186,36 @@ jobs:
 
 This command generates:
 
-**1. Testing Strategy Document** (`product-guidelines/09-test-strategy.md`):
+**1. Full Testing Strategy** (`product-guidelines/19-test-strategy.md`):
 - Testing philosophy and principles
-- Unit, integration, E2E testing strategies
+- Unit, integration, E2E testing strategies with examples
 - Test coverage goals and quality gates
-- Test data management approach
+- Test data management approach (factories, fixtures, cleanup)
 - Performance and security testing plans
 - CI/CD integration details
-- Testing workflows (TDD, regression)
-- "What We DIDN'T Choose" analysis
+- Testing workflows (TDD, BDD, regression)
+- Testing checklists (pre-commit, pre-deploy)
+- Setup instructions (Python/TypeScript)
+- "What We DIDN'T Choose" analysis (8+ alternatives)
 
-**2. Test Configuration Files** (`product-guidelines/09-test-strategy/`):
+**2. Essentials Documentation** (`product-guidelines/19-test-strategy-essentials.md`):
+- **Purpose**: Condensed version for Session 10 (backlog generation) - 66% smaller
+- Coverage targets (for story estimation)
+- Test types required (unit, integration, E2E)
+- Testing tools (from tech stack)
+- Quality gates (for acceptance criteria)
+- Test requirements in stories
+- Story scoping guidance (simple vs complex stories)
+- Common test scenarios (auth, authorization, validation)
+
+**3. Test Configuration Files** (`product-guidelines/19-test-strategy/`):
 - `pytest.ini` or `vitest.config.ts` (test runner config)
 - `.coveragerc` (coverage configuration)
 - `tests/conftest.py` (pytest fixtures)
 - `tests/factories.py` (test data factories)
 - `tests/fixtures/` (sample test data files)
 
-**3. Example Tests** (`product-guidelines/09-test-strategy/examples/`):
+**4. Example Tests** (`product-guidelines/19-test-strategy/examples/`):
 - `example_unit_test.py` or `.test.ts`
 - `example_integration_test.py`
 - `example_e2e_test.py` or `.spec.ts`
@@ -1245,7 +1257,9 @@ Before completing this session, verify:
 - [ ] Team can actually follow this strategy
 
 **Documentation:**
-- [ ] "What We DIDN'T Choose" section complete (4+ alternatives)
+- [ ] Full test strategy file (`19-test-strategy.md`) complete with all details
+- [ ] Essentials file (`19-test-strategy-essentials.md`) generated for backlog use
+- [ ] "What We DIDN'T Choose" section complete (4+ alternatives) in full file
 - [ ] Testing workflows documented (TDD, regression)
 - [ ] Setup instructions clear and complete
 - [ ] Example tests provided for each test type
