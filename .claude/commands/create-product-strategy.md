@@ -54,11 +54,14 @@ Use the Read tool to read `product-guidelines/00-user-journey.md`.
 - Value delivered (differentiation opportunity)
 - Economic value (time/money saved, ROI)
 
-### Step 2: Read Template Structure
+### Step 2: Read Template Structures
 
 ```bash
-Read templates/01-product-strategy-template.md
+Read templates/11-product-strategy-template.md
+Read templates/11-product-strategy-essentials-template.md
 ```
+
+The full template is comprehensive; the essentials template shows what to extract for backlog generation.
 
 ### Step 3: Interview the User
 
@@ -95,15 +98,37 @@ Grounded in journey, develop:
    - **Roadmap themes**: Major initiatives to deliver [journey value]
    - **Risks**: Assumptions about [journey], [market] that could be wrong
 
-### Step 5: Write the Output
+### Step 5: Write the Outputs
+
+First, write the comprehensive product strategy:
 
 ```bash
 Write product-guidelines/01-product-strategy.md
 ```
 
-## Output Location
+Then, create the essentials version for backlog generation:
 
-`product-guidelines/01-product-strategy.md`
+```bash
+Read templates/11-product-strategy-essentials-template.md
+```
+
+Extract ONLY the information needed for backlog generation:
+- Vision statement (1 sentence)
+- Positioning statement (brief)
+- Strategic goals (names + metrics only, no elaboration)
+- Product principles (for story decisions)
+- Roadmap themes (for epic prioritization)
+- Key feature categories (for backlog organization)
+- Priority framework (for story prioritization)
+
+```bash
+Write product-guidelines/11-product-strategy-essentials.md
+```
+
+## Output Locations
+
+1. `product-guidelines/01-product-strategy.md` - Full strategy (for stakeholders, investors, strategic alignment)
+2. `product-guidelines/11-product-strategy-essentials.md` - Essentials for backlog generation (optimized for Session 10)
 
 This validates:
 - User journey (with market sizing and competitive analysis)
@@ -156,7 +181,9 @@ User: [Lists strategic goals]
 
 [Continue through product principles, roadmap themes, risks...]
 
-You: Excellent. I've captured your product strategy in product-guidelines/01-product-strategy.md:
+You: Excellent. I've created two versions of your product strategy:
+
+**Full Strategy** (product-guidelines/01-product-strategy.md):
 - Vision: [journey outcome at scale]
 - Market: [TAM/SAM/SOM for journey audience]
 - Positioning: [journey differentiation vs. competitors]
@@ -164,6 +191,11 @@ You: Excellent. I've captured your product strategy in product-guidelines/01-pro
 - 4 product principles (from journey insights)
 - 6 roadmap themes (major initiatives)
 - Risk register (journey/market assumptions)
+
+**Essentials for Backlog** (product-guidelines/11-product-strategy-essentials.md):
+- Condensed version with only what Session 10 needs
+- 65% smaller, optimized for context efficiency
+- Used by /generate-backlog command
 
 This validates your journey with market context. Everything traces back to the user journey.
 ```

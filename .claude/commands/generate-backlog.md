@@ -16,7 +16,7 @@ You're a technical product manager creating a systematic backlog from all cascad
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/11-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/03-mission.md
 Read: product-guidelines/04-metrics.md
@@ -26,6 +26,8 @@ Read: product-guidelines/07-database-schema.md
 Read: product-guidelines/08-api-contracts.md
 Read: product-guidelines/09-test-strategy.md
 ```
+
+**Context Optimization**: We read `11-product-strategy-essentials.md` (not `01-product-strategy.md`) for 65% context reduction. The essentials file contains only what's needed for backlog generation: vision, positioning, goals, principles, and roadmap themes—without the market analysis, competitive landscape, and strategic details.
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 
