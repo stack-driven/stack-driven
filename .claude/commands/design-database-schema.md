@@ -1,22 +1,17 @@
 ---
-description: POST-CASCADE - Design complete database schema with migrations
+description: Session 7 - Design complete database schema with migrations
 ---
 
-# Design Database Schema (Post-Cascade Development)
+# Design Database Schema (Session 7)
 
-You are helping the user create a comprehensive database schema including entity relationship diagrams, detailed table definitions, indexes, constraints, and actual migration files. This is typically done after Session 7 when you have a project scaffold and are ready to implement the data layer.
+You are helping the user create a comprehensive database schema including entity relationship diagrams, detailed table definitions, indexes, constraints, and actual migration files. This happens after defining architecture and brand strategy, but BEFORE generating the backlog, so that backlog items can be informed by the technical data model.
 
 ## When to Use This
 
-**Run AFTER Session 7** (`/scaffold-project`) if:
-- You have a working development environment
-- You're ready to implement the data layer
-- You want detailed schema design before building features
-
-**Or run AFTER Session 5** if:
-- You want to design database early in the process
-- You're planning data architecture before scaffolding
-- You have clear backlog requirements
+**This is Session 7** in the core Stack-Driven cascade. Run it:
+- After Session 6 (`/create-design` - design system)
+- Before Session 10 (`/generate-backlog` - implementation planning)
+- When you need to define your data model based on journey and architecture
 
 **Skip this** if:
 - You're using a no-code/low-code platform
@@ -43,15 +38,15 @@ Create a comprehensive database schema design including:
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-tech-stack.md
-Read: product-guidelines/05-architecture.md
-Read: product-guidelines/07-backlog/BACKLOG.md
+Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/06-architecture.md
 ```
 
 **Optional inputs (if available):**
 
 ```
-Read: product-guidelines/07-project-scaffold.md
+Read: product-guidelines/10-backlog/BACKLOG.md (if exists - backlog comes after schema in Session 10)
+Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes after in Session 12)
 ```
 
 **Extract from Journey**:
@@ -70,10 +65,11 @@ Read: product-guidelines/07-project-scaffold.md
 - Performance requirements
 - Multi-tenancy strategy
 
-**Extract from Backlog**:
+**Extract from Backlog (if available)**:
 - What features need what data?
 - What queries will be common?
 - What relationships are needed?
+- Note: Backlog is generated AFTER this session, so focus on journey and architecture if backlog doesn't exist yet
 
 **Example (from compliance-saas):**
 - Journey entities: Users, Documents, Assessments, Frameworks, Teams
@@ -807,7 +803,7 @@ After generating schema files:
 
 ```bash
 # 1. Copy schema to your project
-cp product-guidelines/17-database-schema/prisma/schema.prisma ./prisma/schema.prisma
+cp product-guidelines/07-database-schema/prisma/schema.prisma ./prisma/schema.prisma
 
 # 2. Create initial migration
 npx prisma migrate dev --name initial_schema
@@ -823,7 +819,7 @@ npx prisma studio
 
 ```bash
 # 1. Copy migration to your project
-cp product-guidelines/17-database-schema/alembic/versions/001_initial_schema.py ./alembic/versions/
+cp product-guidelines/07-database-schema/alembic/versions/001_initial_schema.py ./alembic/versions/
 
 # 2. Run migration
 alembic upgrade head
@@ -836,7 +832,7 @@ alembic revision --autogenerate -m "description"
 
 ```bash
 # 1. Copy schema file
-cp product-guidelines/17-database-schema/schema.sql ./
+cp product-guidelines/07-database-schema/schema.sql ./
 
 # 2. Apply to database
 psql $DATABASE_URL -f schema.sql
@@ -851,14 +847,14 @@ mysql -u user -p database_name < schema.sql
 
 This command generates:
 
-**1. Documentation** (`product-guidelines/17-database-schema.md`):
+**1. Documentation** (`product-guidelines/07-database-schema.md`):
 - Entity relationship diagram
 - Design decisions and rationale
 - Table definitions with detailed explanations
 - Query patterns and examples
 - Scaling strategy
 
-**2. Migration Files** (`product-guidelines/17-database-schema/migrations/`):
+**2. Migration Files** (`product-guidelines/07-database-schema/migrations/`):
 - Prisma schema (if TypeScript)
 - Alembic migration (if Python)
 - Raw SQL (as fallback)
@@ -952,9 +948,9 @@ If you can't trace a table back to a journey step, you probably don't need it.
 
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
-- Tech stack: `product-guidelines/01-tech-stack.md`
-- Architecture: `product-guidelines/05-architecture.md`
-- Backlog: `product-guidelines/07-backlog/BACKLOG.md`
+- Tech stack: `product-guidelines/02-tech-stack.md`
+- Architecture: `product-guidelines/06-architecture.md`
+- Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 
 ---
 

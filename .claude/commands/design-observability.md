@@ -1,14 +1,14 @@
 ---
-description: Session 11 - Create monitoring, alerting, and observability strategy
+description: Session 14 - Create monitoring, alerting, and observability strategy
 ---
 
-# Design Observability (Session 11 - Core)
+# Design Observability (Session 14 - Core)
 
 You are helping the user create a comprehensive observability strategy including metrics, logs, traces, dashboards, alerts, SLOs, and incident response. This is a core session that ensures you can monitor and maintain production systems.
 
 ## When to Use This
 
-**Run AFTER Session 10** (`/plan-deployment`):
+**Run AFTER Session 13** (`/plan-deployment`):
 - You've planned deployment and now need monitoring strategy
 - You want observability from day one
 - You need to define SLOs and error budgets
@@ -31,7 +31,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 2. **Read the template structure**:
    ```bash
-   Read templates/11-observability-strategy-template.md
+   Read templates/14-observability-strategy-template.md
    ```
 
 3. **Check for architecture from Session 4** (recommended):
@@ -48,7 +48,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 5. **Check for deployment plan** (recommended):
    ```bash
-   Read product-guidelines/10-deployment-plan.md
+   Read product-guidelines/13-deployment-plan.md
    ```
    - Monitoring integrates with deployment
 
@@ -81,12 +81,12 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 8. **Write the output**:
    ```bash
-   Write product-guidelines/11-observability-strategy.md
+   Write product-guidelines/14-observability-strategy.md
    ```
 
 ## Output Location
 
-`product-guidelines/11-observability-strategy.md`
+`product-guidelines/14-observability-strategy.md`
 
 This will be used by:
 - Engineers implementing monitoring
@@ -178,7 +178,7 @@ User: [Describes incident process]
 
 [Continue through post-mortems, tools, costs...]
 
-You: Excellent! I've created your observability strategy in product-guidelines/11-observability-strategy.md:
+You: Excellent! I've created your observability strategy in product-guidelines/14-observability-strategy.md:
 - Observability philosophy (three pillars, alert on symptoms)
 - Golden signals for 4 services (latency, traffic, errors, saturation)
 - Structured logging (JSON format, 30-day retention, key fields)

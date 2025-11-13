@@ -23,7 +23,7 @@ Stack-Driven is a comprehensive framework for building products the right way:
 3. **Derive technology choices from journey requirements**
 4. **Generate a complete product strategy in 3-5 hours**
 
-This isn't just a prompt collection—it's a complete product development system that guides you through **11 progressive sessions**, each building on previous outputs, to go from idea to production-ready system.
+This isn't just a prompt collection—it's a complete product development system that guides you through **14 progressive sessions**, each building on previous outputs, to go from idea to production-ready system.
 
 ---
 
@@ -42,47 +42,50 @@ Everything flows from the user journey:
 
 ## The Cascade
 
-Stack-Driven guides you through **11 progressive sessions**, each building on previous outputs:
+Stack-Driven guides you through **14 progressive sessions**, each building on previous outputs:
 
 ```
-Session 1: /refine-journey          → product-guidelines/00-user-journey.md
+Session 1: /refine-journey             → product-guidelines/00-user-journey.md
   ↓ (AI reads journey, validates with market)
 
-Session 2: /create-product-strategy  → product-guidelines/01-product-strategy.md
+Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
   ↓ (AI reads journey + strategy, chooses tech)
 
-Session 3: /choose-tech-stack       → product-guidelines/02-tech-stack.md
+Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, derives tactics)
 
-Session 4: /generate-strategy       → product-guidelines/03-mission.md
-                                     product-guidelines/04-metrics.md
-                                     product-guidelines/05-monetization.md
-                                     product-guidelines/06-architecture.md
-  ↓ (AI reads all previous, creates brand strategy)
+Session 4: /generate-strategy          → product-guidelines/03-mission.md
+                                        product-guidelines/04-metrics.md
+                                        product-guidelines/05-monetization.md
+                                        product-guidelines/06-architecture.md
+  ↓ (AI reads all previous, designs technical specs)
 
-Session 5: /create-brand-strategy   → product-guidelines/07-brand-strategy.md
-  ↓ (AI reads brand, creates design system)
+Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
+  ↓ (AI reads schema, designs API surface)
 
-Session 6: /create-design            → product-guidelines/08-design-system.md
+Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.md
+  ↓ (AI reads APIs, defines testing strategy)
+
+Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
   ↓ (AI reads everything, generates backlog)
 
-Session 7: /generate-backlog         → product-guidelines/09-backlog/
+Session 10: /generate-backlog          → product-guidelines/10-backlog/
   ↓ (Push to GitHub)
 
-Session 8: /create-gh-issues         → GitHub issues
+Session 11: /create-gh-issues          → GitHub issues
   ↓ (Generate working development environment)
 
-Session 9: /scaffold-project         → product-guidelines/09-project-scaffold.md
-                                     product-guidelines/09-project-scaffold/ (actual code files)
+Session 12: /scaffold-project          → product-guidelines/12-project-scaffold.md
+                                        product-guidelines/12-project-scaffold/ (actual code files)
   ↓ (Plan deployment strategy)
 
-Session 10: /plan-deployment         → product-guidelines/10-deployment-plan.md
+Session 13: /plan-deployment           → product-guidelines/13-deployment-plan.md
   ↓ (Design observability)
 
-Session 11: /design-observability    → product-guidelines/11-observability-strategy.md
+Session 14: /design-observability      → product-guidelines/14-observability-strategy.md
 ```
 
-**In 11 sessions** (6-8 hours total), you go from idea to production-ready system with deployment and monitoring strategy.
+**In 14 sessions** (8-10 hours total), you go from idea to production-ready system with technical specifications, deployment and monitoring strategy.
 
 ---
 
@@ -110,9 +113,10 @@ After each session, I'll tell you exactly what to run next:
 - `/create-product-strategy` - Validates journey with market analysis and competitive positioning
 - `/choose-tech-stack` - Analyzes your journey and strategy, recommends optimal tech
 - `/generate-strategy` - Derives mission, metrics, monetization, architecture
-- `/create-brand-strategy` - Creates brand foundation that expresses journey value
-- `/create-design` - Creates design system that brings brand to life
-- `/generate-backlog` - Generates 30-50 prioritized user stories
+- `/design-database-schema` - Designs complete database schema with ERD and migrations
+- `/generate-api-contracts` - Generates OpenAPI specs and endpoint definitions
+- `/create-test-strategy` - Defines comprehensive testing strategy (unit, integration, E2E)
+- `/generate-backlog` - Generates 30-50 prioritized user stories informed by technical specs
 - `/create-gh-issues` - Pushes backlog to GitHub
 - `/scaffold-project` - Generates working development environment with actual code files
 - `/plan-deployment` - Creates deployment strategy with CI/CD and environments
@@ -120,9 +124,9 @@ After each session, I'll tell you exactly what to run next:
 
 ### 4. Build
 
-Your production-ready system is ready with package configs, Docker Compose, CI/CD pipeline, deployment strategy, observability setup, and documentation. Copy the scaffold files and start implementing your prioritized backlog.
+Your production-ready system is ready with database schema, API contracts, testing strategy, package configs, Docker Compose, CI/CD pipeline, deployment strategy, observability setup, and documentation. Copy the scaffold files and start implementing your prioritized backlog.
 
-**Total time**: 6-8 hours to go from idea to production-ready system.
+**Total time**: 8-10 hours to go from idea to production-ready system with complete technical specifications.
 
 ---
 
@@ -140,18 +144,19 @@ product-guidelines/
 ├── 04-metrics.md (Session 4)
 ├── 05-monetization.md (Session 4)
 ├── 06-architecture.md (Session 4)
-├── 07-brand-strategy.md (Session 5)
-├── 08-design-system.md (Session 6)
-├── 09-backlog/ (Session 7)
-├── 09-project-scaffold/ (Session 9 - actual code files)
-│   ├── 09-project-scaffold.md (decisions documentation)
+├── 07-database-schema.md (Session 7)
+├── 08-api-contracts.md (Session 8)
+├── 09-test-strategy.md (Session 9)
+├── 10-backlog/ (Session 10)
+├── 12-project-scaffold/ (Session 12 - actual code files)
+│   ├── 12-project-scaffold.md (decisions documentation)
 │   ├── package.json (or pyproject.toml)
 │   ├── docker-compose.yml
 │   ├── .env.template
 │   ├── .github/workflows/ci.yml
 │   └── README.md (setup instructions)
-├── 10-deployment-plan.md (Session 10)
-└── 11-observability-strategy.md (Session 11)
+├── 13-deployment-plan.md (Session 13)
+└── 14-observability-strategy.md (Session 14)
 ```
 
 ### `/examples/` - Reference Implementations

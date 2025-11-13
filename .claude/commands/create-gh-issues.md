@@ -1,22 +1,22 @@
 ---
-description: Session 8 - Push backlog issues to GitHub
+description: Session 11 - Push backlog issues to GitHub
 ---
 
-# Session 8: Create GitHub Issues
+# Session 11: Create GitHub Issues
 
-This is **Session 8** of the cascade. You'll push the generated backlog to GitHub for execution.
+This is **Session 11** of the cascade. You'll push the generated backlog to GitHub for execution.
 
 ## Your Role
 
-You're pushing issues from `product-guidelines/09-backlog/issues/*.md` to GitHub using the `gh` CLI.
+You're pushing issues from `product-guidelines/10-backlog/issues/*.md` to GitHub using the `gh` CLI.
 
 ## Process
 
 ### Step 1: Read Backlog Files
 
 ```
-Read: product-guidelines/09-backlog/BACKLOG.md (summary)
-Read: product-guidelines/09-backlog/issues/*.md (all issue files)
+Read: product-guidelines/10-backlog/BACKLOG.md (summary)
+Read: product-guidelines/10-backlog/issues/*.md (all issue files)
 ```
 
 ### Step 2: Dry Run (Show What Will Be Created)
@@ -25,7 +25,7 @@ Read: product-guidelines/09-backlog/issues/*.md (all issue files)
 ```
 📋 Ready to create GitHub issues
 
-I found [X] issues in product-guidelines/09-backlog/issues/:
+I found [X] issues in product-guidelines/10-backlog/issues/:
 
 Epics:
 - EPIC-01: Onboarding
@@ -59,14 +59,14 @@ Use `gh issue create` for each issue:
 ```bash
 gh issue create \
   --title "[EPIC-01] Onboarding" \
-  --body "$(cat product-guidelines/09-backlog/issues/epic-01-onboarding.md)" \
+  --body "$(cat product-guidelines/10-backlog/issues/epic-01-onboarding.md)" \
   --label "epic"
 ```
 
 ```bash
 gh issue create \
   --title "[STORY-001] OAuth-based signup" \
-  --body "$(cat product-guidelines/09-backlog/issues/story-001-oauth-signup.md)" \
+  --body "$(cat product-guidelines/10-backlog/issues/story-001-oauth-signup.md)" \
   --label "story,priority:P0"
 ```
 
@@ -143,7 +143,7 @@ brew install gh (macOS)
 Then run: gh auth login
 
 Option 2: Manual Import
-I've created all issues in product-guidelines/09-backlog/issues/
+I've created all issues in product-guidelines/10-backlog/issues/
 You can manually create GitHub issues from these markdown files.
 
 Option 3: CSV Export

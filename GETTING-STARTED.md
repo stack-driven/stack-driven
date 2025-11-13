@@ -1,6 +1,6 @@
 # Getting Started with Stack-Driven v2.0
 
-Welcome to Stack-Driven! This guide will walk you through the **6-session cascade** that transforms your product idea into a production-ready backlog.
+Welcome to Stack-Driven! This guide will walk you through the **14-session cascade** that transforms your product idea into a production-ready system with complete technical specifications.
 
 ---
 
@@ -8,14 +8,12 @@ Welcome to Stack-Driven! This guide will walk you through the **6-session cascad
 
 Stack-Driven uses a **cascading approach** where each session builds upon previous outputs:
 
-1. **Session 1** → Define user journey
-2. **Session 2** → Choose optimal tech stack (derived from journey)
-3. **Session 3** → Generate strategic foundation (mission, metrics, monetization, architecture)
-4. **Session 4** → Create design system (components for journey)
-5. **Session 5** → Generate backlog (30-50 prioritized stories)
-6. **Session 6** → Push to GitHub (optional)
+1. **Sessions 1-4** → Strategic foundation (journey, product strategy, tech stack, mission/metrics/monetization/architecture)
+2. **Sessions 7-9** → Technical specifications (database schema, API contracts, testing strategy)
+3. **Sessions 10-11** → Backlog and GitHub issues (30-50 prioritized stories informed by technical specs)
+4. **Sessions 12-14** → Development environment (project scaffold, deployment plan, observability strategy)
 
-**Total time**: 3-5 hours to go from idea to validated, prioritized backlog.
+**Total time**: 8-10 hours to go from idea to production-ready system with complete technical specifications.
 
 ---
 
@@ -25,17 +23,22 @@ Stack-Driven uses a **cascading approach** where each session builds upon previo
 
 1. **An idea** (doesn't have to be fully formed)
 2. **Understanding of your users** (or willingness to think through it)
-3. **3-5 hours** across multiple sessions (can be spread over days)
+3. **8-10 hours** across multiple sessions (can be spread over days)
 
 ### What You'll Get
 
 After completing the cascade:
 - ✅ Validated user journey
 - ✅ Tech stack optimized for YOUR requirements
-- ✅ Mission statement, North Star metric, pricing strategy
-- ✅ Architecture principles and design system
-- ✅ 30-50 prioritized user stories (P0/P1/P2)
-- ✅ Ready-to-build backlog in GitHub
+- ✅ Mission statement, North Star metric, pricing strategy, architecture principles
+- ✅ Complete database schema with ERD and migrations
+- ✅ OpenAPI specifications and API contracts
+- ✅ Comprehensive testing strategy (unit, integration, E2E)
+- ✅ 30-50 prioritized user stories (P0/P1/P2) informed by technical specs
+- ✅ Working development environment with actual code files
+- ✅ Deployment strategy and CI/CD pipeline
+- ✅ Observability strategy with monitoring and alerting
+- ✅ Ready-to-build production-ready system
 
 ---
 
