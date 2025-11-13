@@ -847,20 +847,34 @@ mysql -u user -p database_name < schema.sql
 
 This command generates:
 
-**1. Documentation** (`product-guidelines/07-database-schema.md`):
+**1. Full Documentation** (`product-guidelines/17-database-schema.md`):
 - Entity relationship diagram
 - Design decisions and rationale
-- Table definitions with detailed explanations
-- Query patterns and examples
-- Scaling strategy
+- Table definitions with detailed explanations (columns, types, constraints)
+- Index strategies and query optimization
+- Query patterns and EXPLAIN ANALYZE examples
+- Scaling strategy (partitioning, sharding, replicas)
+- Data types rationale
+- Testing strategy
+- "What We DIDN'T Choose" alternatives (3+ options)
 
-**2. Migration Files** (`product-guidelines/07-database-schema/migrations/`):
+**2. Essentials Documentation** (`product-guidelines/17-database-schema-essentials.md`):
+- **Purpose**: Condensed version for Session 10 (backlog generation) - 56% smaller
+- Database technology choices (DB, ORM, ID strategy, multi-tenancy)
+- Table list with journey mapping
+- Entity relationship diagram
+- Key relationships (1:N, M:N)
+- Data access patterns (for story scoping)
+- **Excludes**: Column details, indexes, migrations, scaling, alternatives
+- **Context savings**: ~900 tokens per backlog generation
+
+**3. Migration Files** (`product-guidelines/17-database-schema/migrations/`):
 - Prisma schema (if TypeScript)
 - Alembic migration (if Python)
 - Raw SQL (as fallback)
 - Seed data (optional)
 
-**3. Type Definitions** (if applicable):
+**4. Type Definitions** (if applicable):
 - TypeScript types generated from Prisma
 - Python SQLAlchemy models
 - Database documentation
@@ -904,7 +918,9 @@ Before completing this session, verify:
 - [ ] ORM patterns follow tech stack decisions
 
 **Documentation:**
-- [ ] "What We DIDN'T Choose" section complete (3+ alternatives)
+- [ ] Full schema file (`17-database-schema.md`) complete with all details
+- [ ] Essentials file (`17-database-schema-essentials.md`) generated for backlog use
+- [ ] "What We DIDN'T Choose" section complete (3+ alternatives) in full file
 - [ ] Each table has purpose explanation
 - [ ] Design decisions reference journey
 - [ ] Setup instructions clear and tested
