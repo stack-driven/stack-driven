@@ -168,9 +168,9 @@ Use `/templates/04-metrics-template.md`.
 - Counter-metrics (what won't sacrifice)
 - Connection to journey steps, to monetization
 
-### 3. `product-guidelines/05-monetization.md`
+### 3. `product-guidelines/04-monetization.md`
 
-Use `/templates/05-monetization-template.md`.
+Use `/templates/04-monetization-template.md`.
 
 **Key Sections**:
 - Pricing model (with rationale from journey)
@@ -180,9 +180,9 @@ Use `/templates/05-monetization-template.md`.
 - Revenue targets (30/90/365 days)
 - Connection to journey (where charged), mission (what charged for)
 
-### 4. `product-guidelines/06-architecture.md`
+### 4. `product-guidelines/04-architecture.md`
 
-Use `/templates/06-architecture-template.md`.
+Use `/templates/04-architecture-template.md`.
 
 **Key Sections**:
 - Architecture overview (diagram if helpful)

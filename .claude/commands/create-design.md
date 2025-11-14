@@ -19,7 +19,7 @@ Read: product-guidelines/00-user-journey.md (for user context, interaction needs
 Read: product-guidelines/01-product-strategy.md (for market positioning)
 Read: product-guidelines/02-tech-stack.md (for technical constraints)
 Read: product-guidelines/05-brand-strategy.md (for brand personality, values, visual direction)
-Read: product-guidelines/06-architecture.md (for architecture principles)
+Read: product-guidelines/04-architecture.md (for architecture principles)
 ```
 
 ### Step 2: Extract Brand Personality & Visual Direction

@@ -285,14 +285,21 @@ Your Cascade Progress:
 ❌ 02-tech-stack.md          (Not started)
 ❌ 03-mission.md             (Not started)
 ❌ 04-metrics.md             (Not started)
-❌ 05-monetization.md        (Not started)
-❌ 06-architecture.md        (Not started)
-❌ 07-design-system.md       (Not started)
-❌ 08-backlog/               (Not started)
+❌ 04-monetization.md        (Not started)
+❌ 04-architecture.md        (Not started)
+❌ 05-brand-strategy.md      (Not started)
+❌ 06-design-system.md       (Not started)
+❌ 07-database-schema.md     (Not started)
+❌ 08-api-contracts.md       (Not started)
+❌ 09-test-strategy.md       (Not started)
+❌ 10-backlog/               (Not started)
+❌ 12-project-scaffold.md    (Not started)
+❌ 13-deployment-plan.md     (Not started)
+❌ 14-observability-strategy.md (Not started)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Progress: ██░░░░░░░░░░ 13% (1 of 8 sessions complete)
+Progress: █░░░░░░░░░░░░░ 7% (1 of 14 sessions complete)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

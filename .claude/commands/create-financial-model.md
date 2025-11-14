@@ -12,7 +12,7 @@ This is a **post-core extension** that creates a comprehensive financial model g
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
 - ✅ Metrics established (`product-guidelines/04-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/05-monetization.md`)
+- ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
 
 **Ideally after additional strategy work** when you also have:
 - ✅ Growth strategy created (`product-guidelines/growth-strategy.md`)
@@ -84,7 +84,7 @@ This command READS previous outputs to ground financial projections in reality:
 
 5. **Read the monetization model**:
    ```bash
-   Read product-guidelines/05-monetization.md
+   Read product-guidelines/04-monetization.md
    ```
    - What's the pricing structure? (Free/Paid tiers, enterprise)
    - What's the value metric? (per-user, per-usage, per-outcome)

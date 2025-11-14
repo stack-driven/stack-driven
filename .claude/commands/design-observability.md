@@ -36,7 +36,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
 
 3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read product-guidelines/06-architecture.md
+   Read product-guidelines/04-architecture.md
    ```
    - Understand system components to monitor
 
@@ -128,7 +128,7 @@ The output follows this structure:
 ```
 You: Let's design your observability strategy. First, let me check your architecture and metrics...
 
-[Read product-guidelines/06-architecture.md and product-guidelines/04-metrics.md]
+[Read product-guidelines/04-architecture.md and product-guidelines/04-metrics.md]
 
 You: Got it - you have [services] and care about [business metrics]. What monitoring do you have today? What's missing?
 

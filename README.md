@@ -56,8 +56,14 @@ Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                         product-guidelines/04-metrics.md
-                                        product-guidelines/05-monetization.md
-                                        product-guidelines/06-architecture.md
+                                        product-guidelines/04-monetization.md
+                                        product-guidelines/04-architecture.md
+  ↓ (AI reads all previous, creates brand strategy)
+
+Session 5: /create-brand-strategy      → product-guidelines/05-brand-strategy.md
+  ↓ (AI reads brand strategy, creates design system)
+
+Session 6: /create-design               → product-guidelines/06-design-system.md
   ↓ (AI reads all previous, designs technical specs)
 
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
@@ -149,11 +155,14 @@ Your production-ready system is ready with database schema, API contracts, testi
 product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
+├── 11-product-strategy-essentials.md (Session 2)
 ├── 02-tech-stack.md (Session 3)
 ├── 03-mission.md (Session 4)
 ├── 04-metrics.md (Session 4)
-├── 05-monetization.md (Session 4)
-├── 06-architecture.md (Session 4)
+├── 04-monetization.md (Session 4)
+├── 04-architecture.md (Session 4)
+├── 05-brand-strategy.md (Session 5)
+├── 06-design-system.md (Session 6)
 ├── 07-database-schema.md (Session 7)
 ├── 08-api-contracts.md (Session 8)
 ├── 09-test-strategy.md (Session 9)

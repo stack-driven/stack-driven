@@ -12,7 +12,7 @@ This is a **post-core extension** that creates a comprehensive, data-driven grow
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
 - ✅ Metrics established (`product-guidelines/04-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/05-monetization.md`)
+- ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
 
 **Ideally after Session 7+** when you also have:
 - ✅ Backlog generated (`product-guidelines/09-backlog/`)
@@ -73,7 +73,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 4. **Read the monetization model**:
    ```bash
-   Read product-guidelines/05-monetization.md
+   Read product-guidelines/04-monetization.md
    ```
    - What's the pricing model? (freemium, trial, paid)
    - Where's the conversion point? (free→paid optimization)
@@ -383,7 +383,7 @@ Retention metrics:
 
 ### Step 7: Design Monetization Optimization
 
-**Read monetization model** (`product-guidelines/05-monetization.md`) and optimize for growth.
+**Read monetization model** (`product-guidelines/04-monetization.md`) and optimize for growth.
 
 **Conversion optimization**:
 
@@ -692,7 +692,7 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 
 - Template: `/templates/21-growth-strategy-template.md`
 - Related: `/product-guidelines/04-metrics.md` (North Star and input metrics)
-- Related: `/product-guidelines/05-monetization.md` (conversion and expansion)
+- Related: `/product-guidelines/04-monetization.md` (conversion and expansion)
 - Related: `/product-guidelines/17-analytics-plan.md` (measurement capability)
 
 ---

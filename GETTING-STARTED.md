@@ -106,7 +106,7 @@ I'll ask you questions about your users, their problems, and their journey.
 **What Happens**:
 I read your journey, analyze requirements, and recommend optimal tech.
 
-**What You'll Create**: `product-guidelines/01-tech-stack.md`
+**What You'll Create**: `product-guidelines/02-tech-stack.md`
 
 **Important**: Different journeys → different stacks!
 

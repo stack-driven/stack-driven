@@ -72,7 +72,7 @@ Every slash command (`.claude/commands/*.md`) follows this format:
 ## Inputs (What This Reads)
 
 - `.stack-driven/00-user-journey.md` - [What we extract from this]
-- `.stack-driven/01-tech-stack.md` - [What we extract from this]
+- `.stack-driven/02-tech-stack.md` - [What we extract from this]
 - [etc.]
 
 ## Process
@@ -177,7 +177,7 @@ All user-generated files go to `.stack-driven/` (gitignored):
 ```
 .stack-driven/
 ├── 00-user-journey.md          # Session 1
-├── 01-tech-stack.md            # Session 2 (or 3 in new cascade)
+├── 02-tech-stack.md            # Session 2 (or 3 in new cascade)
 ├── 02-mission.md               # Session 3 (or 4)
 ├── 03-metrics.md
 ├── 04-monetization.md
@@ -799,7 +799,7 @@ This session generates a **runnable development environment** including:
 ## Inputs (What This Reads)
 
 - `.stack-driven/00-user-journey.md` - Project name, purpose
-- `.stack-driven/01-tech-stack.md` - Languages, frameworks, tools
+- `.stack-driven/02-tech-stack.md` - Languages, frameworks, tools
 - `.stack-driven/05-architecture.md` - Monorepo? Microservices? Patterns
 - `.stack-driven/08-backlog/` - What modules/services are needed
 

@@ -345,7 +345,7 @@ Continue? (yes/no)
 1. `/refine-journey` → 00-user-journey.md
 2. `/create-product-strategy` → 01, 11
 3. `/choose-tech-stack` → 02
-4. `/generate-strategy` → 03-mission, 04-metrics, 05-monetization, 06-architecture
+4. `/generate-strategy` → 03-mission, 04-metrics, 04-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
 7. `/design-database-schema` → 07-database-schema

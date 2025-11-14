@@ -45,7 +45,7 @@ After 11 sessions, users have:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy.md
 Read: product-guidelines/02-tech-stack.md
-Read: product-guidelines/06-architecture.md
+Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema.md
 Read: product-guidelines/08-api-contracts.md
 Read: product-guidelines/09-test-strategy.md
@@ -556,7 +556,7 @@ jobs:
 
 ## Tech Stack
 
-[List from 01-tech-stack.md]
+[List from 02-tech-stack.md]
 
 ## Architecture
 
