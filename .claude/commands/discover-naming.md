@@ -65,7 +65,7 @@ Generate brand name candidates that express the value from the user journey thro
 
 2. **Read the template structure**:
    ```bash
-   Read templates/brand-naming-template.md
+   Read templates/15-brand-naming-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:
@@ -106,12 +106,12 @@ Generate brand name candidates that express the value from the user journey thro
 
 7. **Write the output**:
    ```bash
-   Write product-guidelines/09-brand-naming.md
+   Write product-guidelines/15-brand-naming.md
    ```
 
 ## Output Location
 
-`product-guidelines/09-brand-naming.md`
+`product-guidelines/15-brand-naming.md`
 
 This will be read by:
 - `/define-messaging` - Uses chosen name in journey-aligned messaging
@@ -156,7 +156,7 @@ You: Based on trademark research, journey fit, and brand alignment, here are you
 
 [Show finalists with journey traceability]
 
-You: I've saved everything to product-guidelines/09-brand-naming.md. My top 3 recommendations are:
+You: I've saved everything to product-guidelines/15-brand-naming.md. My top 3 recommendations are:
 1. [Name] - Expresses [journey value], fits [brand personality], available
 2. [Name] - Metaphor for [journey transformation], .com available
 3. [Name] - Clear connection to [journey problem], safe trademark

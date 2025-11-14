@@ -72,7 +72,7 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 2. **Read the template structure**:
    ```bash
-   Read templates/brand-messaging-template.md
+   Read templates/16-brand-messaging-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:
@@ -104,12 +104,12 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 6. **Write the output**:
    ```bash
-   Write product-guidelines/10-brand-messaging.md
+   Write product-guidelines/16-brand-messaging.md
    ```
 
 ## Output Location
 
-`product-guidelines/10-brand-messaging.md`
+`product-guidelines/16-brand-messaging.md`
 
 This will be read by:
 - `/create-content-guidelines` - Uses messaging for detailed content style guide
@@ -167,7 +167,7 @@ Notice how it connects to [journey step] and speaks in [brand personality].
 
 [Show more examples]
 
-You: I've captured everything in product-guidelines/10-brand-messaging.md:
+You: I've captured everything in product-guidelines/16-brand-messaging.md:
 - Value proposition: "[specific one-liner tied to mission]"
 - Elevator pitches (all grounded in journey)
 - 4 messaging pillars (each connects to journey value)

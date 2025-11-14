@@ -75,7 +75,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 2. **Read the template structure**:
    ```bash
-   Read templates/brand-identity-template.md
+   Read templates/17-brand-identity-template.md
    ```
 
 3. **Analyze brand personality for visual expression**:
@@ -241,12 +241,12 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 11. **Write the output**:
     ```bash
-    Write product-guidelines/11-brand-identity.md
+    Write product-guidelines/17-brand-identity.md
     ```
 
 ## Output Location
 
-`product-guidelines/11-brand-identity.md`
+`product-guidelines/17-brand-identity.md`
 
 This will be read by:
 - `/create-content-guidelines` - Uses identity for visual content standards
@@ -311,7 +311,7 @@ You: Great! I'll develop [chosen concept] into a complete brand identity system 
 
 [Create comprehensive identity system]
 
-You: I've created your complete brand identity system in product-guidelines/11-brand-identity.md:
+You: I've created your complete brand identity system in product-guidelines/17-brand-identity.md:
 
 ✅ Logo system (primary + variations)
 ✅ Color palette application
@@ -323,7 +323,7 @@ You: I've created your complete brand identity system in product-guidelines/11-b
 
 Every design decision traces back to your brand strategy: [key connections]
 
-File created: product-guidelines/11-brand-identity.md
+File created: product-guidelines/17-brand-identity.md
 
 This visual identity expresses [brand personality] and will help [journey audience] recognize and trust your brand.
 ```

@@ -51,31 +51,31 @@ Session 14: /design-observability      → product-guidelines/14-observability-s
 
 **After Session 6+** (Brand & Design Complete):
 ```
-/design-user-experience     → product-guidelines/user-experience.md
+/design-user-experience     → product-guidelines/19-user-experience.md
     (Detailed UX flows - expands journey with research, flows, wireframes)
 
-/setup-analytics            → product-guidelines/analytics-plan.md
+/setup-analytics            → product-guidelines/20-analytics-plan.md
     (Analytics implementation - implements metrics from Session 4)
 
-/design-growth-strategy     → product-guidelines/growth-strategy.md
+/design-growth-strategy     → product-guidelines/21-growth-strategy.md
     (Growth strategy - acquisition channels, growth loops, and experiments)
 
-/create-financial-model     → product-guidelines/financial-model.md
+/create-financial-model     → product-guidelines/22-financial-model.md
     (Financial model - unit economics, revenue projections, profitability pathways)
 ```
 
 **After Backlog (Session 10+)**:
 ```
-/discover-naming            → product-guidelines/brand-naming.md
+/discover-naming            → product-guidelines/15-brand-naming.md
     (Brand naming - names the journey solution)
 
-/define-messaging           → product-guidelines/brand-messaging.md
+/define-messaging           → product-guidelines/16-brand-messaging.md
     (Messaging framework - communicates journey value in brand voice)
 
-/design-brand-identity      → product-guidelines/brand-identity.md
+/design-brand-identity      → product-guidelines/17-brand-identity.md
     (Brand identity - logo, visual system, and usage guidelines)
 
-/create-content-guidelines  → product-guidelines/content-guidelines.md
+/create-content-guidelines  → product-guidelines/18-content-guidelines.md
     (Content style guide - journey-aligned content standards)
 ```
 
@@ -96,7 +96,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 
 Look for:
 - **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `11-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
-- **Post-core extensions (optional)**: `user-experience.md`, `analytics-plan.md`, `growth-strategy.md`, `financial-model.md`, `brand-naming.md`, `brand-messaging.md`, `brand-identity.md`, `content-guidelines.md`
+- **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
 
@@ -132,16 +132,16 @@ Progress: ████░░░░░░░░░░░░ 21% (3 of 14 core ses
 POST-CORE EXTENSIONS (Optional - Journey-Informed)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 After Session 6+ (Optional UX/growth):
-❌ user-experience.md        (Detailed UX flows)
-❌ analytics-plan.md         (Analytics implementation)
-❌ growth-strategy.md        (Growth strategy)
-❌ financial-model.md        (Financial model & unit economics)
+❌ 19-user-experience.md     (Detailed UX flows)
+❌ 20-analytics-plan.md      (Analytics implementation)
+❌ 21-growth-strategy.md     (Growth strategy)
+❌ 22-financial-model.md     (Financial model & unit economics)
 
 After Session 10+ (Optional marketing polish):
-❌ brand-naming.md           (Brand naming)
-❌ brand-messaging.md        (Messaging framework)
-❌ brand-identity.md         (Brand identity)
-❌ content-guidelines.md     (Content style guide)
+❌ 15-brand-naming.md        (Brand naming)
+❌ 16-brand-messaging.md     (Messaging framework)
+❌ 17-brand-identity.md      (Brand identity)
+❌ 18-content-guidelines.md  (Content style guide)
 
 Status: 0 of 8 post-core extensions complete (optional)
 
@@ -176,10 +176,10 @@ Based on what files exist, determine the next recommended action:
 **If 00-06 design-system exists (Session 6 complete)**:
 - **Recommend**: Session 7 (`/design-database-schema`)
 - **Also suggest** (optional):
-  - `/design-user-experience` (detailed UX flows)
-  - `/setup-analytics` (implement metrics tracking)
-  - `/design-growth-strategy` (acquisition channels and growth loops)
-  - `/create-financial-model` (unit economics and revenue projections)
+  - `/design-user-experience` (product-guidelines/19-user-experience.md)
+  - `/setup-analytics` (product-guidelines/20-analytics-plan.md)
+  - `/design-growth-strategy` (product-guidelines/21-growth-strategy.md)
+  - `/create-financial-model` (product-guidelines/22-financial-model.md)
 
 **If 00-07 database exists (Session 7 complete)**:
 - **Recommend**: Session 8 (`/generate-api-contracts`)
@@ -206,9 +206,9 @@ Based on what files exist, determine the next recommended action:
 - **Congratulate** them!
 - **Recommend**: Copy scaffold files and start building!
 - **Also suggest** (optional):
-  - `/discover-naming` (generate brand name)
-  - `/define-messaging` (messaging framework)
-  - `/design-brand-identity` (visual identity)
+  - `/discover-naming` (product-guidelines/15-brand-naming.md)
+  - `/define-messaging` (product-guidelines/16-brand-messaging.md)
+  - `/design-brand-identity` (product-guidelines/17-brand-identity.md)
   - Post-core extensions for comprehensive planning
 
 ### Step 4: Show Next Step Details
@@ -254,16 +254,16 @@ If appropriate, suggest optional post-core commands:
 💡 Optional Post-Core Extensions (Journey-Informed)
 
 After Session 6 (Brand & Design Complete), consider:
-├─ /design-user-experience → Detailed UX flows & wireframes (product-guidelines/user-experience.md)
-├─ /setup-analytics → Implement metrics tracking (product-guidelines/analytics-plan.md)
-├─ /design-growth-strategy → Acquisition channels & growth loops (product-guidelines/growth-strategy.md)
-└─ /create-financial-model → Unit economics and revenue projections (product-guidelines/financial-model.md)
+├─ /design-user-experience → Detailed UX flows & wireframes (product-guidelines/19-user-experience.md)
+├─ /setup-analytics → Implement metrics tracking (product-guidelines/20-analytics-plan.md)
+├─ /design-growth-strategy → Acquisition channels & growth loops (product-guidelines/21-growth-strategy.md)
+└─ /create-financial-model → Unit economics and revenue projections (product-guidelines/22-financial-model.md)
 
 After Session 10 (Backlog Complete), consider:
-├─ /discover-naming → Extend brand with name generation (product-guidelines/brand-naming.md)
-├─ /define-messaging → Communicate journey value (product-guidelines/brand-messaging.md)
-├─ /design-brand-identity → Logo and visual identity system (product-guidelines/brand-identity.md)
-└─ /create-content-guidelines → Journey-aligned content (product-guidelines/content-guidelines.md)
+├─ /discover-naming → Extend brand with name generation (product-guidelines/15-brand-naming.md)
+├─ /define-messaging → Communicate journey value (product-guidelines/16-brand-messaging.md)
+├─ /design-brand-identity → Logo and visual identity system (product-guidelines/17-brand-identity.md)
+└─ /create-content-guidelines → Journey-aligned content (product-guidelines/18-content-guidelines.md)
 
 During development:
 └─ /review-code → Code review framework (use anytime)
@@ -380,14 +380,14 @@ Option 1: Start Building 🚀
 → Start implementing P0 stories from your backlog
 
 Option 2: Add Optional Extensions 📊
-→ /discover-naming (generate brand name from strategy)
-→ /define-messaging (messaging framework)
-→ /design-brand-identity (visual identity system)
-→ /setup-analytics (plan analytics implementation)
-→ /design-user-experience (detailed UX flows)
-→ /create-content-guidelines (content style guide)
-→ /design-growth-strategy (growth strategy with acquisition channels)
-→ /create-financial-model (financial modeling and unit economics)
+→ /discover-naming (generate brand name - 15-brand-naming.md)
+→ /define-messaging (messaging framework - 16-brand-messaging.md)
+→ /design-brand-identity (visual identity - 17-brand-identity.md)
+→ /create-content-guidelines (content style guide - 18-content-guidelines.md)
+→ /design-user-experience (detailed UX flows - 19-user-experience.md)
+→ /setup-analytics (analytics implementation - 20-analytics-plan.md)
+→ /design-growth-strategy (growth strategy - 21-growth-strategy.md)
+→ /create-financial-model (financial model - 22-financial-model.md)
 
 Option 3: Iterate & Refine 🔄
 → Run /refine-journey if your understanding evolves
@@ -404,10 +404,10 @@ You have everything from idea to production-ready system. Now go ship! 🎯
 **Track and display** them:
 ```
 POST-CORE EXTENSIONS COMPLETE:
-✅ 17-analytics-plan.md (Analytics implementation ready)
-✅ 14-brand-identity.md (Brand identity created)
-✅ 18-database-schema.md (Database schema defined)
-❌ 16-user-experience.md (Not started)
+✅ 20-analytics-plan.md (Analytics implementation ready)
+✅ 17-brand-identity.md (Brand identity created)
+✅ 21-growth-strategy.md (Growth strategy defined)
+❌ 19-user-experience.md (Not started)
 
 You're adding comprehensive planning! Consider UX flows for complete product definition.
 ```
@@ -444,16 +444,16 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 **Post-Core Extensions (Optional - Journey-Informed)**:
 
 After Session 6+:
-- `/design-user-experience` - Detailed UX flows (product-guidelines/user-experience.md)
-- `/setup-analytics` - Analytics implementation (product-guidelines/analytics-plan.md)
-- `/design-growth-strategy` - Growth strategy (product-guidelines/growth-strategy.md)
-- `/create-financial-model` - Financial model & unit economics (product-guidelines/financial-model.md)
+- `/design-user-experience` - Detailed UX flows (product-guidelines/19-user-experience.md)
+- `/setup-analytics` - Analytics implementation (product-guidelines/20-analytics-plan.md)
+- `/design-growth-strategy` - Growth strategy (product-guidelines/21-growth-strategy.md)
+- `/create-financial-model` - Financial model & unit economics (product-guidelines/22-financial-model.md)
 
 After Session 10+:
-- `/discover-naming` - Brand naming (product-guidelines/brand-naming.md)
-- `/define-messaging` - Messaging framework (product-guidelines/brand-messaging.md)
-- `/design-brand-identity` - Brand identity system (product-guidelines/brand-identity.md)
-- `/create-content-guidelines` - Content style guide (product-guidelines/content-guidelines.md)
+- `/discover-naming` - Brand naming (product-guidelines/15-brand-naming.md)
+- `/define-messaging` - Messaging framework (product-guidelines/16-brand-messaging.md)
+- `/design-brand-identity` - Brand identity system (product-guidelines/17-brand-identity.md)
+- `/create-content-guidelines` - Content style guide (product-guidelines/18-content-guidelines.md)
 
 Dev-time:
 - `/review-code` - Code review framework (anytime)

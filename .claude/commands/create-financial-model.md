@@ -713,9 +713,9 @@ Milestone 5: $1M ARR (Month X)
 
 ## Output Format
 
-The output should be saved to `product-guidelines/financial-model.md`:
+The output should be saved to `product-guidelines/22-financial-model.md`:
 
-Use the template at `templates/financial-model-template.md` as structure.
+Use the template at `templates/22-financial-model-template.md` as structure.
 
 **The output includes**:
 

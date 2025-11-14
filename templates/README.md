@@ -65,21 +65,21 @@ Session 10 (`/generate-backlog`) reads ALL previous outputs to generate a compre
 
 **Note:** Essentials templates use their original session number (07, 08, 09) but product strategy essentials uses `11` because it's created in Session 2 and read specifically by Session 10.
 
-## Post-Core Extension Templates (Unnumbered)
+## Post-Core Extension Templates (15-22)
 
-These templates support **optional post-cascade commands** that extend the core framework. They are unnumbered because they can be run at various points after completing core sessions:
+These templates support **optional post-cascade commands** that extend the core framework. They are numbered `15` through `22` to distinguish them from the core cascade (00-14) while maintaining consistent numbering:
 
 ### Branding Extensions (After Session 5+)
-- `brand-naming-template.md` → `/discover-naming` → `brand-naming.md`
-- `brand-messaging-template.md` → `/define-messaging` → `brand-messaging.md`
-- `brand-identity-template.md` → `/design-brand-identity` → `brand-identity.md`
-- `content-guidelines-template.md` → `/create-content-guidelines` → `content-guidelines.md`
+- **15** `15-brand-naming-template.md` → `/discover-naming` → `15-brand-naming.md`
+- **16** `16-brand-messaging-template.md` → `/define-messaging` → `16-brand-messaging.md`
+- **17** `17-brand-identity-template.md` → `/design-brand-identity` → `17-brand-identity.md`
+- **18** `18-content-guidelines-template.md` → `/create-content-guidelines` → `18-content-guidelines.md`
 
 ### Product Extensions (After Session 6+)
-- `user-experience-template.md` → `/design-user-experience` → `user-experience.md`
-- `analytics-plan-template.md` → `/setup-analytics` → `analytics-plan.md`
-- `growth-strategy-template.md` → `/design-growth-strategy` → `growth-strategy.md`
-- `financial-model-template.md` → `/create-financial-model` → `financial-model.md`
+- **19** `19-user-experience-template.md` → `/design-user-experience` → `19-user-experience.md`
+- **20** `20-analytics-plan-template.md` → `/setup-analytics` → `20-analytics-plan.md`
+- **21** `21-growth-strategy-template.md` → `/design-growth-strategy` → `21-growth-strategy.md`
+- **22** `22-financial-model-template.md` → `/create-financial-model` → `22-financial-model.md`
 
 ### Special Templates
 - `issue-template.md` - Used by Session 10 to generate individual backlog issue files
@@ -118,14 +118,14 @@ Session 14: /design-observability     → 14-observability-strategy-template.md
 
 **Post-Cascade Commands:**
 ```
-/design-user-experience     → user-experience-template.md
-/setup-analytics            → analytics-plan-template.md
-/design-growth-strategy     → growth-strategy-template.md
-/create-financial-model     → financial-model-template.md
-/discover-naming            → brand-naming-template.md
-/define-messaging           → brand-messaging-template.md
-/design-brand-identity      → brand-identity-template.md
-/create-content-guidelines  → content-guidelines-template.md
+/discover-naming            → 15-brand-naming-template.md
+/define-messaging           → 16-brand-messaging-template.md
+/design-brand-identity      → 17-brand-identity-template.md
+/create-content-guidelines  → 18-content-guidelines-template.md
+/design-user-experience     → 19-user-experience-template.md
+/setup-analytics            → 20-analytics-plan-template.md
+/design-growth-strategy     → 21-growth-strategy-template.md
+/create-financial-model     → 22-financial-model-template.md
 /review-code                → (none - code review framework)
 ```
 
