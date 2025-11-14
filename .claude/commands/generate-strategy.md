@@ -31,9 +31,11 @@ You are a product strategist deriving tactical decisions from previous cascade o
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/11-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 ```
+
+**Context Optimization**: We read the essentials version of product strategy (~65% smaller). It contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
 
 **Extract from Journey**:
 - Step 3 (aha moment) - where primary value is delivered
@@ -43,7 +45,6 @@ Read: product-guidelines/02-tech-stack.md
 
 **Extract from Product Strategy**:
 - Product vision (3-5 year aspirational future)
-- Market sizing (TAM/SAM/SOM)
 - Strategic goals
 - Product principles
 

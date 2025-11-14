@@ -43,14 +43,20 @@ After 11 sessions, users have:
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy.md
+Read: product-guidelines/11-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema.md
-Read: product-guidelines/08-api-contracts.md
-Read: product-guidelines/09-test-strategy.md
+Read: product-guidelines/07-database-schema-essentials.md
+Read: product-guidelines/08-api-contracts-essentials.md
+Read: product-guidelines/09-test-strategy-essentials.md
 Read: product-guidelines/10-backlog/BACKLOG.md
 ```
+
+**Context Optimization**: We read essentials versions for significant context reduction:
+- `11-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
+- `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
+- `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
+- `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
 
 **Extract**:
 - **Project name** (from journey)
