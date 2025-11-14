@@ -26,6 +26,19 @@ The journey is about understanding:
 - How will they know they succeeded?
 - What's the core flow from problem to value?
 
+## Structured Interview Template
+
+**NEW**: For a comprehensive, systematic interview framework, reference `/templates/00-user-journey-interview-template.md`.
+
+This structured template provides:
+- 16 progressive questions organized in 4 phases
+- Specific follow-up prompts for each question
+- Examples of good vs. bad answers
+- Validation checklist to ensure completeness
+- Detailed guidance on quantifying value and calculating value ratios
+
+You can use it as your complete interview guide, or adapt the questions below for a more conversational approach.
+
 ## Progressive Interrogation Process
 
 ### Phase 1: Understand the Problem (3-5 questions)
@@ -52,6 +65,8 @@ Ask questions **one at a time**, wait for answers, adapt based on responses.
 - If user is vague ("everyone needs this"), push for specificity
 - If user jumps to solution ("it uses AI"), redirect to problem
 - If user describes features, ask "why does that matter to the user?"
+
+**Pro Tip**: For a more systematic approach, follow the structured template at `/templates/00-user-journey-interview-template.md` which provides 16 detailed questions with examples and validation criteria.
 
 ### Phase 2: Map the Journey (Dig Deeper)
 
@@ -195,9 +210,19 @@ Once you've created the file:
 
 ## Template Reference
 
-The template is at `/templates/00-user-journey-template.md`. Use it for structure, but fill it with the user's specific context.
+**Interview Guide**: `/templates/00-user-journey-interview-template.md`
+- Comprehensive 16-question framework
+- Organized in 4 progressive phases
+- Includes follow-up prompts and validation checklist
+- Use this to systematically gather all needed information
 
-You can also reference `/examples/compliance-saas/foundation/00-user-journey.md` to see a completed example, but DO NOT copy it - their journey will be different!
+**Output Template**: `/templates/00-user-journey-template.md`
+- Structure for the final user journey document
+- Use it for formatting, fill with user's specific context
+
+**Completed Example**: `/examples/compliance-saas/foundation/00-user-journey.md`
+- See how a complete journey looks
+- DO NOT copy it - their journey will be different!
 
 ---
 
