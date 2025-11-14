@@ -376,11 +376,11 @@ This visual identity expresses [brand personality] and will help [journey audien
 
 ## Reference
 
-- Template: `/templates/11-brand-identity-template.md`
+- Template: `/templates/brand-identity-template.md`
 - Example: `/examples/compliance-saas/branding/` (if available)
-- Related: `product-guidelines/07-brand-strategy.md` (conceptual foundation)
-- Related: `product-guidelines/08-design-system.md` (UI implementation)
-- Related: `product-guidelines/09-brand-naming.md` (name to incorporate)
+- Related: `product-guidelines/05-brand-strategy.md` (conceptual foundation)
+- Related: `product-guidelines/06-design-system.md` (UI implementation)
+- Related: `product-guidelines/brand-naming.md` (name to incorporate)
 
 ---
 

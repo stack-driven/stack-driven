@@ -57,7 +57,7 @@ Use the Read tool to read `product-guidelines/00-user-journey.md`.
 ### Step 2: Read Template Structures
 
 ```bash
-Read templates/11-product-strategy-template.md
+Read templates/01-product-strategy-template.md
 Read templates/11-product-strategy-essentials-template.md
 ```
 

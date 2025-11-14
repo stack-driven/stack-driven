@@ -104,7 +104,7 @@ Use the Read tool to read all cascade inputs listed above.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/21-growth-strategy-template.md
+Read templates/growth-strategy-template.md
 ```
 
 ### Step 3: Analyze Growth Model
@@ -690,10 +690,10 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 
 ## Reference
 
-- Template: `/templates/21-growth-strategy-template.md`
+- Template: `/templates/growth-strategy-template.md`
 - Related: `/product-guidelines/04-metrics.md` (North Star and input metrics)
 - Related: `/product-guidelines/04-monetization.md` (conversion and expansion)
-- Related: `/product-guidelines/17-analytics-plan.md` (measurement capability)
+- Related: `/product-guidelines/analytics-plan.md` (measurement capability)
 
 ---
 
