@@ -35,7 +35,7 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 2. **Read the template structure**:
    ```bash
-   Read templates/12-content-guidelines-template.md
+   Read templates/content-guidelines-template.md
    ```
 
 3. **Check for messaging inputs** (recommended):

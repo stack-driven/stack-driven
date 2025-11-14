@@ -36,7 +36,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
 
 2. **Read the template structure**:
    ```bash
-   Read templates/14-analytics-plan-template.md
+   Read templates/analytics-plan-template.md
    ```
 
 3. **Check for metrics from Session 3** (required):

@@ -40,7 +40,7 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
 
 2. **Read the template structure**:
    ```bash
-   Read templates/13-user-experience-template.md
+   Read templates/user-experience-template.md
    ```
 
 3. **Check for cascade inputs** (required):
