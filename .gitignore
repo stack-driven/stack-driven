@@ -1,7 +1,3 @@
-# Stack-Driven product guidelines directory (generated per user)
-/product-guidelines/*
-!/product-guidelines/.gitkeep
-
 # OS files
 .DS_Store
 Thumbs.db
