@@ -217,12 +217,12 @@ Your Strategy:
 Files created:
 - product-guidelines/03-mission.md
 - product-guidelines/04-metrics.md
-- product-guidelines/05-monetization.md
-- product-guidelines/06-architecture.md
+- product-guidelines/04-monetization.md
+- product-guidelines/04-architecture.md
 
-Next, we'll create a design system optimized for your journey.
+Next, we'll create a brand strategy that expresses your journey value.
 
-When ready, run: /create-design
+When ready, run: /create-brand-strategy
 Or check progress: /cascade-status
 ```
 
@@ -236,7 +236,7 @@ Or check progress: /cascade-status
 
 ## Reference Files
 
-- Templates: `/templates/03-mission-template.md`, `/templates/04-metrics-template.md`, `/templates/05-monetization-template.md`, `/templates/06-architecture-template.md`
+- Templates: `/templates/03-mission-template.md`, `/templates/04-metrics-template.md`, `/templates/04-monetization-template.md`, `/templates/04-architecture-template.md`
 - Examples: `/examples/compliance-saas/foundation/` and `/examples/compliance-saas/stack/`
 
 ---

@@ -10,9 +10,9 @@ You are helping the user create a comprehensive brand messaging framework that c
 
 **Run AFTER `/create-brand-strategy`** when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Mission statement (`product-guidelines/02-mission.md`)
-- ✅ Brand strategy (`product-guidelines/08-brand-strategy.md`)
-- ✅ Brand name chosen (from `product-guidelines/09-brand-naming.md` or already decided)
+- ✅ Mission statement (`product-guidelines/03-mission.md`)
+- ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
+- ✅ Brand name chosen (from `product-guidelines/brand-naming.md` or already decided)
 
 Your messaging should communicate [journey value] in [brand voice], not be created in isolation.
 
@@ -36,13 +36,13 @@ This command READS previous outputs to create journey-grounded messaging:
 
 2. **Read the mission**:
    ```bash
-   Read product-guidelines/02-mission.md
+   Read product-guidelines/03-mission.md
    ```
    - This becomes your value proposition foundation
 
 3. **Read the brand strategy**:
    ```bash
-   Read product-guidelines/08-brand-strategy.md
+   Read product-guidelines/05-brand-strategy.md
    ```
    - Brand voice (how you sound)
    - Brand values (what guides communication)
@@ -50,7 +50,7 @@ This command READS previous outputs to create journey-grounded messaging:
 
 4. **Read the brand name** (if available):
    ```bash
-   Read product-guidelines/09-brand-naming.md  # If naming was done
+   Read product-guidelines/brand-naming.md  # If naming was done
    ```
    - Use chosen name in messaging
 
@@ -65,14 +65,14 @@ Create a brand messaging framework that expresses the journey value in your bran
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/02-mission.md
-   Read product-guidelines/08-brand-strategy.md
-   Read product-guidelines/09-brand-naming.md  # If exists
+   Read product-guidelines/03-mission.md
+   Read product-guidelines/05-brand-strategy.md
+   Read product-guidelines/brand-naming.md  # If exists
    ```
 
 2. **Read the template structure**:
    ```bash
-   Read templates/10-brand-messaging-template.md
+   Read templates/brand-messaging-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:

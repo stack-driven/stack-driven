@@ -18,13 +18,13 @@ Infer design needs from journey context and create a system optimized for the sp
 Read: product-guidelines/00-user-journey.md (for user context, interaction needs)
 Read: product-guidelines/01-product-strategy.md (for market positioning)
 Read: product-guidelines/02-tech-stack.md (for technical constraints)
-Read: product-guidelines/07-brand-strategy.md (for brand personality, values, visual direction)
+Read: product-guidelines/05-brand-strategy.md (for brand personality, values, visual direction)
 Read: product-guidelines/06-architecture.md (for architecture principles)
 ```
 
 ### Step 2: Extract Brand Personality & Visual Direction
 
-**From Brand Strategy** (`product-guidelines/07-brand-strategy.md`):
+**From Brand Strategy** (`product-guidelines/05-brand-strategy.md`):
 - **Brand Personality**: What attributes are defined? (Professional, playful, trustworthy, innovative, etc.)
 - **Core Values**: What values should the design express? (Speed, clarity, trust, creativity, etc.)
 - **Visual Direction**: What aesthetic guidance is provided? (Color preferences, mood, style)
@@ -401,7 +401,7 @@ Journey-specific empty states:
 
 ## Generating the Output
 
-Use `/templates/08-design-system-template.md`.
+Use `/templates/06-design-system-template.md`.
 
 **Key Sections**:
 
@@ -526,17 +526,17 @@ Your design brings your brand to life and optimizes for [journey context]:
 - Key components for journey Step [X]
 - Accessibility: [Standard]
 
-File created: product-guidelines/08-design-system.md
+File created: product-guidelines/06-design-system.md
 
-Next, we'll generate a backlog of user stories derived from your journey.
+Next, we'll design your database schema.
 
-When ready, run: /generate-backlog
+When ready, run: /design-database-schema
 Or check progress: /cascade-status
 ```
 
 ## Reference
 
-- Template: `/templates/08-design-system-template.md`
+- Template: `/templates/06-design-system-template.md`
 - Example: `/examples/compliance-saas/design/06-design-system.md`
 
 ---
