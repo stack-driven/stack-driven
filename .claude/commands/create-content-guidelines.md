@@ -35,7 +35,7 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 2. **Read the template structure**:
    ```bash
-   Read templates/content-guidelines-template.md
+   Read templates/18-content-guidelines-template.md
    ```
 
 3. **Check for messaging inputs** (recommended):
@@ -71,12 +71,12 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
 
 7. **Write the output**:
    ```bash
-   Write product-guidelines/12-content-guidelines.md
+   Write product-guidelines/18-content-guidelines.md
    ```
 
 ## Output Location
 
-`product-guidelines/12-content-guidelines.md`
+`product-guidelines/18-content-guidelines.md`
 
 This will be used by:
 - Content writers and marketers
@@ -138,7 +138,7 @@ User: [Describes tone shifts]
 
 [Continue through patterns...]
 
-You: Perfect. I've created your comprehensive content guidelines in product-guidelines/12-content-guidelines.md, including:
+You: Perfect. I've created your comprehensive content guidelines in product-guidelines/18-content-guidelines.md, including:
 - Voice/tone foundation with 15 examples
 - Grammar rules (capitalization, numbers, dates)
 - Word list (20+ prefer/avoid pairs)
