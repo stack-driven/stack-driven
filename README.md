@@ -101,11 +101,21 @@ See where you are in the cascade and what to do next.
 
 ### 2. Start the Cascade
 
+**Option A: Automated Execution** (Recommended for continuous flow)
+
+```bash
+/run-cascade
+```
+
+I'll automatically execute sessions sequentially from your current progress point, pausing at major milestones for your review. Perfect for making rapid progress through the framework.
+
+**Option B: Manual Step-by-Step** (Recommended for learning)
+
 ```bash
 /refine-journey
 ```
 
-I'll ask questions about your users, their problems, and their journey. Through progressive interrogation, we'll map your complete user flow.
+I'll ask questions about your users, their problems, and their journey. Through progressive interrogation, we'll map your complete user flow. After each session, you manually run the next command.
 
 ### 3. Follow the Flow
 
@@ -466,7 +476,7 @@ Complete core cascade: Sessions 1-11 (6-8 hours).
 # 4. Copy scaffold files, set up CI/CD, implement monitoring, and start building!
 ```
 
-**Ready?** → Run `/cascade-status` to begin.
+**Ready?** → Run `/cascade-status` to check your progress, or `/run-cascade` to execute the framework automatically.
 
 ---
 

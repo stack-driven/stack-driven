@@ -50,13 +50,16 @@ The fastest way to get started:
 # 1. Check your cascade status
 /cascade-status
 
-# 2. Start Session 1
+# 2a. Option A: Run cascade automatically (recommended for rapid progress)
+/run-cascade
+
+# 2b. Option B: Run sessions manually (recommended for learning)
 /refine-journey
 
 # 3. Follow the cascade (each session tells you what's next)
 ```
 
-That's it! The cascade will guide you step-by-step.
+That's it! The cascade will guide you step-by-step. Use `/run-cascade` for automated execution, or run each command manually for a more hands-on learning experience.
 
 ---
 
@@ -224,7 +227,7 @@ See `/examples/compliance-saas/` for a complete cascade.
 
 ---
 
-**Ready?** → Run `/cascade-status`
+**Ready?** → Run `/cascade-status` to check your progress, or `/run-cascade` to execute automatically
 
 ---
 
