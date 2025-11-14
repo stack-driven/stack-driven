@@ -11,6 +11,7 @@ Templates numbered `00` through `14` correspond to the **14-session core cascade
 | # | Template File | Session | Command | Output File |
 |---|---------------|---------|---------|-------------|
 | **00** | `00-user-journey-template.md` | Session 1 | `/refine-journey` | `00-user-journey.md` |
+| | `00-user-journey-interview-template.md` | Session 1 | `/refine-journey` | *(interview guide)* |
 | **01** | `01-product-strategy-template.md` | Session 2 | `/create-product-strategy` | `01-product-strategy.md` |
 | **02** | `02-tech-stack-template.md` | Session 3 | `/choose-tech-stack` | `02-tech-stack.md` |
 | **03** | `03-mission-template.md` | Session 4 (1/4) | `/generate-strategy` | `03-mission.md` |
@@ -82,6 +83,7 @@ These templates support **optional post-cascade commands** that extend the core 
 - **22** `22-financial-model-template.md` → `/create-financial-model` → `22-financial-model.md`
 
 ### Special Templates
+- `00-user-journey-interview-template.md` - Structured interview guide for Session 1 (16 progressive questions to gather user journey information)
 - `issue-template.md` - Used by Session 10 to generate individual backlog issue files
 
 ## Template Structure
@@ -100,7 +102,8 @@ Each command file in `.claude/commands/` references one or more templates:
 
 **Core Cascade Commands:**
 ```
-Session 1:  /refine-journey           → 00-user-journey-template.md
+Session 1:  /refine-journey           → 00-user-journey-interview-template.md (interview guide)
+                                        00-user-journey-template.md (output structure)
 Session 2:  /create-product-strategy  → 01-product-strategy-template.md, 11-product-strategy-essentials-template.md
 Session 3:  /choose-tech-stack        → 02-tech-stack-template.md
 Session 4:  /generate-strategy        → 03-mission-template.md, 04-{metrics,monetization,architecture}-template.md
