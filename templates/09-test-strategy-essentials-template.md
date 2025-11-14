@@ -1,7 +1,7 @@
 # Test Strategy Essentials (For Backlog Generation)
 
 > This is a condensed version for Session 10 (backlog generation).
-> See `19-test-strategy.md` for complete testing strategy with examples, test data
+> See `09-test-strategy.md` for complete testing strategy with examples, test data
 > management, performance testing, security testing, and TDD/BDD workflows.
 
 ---
@@ -239,4 +239,4 @@ For complete testing strategy including:
 - CI/CD configuration examples
 - "What We DIDN'T Choose" alternatives
 
-See: `product-guidelines/19-test-strategy.md`
+See: `product-guidelines/09-test-strategy.md`

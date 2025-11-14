@@ -41,7 +41,7 @@ Create comprehensive API contracts including:
 ```
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
-Read: product-guidelines/06-architecture.md
+Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema.md (from previous session)
 ```
 
@@ -352,7 +352,7 @@ Server Errors:
 
 ### Step 8: Generate OpenAPI Specification
 
-Create complete OpenAPI 3.0 specification. Use template at `templates/18-api-contracts-template.md` for detailed structure.
+Create complete OpenAPI 3.0 specification. Use template at `templates/08-api-contracts-template.md` for detailed structure.
 
 **Key sections to include:**
 - `info`: title, description (with auth/rate limit/error conventions), version, contact
@@ -387,7 +387,7 @@ Write `product-guidelines/08-api-contracts.md` with:
 
 **IMPORTANT**: Create a condensed essentials version optimized for Session 10 (backlog generation).
 
-Use template at `templates/18-api-contracts-essentials-template.md` to create `product-guidelines/08-api-contracts-essentials.md` with:
+Use template at `templates/08-api-contracts-essentials-template.md` to create `product-guidelines/08-api-contracts-essentials.md` with:
 
 **What to include** (target: 100-150 lines):
 - API configuration (style, auth, pagination, rate limiting)
@@ -603,7 +603,7 @@ If you can't trace an endpoint back to a journey step or backlog feature, you pr
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/06-architecture.md`
+- Architecture: `product-guidelines/04-architecture.md`
 - Database schema: `product-guidelines/07-database-schema.md` (from previous session)
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 

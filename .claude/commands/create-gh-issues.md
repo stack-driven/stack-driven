@@ -120,7 +120,7 @@ What's next?
 2. 💻 Or start building! Your backlog is prioritized (P0 stories first)
 3. 📊 Track metrics: Implement metrics from product-guidelines/04-metrics.md
 4. 🔄 Iterate: Run /refine-journey if your understanding evolves
-5. 💰 Validate pricing: Test monetization from product-guidelines/05-monetization.md
+5. 💰 Validate pricing: Test monetization from product-guidelines/04-monetization.md
 
 Check cascade anytime: /cascade-status
 ```

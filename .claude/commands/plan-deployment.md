@@ -36,7 +36,7 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
 
 3. **Check for architecture from Session 4** (recommended):
    ```bash
-   Read product-guidelines/06-architecture.md
+   Read product-guidelines/04-architecture.md
    ```
    - Understand system components and dependencies
    - Identify deployment requirements
@@ -120,7 +120,7 @@ The output follows this structure:
 ```
 You: Let's plan your deployment strategy. First, let me check your tech stack and architecture...
 
-[Read product-guidelines/02-tech-stack.md and product-guidelines/06-architecture.md]
+[Read product-guidelines/02-tech-stack.md and product-guidelines/04-architecture.md]
 
 You: Got it - you have [frontend] + [backend] + [database]. How do you deploy today? What's painful?
 

@@ -1,7 +1,7 @@
 # Database Schema Essentials (For Backlog Generation)
 
 > This is a condensed version for Session 10 (backlog generation).
-> See `17-database-schema.md` for complete schema with columns, indexes, constraints,
+> See `07-database-schema.md` for complete schema with columns, indexes, constraints,
 > migration files, query examples, and scaling considerations.
 
 ---
@@ -189,4 +189,4 @@ For complete schema details including:
 - Testing strategy
 - Alternatives considered ("What We DIDN'T Choose")
 
-See: `product-guidelines/17-database-schema.md`
+See: `product-guidelines/07-database-schema.md`

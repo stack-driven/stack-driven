@@ -12,7 +12,7 @@ This is **Session 5** of the cascade. You'll create a comprehensive brand strate
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
 - ✅ Tech stack chosen (`product-guidelines/02-tech-stack.md`)
-- ✅ Tactical foundation established (`product-guidelines/03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`)
+- ✅ Tactical foundation established (`product-guidelines/03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`)
 
 Your brand should EXPRESS the value you deliver in the user journey, not be created in a vacuum.
 
@@ -64,7 +64,7 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
    Read product-guidelines/01-product-strategy.md
    Read product-guidelines/03-mission.md
    Read product-guidelines/04-metrics.md  # Optional
-   Read product-guidelines/06-architecture.md  # For technical constraints
+   Read product-guidelines/04-architecture.md  # For technical constraints
    ```
 
 2. **Read the template structure**:

@@ -39,7 +39,7 @@ Create a comprehensive database schema design including:
 ```
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
-Read: product-guidelines/06-architecture.md
+Read: product-guidelines/04-architecture.md
 ```
 
 **Optional inputs (if available):**
@@ -847,7 +847,7 @@ mysql -u user -p database_name < schema.sql
 
 This command generates:
 
-**1. Full Documentation** (`product-guidelines/17-database-schema.md`):
+**1. Full Documentation** (`product-guidelines/07-database-schema.md`):
 - Entity relationship diagram
 - Design decisions and rationale
 - Table definitions with detailed explanations (columns, types, constraints)
@@ -858,7 +858,7 @@ This command generates:
 - Testing strategy
 - "What We DIDN'T Choose" alternatives (3+ options)
 
-**2. Essentials Documentation** (`product-guidelines/17-database-schema-essentials.md`):
+**2. Essentials Documentation** (`product-guidelines/07-database-schema-essentials.md`):
 - **Purpose**: Condensed version for Session 10 (backlog generation) - 56% smaller
 - Database technology choices (DB, ORM, ID strategy, multi-tenancy)
 - Table list with journey mapping
@@ -868,7 +868,7 @@ This command generates:
 - **Excludes**: Column details, indexes, migrations, scaling, alternatives
 - **Context savings**: ~900 tokens per backlog generation
 
-**3. Migration Files** (`product-guidelines/17-database-schema/migrations/`):
+**3. Migration Files** (`product-guidelines/07-database-schema/migrations/`):
 - Prisma schema (if TypeScript)
 - Alembic migration (if Python)
 - Raw SQL (as fallback)
@@ -918,8 +918,8 @@ Before completing this session, verify:
 - [ ] ORM patterns follow tech stack decisions
 
 **Documentation:**
-- [ ] Full schema file (`17-database-schema.md`) complete with all details
-- [ ] Essentials file (`17-database-schema-essentials.md`) generated for backlog use
+- [ ] Full schema file (`07-database-schema.md`) complete with all details
+- [ ] Essentials file (`07-database-schema-essentials.md`) generated for backlog use
 - [ ] "What We DIDN'T Choose" section complete (3+ alternatives) in full file
 - [ ] Each table has purpose explanation
 - [ ] Design decisions reference journey
@@ -965,7 +965,7 @@ If you can't trace a table back to a journey step, you probably don't need it.
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/06-architecture.md`
+- Architecture: `product-guidelines/04-architecture.md`
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 
 ---

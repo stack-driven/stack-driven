@@ -615,10 +615,10 @@ The specification includes:
 ## Reference Files
 
 - Journey: `examples/compliance-saas/foundation/00-user-journey.md`
-- Tech stack: `examples/compliance-saas/stack/01-tech-stack.md`
+- Tech stack: `examples/compliance-saas/stack/02-tech-stack.md`
 - Architecture: `examples/compliance-saas/stack/05-architecture.md`
 - Backlog: `examples/compliance-saas/backlog/BACKLOG.md`
-- Database schema: `examples/compliance-saas/database/17-database-schema.md`
+- Database schema: `examples/compliance-saas/database/07-database-schema.md`
 
 ---
 

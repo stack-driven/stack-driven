@@ -44,7 +44,7 @@ Create comprehensive testing strategy including:
 ```
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
-Read: product-guidelines/06-architecture.md
+Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema.md (from Session 7)
 Read: product-guidelines/08-api-contracts.md (from Session 8)
 ```
@@ -1186,7 +1186,7 @@ jobs:
 
 This command generates:
 
-**1. Full Testing Strategy** (`product-guidelines/19-test-strategy.md`):
+**1. Full Testing Strategy** (`product-guidelines/09-test-strategy.md`):
 - Testing philosophy and principles
 - Unit, integration, E2E testing strategies with examples
 - Test coverage goals and quality gates
@@ -1198,7 +1198,7 @@ This command generates:
 - Setup instructions (Python/TypeScript)
 - "What We DIDN'T Choose" analysis (8+ alternatives)
 
-**2. Essentials Documentation** (`product-guidelines/19-test-strategy-essentials.md`):
+**2. Essentials Documentation** (`product-guidelines/09-test-strategy-essentials.md`):
 - **Purpose**: Condensed version for Session 10 (backlog generation) - 66% smaller
 - Coverage targets (for story estimation)
 - Test types required (unit, integration, E2E)
@@ -1208,14 +1208,14 @@ This command generates:
 - Story scoping guidance (simple vs complex stories)
 - Common test scenarios (auth, authorization, validation)
 
-**3. Test Configuration Files** (`product-guidelines/19-test-strategy/`):
+**3. Test Configuration Files** (`product-guidelines/09-test-strategy/`):
 - `pytest.ini` or `vitest.config.ts` (test runner config)
 - `.coveragerc` (coverage configuration)
 - `tests/conftest.py` (pytest fixtures)
 - `tests/factories.py` (test data factories)
 - `tests/fixtures/` (sample test data files)
 
-**4. Example Tests** (`product-guidelines/19-test-strategy/examples/`):
+**4. Example Tests** (`product-guidelines/09-test-strategy/examples/`):
 - `example_unit_test.py` or `.test.ts`
 - `example_integration_test.py`
 - `example_e2e_test.py` or `.spec.ts`
@@ -1257,8 +1257,8 @@ Before completing this session, verify:
 - [ ] Team can actually follow this strategy
 
 **Documentation:**
-- [ ] Full test strategy file (`19-test-strategy.md`) complete with all details
-- [ ] Essentials file (`19-test-strategy-essentials.md`) generated for backlog use
+- [ ] Full test strategy file (`09-test-strategy.md`) complete with all details
+- [ ] Essentials file (`09-test-strategy-essentials.md`) generated for backlog use
 - [ ] "What We DIDN'T Choose" section complete (4+ alternatives) in full file
 - [ ] Testing workflows documented (TDD, regression)
 - [ ] Setup instructions clear and complete
@@ -1312,7 +1312,7 @@ Don't waste time on:
 **Reference files:**
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/06-architecture.md`
+- Architecture: `product-guidelines/04-architecture.md`
 - Database schema: `product-guidelines/07-database-schema.md` (from Session 7)
 - API contracts: `product-guidelines/08-api-contracts.md` (from Session 8)
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)

@@ -20,18 +20,18 @@ Read: product-guidelines/11-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/03-mission.md
 Read: product-guidelines/04-metrics.md
-Read: product-guidelines/05-monetization.md
-Read: product-guidelines/06-architecture.md
-Read: product-guidelines/17-database-schema-essentials.md
-Read: product-guidelines/18-api-contracts-essentials.md
-Read: product-guidelines/19-test-strategy-essentials.md
+Read: product-guidelines/04-monetization.md
+Read: product-guidelines/04-architecture.md
+Read: product-guidelines/07-database-schema-essentials.md
+Read: product-guidelines/08-api-contracts-essentials.md
+Read: product-guidelines/09-test-strategy-essentials.md
 ```
 
 **Context Optimization**: We read essentials files for significant context reduction:
 - `11-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
-- `17-database-schema-essentials.md` (not `17-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
-- `18-api-contracts-essentials.md` (not `18-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
-- `19-test-strategy-essentials.md` (not `19-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
+- `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
+- `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
+- `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 
