@@ -6,12 +6,12 @@ Complete reference for all Stack-Driven slash commands.
 
 ## Overview
 
-Stack-Driven includes **25 slash commands** organized into five categories:
+Stack-Driven includes **26 slash commands** organized into five categories:
 
 1. **Core Cascade Commands** (14) - The main framework sessions
 2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
-4. **Development Commands** (1) - Code review and quality
+4. **Development Commands** (2) - Code review and quality assurance
 
 ---
 
@@ -62,6 +62,7 @@ Stack-Driven includes **25 slash commands** organized into five categories:
 
 | Command | When to Run | Purpose |
 |---------|-------------|---------|
+| `/validate-outputs` | During/after cascade | Validate cascade outputs for quality and completeness |
 | `/review-code` | During development | Guide comprehensive code review |
 
 ---
@@ -959,6 +960,56 @@ Next step: Run /choose-tech-stack
 ---
 
 ## Development Commands
+
+### `/validate-outputs`
+
+**Purpose:** Validate cascade outputs for quality and completeness
+
+**When to run:** During or after cascade sessions
+
+**What it does:**
+- Validates all cascade outputs against Stack-Driven quality standards
+- Checks journey alignment (decisions trace to user value)
+- Verifies philosophy adherence (user-first, journey-driven, generative)
+- Assesses completeness and consistency across sessions
+- Identifies generic outputs that need more specificity
+- Provides actionable recommendations for improvement
+
+**Quality criteria checked:**
+- **Journey Alignment**: References specific journey steps, quantified value
+- **Philosophy Adherence**: User-first thinking, not tech-first
+- **Completeness**: All template sections filled, alternatives considered
+- **Consistency**: Cross-file references match (tech aligns with journey, etc.)
+- **Specificity**: Concrete examples, not generic statements
+- **Technical Soundness**: Proper indexes, error handling, edge cases
+
+**Outputs:**
+- Comprehensive quality report (in conversation, no file created)
+- Critical issues that must be addressed
+- Important suggestions for improvement
+- Sessions to regenerate if needed
+
+**Use when:**
+- Unsure if outputs are specific enough (not generic)
+- Want to verify quality before continuing cascade
+- Preparing to share outputs with team/stakeholders
+- Checking journey alignment after completing sessions
+- Identifying which sessions may need refinement
+
+**Example issues caught:**
+- Generic journey descriptions ("users want better experience")
+- Tech choices without journey justification
+- Missing "What We DIDN'T Choose" sections
+- Inconsistent references across files
+- Superficial analysis where depth needed
+
+**Tips:**
+- Run after completing key milestones (Session 4, 10, 14)
+- Address critical issues before continuing cascade
+- Compare outputs to `examples/compliance-saas/` for quality benchmark
+- Use to validate before sharing with team
+
+---
 
 ### `/review-code`
 
