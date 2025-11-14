@@ -266,6 +266,7 @@ After Session 10 (Backlog Complete), consider:
 └─ /create-content-guidelines → Journey-aligned content (product-guidelines/18-content-guidelines.md)
 
 During development:
+├─ /validate-outputs → Validate cascade outputs for quality (use anytime)
 └─ /review-code → Code review framework (use anytime)
 
 All post-core extensions READ the journey - nothing precedes the user journey.
@@ -456,6 +457,7 @@ After Session 10+:
 - `/create-content-guidelines` - Content style guide (product-guidelines/18-content-guidelines.md)
 
 Dev-time:
+- `/validate-outputs` - Validate cascade outputs for quality (anytime)
 - `/review-code` - Code review framework (anytime)
 
 **Meta**:
