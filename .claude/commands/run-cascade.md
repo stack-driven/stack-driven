@@ -35,7 +35,9 @@ Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
 - `01-product-strategy.md` + `11-product-strategy-essentials.md` → Session 2 complete
 - `02-tech-stack.md` → Session 3 complete
-- `03-mission.md` + `04-metrics.md` + `05-monetization.md` + `06-architecture.md` → Session 4 complete
+- `03-mission.md` + `04-metrics.md` + `04-monetization.md` + `04-architecture.md` → Session 4 complete
+- `05-brand-strategy.md` → Session 5 complete
+- `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
 - `08-api-contracts.md` → Session 8 complete
 - `09-test-strategy.md` → Session 9 complete
@@ -64,7 +66,15 @@ Use this decision logic to determine what to execute:
 - Run Session 4: `/generate-strategy`
 - Then ask user if they want to continue
 
-**If 00-06 exist (Session 4 complete):**
+**If 00-04 architecture exists (Session 4 complete):**
+- Run Session 5: `/create-brand-strategy`
+- Then ask user if they want to continue
+
+**If 00-05 brand exists (Session 5 complete):**
+- Run Session 6: `/create-design`
+- Then ask user if they want to continue
+
+**If 00-06 design exists (Session 6 complete):**
 - User has reached first major milestone
 - Ask: "Continue with Session 7 (/design-database-schema) or explore optional extensions?"
 - Options:
@@ -153,9 +163,10 @@ Continue to next session? (yes/no/status)
 
 **Major Milestones** (pause and ask user):
 1. **After Session 1** - Journey defined, ask if ready to continue
-2. **After Session 4** - Tactical foundation complete, offer optional extensions or continue
-3. **After Session 10** - Backlog complete, offer optional marketing extensions or continue
-4. **After Session 14** - Core cascade complete, celebrate!
+2. **After Session 4** - Tactical foundation complete, continue to brand
+3. **After Session 6** - Brand & design complete, offer optional extensions or continue
+4. **After Session 10** - Backlog complete, offer optional marketing extensions or continue
+5. **After Session 14** - Core cascade complete, celebrate!
 
 **Between other sessions** - Quick confirmation to continue
 
@@ -294,8 +305,8 @@ User: yes
 📤 Will create:
 - product-guidelines/03-mission.md
 - product-guidelines/04-metrics.md
-- product-guidelines/05-monetization.md
-- product-guidelines/06-architecture.md
+- product-guidelines/04-monetization.md
+- product-guidelines/04-architecture.md
 
 ⏱️ Estimated time: 15-20 minutes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -311,8 +322,8 @@ User: yes
 Created:
 - product-guidelines/03-mission.md
 - product-guidelines/04-metrics.md
-- product-guidelines/05-monetization.md
-- product-guidelines/06-architecture.md
+- product-guidelines/04-monetization.md
+- product-guidelines/04-architecture.md
 
 📊 Progress: ████░░░░░░░░░░ 29% (4/14 sessions)
 
@@ -324,12 +335,8 @@ You now have:
 ✅ Tech stack chosen
 ✅ Mission, metrics, monetization, and architecture established
 
-What's next?
-1. Continue to Session 7 (Design Database Schema)
-2. Explore optional extensions (UX, Analytics, Growth, Financial Model)
-3. Take a break (resume later with /run-cascade)
-
-Your choice: (1/2/3)
+Next: Session 5 - Create Brand Strategy
+Continue? (yes/no)
 ```
 
 ## Reference
@@ -338,17 +345,19 @@ Your choice: (1/2/3)
 1. `/refine-journey` → 00-user-journey.md
 2. `/create-product-strategy` → 01, 11
 3. `/choose-tech-stack` → 02
-4. `/generate-strategy` → 03, 04, 05, 06
-7. `/design-database-schema` → 07
-8. `/generate-api-contracts` → 08
-9. `/create-test-strategy` → 09
+4. `/generate-strategy` → 03-mission, 04-metrics, 05-monetization, 06-architecture
+5. `/create-brand-strategy` → 05-brand-strategy
+6. `/create-design` → 06-design-system
+7. `/design-database-schema` → 07-database-schema
+8. `/generate-api-contracts` → 08-api-contracts
+9. `/create-test-strategy` → 09-test-strategy
 10. `/generate-backlog` → 10-backlog/
 11. `/create-gh-issues` → GitHub
-12. `/scaffold-project` → 12
-13. `/plan-deployment` → 13
-14. `/design-observability` → 14
+12. `/scaffold-project` → 12-project-scaffold
+13. `/plan-deployment` → 13-deployment-plan
+14. `/design-observability` → 14-observability-strategy
 
-**Optional extensions** (offer after Session 4 or 10):
+**Optional extensions** (offer after Session 6 or 10):
 - `/design-user-experience`, `/setup-analytics`, `/design-growth-strategy`, `/create-financial-model`
 - `/discover-naming`, `/define-messaging`, `/design-brand-identity`, `/create-content-guidelines`
 

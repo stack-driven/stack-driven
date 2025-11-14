@@ -69,7 +69,7 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 
 2. **Read the template structure**:
    ```bash
-   Read templates/07-brand-strategy-template.md
+   Read templates/05-brand-strategy-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:
@@ -100,12 +100,12 @@ Create a comprehensive brand strategy document by following the prompt in `/prom
 
 5. **Write the output**:
    ```bash
-   Write product-guidelines/07-brand-strategy.md
+   Write product-guidelines/05-brand-strategy.md
    ```
 
 ## Output Location
 
-`product-guidelines/07-brand-strategy.md`
+`product-guidelines/05-brand-strategy.md`
 
 This will be read by:
 - `/create-design` (Session 6) - Uses brand strategy to inform design decisions (colors, typography, personality)
@@ -147,7 +147,7 @@ User: [Lists values connected to journey delivery]
 
 [Continue through all sections with journey context...]
 
-You: Excellent! I've captured your brand strategy in product-guidelines/07-brand-strategy.md. Every section traces back to your user journey and mission.
+You: Excellent! I've captured your brand strategy in product-guidelines/05-brand-strategy.md. Every section traces back to your user journey and mission.
 
 ✅ Session 5 complete! Brand strategy created.
 
@@ -156,7 +156,7 @@ Your brand expresses the value from your user journey:
 - Values: [How you deliver value]
 - Personality: [How you show up]
 
-File created: product-guidelines/07-brand-strategy.md
+File created: product-guidelines/05-brand-strategy.md
 
 Next, we'll create a design system that brings your brand to life.
 
@@ -177,7 +177,7 @@ Your brand strategy is now grounded in the user journey and will inform your des
 
 ## Reference
 
-- Template: `/templates/07-brand-strategy-template.md`
+- Template: `/templates/05-brand-strategy-template.md`
 - Example: `/examples/compliance-saas/branding/` (if available)
 
 ---

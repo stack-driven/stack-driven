@@ -26,8 +26,10 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                          product-guidelines/04-metrics.md
-                                         product-guidelines/05-monetization.md
-                                         product-guidelines/06-architecture.md
+                                         product-guidelines/04-monetization.md
+                                         product-guidelines/04-architecture.md
+Session 5: /create-brand-strategy      → product-guidelines/05-brand-strategy.md
+Session 6: /create-design              → product-guidelines/06-design-system.md
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
 Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.md
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
@@ -39,7 +41,7 @@ Session 13: /plan-deployment           → product-guidelines/13-deployment-plan
 Session 14: /design-observability      → product-guidelines/14-observability-strategy.md
 ```
 
-**This is the core** - ALWAYS start here. User journey comes first, product strategy validates market opportunity, technical specs (database, APIs, tests) inform the backlog, then everything flows through to scaffolding, deployment and observability. Complete these 14 sessions to go from idea to production-ready system.
+**This is the core** - ALWAYS start here. User journey comes first, product strategy validates market opportunity, tech stack chosen, tactical foundation established (mission, metrics, monetization, architecture), brand strategy created, design system built, technical specs (database, APIs, tests) inform the backlog, then everything flows through to scaffolding, deployment and observability. Complete these 14 sessions to go from idea to production-ready system.
 
 ---
 
@@ -47,14 +49,8 @@ Session 14: /design-observability      → product-guidelines/14-observability-s
 
 **Run AFTER core cascade to add comprehensive branding, UX, and growth planning**. All these commands READ the journey and core outputs.
 
-**After Session 4+** (Tactical Foundation Complete):
+**After Session 6+** (Brand & Design Complete):
 ```
-/create-brand-strategy      → product-guidelines/brand-strategy.md
-    (Brand strategy foundation - positioning, values, audience)
-
-/create-design              → product-guidelines/design-system.md
-    (Design system - components, patterns, visual language)
-
 /design-user-experience     → product-guidelines/user-experience.md
     (Detailed UX flows - expands journey with research, flows, wireframes)
 
@@ -99,8 +95,8 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `11-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `05-monetization.md`, `06-architecture.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
-- **Post-core extensions (optional)**: `brand-strategy.md`, `design-system.md`, `user-experience.md`, `analytics-plan.md`, `growth-strategy.md`, `financial-model.md`, `brand-naming.md`, `brand-messaging.md`, `brand-identity.md`, `content-guidelines.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `11-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Post-core extensions (optional)**: `user-experience.md`, `analytics-plan.md`, `growth-strategy.md`, `financial-model.md`, `brand-naming.md`, `brand-messaging.md`, `brand-identity.md`, `content-guidelines.md`
 
 ### Step 2: Display Complete Progress
 
@@ -119,8 +115,10 @@ CORE CASCADE (Required - Always Start Here)
 ✅ 02-tech-stack.md              (Session 3 ✓)
 ❌ 03-mission.md                 (Session 4 - Not started)
 ❌ 04-metrics.md                 (Session 4 - Not started)
-❌ 05-monetization.md            (Session 4 - Not started)
-❌ 06-architecture.md            (Session 4 - Not started)
+❌ 04-monetization.md            (Session 4 - Not started)
+❌ 04-architecture.md            (Session 4 - Not started)
+❌ 05-brand-strategy.md          (Session 5 - Not started)
+❌ 06-design-system.md           (Session 6 - Not started)
 ❌ 07-database-schema.md         (Session 7 - Not started)
 ❌ 08-api-contracts.md           (Session 8 - Not started)
 ❌ 09-test-strategy.md           (Session 9 - Not started)
@@ -133,9 +131,7 @@ Progress: ████░░░░░░░░░░░░ 21% (3 of 14 core ses
 
 POST-CORE EXTENSIONS (Optional - Journey-Informed)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-After Session 4+ (Optional branding/UX/growth):
-❌ brand-strategy.md         (Brand foundation)
-❌ design-system.md          (Design system)
+After Session 6+ (Optional UX/growth):
 ❌ user-experience.md        (Detailed UX flows)
 ❌ analytics-plan.md         (Analytics implementation)
 ❌ growth-strategy.md        (Growth strategy)
@@ -147,7 +143,7 @@ After Session 10+ (Optional marketing polish):
 ❌ brand-identity.md         (Brand identity)
 ❌ content-guidelines.md     (Content style guide)
 
-Status: 0 of 10 post-core extensions complete (optional)
+Status: 0 of 8 post-core extensions complete (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -171,33 +167,42 @@ Based on what files exist, determine the next recommended action:
 **If 00-02 exist**:
 - **Recommend**: Session 4 (`/generate-strategy`)
 
-**If 00-06 exist (Session 4 complete)**:
+**If 00-04 architecture exist (Session 4 complete)**:
 - **Recommend**: Session 5 (`/create-brand-strategy`)
+
+**If 00-05 brand-strategy exists (Session 5 complete)**:
+- **Recommend**: Session 6 (`/create-design`)
+
+**If 00-06 design-system exists (Session 6 complete)**:
+- **Recommend**: Session 7 (`/design-database-schema`)
 - **Also suggest** (optional):
   - `/design-user-experience` (detailed UX flows)
   - `/setup-analytics` (implement metrics tracking)
   - `/design-growth-strategy` (acquisition channels and growth loops)
   - `/create-financial-model` (unit economics and revenue projections)
 
-**If 00-07 exist (Session 5 complete)**:
-- **Recommend**: Session 6 (`/create-design`)
+**If 00-07 database exists (Session 7 complete)**:
+- **Recommend**: Session 8 (`/generate-api-contracts`)
 
-**If 00-08 exist (Session 6 complete)**:
-- **Recommend**: Session 7 (`/generate-backlog`)
+**If 00-08 api exists (Session 8 complete)**:
+- **Recommend**: Session 9 (`/create-test-strategy`)
 
-**If 00-09 backlog exists (Session 7 complete)**:
-- **Recommend**: Session 8 (`/create-gh-issues`)
+**If 00-09 test exists (Session 9 complete)**:
+- **Recommend**: Session 10 (`/generate-backlog`)
 
-**If 00-09 backlog + GitHub issues exist (Session 8 complete)**:
-- **Recommend**: Session 9 (`/scaffold-project`)
+**If 00-10 backlog exists (Session 10 complete)**:
+- **Recommend**: Session 11 (`/create-gh-issues`)
 
-**If 00-09 scaffold exists (Session 9 complete)**:
-- **Recommend**: Session 10 (`/plan-deployment`)
+**If 00-10 backlog + GitHub issues exist (Session 11 complete)**:
+- **Recommend**: Session 12 (`/scaffold-project`)
 
-**If 00-10 deployment plan exists (Session 10 complete)**:
-- **Recommend**: Session 11 (`/design-observability`)
+**If 00-12 scaffold exists (Session 12 complete)**:
+- **Recommend**: Session 13 (`/plan-deployment`)
 
-**If all core cascade complete (Sessions 1-11)**:
+**If 00-13 deployment plan exists (Session 13 complete)**:
+- **Recommend**: Session 14 (`/design-observability`)
+
+**If all core cascade complete (Sessions 1-14)**:
 - **Congratulate** them!
 - **Recommend**: Copy scaffold files and start building!
 - **Also suggest** (optional):
@@ -222,8 +227,8 @@ For the next recommended session, display:
 📤 Will create:
 - product-guidelines/03-mission.md (mission statement derived from journey)
 - product-guidelines/04-metrics.md (North Star metric and success metrics)
-- product-guidelines/05-monetization.md (pricing strategy aligned with value)
-- product-guidelines/06-architecture.md (architecture principles)
+- product-guidelines/04-monetization.md (pricing strategy aligned with value)
+- product-guidelines/04-architecture.md (architecture principles)
 
 ⏱️ Estimated time: 15-20 minutes (AI-assisted conversation)
 
@@ -232,8 +237,9 @@ For the next recommended session, display:
 🔗 Cascades to:
 - Session 5: Brand strategy will express your journey value
 - Session 6: Design system will implement brand and architecture
-- Session 7: Backlog will be prioritized by your metrics
-- Sessions 10-11: Deployment and observability will enable reliable delivery
+- Session 7: Database schema will model your data
+- Session 10: Backlog will be prioritized by your metrics
+- Sessions 13-14: Deployment and observability will enable reliable delivery
 - Optional: /setup-analytics will implement detailed event tracking for your metrics
 - Optional: /design-user-experience will create detailed UX design
 
@@ -247,19 +253,17 @@ If appropriate, suggest optional post-core commands:
 ```
 💡 Optional Post-Core Extensions (Journey-Informed)
 
-After Session 4 (Tactical Foundation Complete), consider:
-├─ /design-user-experience → Detailed UX flows & wireframes (product-guidelines/16-user-experience.md)
-├─ /setup-analytics → Implement metrics tracking (product-guidelines/17-analytics-plan.md)
-└─ /design-growth-strategy → Acquisition channels & growth loops (product-guidelines/21-growth-strategy.md)
+After Session 6 (Brand & Design Complete), consider:
+├─ /design-user-experience → Detailed UX flows & wireframes (product-guidelines/user-experience.md)
+├─ /setup-analytics → Implement metrics tracking (product-guidelines/analytics-plan.md)
+├─ /design-growth-strategy → Acquisition channels & growth loops (product-guidelines/growth-strategy.md)
+└─ /create-financial-model → Unit economics and revenue projections (product-guidelines/financial-model.md)
 
-After Session 7 (Backlog Complete), consider:
-├─ /discover-naming → Extend brand with name generation (product-guidelines/12-brand-naming.md)
-├─ /define-messaging → Communicate journey value (product-guidelines/13-brand-messaging.md)
-├─ /design-brand-identity → Logo and visual identity system (product-guidelines/14-brand-identity.md)
-├─ /create-content-guidelines → Journey-aligned content (product-guidelines/15-content-guidelines.md)
-├─ /design-database-schema → Complete ERD, migrations, data modeling (product-guidelines/18-database-schema.md)
-├─ /generate-api-contracts → OpenAPI specs, endpoints, schemas (product-guidelines/19-api-contracts.md)
-└─ /create-test-strategy → Comprehensive testing strategy (product-guidelines/20-test-strategy.md)
+After Session 10 (Backlog Complete), consider:
+├─ /discover-naming → Extend brand with name generation (product-guidelines/brand-naming.md)
+├─ /define-messaging → Communicate journey value (product-guidelines/brand-messaging.md)
+├─ /design-brand-identity → Logo and visual identity system (product-guidelines/brand-identity.md)
+└─ /create-content-guidelines → Journey-aligned content (product-guidelines/content-guidelines.md)
 
 During development:
 └─ /review-code → Code review framework (use anytime)
@@ -340,13 +344,16 @@ Recommendation: Either fill in the gaps or accept that later sessions won't have
 ```
 🎉 Core Cascade Complete!
 
-You've successfully completed all 11 Stack-Driven core sessions:
+You've successfully completed all 14 Stack-Driven core sessions:
 ✅ User Journey defined
 ✅ Product Strategy validated (market, competitive, goals)
 ✅ Tech stack chosen
 ✅ Tactical foundation established (mission, metrics, monetization, architecture)
 ✅ Brand strategy created (expresses journey value)
 ✅ Design system created (brings brand to life)
+✅ Database schema designed
+✅ API contracts generated
+✅ Test strategy created
 ✅ Backlog generated
 ✅ GitHub issues created
 ✅ Project scaffold ready (working development environment)
@@ -358,10 +365,10 @@ You've successfully completed all 11 Stack-Driven core sessions:
 What's next?
 
 Option 1: Start Building 🚀
-→ Copy files from product-guidelines/09-project-scaffold/ to your project root
+→ Copy files from product-guidelines/12-project-scaffold/ to your project root
 → Follow README.md setup instructions
-→ Set up CI/CD using product-guidelines/10-deployment-plan.md
-→ Implement monitoring using product-guidelines/11-observability-strategy.md
+→ Set up CI/CD using product-guidelines/13-deployment-plan.md
+→ Implement monitoring using product-guidelines/14-observability-strategy.md
 → Run docker-compose up && npm install && npm run dev
 → Start implementing P0 stories from your backlog
 
@@ -372,9 +379,8 @@ Option 2: Add Optional Extensions 📊
 → /setup-analytics (plan analytics implementation)
 → /design-user-experience (detailed UX flows)
 → /create-content-guidelines (content style guide)
-→ /design-database-schema (complete ERD and migrations)
-→ /generate-api-contracts (OpenAPI specs)
-→ /create-test-strategy (comprehensive testing)
+→ /design-growth-strategy (growth strategy with acquisition channels)
+→ /create-financial-model (financial modeling and unit economics)
 
 Option 3: Iterate & Refine 🔄
 → Run /refine-journey if your understanding evolves
@@ -419,27 +425,28 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 - `/generate-strategy` - Session 4: Mission, metrics, monetization, architecture
 - `/create-brand-strategy` - Session 5: Brand foundation (expresses journey value)
 - `/create-design` - Session 6: Design system (brings brand to life)
-- `/generate-backlog` - Session 7: User stories
-- `/create-gh-issues` - Session 8: GitHub issues
-- `/scaffold-project` - Session 9: Working development environment
-- `/plan-deployment` - Session 10: Deployment & CI/CD
-- `/design-observability` - Session 11: Monitoring & SLOs
+- `/design-database-schema` - Session 7: Database schema & migrations
+- `/generate-api-contracts` - Session 8: API contracts & OpenAPI specs
+- `/create-test-strategy` - Session 9: Testing strategy
+- `/generate-backlog` - Session 10: User stories
+- `/create-gh-issues` - Session 11: GitHub issues
+- `/scaffold-project` - Session 12: Working development environment
+- `/plan-deployment` - Session 13: Deployment & CI/CD
+- `/design-observability` - Session 14: Monitoring & SLOs
 
 **Post-Core Extensions (Optional - Journey-Informed)**:
 
-After Session 4+:
-- `/design-user-experience` - Detailed UX flows (product-guidelines/16-user-experience.md)
-- `/setup-analytics` - Analytics implementation (product-guidelines/17-analytics-plan.md)
-- `/design-growth-strategy` - Growth strategy (product-guidelines/21-growth-strategy.md)
+After Session 6+:
+- `/design-user-experience` - Detailed UX flows (product-guidelines/user-experience.md)
+- `/setup-analytics` - Analytics implementation (product-guidelines/analytics-plan.md)
+- `/design-growth-strategy` - Growth strategy (product-guidelines/growth-strategy.md)
+- `/create-financial-model` - Financial model & unit economics (product-guidelines/financial-model.md)
 
-After Session 7+:
-- `/discover-naming` - Brand naming (product-guidelines/12-brand-naming.md)
-- `/define-messaging` - Messaging framework (product-guidelines/13-brand-messaging.md)
-- `/design-brand-identity` - Brand identity system (product-guidelines/14-brand-identity.md)
-- `/create-content-guidelines` - Content style guide (product-guidelines/15-content-guidelines.md)
-- `/design-database-schema` - Database schema & migrations (product-guidelines/18-database-schema.md)
-- `/generate-api-contracts` - API contracts & OpenAPI specs (product-guidelines/19-api-contracts.md)
-- `/create-test-strategy` - Testing strategy (product-guidelines/20-test-strategy.md)
+After Session 10+:
+- `/discover-naming` - Brand naming (product-guidelines/brand-naming.md)
+- `/define-messaging` - Messaging framework (product-guidelines/brand-messaging.md)
+- `/design-brand-identity` - Brand identity system (product-guidelines/brand-identity.md)
+- `/create-content-guidelines` - Content style guide (product-guidelines/content-guidelines.md)
 
 Dev-time:
 - `/review-code` - Code review framework (anytime)

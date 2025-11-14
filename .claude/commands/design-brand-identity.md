@@ -10,9 +10,9 @@ You are helping the user design a comprehensive visual brand identity including 
 
 **Run AFTER `/create-brand-strategy`** (Session 5) when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Brand strategy established (`product-guidelines/07-brand-strategy.md`)
-- ✅ Design system created (`product-guidelines/08-design-system.md`) - recommended but optional
-- ✅ Brand name chosen (from `product-guidelines/09-brand-naming.md` or already decided) - optional but helpful
+- ✅ Brand strategy established (`product-guidelines/05-brand-strategy.md`)
+- ✅ Design system created (`product-guidelines/06-design-system.md`) - recommended but optional
+- ✅ Brand name chosen (from `product-guidelines/brand-naming.md` or already decided) - optional but helpful
 
 Your visual identity should express the brand personality and values defined in your brand strategy, not be created in a vacuum.
 
@@ -35,7 +35,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 2. **Read the brand strategy**:
    ```bash
-   Read product-guidelines/07-brand-strategy.md
+   Read product-guidelines/05-brand-strategy.md
    ```
    - Brand personality (professional/playful, serious/friendly, etc.)
    - Brand values (what guides design decisions)
@@ -44,7 +44,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 3. **Read the design system** (if exists):
    ```bash
-   Read product-guidelines/08-design-system.md
+   Read product-guidelines/06-design-system.md
    ```
    - Color palette (brand colors to incorporate)
    - Typography (font choices for logo/brand materials)
@@ -52,7 +52,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 4. **Read the brand name** (if exists):
    ```bash
-   Read product-guidelines/09-brand-naming.md
+   Read product-guidelines/brand-naming.md
    ```
    - Chosen name to incorporate into logo
    - Name meaning and associations
@@ -68,14 +68,14 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/07-brand-strategy.md
-   Read product-guidelines/08-design-system.md  # If exists
-   Read product-guidelines/09-brand-naming.md   # If exists
+   Read product-guidelines/05-brand-strategy.md
+   Read product-guidelines/06-design-system.md  # If exists
+   Read product-guidelines/brand-naming.md   # If exists
    ```
 
 2. **Read the template structure**:
    ```bash
-   Read templates/11-brand-identity-template.md
+   Read templates/brand-identity-template.md
    ```
 
 3. **Analyze brand personality for visual expression**:
