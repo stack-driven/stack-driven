@@ -34,3 +34,9 @@ ENV/
 # Temporary files
 .tmp/
 temp/
+
+# gemini-cli settings
+.gemini/
+
+# GitHub App credentials
+gha-creds-*.json

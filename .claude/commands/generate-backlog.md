@@ -41,7 +41,7 @@ Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-
 - Epic 01: Onboarding (Journey Steps 1-2)
 - Epic 02: Core Value Delivery (Journey Step 3 - THE KEY EPIC)
 - Epic 03: Results & Actions (Journey Steps 4-5)
-- Epic 04: Foundation (Auth, database, infrastructure)
+- Epic 04: Foundation (Auth, database, infrastructure, legal/compliance)
 - Epic 05: Design System Implementation
 - Epic 06: Metrics & Analytics
 
@@ -81,6 +81,16 @@ Blocked By: EPIC-04 (Database schema setup)
 ## Estimation
 Effort: 2 days (1 day Clerk integration, 1 day user creation flow)
 ```
+
+**Required Foundation Stories (Epic 04)**:
+
+Every backlog MUST include these legal/compliance stories:
+- **Terms of Service/Conditions**: Legal agreement users accept when signing up
+- **Privacy Policy**: How user data is collected, used, stored, and protected
+- **Cookie Policy** (if applicable): Cookie usage and consent management
+- **Data Processing Agreement** (for B2B/Enterprise): GDPR/compliance requirements
+
+These are P0 priorities - production applications cannot launch without them.
 
 ### Step 4: Apply RICE Prioritization
 
@@ -152,6 +162,7 @@ Use `/templates/issue-template.md` for EVERY story.
 - [ ] Tech stack is used (stories reference chosen tech)?
 - [ ] Design components are built (stories implement design system)?
 - [ ] Metrics are tracked (analytics instrumented)?
+- [ ] Legal/compliance documents included (Terms of Service, Privacy Policy)?
 
 ## After Generation
 
@@ -183,6 +194,7 @@ Or check progress: /cascade-status
 4. **Track metrics**: Include analytics instrumentation stories
 5. **Reasonable estimates**: No story >5 days (break down if larger)
 6. **Clear acceptance criteria**: Every story testable
+7. **Include legal compliance**: Every backlog MUST include Terms of Service, Privacy Policy, and other required legal documents (P0 priority)
 
 ## Reference
 
