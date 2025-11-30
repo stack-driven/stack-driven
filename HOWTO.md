@@ -317,6 +317,177 @@ After merge to main, the `claude-update-claudemd.yml` workflow:
 
 ---
 
+### Multi-Round Automation Workflows
+
+Stack-Driven now supports **two levels of automation** for issue implementation:
+
+**1. Semi-Automated (`/post-plan`):** Generate plan → Human reviews → Manual approval → Implement
+**2. Fully-Automated (`/post-plan-and-implement`):** Generate plan → Auto-implement → Auto-review → Auto-fix (up to 5 rounds)
+
+#### Semi-Automated Workflow: `/post-plan`
+
+**Use this when:**
+- Issue is well-defined but you want to review the plan first
+- You want control before implementation starts
+- The issue is moderately complex
+
+**How it works:**
+
+```bash
+# Comment on any issue
+/post-plan
+
+# OR trigger via GitHub workflow
+gh issue comment 42 --body "/post-plan"
+```
+
+**What happens:**
+1. ✅ Implementation plan generated (1-2 minutes)
+2. ✅ Plan posted as comment on issue
+3. ✅ `plan-ready` label added
+4. ⏸️ **Waits for human approval**
+5. Human reviews plan, then comments `@claude-implement` to proceed
+6. Implementation runs automatically
+7. PR created with code review
+8. Multi-round auto-fix runs (up to 5 rounds)
+
+**Timeline:** Review plan (5 min) → Approve → PR ready (15-30 min)
+
+#### Fully-Automated Workflow: `/post-plan-and-implement`
+
+**Use this when:**
+- Issue is simple and well-scoped
+- Requirements are clear and unambiguous
+- You trust the automated planning + implementation
+- You want zero manual intervention until PR review
+
+**How it works:**
+
+```bash
+# Comment on any issue
+/post-plan-and-implement
+
+# OR trigger via GitHub workflow
+gh issue comment 42 --body "/post-plan-and-implement"
+```
+
+**What happens:**
+1. ✅ Implementation plan generated (1-2 minutes)
+2. ✅ Plan posted as comment on issue
+3. ✅ `full-automation` label added
+4. ✅ `@claude-implement` comment posted automatically (triggers implementation)
+5. ✅ Implementation runs (10-20 minutes)
+6. ✅ PR created automatically
+7. ✅ Code review runs automatically
+8. ✅ Multi-round auto-fix cycles (up to 5 rounds)
+9. 👀 **You review final PR and merge**
+
+**Timeline:** Issue → PR ready in 30-60 minutes (zero manual intervention)
+
+#### Multi-Round Code Review & Auto-Fix
+
+Both workflows include **automatic review/fix cycles** to improve code quality:
+
+**How it works:**
+
+1. **PR created** → Code review runs automatically
+2. **Review categorizes issues by severity:**
+   - 🔴 **High Priority (blocking):** Security vulnerabilities, critical bugs, data corruption
+   - 🟡 **Medium Priority (should fix):** Code quality, missing tests, guideline violations
+   - 🟢 **Low Priority (optional):** Style improvements, refactoring suggestions
+
+3. **Auto-fix triggered if:**
+   - High or medium priority issues found
+   - Review round < 5
+
+4. **Auto-fix process:**
+   - Parses review findings
+   - Implements fixes for 🔴 high + 🟡 medium issues only
+   - Runs tests to verify fixes
+   - Commits to PR branch
+   - Triggers new review round
+
+5. **Loop continues until:**
+   - No high/medium issues remain (✅ PR approved)
+   - OR 5 rounds reached (⛔ adds `review-blocked` label, requires manual intervention)
+
+**Example flow:**
+
+```
+PR created → Review Round 1: 10 issues found
+  ↓
+Auto-fix commits fixes → Review Round 2: 3 issues found
+  ↓
+Auto-fix commits fixes → Review Round 3: 1 issue found
+  ↓
+Auto-fix commits fixes → Review Round 4: 0 issues found
+  ↓
+✅ PR approved (stopped before round 5)
+```
+
+**If max rounds (5) reached:**
+
+```
+Review Round 5: 2 issues remain
+  ↓
+⛔ `review-blocked` label added
+  ↓
+Human reviews remaining issues
+  ↓
+Manual fixes applied
+  ↓
+Remove `review-blocked` label to re-enable automation
+```
+
+#### Choosing the Right Workflow
+
+| Workflow | Best For | Time to PR | Human Oversight |
+|----------|----------|------------|-----------------|
+| **Manual (`/implement-issue`)** | Complex issues, critical changes | Immediate | Full control during implementation |
+| **Semi-Auto (`/post-plan`)** | Moderate complexity, want plan review | 15-30 min | Review plan before implementation |
+| **Full-Auto (`/post-plan-and-implement`)** | Simple issues, clear requirements | 30-60 min | Review only at PR stage |
+
+**Recommendations:**
+- **Simple bug fixes, small features:** Use `/post-plan-and-implement`
+- **Moderate features, refactors:** Use `/post-plan`
+- **Complex features, breaking changes:** Use manual `/implement-issue`
+- **Critical security/infrastructure:** Always use manual `/implement-issue`
+
+#### Troubleshooting Multi-Round Automation
+
+**Issue: "Review blocked after 5 rounds"**
+
+This means automated fixes couldn't resolve all issues after 5 attempts.
+
+**Solution:**
+1. Review latest code review comment
+2. Manually fix remaining 🔴 high and 🟡 medium issues
+3. Push changes to PR branch
+4. Remove `review-blocked` label: `gh pr edit <number> --remove-label "review-blocked"`
+5. Automation will resume on next push
+
+**Issue: "Auto-fix made no changes"**
+
+This means the auto-fix process ran but couldn't apply fixes.
+
+**Solution:**
+1. Review findings may be unclear or already fixed
+2. Manually review code review comment
+3. Apply fixes manually if needed
+4. Or close review findings as not applicable
+
+**Issue: "Auto-fix broke tests"**
+
+Auto-fix commits are rejected if tests fail.
+
+**Solution:**
+1. Check workflow logs for test failure details
+2. Fix tests or code manually
+3. Push to PR branch
+4. Auto-fix will retry on next review round
+
+---
+
 ### Complete Automated Workflow
 
 For fully hands-off development (great for simple issues):
