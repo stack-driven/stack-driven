@@ -1,0 +1,80 @@
+name: Claude Plan Issue
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to plan'
+        required: true
+        type: number
+
+jobs:
+  plan-issue:
+    # Trigger if:
+    # 1. Issue opened/labeled with "needs-plan"
+    # 2. Comment contains @claude-plan or /plan-issue
+    # 3. Manual workflow dispatch
+    if: |
+      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'needs-plan') || contains(github.event.issue.body, '@claude-plan'))) ||
+      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '/plan-issue') || contains(github.event.comment.body, '@claude-plan'))) ||
+      github.event_name == 'workflow_dispatch'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get issue number
+        id: get-issue
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "issue_number=${{ github.event.inputs.issue_number }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Claude Plan Issue
+        id: claude-plan
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Use the /plan-issue slash command
+          # This command:
+          # 1. Fetches issue details
+          # 2. Loads relevant product-guidelines
+          # 3. Analyzes requirements with journey traceability
+          # 4. Generates comprehensive implementation plan
+          # 5. Posts plan as comment on issue
+          # 6. Adds "planned" label
+          prompt: |
+            /plan-issue ${{ steps.get-issue.outputs.issue_number }}
+
+          # Allow bash for gh CLI and file operations
+          # The /plan-issue command needs to:
+          # - Read issue via gh CLI
+          # - Read product-guidelines files
+          # - Post comment via gh CLI
+          # - Update issue labels via gh CLI
+          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh repo view:*),Read,Grep,Glob"'
+
+      - name: Comment on completion
+        if: failure()
+        run: |
+          gh issue comment ${{ steps.get-issue.outputs.issue_number }} \
+            --body "❌ Failed to generate implementation plan. Please check the workflow run for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

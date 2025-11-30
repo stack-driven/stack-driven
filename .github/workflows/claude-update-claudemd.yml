@@ -1,0 +1,89 @@
+name: Claude Update CLAUDE.md
+
+on:
+  # Trigger after every merge to main
+  push:
+    branches:
+      - main
+    # Only run if files changed that might affect CLAUDE.md
+    # Ignore changes to docs, tests, and CLAUDE.md itself
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'tests/**'
+      - '.github/**'
+      - 'product-guidelines/**'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  update-claudemd:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50  # Need history to analyze changes
+
+      - name: Run Claude Update CLAUDE.md
+        id: claude-update
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Use the /update-claudemd slash command
+          prompt: |
+            /update-claudemd
+
+          # Allow tools for git analysis and file editing
+          claude_args: '--allowed-tools "Bash(git:*),Read,Edit,Glob,Grep"'
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet CLAUDE.md; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to CLAUDE.md"
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "CLAUDE.md was updated"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add CLAUDE.md
+          git commit -m "docs: auto-update CLAUDE.md based on recent changes
+
+          🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+          Co-Authored-By: Claude <noreply@anthropic.com>"
+          git push
+
+      - name: Create summary
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          echo "### ✅ CLAUDE.md Updated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "CLAUDE.md has been automatically updated based on recent code changes." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Changes committed to main branch**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
+          git diff HEAD~1 CLAUDE.md >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create summary (no changes)
+        if: steps.check-changes.outputs.changes == 'false'
+        run: |
+          echo "### ℹ️ CLAUDE.md Up to Date" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No updates needed. CLAUDE.md accurately reflects the current codebase." >> $GITHUB_STEP_SUMMARY
