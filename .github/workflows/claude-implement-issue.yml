@@ -1,0 +1,166 @@
+name: Claude Implement Issue
+
+on:
+  # Trigger when plan is approved
+  issue_comment:
+    types: [created]
+
+  # Trigger when labeled as ready to implement
+  issues:
+    types: [labeled]
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to implement'
+        required: true
+        type: number
+
+jobs:
+  implement-issue:
+    # Trigger if:
+    # 1. Comment contains @claude-implement or /implement-issue
+    # 2. Issue labeled with "auto-implement" or "ready-to-implement"
+    # 3. Manual workflow dispatch
+    if: |
+      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '@claude-implement') || contains(github.event.comment.body, '/implement-issue'))) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'auto-implement') || contains(github.event.issue.labels.*.name, 'ready-to-implement'))) ||
+      github.event_name == 'workflow_dispatch'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get issue number
+        id: get-issue
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "issue_number=${{ github.event.inputs.issue_number }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for approved plan
+        id: check-plan
+        run: |
+          # Check if issue has an implementation plan comment
+          if gh issue view ${{ steps.get-issue.outputs.issue_number }} --json comments --jq '.comments[].body' | grep -q "🧭 Plan for"; then
+            echo "has_plan=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_plan=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment if no plan
+        if: steps.check-plan.outputs.has_plan == 'false'
+        run: |
+          gh issue comment ${{ steps.get-issue.outputs.issue_number }} --body "❌ **Cannot implement - No approved plan found**
+
+          This issue needs an implementation plan before it can be implemented.
+
+          **Next steps:**
+          1. Add \`needs-plan\` label to trigger automatic planning
+          2. OR comment \`@claude-plan\` to request a plan
+          3. OR run \`/plan-issue ${{ steps.get-issue.outputs.issue_number }}\` manually
+
+          After the plan is posted and reviewed, you can:
+          - Comment \`@claude-implement\` to trigger automatic implementation
+          - OR add \`auto-implement\` label
+          - OR run \`/implement-issue ${{ steps.get-issue.outputs.issue_number }}\` manually"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Exit if no plan
+        if: steps.check-plan.outputs.has_plan == 'false'
+        run: exit 1
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Run Claude Implement Issue
+        id: claude-implement
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Use the /implement-issue slash command
+          # This command:
+          # 1. Fetches issue and approved plan
+          # 2. Creates feature branch
+          # 3. Implements following plan exactly
+          # 4. Runs tests
+          # 5. Commits changes
+          # 6. Creates PR
+          prompt: |
+            /implement-issue ${{ steps.get-issue.outputs.issue_number }}
+
+          # Allow all tools needed for implementation
+          # - gh: GitHub CLI for issue/PR operations
+          # - git: Version control operations
+          # - File operations: Read, Write, Edit for code changes
+          # - Search: Grep, Glob for finding files/code
+          # - Bash: Running tests, linters, type checkers
+          claude_args: '--allowed-tools "Bash(gh:*),Bash(git:*),Bash(npm:*),Bash(pytest:*),Bash(make:*),Read,Write,Edit,Grep,Glob"'
+
+      - name: Add labels on success
+        if: success()
+        run: |
+          # Remove auto-implement label, add implemented label
+          gh issue edit ${{ steps.get-issue.outputs.issue_number }} \
+            --remove-label "auto-implement" \
+            --remove-label "ready-to-implement" \
+            --add-label "implemented" || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on failure
+        if: failure()
+        run: |
+          gh issue comment ${{ steps.get-issue.outputs.issue_number }} \
+            --body "❌ **Automatic implementation failed**
+
+          The implementation workflow encountered an error.
+
+          **What happened:**
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          **Next steps:**
+          1. Check the workflow logs for details
+          2. Fix any issues in the plan or codebase
+          3. Run \`/implement-issue ${{ steps.get-issue.outputs.issue_number }}\` manually for more control
+          4. OR comment \`@claude-implement\` to retry
+
+          **Common issues:**
+          - Tests failing
+          - Linting errors
+          - Missing dependencies
+          - Outdated plan (edit plan comment and retry)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create summary
+        if: success()
+        run: |
+          echo "### ✅ Issue #${{ steps.get-issue.outputs.issue_number }} Implemented" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Automatic implementation completed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the automatically created PR" >> $GITHUB_STEP_SUMMARY
+          echo "2. Code review will run automatically" >> $GITHUB_STEP_SUMMARY
+          echo "3. Merge when approved" >> $GITHUB_STEP_SUMMARY

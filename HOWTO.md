@@ -68,12 +68,13 @@ gh repo view
 
 **Enable workflows:**
 
-The repository includes 3 powerful GitHub Actions:
+The repository includes 4 powerful GitHub Actions:
 - `claude-plan-issue.yml` - Auto-generates implementation plans for issues
+- `claude-implement-issue.yml` - Auto-implements issues following approved plans
 - `claude-code-review.yml` - Reviews PRs against product-guidelines
 - `claude-update-claudemd.yml` - Keeps CLAUDE.md synchronized with codebase
 
-These are automatically enabled once you push. They'll activate on issue creation, PR creation, and merges to main.
+These are automatically enabled once you push. They'll activate on issue creation, plan approval, PR creation, and merges to main.
 
 ### Step 3: Run the Cascade for YOUR Product
 
@@ -256,18 +257,43 @@ Check the plan comment on the issue. If it looks good, you're ready to implement
 
 **4. Implement the issue:**
 
+You have two options:
+
+**Option A: Automated Implementation** (recommended for simpler issues)
+
+The `claude-implement-issue.yml` workflow triggers automatically when:
+- You comment `@claude-implement` on an issue with a plan
+- You add `auto-implement` or `ready-to-implement` label
+- Manual trigger: `gh workflow run claude-implement-issue.yml -f issue_number=42`
+
+**What happens:**
+- Verifies approved plan exists
+- Creates branch: `42-issue-slug`
+- Implements following plan exactly (no re-reading guidelines)
+- Runs tests, linting, type checking
+- Commits changes with conventional commit message
+- Creates PR with "Closes #42"
+- Adds `implemented` label to issue
+
+**When to use:**
+- Simple, well-defined issues
+- Issues with clear, detailed plans
+- Non-critical changes where you trust the plan
+- Rapid iteration on features
+
+**Option B: Manual Implementation** (recommended for complex issues)
+
 ```bash
 /implement-issue 42
 ```
 
-**What happens:**
-- Creates branch: `42-issue-slug`
-- Loads approved plan
-- Loads relevant product-guidelines as guardrails
-- Implements following the plan exactly
-- Runs tests
-- Commits changes
-- Creates PR with "Closes #42"
+Run this in Claude Code for more control and visibility during implementation.
+
+**When to use:**
+- Complex issues requiring judgment calls
+- Issues where you want to see the implementation process
+- Critical changes requiring oversight
+- Debugging or investigation needed
 
 **5. Code review (automatic):**
 
@@ -287,7 +313,41 @@ After review and approval, merge the PR. The issue auto-closes.
 After merge to main, the `claude-update-claudemd.yml` workflow:
 - Detects structural changes
 - Updates CLAUDE.md with new context
-- Creates PR if updates needed
+- Commits updates directly to main (no PR needed)
+
+---
+
+### Complete Automated Workflow
+
+For fully hands-off development (great for simple issues):
+
+```bash
+# 1. Create issue or pick from backlog
+gh issue create --title "Add feature X" --body "Description..."
+
+# 2. Trigger automatic planning
+gh issue edit 42 --add-label "needs-plan"
+# OR comment: @claude-plan
+
+# 3. Wait for plan (1-2 minutes)
+# Review plan comment on issue
+
+# 4. Trigger automatic implementation
+gh issue comment 42 --body "@claude-implement"
+# OR: gh issue edit 42 --add-label "auto-implement"
+
+# 5. Wait for PR creation (5-15 minutes depending on complexity)
+# Automatic code review runs
+
+# 6. Review PR and merge
+gh pr view 123
+gh pr merge 123
+
+# 7. CLAUDE.md auto-updates on merge
+# Done!
+```
+
+**Timeline:** Issue → Production in 20-30 minutes with minimal human intervention.
 
 ### Manual Implementation Workflow
 
@@ -513,6 +573,7 @@ ls .github/workflows/
 
 Should show:
 - `claude-plan-issue.yml`
+- `claude-implement-issue.yml`
 - `claude-code-review.yml`
 - `claude-update-claudemd.yml`
 
@@ -525,6 +586,37 @@ gh run list
 **Enable workflows manually:**
 
 Go to GitHub → Actions tab → Enable workflows
+
+### "Automated implementation failed"
+
+**Check workflow logs:**
+
+```bash
+gh run list --workflow=claude-implement-issue.yml
+gh run view <run-id> --log
+```
+
+**Common failures:**
+- **No plan found**: Add `needs-plan` label first to generate plan
+- **Tests failing**: Plan may need adjustment, or codebase has issues
+- **Linting errors**: Plan may not follow code style
+- **Timeout**: Issue too complex, use manual `/implement-issue` instead
+
+**Retry after fixing:**
+
+```bash
+# Edit plan comment if needed, then:
+gh issue comment 42 --body "@claude-implement"
+```
+
+### "Automated implementation creating low-quality PRs"
+
+**Solutions:**
+
+1. **Improve plan quality**: More detailed plans → better implementations
+2. **Use manual for complex issues**: Run `/implement-issue` locally for oversight
+3. **Adjust trigger strategy**: Only use `auto-implement` label for simple issues
+4. **Review and iterate**: Edit plan based on PR quality, regenerate
 
 ---
 
@@ -539,6 +631,8 @@ Go to GitHub → Actions tab → Enable workflows
 **✓ Keep CLAUDE.md updated** - Helps future Claude sessions understand your codebase
 **✓ Review auto-generated plans** - Don't blindly implement, verify plan makes sense
 **✓ Commit cascade outputs** - If working in a team, version control product-guidelines
+**✓ Use automated workflows for simple issues** - Saves time on straightforward implementations
+**✓ Use manual `/implement-issue` for complex work** - Maintain oversight on critical changes
 
 ### Don'ts
 
@@ -547,6 +641,8 @@ Go to GitHub → Actions tab → Enable workflows
 **✗ Add features not in journey** - Scope creep kills products
 **✗ Ignore breaking changes** - Follow migration paths in implementation plans
 **✗ Bypass product-guidelines** - They're the source of truth
+**✗ Auto-implement without reviewing plan** - Always review plan quality first
+**✗ Use automated workflow for critical/complex changes** - Manual oversight is safer
 
 ---
 
@@ -568,10 +664,18 @@ Go to GitHub → Actions tab → Enable workflows
 
 ### Development (Daily)
 
+**Automated workflow:**
 1. Pick issue from GitHub backlog
-2. Auto-generate plan (via workflow or manual `/plan-issue`)
-3. Implement: `/implement-issue X`
-4. PR auto-created, code review runs automatically
+2. Add `needs-plan` label → plan auto-generated
+3. Review plan → comment `@claude-implement` → PR auto-created
+4. Code review runs automatically
+5. Merge → CLAUDE.md auto-updates
+
+**Manual workflow:**
+1. Pick issue from GitHub backlog
+2. Run `/plan-issue X` to generate plan
+3. Review plan → run `/implement-issue X` locally
+4. PR created, code review runs automatically
 5. Merge → CLAUDE.md auto-updates
 
 ### Iteration (As needed)
@@ -602,7 +706,9 @@ Go to GitHub → Actions tab → Enable workflows
 
 **Ready to build?**
 
-Pick an issue, run `/implement-issue X`, and ship!
+Pick an issue and either:
+- Automated: Add `needs-plan` label → review → comment `@claude-implement`
+- Manual: Run `/plan-issue X` → review → run `/implement-issue X`
 
 ---
 
