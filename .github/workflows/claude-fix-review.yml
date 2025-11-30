@@ -1,0 +1,338 @@
+name: Claude Fix Review Findings
+
+on:
+  # Trigger when @claude-fix-review comment is posted on PR
+  issue_comment:
+    types: [created]
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to fix'
+        required: true
+        type: number
+
+jobs:
+  fix-review-findings:
+    # Only run on PR comments containing @claude-fix-review
+    if: |
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude-fix-review')) ||
+      github.event_name == 'workflow_dispatch'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR number
+        id: get-pr
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "pr_number=${{ github.event.inputs.pr_number }}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check review round count
+        id: check-rounds
+        run: |
+          # Count existing review rounds
+          REVIEW_COUNT=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json comments --jq '[.comments[] | select(.author.login=="github-actions[bot]" and (.body | contains("Code Review - Round")))] | length' || echo "0")
+
+          echo "review_count=$REVIEW_COUNT" >> $GITHUB_OUTPUT
+          echo "📊 Current review rounds: $REVIEW_COUNT"
+
+          if [ "$REVIEW_COUNT" -ge 5 ]; then
+            echo "⛔ Maximum rounds (5) reached. Manual intervention required."
+            echo "max_rounds_reached=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Can proceed with auto-fix (round $REVIEW_COUNT/5)"
+            echo "max_rounds_reached=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Exit if max rounds reached
+        if: steps.check-rounds.outputs.max_rounds_reached == 'true'
+        run: |
+          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "⛔ **Cannot auto-fix: Maximum review rounds reached**
+
+          This PR has already gone through 5 automated review/fix rounds. Manual intervention is required.
+
+          **Next steps:**
+          1. Review the latest code review findings
+          2. Manually address the remaining issues
+          3. Push your changes to this PR
+          4. Remove the \`review-blocked\` label if it exists"
+          exit 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get PR branch and details
+        id: pr-details
+        run: |
+          PR_BRANCH=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json headRefName -q .headRefName)
+          PR_REPO=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json headRepository -q .headRepository.nameWithOwner)
+
+          echo "branch=$PR_BRANCH" >> $GITHUB_OUTPUT
+          echo "repo=$PR_REPO" >> $GITHUB_OUTPUT
+          echo "🌿 PR branch: $PR_BRANCH (from $PR_REPO)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout PR branch
+        run: |
+          git fetch origin ${{ steps.pr-details.outputs.branch }}
+          git checkout ${{ steps.pr-details.outputs.branch }}
+          echo "✅ Checked out PR branch: ${{ steps.pr-details.outputs.branch }}"
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Extract review findings
+        id: extract-findings
+        run: |
+          # Get the latest review comment
+          LATEST_REVIEW=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json comments --jq '[.comments[] | select(.author.login=="github-actions[bot]" and (.body | contains("Code Review - Round")))] | last | .body')
+
+          # Extract high priority section
+          HIGH_PRIORITY=$(echo "$LATEST_REVIEW" | sed -n '/### 🔴 High Priority/,/### 🟡 Medium Priority/p' | head -n -1)
+
+          # Extract medium priority section
+          MEDIUM_PRIORITY=$(echo "$LATEST_REVIEW" | sed -n '/### 🟡 Medium Priority/,/### 🟢 Low Priority/p' | head -n -1)
+
+          # Combine high + medium (skip low priority)
+          FINDINGS=$(cat <<EOF
+          ## Review Findings to Address
+
+          $HIGH_PRIORITY
+
+          $MEDIUM_PRIORITY
+          EOF
+          )
+
+          # Save to file for Claude
+          echo "$FINDINGS" > /tmp/review-findings.md
+
+          # Count issues
+          HIGH_COUNT=$(echo "$HIGH_PRIORITY" | grep -c "^\-" || echo "0")
+          MEDIUM_COUNT=$(echo "$MEDIUM_PRIORITY" | grep -c "^\-" || echo "0")
+
+          echo "high_count=$HIGH_COUNT" >> $GITHUB_OUTPUT
+          echo "medium_count=$MEDIUM_COUNT" >> $GITHUB_OUTPUT
+
+          echo "📋 Extracted findings: $HIGH_COUNT high priority + $MEDIUM_COUNT medium priority"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post fix attempt notification
+        run: |
+          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "🔧 **Auto-fix in progress...**
+
+          Attempting to address code review findings from Round ${{ steps.check-rounds.outputs.review_count }}.
+
+          **Issues to fix:**
+          - 🔴 High priority: ${{ steps.extract-findings.outputs.high_count }}
+          - 🟡 Medium priority: ${{ steps.extract-findings.outputs.medium_count }}
+
+          **This will be review round:** $(({{ steps.check-rounds.outputs.review_count }} + 1))/5
+
+          Implementing fixes now... (typically takes 5-10 minutes)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Claude to fix issues
+        id: claude-fix
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          prompt: |
+            Fix the code review findings identified in the latest review.
+
+            ## Context
+
+            **PR Number:** #${{ steps.get-pr.outputs.pr_number }}
+            **Current Branch:** ${{ steps.pr-details.outputs.branch }}
+            **Review Round:** ${{ steps.check-rounds.outputs.review_count }} of 5
+
+            ## Review Findings to Address
+
+            $(cat /tmp/review-findings.md)
+
+            ## Your Task
+
+            Fix ONLY the 🔴 High Priority and 🟡 Medium Priority issues listed above.
+
+            ### Requirements:
+
+            1. **Make minimal, surgical changes**
+               - Fix only the specific issues mentioned
+               - Don't refactor or change unrelated code
+               - Preserve existing functionality
+
+            2. **Fix each issue precisely**
+               - Read the file mentioned in each finding
+               - Apply the specific fix suggested
+               - Test the change works as expected
+
+            3. **Maintain code quality**
+               - Follow existing code patterns
+               - Preserve type safety
+               - Keep or improve test coverage
+
+            4. **Run tests after fixes**
+               - Run existing tests to verify no breakage
+               - If tests fail, fix them or adjust your changes
+               - Only commit if tests pass
+
+            ### Process:
+
+            1. **Read review findings** - Understand each issue listed above
+            2. **For each high priority issue:**
+               - Read the file referenced
+               - Apply the fix suggested
+               - Verify the fix works
+            3. **For each medium priority issue:**
+               - Read the file referenced
+               - Apply the fix suggested
+               - Verify the fix works
+            4. **Run tests** - Ensure nothing broke
+            5. **Commit changes** - Use format: `fix: address code review round ${{ steps.check-rounds.outputs.review_count }} findings`
+            6. **Do NOT push** - The workflow will handle pushing
+
+            ### Important Notes:
+
+            - **Be precise:** Fix exactly what's listed, nothing more
+            - **Preserve behavior:** Don't change functionality while fixing
+            - **Test thoroughly:** Run all relevant tests
+            - **Commit locally only:** Don't push (workflow handles that)
+
+            **If you cannot fix an issue:**
+            - Add a comment explaining why
+            - Note which issues remain unfixed
+            - Commit partial fixes with explanation
+
+            **Focus:** Methodical, surgical fixes that address review findings without introducing new issues.
+
+          # Allow all tools needed for fixing code
+          claude_args: '--allowed-tools "Bash(npm:*),Bash(pytest:*),Bash(make:*),Bash(git diff:*),Bash(git status:*),Bash(git log:*),Read,Edit,Write,Grep,Glob"'
+
+      - name: Check if changes were made
+        id: check-changes
+        run: |
+          if git diff --quiet HEAD; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No changes were made by auto-fix"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes were made by auto-fix"
+            git diff --stat
+          fi
+
+      - name: Commit changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          # Add all changes
+          git add -A
+
+          # Commit with descriptive message
+          NEXT_ROUND=$(({{ steps.check-rounds.outputs.review_count }} + 1))
+          git commit -m "fix: address code review round ${{ steps.check-rounds.outputs.review_count }} findings
+
+          Auto-fix applied for review round ${{ steps.check-rounds.outputs.review_count }}/5
+
+          Fixed issues:
+          - 🔴 High priority: ${{ steps.extract-findings.outputs.high_count }}
+          - 🟡 Medium priority: ${{ steps.extract-findings.outputs.medium_count }}
+
+          This commit will trigger review round $NEXT_ROUND."
+
+          echo "✅ Changes committed"
+
+      - name: Push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git push origin ${{ steps.pr-details.outputs.branch }}
+          echo "✅ Changes pushed to ${{ steps.pr-details.outputs.branch }}"
+          echo "🔄 This will trigger a new code review (Round $(({{ steps.check-rounds.outputs.review_count }} + 1))/5)"
+
+      - name: Comment on no changes
+        if: steps.check-changes.outputs.has_changes == 'false'
+        run: |
+          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "⚠️ **Auto-fix completed with no changes**
+
+          The auto-fix process ran but did not make any code changes.
+
+          **Possible reasons:**
+          - Issues may already be fixed
+          - Issues require manual intervention
+          - Review findings were unclear or incorrect
+
+          **Next steps:**
+          1. Review the code review findings manually
+          2. Determine if fixes are still needed
+          3. If needed, apply fixes manually and push
+          4. Or close review findings as not applicable"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on success
+        if: success() && steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          NEXT_ROUND=$(({{ steps.check-rounds.outputs.review_count }} + 1))
+          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "✅ **Auto-fix applied successfully**
+
+          Addressed code review findings from Round ${{ steps.check-rounds.outputs.review_count }}.
+
+          **Fixed:**
+          - 🔴 High priority issues: ${{ steps.extract-findings.outputs.high_count }}
+          - 🟡 Medium priority issues: ${{ steps.extract-findings.outputs.medium_count }}
+
+          **Next:**
+          - 🔄 Code review Round $NEXT_ROUND/5 will run automatically
+          - ⏳ Review typically completes in 2-3 minutes
+          - 🔧 Auto-fix will trigger again if issues remain (max 5 rounds total)
+
+          **Changes committed:**
+          \`\`\`
+          $(git log -1 --stat)
+          \`\`\`"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on failure
+        if: failure()
+        run: |
+          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "❌ **Auto-fix failed**
+
+          The automatic fix process encountered an error.
+
+          **Review round:** ${{ steps.check-rounds.outputs.review_count }}/5
+
+          **What happened:**
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          **Next steps:**
+          1. Check the workflow logs for details
+          2. Review the code review findings manually
+          3. Apply fixes manually and push to this PR
+          4. Or comment \`@claude-fix-review\` to retry auto-fix
+
+          **Common causes:**
+          - Test failures after applying fixes
+          - Complex issues requiring human judgment
+          - Merge conflicts or git issues"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
