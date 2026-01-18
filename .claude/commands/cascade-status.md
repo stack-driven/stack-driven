@@ -35,6 +35,8 @@ Session 6: /create-design              → product-guidelines/06-design-system.m
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
 Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.md
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
+Session 9.5: /model-application        → product-guidelines/09.5-application-architecture.md
+                                         product-guidelines/09.5-application-architecture-essentials.md
 Session 10: /generate-backlog          → product-guidelines/10-backlog/
 Session 11: /create-gh-issues          → GitHub issues
 Session 12: /scaffold-project          → product-guidelines/12-project-scaffold.md
@@ -126,6 +128,7 @@ CORE CASCADE (Required - Always Start Here)
 ❌ 07-database-schema.md         (Session 7 - Not started)
 ❌ 08-api-contracts.md           (Session 8 - Not started)
 ❌ 09-test-strategy.md           (Session 9 - Not started)
+❌ 09.5-application-architecture.md (Session 9.5 - Not started)
 ❌ 10-backlog/                   (Session 10 - Not started)
 ❌ 12-project-scaffold.md        (Session 12 - Not started)
 ❌ 13-deployment-plan.md         (Session 13 - Not started)
@@ -195,6 +198,9 @@ Based on what files exist, determine the next recommended action:
 - **Recommend**: Session 9 (`/create-test-strategy`)
 
 **If 00-09 test exists (Session 9 complete)**:
+- **Recommend**: Session 9.5 (`/model-application`)
+
+**If 00-09.5 application architecture exists (Session 9.5 complete)**:
 - **Recommend**: Session 10 (`/generate-backlog`)
 
 **If 00-10 backlog exists (Session 10 complete)**:
@@ -444,6 +450,7 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 - `/design-database-schema` - Session 7: Database schema & migrations
 - `/generate-api-contracts` - Session 8: API contracts & OpenAPI specs
 - `/create-test-strategy` - Session 9: Testing strategy
+- `/model-application` - Session 9.5: Application architecture (services, repositories, controllers)
 - `/generate-backlog` - Session 10: User stories
 - `/create-gh-issues` - Session 11: GitHub issues
 - `/scaffold-project` - Session 12: Working development environment

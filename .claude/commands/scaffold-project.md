@@ -50,6 +50,7 @@ Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy-essentials.md
+Read: product-guidelines/09.5-application-architecture-essentials.md
 Read: product-guidelines/10-backlog/BACKLOG.md
 ```
 
@@ -59,6 +60,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
+- `09.5-application-architecture-essentials.md` (~60% smaller) - Contains service/repository/controller signatures for code skeleton generation
 
 **Extract**:
 - **Project name** (from journey)
@@ -675,6 +677,247 @@ logs/
 *.log
 npm-debug.log*
 ```
+
+---
+
+### Step 4.5: Generate Code Skeletons (from Session 9.5)
+
+**Based on** `09.5-application-architecture-essentials.md`, generate initial code files with method signatures.
+
+**Why**: Bridges gap between configuration and implementation. Developers can immediately start implementing services with proper structure.
+
+#### A. Service Files
+
+For each service from Session 9.5, create file with:
+- Class definition
+- Constructor with dependencies (from architecture)
+- Method signatures (from architecture)
+- TODO comments referencing backlog stories
+
+**Example (TypeScript):**
+```typescript
+// apps/api/src/features/documents/services/DocumentService.ts
+
+import { DocumentRepository } from '../repositories/DocumentRepository';
+import { StorageAdapter } from '@/integrations/storage/StorageAdapter';
+import { Document, CreateDocumentDto, Metadata } from '@/types';
+
+export class DocumentService {
+  constructor(
+    private readonly documentRepository: DocumentRepository,
+    private readonly storageAdapter: StorageAdapter
+  ) {}
+
+  async uploadDocument(
+    userId: string,
+    file: File,
+    metadata: Metadata
+  ): Promise<Document> {
+    // TODO: Implement (Story #42 - Document Upload)
+    throw new Error('Not implemented');
+  }
+
+  async getDocument(documentId: string, userId: string): Promise<Document | null> {
+    // TODO: Implement (Story #43 - Document Retrieval)
+    throw new Error('Not implemented');
+  }
+
+  // ... other methods from Session 9.5
+}
+```
+
+**Example (Python):**
+```python
+# apps/worker/src/services/assessment_service.py
+
+from typing import Optional
+from ..repositories.assessment_repository import AssessmentRepository
+from ..integrations.ai_adapter import AIAdapter
+from ..types import Assessment, CreateAssessmentDto
+
+class AssessmentService:
+    def __init__(
+        self,
+        assessment_repository: AssessmentRepository,
+        ai_adapter: AIAdapter
+    ):
+        self.assessment_repository = assessment_repository
+        self.ai_adapter = ai_adapter
+
+    async def create_assessment(
+        self,
+        document_id: str,
+        frameworks: list[str]
+    ) -> Assessment:
+        """
+        TODO: Implement (Story #52 - Create Assessment)
+        """
+        raise NotImplementedError()
+
+    # ... other methods from Session 9.5
+```
+
+#### B. Repository Files
+
+For each repository from Session 9.5:
+
+**Example:**
+```typescript
+// apps/api/src/features/documents/repositories/DocumentRepository.ts
+
+import { PrismaClient, Document, Prisma } from '@prisma/client';
+
+export class DocumentRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
+  async create(data: Prisma.DocumentCreateInput): Promise<Document> {
+    // TODO: Implement (Story #44 - Document Repository)
+    return this.prisma.document.create({ data });
+  }
+
+  async findById(id: string): Promise<Document | null> {
+    // TODO: Implement
+    return this.prisma.document.findUnique({ where: { id } });
+  }
+
+  // ... other methods from Session 9.5
+}
+```
+
+#### C. Controller/Handler Files
+
+For each controller from Session 9.5:
+
+**Example:**
+```typescript
+// apps/api/src/features/documents/controllers/DocumentController.ts
+
+import { Request, Response } from 'express';
+import { DocumentService } from '../services/DocumentService';
+
+export class DocumentController {
+  constructor(private readonly documentService: DocumentService) {}
+
+  async uploadDocument(req: Request, res: Response): Promise<void> {
+    try {
+      // TODO: Implement (Story #45 - Upload Document Endpoint)
+      // 1. Validate request
+      // 2. Call service
+      // 3. Return response
+      res.status(501).json({ error: 'Not implemented' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  // ... other endpoints from Session 9.5
+}
+```
+
+#### D. Dependency Injection Setup
+
+Create DI container that wires dependencies:
+
+**Example:**
+```typescript
+// apps/api/src/config/di-container.ts
+
+import { PrismaClient } from '@prisma/client';
+import { DocumentService } from '@/features/documents/services/DocumentService';
+import { DocumentRepository } from '@/features/documents/repositories/DocumentRepository';
+import { S3StorageAdapter } from '@/integrations/storage/S3StorageAdapter';
+
+export class DIContainer {
+  private static instance: DIContainer;
+  private services: Map<string, any> = new Map();
+
+  private constructor() {
+    this.registerServices();
+  }
+
+  private registerServices() {
+    // Database
+    const prisma = new PrismaClient();
+    this.services.set('PrismaClient', prisma);
+
+    // Adapters
+    const storageAdapter = new S3StorageAdapter();
+    this.services.set('StorageAdapter', storageAdapter);
+
+    // Repositories
+    const documentRepository = new DocumentRepository(prisma);
+    this.services.set('DocumentRepository', documentRepository);
+
+    // Services
+    const documentService = new DocumentService(documentRepository, storageAdapter);
+    this.services.set('DocumentService', documentService);
+
+    // TODO: Register other services from Session 9.5
+  }
+
+  static getInstance(): DIContainer {
+    if (!DIContainer.instance) {
+      DIContainer.instance = new DIContainer();
+    }
+    return DIContainer.instance;
+  }
+
+  get<T>(serviceName: string): T {
+    return this.services.get(serviceName);
+  }
+}
+```
+
+#### E. Test Stubs
+
+For each service/repository, create test file:
+
+**Example:**
+```typescript
+// apps/api/src/features/documents/services/DocumentService.test.ts
+
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { DocumentService } from './DocumentService';
+import { DocumentRepository } from '../repositories/DocumentRepository';
+import { StorageAdapter } from '@/integrations/storage/StorageAdapter';
+
+describe('DocumentService', () => {
+  let documentService: DocumentService;
+  let mockDocumentRepository: DocumentRepository;
+  let mockStorageAdapter: StorageAdapter;
+
+  beforeEach(() => {
+    // Create mocks
+    mockDocumentRepository = {
+      create: vi.fn(),
+      findById: vi.fn(),
+    } as any;
+
+    mockStorageAdapter = {
+      uploadFile: vi.fn(),
+      getSignedUrl: vi.fn(),
+    } as any;
+
+    documentService = new DocumentService(mockDocumentRepository, mockStorageAdapter);
+  });
+
+  describe('uploadDocument', () => {
+    it.todo('should upload document to storage');
+    it.todo('should create document record in database');
+    it.todo('should return document with signed URL');
+    it.todo('should throw error for invalid file type');
+    it.todo('should throw error for file too large');
+  });
+
+  // TODO: Add tests for other methods from Session 9.5
+});
+```
+
+**Benefits of Code Skeletons**:
+- Developers know exactly what to implement (no architectural decisions needed)
+- Test stubs prevent forgetting to write tests
+- DI setup ensures proper dependency management
+- TODO comments reference specific backlog stories
 
 ---
 

@@ -26,6 +26,7 @@ Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy-essentials.md
+Read: product-guidelines/09.5-application-architecture-essentials.md
 ```
 
 **Context Optimization**: We read essentials files for significant context reduction:
@@ -34,6 +35,7 @@ Read: product-guidelines/09-test-strategy-essentials.md
 - `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
 - `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
 - `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
+- `09.5-application-architecture-essentials.md` (not `09.5-application-architecture.md`) - 60% reduction: Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy—without business rules, implementation details, design decisions, and architecture rationale.
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 
