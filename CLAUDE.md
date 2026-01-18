@@ -82,6 +82,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
+Session 3.5: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 4: /generate-strategy           → 03-mission, 04-metrics/monetization/architecture
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
@@ -97,8 +98,9 @@ Session 14: /design-observability       → 14-observability-strategy.md
 
 **Dependencies:** Each session READS previous outputs. For example:
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
-- Session 4 (generate-strategy) reads 00-02
-- Session 10 (backlog) reads ALL previous sessions (00-09)
+- Session 3.5 (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
+- Session 4 (generate-strategy) reads 00-02b
+- Session 10 (backlog) reads ALL previous sessions (00-09) including essentials
 
 **Never skip sessions** - later sessions need previous outputs for context.
 
@@ -185,6 +187,7 @@ Some sessions create TWO files:
 
 Examples:
 - `01-product-strategy.md` + `01-product-strategy-essentials.md`
+- `02b-coding-standards.md` + `02b-coding-standards-essentials.md`
 - `07-database-schema.md` + `07-database-schema-essentials.md`
 - `08-api-contracts.md` + `08-api-contracts-essentials.md`
 
@@ -389,7 +392,9 @@ Session 2 (product-strategy) [reads: 00]
   ↓
 Session 3 (tech-stack) [reads: 00, 01]
   ↓
-Session 4 (generate-strategy) [reads: 00-02]
+Session 3.5 (coding-standards) [reads: 00-02]
+  ↓
+Session 4 (generate-strategy) [reads: 00-02b]
   ↓
 Session 5 (brand-strategy) [reads: 00-04]
   ↓
