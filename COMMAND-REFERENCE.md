@@ -6,9 +6,9 @@ Complete reference for all Stack-Driven slash commands.
 
 ## Overview
 
-Stack-Driven includes **26 slash commands** organized into five categories:
+Stack-Driven includes **27 slash commands** organized into five categories:
 
-1. **Core Cascade Commands** (14) - The main framework sessions
+1. **Core Cascade Commands** (15) - The main framework sessions
 2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
 4. **Development Commands** (2) - Code review and quality assurance
@@ -24,6 +24,7 @@ Stack-Driven includes **26 slash commands** organized into five categories:
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
 | `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
+| `/define-coding-standards` | 3.5 | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
@@ -181,13 +182,59 @@ Stack-Driven includes **26 slash commands** organized into five categories:
 - Journey needs document processing + AI → Recommends Python/FastAPI
 - Journey needs <100ms real-time → Recommends WebSockets
 
-**Next step:** Run `/generate-strategy`
+**Next step:** Run `/define-coding-standards`
 
 **Tips:**
 - You can specify constraints ("team knows Python")
 - Override recommendations if needed
 - Trust the analysis - it's journey-driven
 - "Boring is beautiful" - proven tech preferred
+
+---
+
+### Session 3.5: `/define-coding-standards`
+
+**Purpose:** Define framework-specific coding standards and patterns
+
+**When to run:** After Session 3 (tech stack chosen)
+
+**Time required:** 20-30 minutes
+
+**What it creates:**
+- Framework-specific patterns (state management, architecture)
+- Code organization conventions (file naming, directory structure)
+- Cross-stack naming conventions (database ↔ API ↔ frontend)
+- Testing patterns specific to chosen frameworks
+- AI implementation guidelines for consistency
+
+**Inputs (what it reads):**
+- `product-guidelines/00-user-journey.md` - Journey requirements
+- `product-guidelines/01-product-strategy.md` - Product context
+- `product-guidelines/02-tech-stack.md` - Chosen frameworks
+
+**Outputs:**
+- `product-guidelines/02b-coding-standards.md` (comprehensive)
+- `product-guidelines/02b-coding-standards-essentials.md` (for AI reading)
+
+**How it works:**
+- Analyzes chosen tech stack from Session 3
+- Generates framework-specific patterns (not generic)
+- Maps code organization to journey steps
+- Defines concrete rules for AI implementation
+
+**Example patterns:**
+- React: Custom hooks for business logic, React Query for server state
+- Flutter: BLoC for complex flows, Provider for simple state
+- FastAPI: Service layer with dependency injection
+- Express: Controller-Service-Repository pattern
+
+**Next step:** Run `/generate-strategy`
+
+**Tips:**
+- Every pattern includes journey rationale
+- Code examples are complete and compilable
+- Patterns ensure consistency across AI sessions
+- "What We DIDN'T Choose" documents alternatives
 
 ---
 

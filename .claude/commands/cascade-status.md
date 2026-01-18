@@ -24,6 +24,8 @@ Session 1: /refine-journey             → product-guidelines/00-user-journey.md
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
                                          product-guidelines/01-product-strategy-essentials.md
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
+Session 3.5: /define-coding-standards  → product-guidelines/02b-coding-standards.md
+                                         product-guidelines/02b-coding-standards-essentials.md
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                          product-guidelines/04-metrics.md
                                          product-guidelines/04-monetization.md
@@ -95,7 +97,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
 - **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
@@ -113,6 +115,8 @@ CORE CASCADE (Required - Always Start Here)
 ✅ 01-product-strategy.md        (Session 2 ✓)
 ✅ 01-product-strategy-essentials.md (Session 2 ✓)
 ✅ 02-tech-stack.md              (Session 3 ✓)
+❌ 02b-coding-standards.md       (Session 3.5 - Not started)
+❌ 02b-coding-standards-essentials.md (Session 3.5 - Not started)
 ❌ 03-mission.md                 (Session 4 - Not started)
 ❌ 04-metrics.md                 (Session 4 - Not started)
 ❌ 04-monetization.md            (Session 4 - Not started)
@@ -164,7 +168,10 @@ Based on what files exist, determine the next recommended action:
 **If 00 and 01 exist**:
 - **Recommend**: Session 3 (`/choose-tech-stack`)
 
-**If 00-02 exist**:
+**If 00-02 exist (but not 02b)**:
+- **Recommend**: Session 3.5 (`/define-coding-standards`)
+
+**If 00-02b exist (Session 3.5 complete)**:
 - **Recommend**: Session 4 (`/generate-strategy`)
 
 **If 00-04 architecture exist (Session 4 complete)**:
@@ -430,6 +437,7 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 - `/refine-journey` - Session 1: User journey
 - `/create-product-strategy` - Session 2: Market validation, competitive analysis, strategic goals
 - `/choose-tech-stack` - Session 3: Tech stack
+- `/define-coding-standards` - Session 3.5: Framework-specific coding standards and patterns
 - `/generate-strategy` - Session 4: Mission, metrics, monetization, architecture
 - `/create-brand-strategy` - Session 5: Brand foundation (expresses journey value)
 - `/create-design` - Session 6: Design system (brings brand to life)

@@ -33,9 +33,12 @@ You are a product strategist deriving tactical decisions from previous cascade o
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/02b-coding-standards-essentials.md
 ```
 
-**Context Optimization**: We read the essentials version of product strategy (~65% smaller). It contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
+**Context Optimization**: We read the essentials versions for optimal context reduction:
+- `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
+- `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions—provides context for architecture decisions without detailed implementation examples.
 
 **Extract from Journey**:
 - Step 3 (aha moment) - where primary value is delivered
@@ -52,6 +55,11 @@ Read: product-guidelines/02-tech-stack.md
 - Core technologies chosen
 - Journey-tech mappings
 - Technical constraints/capabilities
+
+**Extract from Coding Standards**:
+- Framework-specific architectural patterns
+- File organization and module structure
+- Naming conventions and code organization principles
 
 ### Step 2: Derive Mission Statement
 

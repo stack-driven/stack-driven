@@ -52,7 +52,11 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
   ↓ (AI reads journey + strategy, chooses tech)
 
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
-  ↓ (AI reads journey + strategy + tech, derives tactics)
+  ↓ (AI reads journey + strategy + tech, defines coding standards)
+
+Session 3.5: /define-coding-standards  → product-guidelines/02b-coding-standards.md
+                                        product-guidelines/02b-coding-standards-essentials.md
+  ↓ (AI reads all previous + standards, derives tactics)
 
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                         product-guidelines/04-metrics.md
@@ -128,6 +132,7 @@ I'll ask questions about your users, their problems, and their journey. Through 
 After each session, I'll tell you exactly what to run next:
 - `/create-product-strategy` - Validates journey with market analysis and competitive positioning
 - `/choose-tech-stack` - Analyzes your journey and strategy, recommends optimal tech
+- `/define-coding-standards` - Defines framework-specific coding patterns and conventions
 - `/generate-strategy` - Derives mission, metrics, monetization, architecture
 - `/design-database-schema` - Designs complete database schema with ERD and migrations
 - `/generate-api-contracts` - Generates OpenAPI specs and endpoint definitions
@@ -157,6 +162,8 @@ product-guidelines/
 ├── 01-product-strategy.md (Session 2)
 ├── 01-product-strategy-essentials.md (Session 2)
 ├── 02-tech-stack.md (Session 3)
+├── 02b-coding-standards.md (Session 3.5)
+├── 02b-coding-standards-essentials.md (Session 3.5)
 ├── 03-mission.md (Session 4)
 ├── 04-metrics.md (Session 4)
 ├── 04-monetization.md (Session 4)
