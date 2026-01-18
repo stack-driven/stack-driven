@@ -275,7 +275,7 @@ Checking cascade progress...
 📊 Current Progress
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Session 1: User Journey (00-user-journey.md)
-✅ Session 2: Product Strategy (01-product-strategy.md, 11-essentials)
+✅ Session 2: Product Strategy (01-product-strategy.md, 01-essentials)
 ✅ Session 3: Tech Stack (02-tech-stack.md)
 ❌ Session 4: Tactical Foundation (not started)
 ❌ Sessions 7-14: Pending
@@ -343,7 +343,7 @@ Continue? (yes/no)
 
 **Core cascade order:**
 1. `/refine-journey` → 00-user-journey.md
-2. `/create-product-strategy` → 01, 11
+2. `/create-product-strategy` → 01, 01-essentials
 3. `/choose-tech-stack` → 02
 4. `/generate-strategy` → 03-mission, 04-metrics, 04-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
