@@ -31,7 +31,7 @@ You are a product strategist deriving tactical decisions from previous cascade o
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/11-product-strategy-essentials.md
+Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 ```
 

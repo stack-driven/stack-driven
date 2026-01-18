@@ -33,7 +33,7 @@ ls -la product-guidelines/
 
 Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
-- `01-product-strategy.md` + `11-product-strategy-essentials.md` → Session 2 complete
+- `01-product-strategy.md` + `01-product-strategy-essentials.md` → Session 2 complete
 - `02-tech-stack.md` → Session 3 complete
 - `03-mission.md` + `04-metrics.md` + `04-monetization.md` + `04-architecture.md` → Session 4 complete
 - `05-brand-strategy.md` → Session 5 complete
@@ -58,7 +58,7 @@ Use this decision logic to determine what to execute:
 - Run Session 2: `/create-product-strategy`
 - Then ask user if they want to continue
 
-**If 00-01-11 exist:**
+**If 00-01 exist (both full and essentials):**
 - Run Session 3: `/choose-tech-stack`
 - Then ask user if they want to continue
 
@@ -299,7 +299,7 @@ User: yes
 📥 Reading:
 - product-guidelines/00-user-journey.md
 - product-guidelines/01-product-strategy.md
-- product-guidelines/11-product-strategy-essentials.md
+- product-guidelines/01-product-strategy-essentials.md
 - product-guidelines/02-tech-stack.md
 
 📤 Will create:

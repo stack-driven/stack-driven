@@ -184,7 +184,7 @@ Some sessions create TWO files:
 - Essentials version: Condensed for consumption by later sessions
 
 Examples:
-- `01-product-strategy.md` + `11-product-strategy-essentials.md`
+- `01-product-strategy.md` + `01-product-strategy-essentials.md`
 - `07-database-schema.md` + `07-database-schema-essentials.md`
 - `08-api-contracts.md` + `08-api-contracts-essentials.md`
 

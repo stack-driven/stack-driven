@@ -59,12 +59,12 @@ Session 10 (`/generate-backlog`) reads ALL previous outputs to generate a compre
 
 | Full Template | Essentials Template | Size Reduction |
 |---------------|---------------------|----------------|
-| `01-product-strategy-template.md` | `11-product-strategy-essentials-template.md` | ~65% smaller |
+| `01-product-strategy-template.md` | `01-product-strategy-essentials-template.md` | ~65% smaller |
 | `07-database-schema-template.md` | `07-database-schema-essentials-template.md` | ~56% smaller |
 | `08-api-contracts-template.md` | `08-api-contracts-essentials-template.md` | ~80% smaller |
 | `09-test-strategy-template.md` | `09-test-strategy-essentials-template.md` | ~66% smaller |
 
-**Note:** Essentials templates use their original session number (07, 08, 09) but product strategy essentials uses `11` because it's created in Session 2 and read specifically by Session 10.
+**Naming Convention**: Essentials templates use the same session number as their full counterparts with an `-essentials` suffix (e.g., `01-product-strategy-essentials-template.md`).
 
 ## Post-Core Extension Templates (15-22)
 
@@ -104,7 +104,7 @@ Each command file in `.claude/commands/` references one or more templates:
 ```
 Session 1:  /refine-journey           → 00-user-journey-interview-template.md (interview guide)
                                         00-user-journey-template.md (output structure)
-Session 2:  /create-product-strategy  → 01-product-strategy-template.md, 11-product-strategy-essentials-template.md
+Session 2:  /create-product-strategy  → 01-product-strategy-template.md, 01-product-strategy-essentials-template.md
 Session 3:  /choose-tech-stack        → 02-tech-stack-template.md
 Session 4:  /generate-strategy        → 03-mission-template.md, 04-{metrics,monetization,architecture}-template.md
 Session 5:  /create-brand-strategy    → 05-brand-strategy-template.md
@@ -147,7 +147,7 @@ Templates are **structure guides**, not rigid forms:
 Session 1:  00-user-journey.md                    ← Foundation
               ↓
 Session 2:  01-product-strategy.md                ← Market validation
-            11-product-strategy-essentials.md
+            01-product-strategy-essentials.md
               ↓
 Session 3:  02-tech-stack.md                      ← Technology choices
               ↓
