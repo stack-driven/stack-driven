@@ -16,7 +16,7 @@ You're a technical product manager creating a systematic backlog from all cascad
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/11-product-strategy-essentials.md
+Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/03-mission.md
 Read: product-guidelines/04-metrics.md
@@ -28,7 +28,7 @@ Read: product-guidelines/09-test-strategy-essentials.md
 ```
 
 **Context Optimization**: We read essentials files for significant context reduction:
-- `11-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
+- `01-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
 - `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
 - `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
 - `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.

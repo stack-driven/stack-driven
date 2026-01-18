@@ -16,7 +16,7 @@ Infer design needs from journey context and create a system optimized for the sp
 
 ```
 Read: product-guidelines/00-user-journey.md (for user context, interaction needs)
-Read: product-guidelines/11-product-strategy-essentials.md (for positioning)
+Read: product-guidelines/01-product-strategy-essentials.md (for positioning)
 Read: product-guidelines/02-tech-stack.md (for technical constraints)
 Read: product-guidelines/05-brand-strategy.md (for brand personality, values, visual direction)
 Read: product-guidelines/04-architecture.md (for architecture principles)

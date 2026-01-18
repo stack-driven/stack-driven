@@ -22,7 +22,7 @@ You are helping the user navigate the Stack-Driven framework - core cascade (Ses
 ```
 Session 1: /refine-journey             → product-guidelines/00-user-journey.md
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
-                                         product-guidelines/11-product-strategy-essentials.md
+                                         product-guidelines/01-product-strategy-essentials.md
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                          product-guidelines/04-metrics.md
@@ -95,7 +95,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `11-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02-tech-stack.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
 - **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
@@ -111,7 +111,7 @@ CORE CASCADE (Required - Always Start Here)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ 00-user-journey.md            (Session 1 ✓)
 ✅ 01-product-strategy.md        (Session 2 ✓)
-✅ 11-product-strategy-essentials.md (Session 2 ✓)
+✅ 01-product-strategy-essentials.md (Session 2 ✓)
 ✅ 02-tech-stack.md              (Session 3 ✓)
 ❌ 03-mission.md                 (Session 4 - Not started)
 ❌ 04-metrics.md                 (Session 4 - Not started)
@@ -221,7 +221,7 @@ For the next recommended session, display:
 📥 Reads (cascade inputs):
 - product-guidelines/00-user-journey.md (your validated user journey)
 - product-guidelines/01-product-strategy.md (market validation and strategic goals)
-- product-guidelines/11-product-strategy-essentials.md (condensed for backlog generation)
+- product-guidelines/01-product-strategy-essentials.md (condensed for backlog generation)
 - product-guidelines/02-tech-stack.md (your chosen tech stack)
 
 📤 Will create:
@@ -282,7 +282,7 @@ Here's an example of what you should output:
 Your Cascade Progress:
 ✅ 00-user-journey.md        (Session 1 complete)
 ❌ 01-product-strategy.md    (Not started)
-❌ 11-product-strategy-essentials.md (Not started)
+❌ 01-product-strategy-essentials.md (Not started)
 ❌ 02-tech-stack.md          (Not started)
 ❌ 03-mission.md             (Not started)
 ❌ 04-metrics.md             (Not started)
@@ -311,7 +311,7 @@ Progress: █░░░░░░░░░░░░░ 7% (1 of 14 sessions comple
 
 📤 Will create:
 - product-guidelines/01-product-strategy.md (market validation, competitive analysis, strategic goals)
-- product-guidelines/11-product-strategy-essentials.md (condensed version for backlog generation)
+- product-guidelines/01-product-strategy-essentials.md (condensed version for backlog generation)
 
 ⏱️ Estimated time: 20-30 minutes
 

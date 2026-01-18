@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Essentials Templates:**
 - Created "essentials" versions of long documents for token optimization
-- `11-product-strategy-essentials.md`
+- `01-product-strategy-essentials.md`
 - `07-database-schema-essentials.md`
 - `08-api-contracts-essentials.md`
 - `09-test-strategy-essentials.md`

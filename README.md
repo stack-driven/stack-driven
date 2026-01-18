@@ -155,7 +155,7 @@ Your production-ready system is ready with database schema, API contracts, testi
 product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
-├── 11-product-strategy-essentials.md (Session 2)
+├── 01-product-strategy-essentials.md (Session 2)
 ├── 02-tech-stack.md (Session 3)
 ├── 03-mission.md (Session 4)
 ├── 04-metrics.md (Session 4)

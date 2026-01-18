@@ -22,7 +22,7 @@ Stack-Driven includes **26 slash commands** organized into five categories:
 | Command | Session | Time | Output File(s) |
 |---------|---------|------|----------------|
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
-| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `11-product-strategy-essentials.md` |
+| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
@@ -130,7 +130,7 @@ Stack-Driven includes **26 slash commands** organized into five categories:
 
 **Outputs:**
 - `product-guidelines/01-product-strategy.md` (comprehensive)
-- `product-guidelines/11-product-strategy-essentials.md` (for AI reading)
+- `product-guidelines/01-product-strategy-essentials.md` (for AI reading)
 
 **What it does:**
 - Analyzes your target market size
