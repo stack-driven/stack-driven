@@ -100,7 +100,7 @@ Session 14: /design-observability       → 14-observability-strategy.md
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
 - Session 3.5 (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 4 (generate-strategy) reads 00-02b
-- Session 10 (backlog) reads ALL previous sessions (00-09) including essentials
+- Session 10 (backlog) reads ALL previous sessions (00-09 including 02b) and essentials files
 
 **Never skip sessions** - later sessions need previous outputs for context.
 
@@ -312,8 +312,8 @@ Every recommendation needs reasoning:
 
 ### 4. Cascade Coherence
 Sessions must build on each other:
-- Session 10 (backlog) reads outputs from Sessions 1-9
-- Session 12 (scaffold) implements tech choices from Session 3
+- Session 10 (backlog) reads outputs from Sessions 1-9 (including Session 3.5 coding standards)
+- Session 12 (scaffold) implements tech choices from Session 3 and coding patterns from Session 3.5
 - Session 14 (observability) measures metrics from Session 4
 
 ---
@@ -406,11 +406,11 @@ Session 8 (api-contracts) [reads: 00-07]
   ↓
 Session 9 (test-strategy) [reads: 00-08]
   ↓
-Session 10 (backlog) [reads: 00-09 + essentials files]
+Session 10 (backlog) [reads: 00-09 including 02b + essentials files]
   ↓
 Session 11 (create-gh-issues) [reads: 10-backlog/]
   ↓
-Session 12 (scaffold) [reads: 00-11]
+Session 12 (scaffold) [reads: 00-11 including 02b]
   ↓
 Session 13 (deployment) [reads: 00-12]
   ↓

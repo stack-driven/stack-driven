@@ -45,6 +45,7 @@ After 11 sessions, users have:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/02b-coding-standards-essentials.md
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-contracts-essentials.md
@@ -54,6 +55,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 
 **Context Optimization**: We read essentials versions for significant context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
+- `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
@@ -61,6 +63,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 **Extract**:
 - **Project name** (from journey)
 - **Tech stack choices** (languages, frameworks, databases, tools)
+- **Coding standards** (directory structure patterns, file organization, naming conventions)
 - **Architecture decisions** (monorepo vs multi-repo, patterns, modules)
 - **Services/modules needed** (from backlog epics)
 
@@ -685,7 +688,7 @@ Create two outputs:
 # Project Scaffold
 
 **Generated**: [Date]
-**Based on**: Sessions 1-7 outputs
+**Based on**: Sessions 1-11 outputs (journey through backlog)
 
 ## Decisions Made
 
