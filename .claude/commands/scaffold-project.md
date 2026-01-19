@@ -682,53 +682,124 @@ npm-debug.log*
 
 ### Step 4.5: Generate Code Skeletons (from Session 9b)
 
-**Based on** `09b-application-architecture-essentials.md`, generate initial code files with method signatures.
+**IMPORTANT**: This step generates actual code files in the **repository root** (not `product-guidelines/`). These are working code files that developers can immediately run and implement.
 
-**Why**: Bridges gap between configuration and implementation. Developers can immediately start implementing services with proper structure.
+**Prerequisites**: Check if `product-guidelines/09b-application-architecture-essentials.md` exists. If it doesn't, skip this step gracefully and proceed with config-only scaffold (backward compatible with projects that haven't run Session 9b).
+
+**Philosophy**: This is a **GENERATIVE** process, not template-based. Generate code that follows best practices for the SPECIFIC tech stack chosen in Session 3, adhering to coding standards from Session 3.5. Do NOT use generic templates - analyze the stack and generate appropriate code.
+
+**Why**: Bridges gap between configuration and implementation. Developers get 60-80% of boilerplate code pre-generated with proper structure, allowing them to focus on business logic.
+
+**Generative Code Generation Process**:
+
+1. **Load Cascade Context**:
+   - Read `02-tech-stack.md` - Understand language, framework, ORM, testing tools
+   - Read `02b-coding-standards-essentials.md` - Understand file structure, naming conventions, patterns
+   - Read `09b-application-architecture-essentials.md` - Extract services, repositories, controllers, adapters
+   - Read `10-backlog/*.md` - Extract story numbers and titles for TODO comments
+
+2. **Analyze Tech Stack** and determine:
+   - **Backend language**: TypeScript, Python, Go, Java, C#, Ruby, PHP, Rust, etc.
+   - **Backend framework**: Express, FastAPI, NestJS, Django, Flask, Spring Boot, ASP.NET, Rails, Gin, etc.
+   - **ORM/Database library**: Prisma, TypeORM, SQLAlchemy, Drizzle, Diesel, Entity Framework, ActiveRecord, etc.
+   - **Testing framework**: Jest, Vitest, pytest, Go testing, JUnit, xUnit, RSpec, etc.
+   - **DI pattern**: Framework-specific (NestJS decorators, FastAPI Depends, Spring annotations, manual DI container, etc.)
+
+3. **Match Backlog Stories to Architecture**:
+   - For each method in services/repositories/controllers, find related backlog story
+   - **Matching strategy**:
+     a. Search `10-backlog/*.md` for story titles containing the method/feature name
+     b. If exact match found → use that story number (e.g., `#42`)
+     c. If multiple matches → use first match, add comment noting alternatives
+     d. If no match → use placeholder `TBD` with comment `// No matching story - add reference manually`
+   - Store story mappings for use in TODO comments
+
+4. **Generate Code Files** using best practices for the specific stack:
+   - **File placement**: Follow Session 2b directory structure exactly
+   - **Naming conventions**: Follow Session 2b (PascalCase, snake_case, etc.)
+   - **Code style**: Follow Session 2b patterns (class-based, functional, composition)
+   - **Type annotations**: Use language's type system appropriately
+   - **Error handling**: Use framework-specific error patterns
+   - **Dependency injection**: Use framework's DI approach (decorators, Depends, manual, etc.)
+   - **TODO comments**: Reference specific backlog stories with numbers
+
+5. **Validate Generated Code**:
+   - Ensure all imports resolve correctly
+   - Run type checker if applicable:
+     - TypeScript: `tsc --noEmit`
+     - Python: `mypy`
+     - Go: `go build`
+   - Verify code compiles/runs without syntax errors
+   - If errors occur, fix and document in scaffold output
 
 #### A. Service Files
 
-For each service from Session 9b, create file with:
-- Class definition
-- Constructor with dependencies (from architecture)
-- Method signatures (from architecture)
-- TODO comments referencing backlog stories
+For each service from Session 9b, **generate** a code file following the tech stack's best practices:
 
-**Example (TypeScript):**
+**What to include**:
+- Class/module definition appropriate to language (class for OOP, module for functional)
+- Constructor/initialization with dependencies (from architecture)
+- Method signatures with proper type annotations (from architecture)
+- TODO comments referencing matched backlog stories
+- Business rules documentation from Session 9b
+- Journey step context comments for each method
+- Error handling patterns specific to framework
+
+**File Location**: Follow Session 2b directory structure exactly (varies by stack and project preferences)
+
+**Generation Guidelines by Stack**:
+- **TypeScript OOP**: Classes with private readonly dependencies, async methods, proper types
+- **Python**: Classes or functions based on coding standards, type hints, async/await if needed
+- **Go**: Structs with methods, interfaces for dependencies, error returns
+- **Java**: Classes with private final fields, dependency injection annotations
+- **Rust**: Structs with impl blocks, Result types, async if needed
+- **Ruby**: Classes with initialize method, instance variables
+- **PHP**: Classes with type declarations (PHP 8+), constructor property promotion
+- Use framework-specific patterns (NestJS decorators, FastAPI routers, etc.)
+
+**Example (TypeScript with Express):**
 ```typescript
-// apps/api/src/features/documents/services/DocumentService.ts
+// src/features/documents/services/DocumentService.ts
 
 import { DocumentRepository } from '../repositories/DocumentRepository';
 import { StorageAdapter } from '@/integrations/storage/StorageAdapter';
 import { Document, CreateDocumentDto, Metadata } from '@/types';
 
+/**
+ * DocumentService handles document upload and management
+ * @journey Serves Journey Step 2: Document Upload and Processing
+ */
 export class DocumentService {
   constructor(
     private readonly documentRepository: DocumentRepository,
     private readonly storageAdapter: StorageAdapter
   ) {}
 
+  /**
+   * Upload document to storage and create database record
+   * TODO: Implement (Story #42 - Document Upload)
+   */
   async uploadDocument(
     userId: string,
     file: File,
     metadata: Metadata
   ): Promise<Document> {
-    // TODO: Implement (Story #42 - Document Upload)
     throw new Error('Not implemented');
   }
 
+  /**
+   * Retrieve document by ID with access control
+   * TODO: Implement (Story #43 - Document Retrieval)
+   */
   async getDocument(documentId: string, userId: string): Promise<Document | null> {
-    // TODO: Implement (Story #43 - Document Retrieval)
     throw new Error('Not implemented');
   }
-
-  // ... other methods from Session 9b
 }
 ```
 
-**Example (Python):**
+**Example (Python with FastAPI):**
 ```python
-# apps/worker/src/services/assessment_service.py
+# src/services/assessment_service.py
 
 from typing import Optional
 from ..repositories.assessment_repository import AssessmentRepository
@@ -736,6 +807,11 @@ from ..integrations.ai_adapter import AIAdapter
 from ..types import Assessment, CreateAssessmentDto
 
 class AssessmentService:
+    """
+    AssessmentService handles document assessment and AI processing
+    @journey Serves Journey Step 3: AI Assessment Generation
+    """
+
     def __init__(
         self,
         assessment_repository: AssessmentRepository,
@@ -750,23 +826,80 @@ class AssessmentService:
         frameworks: list[str]
     ) -> Assessment:
         """
+        Create new compliance assessment for document
         TODO: Implement (Story #52 - Create Assessment)
         """
         raise NotImplementedError()
+```
 
-    # ... other methods from Session 9b
+**Example (Go):**
+```go
+// internal/services/document_service.go
+
+package services
+
+import (
+    "context"
+    "myapp/internal/repositories"
+    "myapp/internal/types"
+)
+
+// DocumentService handles document operations
+// @journey Serves Journey Step 2: Document Upload
+type DocumentService struct {
+    repo    repositories.DocumentRepository
+    storage StorageAdapter
+}
+
+func NewDocumentService(repo repositories.DocumentRepository, storage StorageAdapter) *DocumentService {
+    return &DocumentService{
+        repo:    repo,
+        storage: storage,
+    }
+}
+
+// UploadDocument uploads file and creates database record
+// TODO: Implement (Story #42 - Document Upload)
+func (s *DocumentService) UploadDocument(ctx context.Context, userID string, file []byte) (*types.Document, error) {
+    return nil, fmt.Errorf("not implemented")
+}
 ```
 
 #### B. Repository Files
 
-For each repository from Session 9b:
+For each repository from Session 9b, **generate** a data access layer file:
 
-**Example:**
+**What to include**:
+- Class/interface/struct definition appropriate to language and ORM
+- Constructor/initialization with ORM client dependency
+- CRUD method signatures (create, findById, findMany, update, delete)
+- Specialized query methods from architecture
+- Index usage comments from Session 7 (which indexes are used by which queries)
+- Journey context for specialized queries
+- Error handling for not found/duplicate cases
+
+**File Location**: Follow Session 2b directory structure
+
+**Generation Guidelines by ORM**:
+- **Prisma (TypeScript)**: Class wrapping PrismaClient, typed inputs/outputs, async methods
+- **TypeORM (TypeScript)**: Repository pattern with EntityRepository, QueryBuilder for complex queries
+- **SQLAlchemy (Python)**: Classes with session management, query methods using ORM syntax
+- **Diesel (Rust)**: Structs with connection pool, query DSL, Result types
+- **Drizzle (TypeScript)**: Functions or classes using Drizzle ORM query builder
+- **Entity Framework (C#)**: Repository classes with DbContext, LINQ queries
+- **ActiveRecord (Ruby)**: Model classes with scopes and query methods
+- Raw SQL with proper parameterization if no ORM
+
+**Example (Prisma/TypeScript):**
 ```typescript
-// apps/api/src/features/documents/repositories/DocumentRepository.ts
+// src/features/documents/repositories/DocumentRepository.ts
 
 import { PrismaClient, Document, Prisma } from '@prisma/client';
 
+/**
+ * DocumentRepository handles document data access
+ * Uses indexes: documents_user_id_idx, documents_created_at_idx (from Session 7)
+ */
 export class DocumentRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -780,114 +913,168 @@ export class DocumentRepository {
     return this.prisma.document.findUnique({ where: { id } });
   }
 
-  // ... other methods from Session 9b
+  // Specialized query using documents_user_id_idx + documents_created_at_idx
+  async findRecentByUserId(userId: string, limit: number = 10): Promise<Document[]> {
+    // TODO: Implement (Story #45 - Recent Documents Query)
+    return this.prisma.document.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: limit
+    });
+  }
 }
 ```
 
 #### C. Controller/Handler Files
 
-For each controller from Session 9b:
+For each controller from Session 9b, **generate** an HTTP handler file:
 
-**Example:**
+**What to include**:
+- Class/router/handler functions (based on framework conventions)
+- Constructor/initialization with service dependencies
+- Endpoint handler methods matching API contracts from Session 8
+- Middleware chain documentation
+- Request validation logic placeholders
+- **SECURE error handling** (see security note below)
+- OpenAPI spec references from Session 8
+
+**File Location**: Follow Session 2b directory structure
+
+**Generation Guidelines by Framework**:
+- **Express (TypeScript)**: Controller classes with Request/Response, middleware chain
+- **NestJS (TypeScript)**: Controllers with decorators (@Get, @Post), DTOs, exception filters
+- **FastAPI (Python)**: Router functions with Depends for DI, Pydantic models for validation
+- **Django (Python)**: ViewSets or APIView classes with serializers
+- **Flask (Python)**: Blueprint routes with request validation
+- **Spring Boot (Java)**: @RestController classes with @RequestMapping, @Valid
+- **ASP.NET (C#)**: Controller classes inheriting from ControllerBase, action methods
+- **Rails (Ruby)**: Controller classes with action methods, strong parameters
+- **Gin (Go)**: Handler functions with gin.Context, middleware chain
+
+**CRITICAL - Error Handling Security**:
+- **NEVER expose raw error messages to clients in production** (risk of information leakage)
+- Use error codes/types instead of detailed messages
+- Only include error details in development environment
+- Use framework's error handling middleware when available
+
+**Example (Express/TypeScript with Secure Error Handling):**
 ```typescript
-// apps/api/src/features/documents/controllers/DocumentController.ts
+// src/features/documents/controllers/DocumentController.ts
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { DocumentService } from '../services/DocumentService';
 
+/**
+ * DocumentController handles document HTTP endpoints
+ * Implements endpoints from Session 8 API contracts
+ */
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 
-  async uploadDocument(req: Request, res: Response): Promise<void> {
+  async uploadDocument(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       // TODO: Implement (Story #45 - Upload Document Endpoint)
-      // 1. Validate request
-      // 2. Call service
-      // 3. Return response
-      res.status(501).json({ error: 'Not implemented' });
+      // 1. Validate request (file type, size, metadata)
+      // 2. Call documentService.uploadDocument()
+      // 3. Return response with document ID and signed URL
+      res.status(501).json({
+        success: false,
+        error: 'NOT_IMPLEMENTED',
+        message: 'Endpoint not yet implemented'
+      });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      // SECURITY: Don't expose raw error messages
+      // Pass to error middleware if available
+      if (next) {
+        next(error);
+      } else {
+        res.status(500).json({
+          success: false,
+          error: 'INTERNAL_ERROR',
+          // Only include details in development
+          ...(process.env.NODE_ENV === 'development' && {
+            details: error instanceof Error ? error.message : String(error)
+          })
+        });
+      }
     }
-  }
-
-  // ... other endpoints from Session 9b
-}
-```
-
-#### D. Dependency Injection Setup
-
-Create DI container that wires dependencies:
-
-**Example:**
-```typescript
-// apps/api/src/config/di-container.ts
-
-import { PrismaClient } from '@prisma/client';
-import { DocumentService } from '@/features/documents/services/DocumentService';
-import { DocumentRepository } from '@/features/documents/repositories/DocumentRepository';
-import { S3StorageAdapter } from '@/integrations/storage/S3StorageAdapter';
-
-export class DIContainer {
-  private static instance: DIContainer;
-  private services: Map<string, any> = new Map();
-
-  private constructor() {
-    this.registerServices();
-  }
-
-  private registerServices() {
-    // Database
-    const prisma = new PrismaClient();
-    this.services.set('PrismaClient', prisma);
-
-    // Adapters
-    const storageAdapter = new S3StorageAdapter();
-    this.services.set('StorageAdapter', storageAdapter);
-
-    // Repositories
-    const documentRepository = new DocumentRepository(prisma);
-    this.services.set('DocumentRepository', documentRepository);
-
-    // Services
-    const documentService = new DocumentService(documentRepository, storageAdapter);
-    this.services.set('DocumentService', documentService);
-
-    // TODO: Register other services from Session 9b
-  }
-
-  static getInstance(): DIContainer {
-    if (!DIContainer.instance) {
-      DIContainer.instance = new DIContainer();
-    }
-    return DIContainer.instance;
-  }
-
-  get<T>(serviceName: string): T {
-    return this.services.get(serviceName);
   }
 }
 ```
 
-#### E. Test Stubs
+**Example (FastAPI/Python):**
+```python
+# src/routers/documents.py
 
-For each service/repository, create test file:
+from fastapi import APIRouter, Depends, UploadFile, HTTPException
+from ..services.document_service import DocumentService
+from ..types import Document, DocumentMetadata
 
-**Example:**
+router = APIRouter(prefix="/api/documents", tags=["documents"])
+
+def get_document_service() -> DocumentService:
+    # TODO: Implement dependency injection
+    pass
+
+@router.post("/", response_model=Document)
+async def upload_document(
+    file: UploadFile,
+    metadata: DocumentMetadata,
+    service: DocumentService = Depends(get_document_service)
+):
+    """
+    Upload document endpoint
+    TODO: Implement (Story #45 - Upload Document Endpoint)
+    Implements: POST /api/documents from Session 8
+    """
+    # TODO: 1. Validate file type and size
+    # TODO: 2. Call service.upload_document()
+    # TODO: 3. Return document with signed URL
+    raise HTTPException(status_code=501, detail="Not implemented")
+```
+
+#### D. Test Stubs
+
+For each service/repository/controller, **generate** test files with proper structure:
+
+**What to include**:
+- Test suite structure (describe/test/it blocks, or equivalent)
+- Mock/stub setup for dependencies
+- Test case placeholders with TODO markers
+- Test case names from Session 9 test strategy
+- Arrange-Act-Assert (AAA) structure comments
+
+**File Location**: Follow Session 2b test directory structure
+
+**Generation Guidelines by Testing Framework**:
+- **Jest/Vitest (TypeScript)**: describe/it blocks, vi.fn() or jest.fn() mocks, beforeEach setup
+- **pytest (Python)**: Test classes or functions, fixtures for setup, pytest-mock for mocking
+- **Go testing**: Functions with *testing.T, table-driven tests, mock interfaces
+- **JUnit (Java)**: @Test annotated methods, @Mock annotations, setUp/tearDown
+- **xUnit (C#)**: [Fact]/[Theory] attributes, Moq library for mocking
+- **RSpec (Ruby)**: describe/it blocks, allow/expect for mocking
+- **PHPUnit (PHP)**: Test classes extending TestCase, createMock for dependencies
+
+**Example (Vitest/TypeScript):**
 ```typescript
-// apps/api/src/features/documents/services/DocumentService.test.ts
+// src/features/documents/services/DocumentService.test.ts
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { DocumentService } from './DocumentService';
 import { DocumentRepository } from '../repositories/DocumentRepository';
 import { StorageAdapter } from '@/integrations/storage/StorageAdapter';
 
+/**
+ * DocumentService Tests
+ * TODO: Implement tests based on Session 9 test strategy
+ */
 describe('DocumentService', () => {
   let documentService: DocumentService;
   let mockDocumentRepository: DocumentRepository;
   let mockStorageAdapter: StorageAdapter;
 
   beforeEach(() => {
-    // Create mocks
+    // Arrange: Set up mocks
     mockDocumentRepository = {
       create: vi.fn(),
       findById: vi.fn(),
@@ -906,11 +1093,221 @@ describe('DocumentService', () => {
     it.todo('should create document record in database');
     it.todo('should return document with signed URL');
     it.todo('should throw error for invalid file type');
-    it.todo('should throw error for file too large');
+    it.todo('should throw error for file exceeding size limit');
   });
 
-  // TODO: Add tests for other methods from Session 9b
+  describe('getDocument', () => {
+    it.todo('should return document if found');
+    it.todo('should return null if not found');
+    it.todo('should throw error if user lacks access');
+  });
 });
+```
+
+**Example (pytest/Python):**
+```python
+# tests/unit/services/test_assessment_service.py
+
+import pytest
+from unittest.mock import Mock, AsyncMock
+from src.services.assessment_service import AssessmentService
+from src.repositories.assessment_repository import AssessmentRepository
+from src.integrations.ai_adapter import AIAdapter
+
+class TestAssessmentService:
+    """
+    AssessmentService Tests
+    TODO: Implement tests based on Session 9 test strategy
+    """
+
+    @pytest.fixture
+    def mock_repository(self):
+        return Mock(spec=AssessmentRepository)
+
+    @pytest.fixture
+    def mock_ai_adapter(self):
+        return Mock(spec=AIAdapter)
+
+    @pytest.fixture
+    def service(self, mock_repository, mock_ai_adapter):
+        return AssessmentService(mock_repository, mock_ai_adapter)
+
+    @pytest.mark.asyncio
+    async def test_create_assessment_success(self, service):
+        """TODO: Implement (Story #52)"""
+        pytest.skip("Not implemented")
+
+    @pytest.mark.asyncio
+    async def test_create_assessment_invalid_framework(self, service):
+        """TODO: Implement - should raise error for unknown framework"""
+        pytest.skip("Not implemented")
+```
+
+#### E. Dependency Injection Setup
+
+**Generate** DI/wiring code based on framework's DI approach:
+
+**What to include**:
+- Framework-appropriate DI implementation (see guidelines below)
+- Registration/resolution for all services, repositories, adapters from Session 9b
+- Dependency graph resolution in correct order
+- Singleton/scoped lifetime management where appropriate
+
+**File Location**: Follow Session 2b structure or framework conventions
+
+**Generation Guidelines by Framework DI Pattern**:
+
+**Manual DI Container** (Express, custom frameworks):
+- Create a DIContainer class with singleton pattern
+- Register dependencies in correct order (repositories → services → controllers)
+- Provide get/resolve methods for accessing services
+
+**Framework-Native DI** (NestJS, Spring Boot, ASP.NET):
+- Use framework's DI decorators (@Injectable, @Service, etc.)
+- Create module/provider registration files
+- No manual container needed - framework handles it
+
+**Functional DI** (FastAPI, Flask with dependencies):
+- Create factory functions that return instances
+- Use framework's dependency injection (FastAPI Depends, Flask g)
+- Document dependency chain in function signatures
+
+**No DI** (Simple projects, Go without DI library):
+- Create main/bootstrap file that manually wires dependencies
+- Use constructor injection pattern
+- Document initialization order
+
+**Example (Manual DI Container - Express/TypeScript):**
+```typescript
+// src/config/di-container.ts
+
+import { PrismaClient } from '@prisma/client';
+import { DocumentService } from '@/features/documents/services/DocumentService';
+import { DocumentRepository } from '@/features/documents/repositories/DocumentRepository';
+import { S3StorageAdapter } from '@/integrations/storage/S3StorageAdapter';
+
+/**
+ * Dependency Injection Container
+ * Manages service lifetimes and dependency resolution
+ */
+export class DIContainer {
+  private static instance: DIContainer;
+  private services: Map<string, any> = new Map();
+
+  private constructor() {
+    this.registerServices();
+  }
+
+  private registerServices() {
+    // TODO: Register dependencies from Session 9b in correct order
+
+    // 1. Database connections (singleton)
+    const prisma = new PrismaClient();
+    this.services.set('PrismaClient', prisma);
+
+    // 2. Integration adapters (singleton)
+    const storageAdapter = new S3StorageAdapter();
+    this.services.set('StorageAdapter', storageAdapter);
+
+    // 3. Repositories (singleton)
+    const documentRepository = new DocumentRepository(prisma);
+    this.services.set('DocumentRepository', documentRepository);
+
+    // 4. Services (singleton)
+    const documentService = new DocumentService(documentRepository, storageAdapter);
+    this.services.set('DocumentService', documentService);
+
+    // TODO: Add other services, repositories, adapters from Session 9b
+  }
+
+  static getInstance(): DIContainer {
+    if (!DIContainer.instance) {
+      DIContainer.instance = new DIContainer();
+    }
+    return DIContainer.instance;
+  }
+
+  get<T>(serviceName: string): T {
+    return this.services.get(serviceName);
+  }
+}
+```
+
+**Example (Functional DI - FastAPI/Python):**
+```python
+# src/dependencies.py
+
+from functools import lru_cache
+from sqlalchemy.orm import Session
+from .database import SessionLocal
+from .services.assessment_service import AssessmentService
+from .repositories.assessment_repository import AssessmentRepository
+from .integrations.ai_adapter import AIAdapter
+
+def get_db():
+    """Database session dependency"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@lru_cache()
+def get_ai_adapter() -> AIAdapter:
+    """Singleton AI adapter instance"""
+    return AIAdapter()
+
+def get_assessment_repository(db: Session = Depends(get_db)) -> AssessmentRepository:
+    """Factory for AssessmentRepository"""
+    return AssessmentRepository(db)
+
+def get_assessment_service(
+    repository: AssessmentRepository = Depends(get_assessment_repository),
+    ai_adapter: AIAdapter = Depends(get_ai_adapter)
+) -> AssessmentService:
+    """Factory for AssessmentService with injected dependencies"""
+    return AssessmentService(repository, ai_adapter)
+
+# TODO: Add other service/repository factories from Session 9b
+```
+
+**Example (Manual Wiring - Go):**
+```go
+// cmd/api/main.go
+
+package main
+
+import (
+    "database/sql"
+    "log"
+    "myapp/internal/repositories"
+    "myapp/internal/services"
+)
+
+func main() {
+    // TODO: Wire dependencies from Session 9b
+
+    // 1. Initialize database connection
+    db, err := sql.Open("postgres", connString)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
+
+    // 2. Initialize repositories
+    documentRepo := repositories.NewDocumentRepository(db)
+
+    // 3. Initialize adapters
+    storageAdapter := NewS3Adapter()
+
+    // 4. Initialize services
+    documentService := services.NewDocumentService(documentRepo, storageAdapter)
+
+    // 5. Initialize handlers
+    documentHandler := NewDocumentHandler(documentService)
+
+    // TODO: Add other components from Session 9b
+}
 ```
 
 **Benefits of Code Skeletons**:
@@ -918,6 +1315,27 @@ describe('DocumentService', () => {
 - Test stubs prevent forgetting to write tests
 - DI setup ensures proper dependency management
 - TODO comments reference specific backlog stories
+- Generated code compiles/type-checks immediately
+- Architecture from Session 9b enforced in code structure
+- Backlog stories from Session 10 linked via TODO comments
+
+**Code Generation Summary**:
+
+After completing Step 4.5, the repository should contain:
+- ✅ Service classes with method signatures (business logic layer)
+- ✅ Repository classes/interfaces (data access layer)
+- ✅ Controller/handler files (HTTP endpoint layer)
+- ✅ Test stub files (testing scaffolding)
+- ✅ Dependency injection container (wiring)
+- ✅ All code compiles without errors (type-checked)
+- ✅ TODO comments link to Session 10 backlog stories
+- ✅ Files organized per Session 2b coding standards
+
+**Validation**:
+- Run type checker: `npm run type-check` (TypeScript) or `mypy .` (Python)
+- Verify all imports resolve correctly
+- Check that DI container registers all components
+- Ensure TODO comments include story numbers
 
 ---
 

@@ -1,0 +1,47 @@
+"""
+{{repositoryName}}
+
+Entity: {{entityName}} (from Session 7 Database Schema)
+ORM: {{ormName}}
+
+Generated from Session 9b Application Architecture
+"""
+
+from typing import Optional, List{{#additionalImports}}, {{name}}{{/additionalImports}}
+{{#imports}}
+from {{path}} import {{name}}
+{{/imports}}
+
+
+class {{repositoryName}}:
+    """Repository for {{entityName}} entity"""
+
+    def __init__(self, {{ormClientName}}: {{ormClientType}}):
+        self.{{ormClientName}} = {{ormClientName}}
+
+{{#methods}}
+    async def {{methodName}}(
+        self,
+{{#parameters}}
+        {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/parameters}}
+    ) -> {{returnType}}:
+        """
+        {{description}}
+
+{{#indexUsed}}
+        Index Used: {{indexUsed}} (from Session 7)
+{{/indexUsed}}
+{{#journeyContext}}
+        Journey Context: {{journeyContext}}
+{{/journeyContext}}
+{{#queryPattern}}
+        Query Pattern: {{queryPattern}}
+{{/queryPattern}}
+
+        TODO: Implement (Story #{{storyNumber}} from Session 10)
+        """
+        # TODO: Implementation in Story #{{storyNumber}}
+        raise NotImplementedError(f"Story #{{storyNumber}}: {{description}}")
+
+{{/methods}}

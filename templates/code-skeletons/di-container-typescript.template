@@ -1,0 +1,63 @@
+/**
+ * Dependency Injection Container
+ *
+ * Registers and resolves all services, repositories, and adapters.
+ * Ensures single instance per dependency (singleton pattern).
+ *
+ * Generated from Session 9b Application Architecture
+ */
+
+{{#imports}}
+import { {{name}} } from '{{path}}';
+{{/imports}}
+
+export class DIContainer {
+  private static instance: DIContainer;
+  private services: Map<string, any> = new Map();
+
+  private constructor() {
+    this.registerDependencies();
+  }
+
+  private registerDependencies(): void {
+{{#registrations}}
+    // {{comment}}
+{{#group}}
+    {{#items}}
+    const {{variableName}} = new {{className}}({{#constructorParams}}{{param}}{{#notLast}}, {{/notLast}}{{/constructorParams}});
+    this.services.set('{{serviceName}}', {{variableName}});
+    {{/items}}
+
+{{/group}}
+{{/registrations}}
+  }
+
+  static getInstance(): DIContainer {
+    if (!DIContainer.instance) {
+      DIContainer.instance = new DIContainer();
+    }
+    return DIContainer.instance;
+  }
+
+  get<T>(serviceName: string): T {
+    const service = this.services.get(serviceName);
+    if (!service) {
+      throw new Error(`Service not found: ${serviceName}`);
+    }
+    return service;
+  }
+
+  /**
+   * Clear all services (useful for testing)
+   */
+  static reset(): void {
+    DIContainer.instance = undefined as any;
+  }
+}
+
+/**
+ * Helper function to get service instance
+ */
+export function getService<T>(serviceName: string): T {
+  return DIContainer.getInstance().get<T>(serviceName);
+}

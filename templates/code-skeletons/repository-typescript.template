@@ -1,0 +1,45 @@
+/**
+ * {{repositoryName}}
+ *
+ * Entity: {{entityName}} (from Session 7 Database Schema)
+ * ORM: {{ormName}}
+ *
+ * Generated from Session 9b Application Architecture
+ */
+
+{{#imports}}
+import { {{name}} } from '{{path}}';
+{{/imports}}
+
+export class {{repositoryName}} {
+  constructor(
+    private readonly {{ormClientName}}: {{ormClientType}}
+  ) {}
+
+{{#methods}}
+  /**
+   * {{description}}
+   *
+{{#indexUsed}}
+   * Index Used: {{indexUsed}} (from Session 7)
+{{/indexUsed}}
+{{#journeyContext}}
+   * Journey Context: {{journeyContext}}
+{{/journeyContext}}
+   *
+   * TODO: Implement (Story #{{storyNumber}} from Session 10)
+   */
+  async {{methodName}}(
+{{#parameters}}
+    {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/parameters}}
+  ): Promise<{{returnType}}> {
+    // TODO: Implementation in Story #{{storyNumber}}
+{{#queryPattern}}
+    // Query Pattern: {{queryPattern}}
+{{/queryPattern}}
+    throw new Error('Not implemented - see Story #{{storyNumber}}');
+  }
+
+{{/methods}}
+}

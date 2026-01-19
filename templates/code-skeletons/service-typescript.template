@@ -1,0 +1,48 @@
+/**
+ * {{serviceName}}
+ *
+ * Responsibility: {{serviceResponsibility}}
+ * Journey Step: {{journeyStep}}
+ *
+ * Generated from Session 9b Application Architecture
+ */
+
+{{#imports}}
+import { {{name}} } from '{{path}}';
+{{/imports}}
+
+export class {{serviceName}} {
+  constructor(
+{{#dependencies}}
+    private readonly {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+  ) {}
+
+{{#methods}}
+  /**
+   * {{description}}
+   *
+   * @implements {{apiReference}}
+   * @journey {{journeyContext}}
+   *
+   * Business Rules:
+{{#businessRules}}
+   * - {{rule}}
+{{/businessRules}}
+   *
+   * TODO: Implement (Story #{{storyNumber}} from Session 10)
+   */
+  async {{methodName}}(
+{{#parameters}}
+    {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/parameters}}
+  ): Promise<{{returnType}}> {
+    // TODO: Implementation in Story #{{storyNumber}}
+{{#implementationSteps}}
+    // {{step}}
+{{/implementationSteps}}
+    throw new Error('Not implemented - see Story #{{storyNumber}}');
+  }
+
+{{/methods}}
+}

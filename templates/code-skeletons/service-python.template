@@ -1,0 +1,57 @@
+"""
+{{serviceName}}
+
+Responsibility: {{serviceResponsibility}}
+Journey Step: {{journeyStep}}
+
+Generated from Session 9b Application Architecture
+"""
+
+from typing import Optional, List{{#additionalImports}}, {{name}}{{/additionalImports}}
+{{#imports}}
+from {{path}} import {{name}}
+{{/imports}}
+
+
+class {{serviceName}}:
+    """{{serviceResponsibility}}"""
+
+    def __init__(
+        self,
+{{#dependencies}}
+        {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+    ):
+{{#dependencies}}
+        self.{{name}} = {{name}}
+{{/dependencies}}
+
+{{#methods}}
+    async def {{methodName}}(
+        self,
+{{#parameters}}
+        {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/parameters}}
+    ) -> {{returnType}}:
+        """
+        {{description}}
+
+        Implements: {{apiReference}}
+        Journey: {{journeyContext}}
+
+        Business Rules:
+{{#businessRules}}
+        - {{rule}}
+{{/businessRules}}
+
+        TODO: Implement (Story #{{storyNumber}} from Session 10)
+
+        Implementation Steps:
+{{#implementationSteps}}
+        {{stepNumber}}. {{step}}
+{{/implementationSteps}}
+        """
+        # TODO: Implementation in Story #{{storyNumber}}
+        raise NotImplementedError(f"Story #{{storyNumber}}: {{description}}")
+
+{{/methods}}
