@@ -187,14 +187,24 @@ Some sessions create TWO files:
 - Full version: Complete detailed specification
 - Essentials version: Condensed for consumption by later sessions
 
-Examples:
-- `01-product-strategy.md` + `01-product-strategy-essentials.md`
-- `02b-coding-standards.md` + `02b-coding-standards-essentials.md`
-- `07-database-schema.md` + `07-database-schema-essentials.md`
-- `08-api-contracts.md` + `08-api-contracts-essentials.md`
-- `09b-application-architecture.md` + `09b-application-architecture-essentials.md`
+**Sessions WITH essentials files:**
+- `01-product-strategy.md` + `01-product-strategy-essentials.md` (65% reduction)
+- `02b-coding-standards.md` + `02b-coding-standards-essentials.md` (70% reduction)
+- `07-database-schema.md` + `07-database-schema-essentials.md` (56% reduction)
+- `08-api-contracts.md` + `08-api-contracts-essentials.md` (80% reduction)
+- `09-test-strategy.md` + `09-test-strategy-essentials.md` (66% reduction)
+- `09b-application-architecture.md` + `09b-application-architecture-essentials.md` (60% reduction)
 
-**Why?** Keeps token usage manageable when Session 10 (/generate-backlog) and Session 12 (/scaffold-project) read all previous sessions.
+**Sessions WITHOUT essentials files:**
+- `05-brand-strategy.md` - Only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity)
+- `06-design-system.md` - Only read by post-cascade extensions and dev-time commands (plan-issue, implement-issue)
+
+**Why this distinction?** Essentials files exist ONLY when:
+1. The session is read by core cascade Sessions 10 (backlog) and 12 (scaffold)
+2. The full file is large/detailed with schemas, specs, or extensive examples
+3. Token reduction matters for cascade performance
+
+Sessions 5 and 6 are read only by optional post-cascade commands, and their full context (brand personality, design system components) is needed by those commands. Additionally, Session 6's template is already small (1.7KB).
 
 ### 5. Quality Validation Framework
 

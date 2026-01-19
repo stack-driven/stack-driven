@@ -1,41 +1,69 @@
-# Stack-Driven Templates Directory
+# Stack-Driven Templates
 
-This directory contains all template files used by the Stack-Driven framework commands. Templates provide structured formats for creating product guidelines that flow through the cascade.
+This directory contains template files that define the structure, validation criteria, and quality standards for cascade session outputs.
 
-## Template Numbering System
+---
 
-### Core Cascade Templates (00-14)
+## Template Numbering Philosophy
 
-Templates numbered `00` through `14` correspond to the **14-session core cascade**. The numbering follows the sequential flow of product development from journey to deployment:
+### Templates That Exist
 
-| # | Template File | Session | Command | Output File |
-|---|---------------|---------|---------|-------------|
-| **00** | `00-user-journey-template.md` | Session 1 | `/refine-journey` | `00-user-journey.md` |
-| | `00-user-journey-interview-template.md` | Session 1 | `/refine-journey` | *(interview guide)* |
-| **01** | `01-product-strategy-template.md` | Session 2 | `/create-product-strategy` | `01-product-strategy.md` |
-| **02** | `02-tech-stack-template.md` | Session 3 | `/choose-tech-stack` | `02-tech-stack.md` |
-| **03** | `03-mission-template.md` | Session 4 (1/4) | `/generate-strategy` | `03-mission.md` |
-| **04** | `04-metrics-template.md` | Session 4 (2/4) | `/generate-strategy` | `04-metrics.md` |
-| **04** | `04-monetization-template.md` | Session 4 (3/4) | `/generate-strategy` | `04-monetization.md` |
-| **04** | `04-architecture-template.md` | Session 4 (4/4) | `/generate-strategy` | `04-architecture.md` |
-| **05** | `05-brand-strategy-template.md` | Session 5 | `/create-brand-strategy` | `05-brand-strategy.md` |
-| **06** | `06-design-system-template.md` | Session 6 | `/create-design` | `06-design-system.md` |
-| **07** | `07-database-schema-template.md` | Session 7 | `/design-database-schema` | `07-database-schema.md` |
-| **08** | `08-api-contracts-template.md` | Session 8 | `/generate-api-contracts` | `08-api-contracts.md` |
-| **09** | `09-test-strategy-template.md` | Session 9 | `/create-test-strategy` | `09-test-strategy.md` |
-| **10** | `issue-template.md` | Session 10 | `/generate-backlog` | `10-backlog/*.md` |
-| **11** | *(Session 11 - GitHub only)* | Session 11 | `/create-gh-issues` | *(pushes to GitHub)* |
-| **12** | *(Session 12 - code generation)* | Session 12 | `/scaffold-project` | `12-project-scaffold.md` + code |
-| **13** | `13-deployment-plan-template.md` | Session 13 | `/plan-deployment` | `13-deployment-plan.md` |
-| **14** | `14-observability-strategy-template.md` | Session 14 | `/design-observability` | `14-observability-strategy.md` |
+**Session 1 (Refine Journey):**
+- `00-user-journey-template.md` - Output structure
+- `00-user-journey-interview-template.md` - Progressive interrogation framework
 
-### Why Some Numbers Are Missing
+**Sessions 2-9b (Core Cascade):**
+- `01-product-strategy-template.md`
+- `02-tech-stack-template.md`
+- `02b-coding-standards-template.md`
+- `03-mission-template.md`
+- `04-metrics-template.md`
+- `04-monetization-template.md`
+- `04-architecture-template.md`
+- `05-brand-strategy-template.md`
+- `06-design-system-template.md`
+- `07-database-schema-template.md`
+- `08-api-contracts-template.md`
+- `09-test-strategy-template.md`
+- `09b-application-architecture-template.md`
 
-**Number 10:** Session 10 (`/generate-backlog`) uses `issue-template.md` instead of a numbered template because it generates multiple issue files rather than a single structured document.
+**Sessions 13-14 (Infrastructure & Observability):**
+- `13-deployment-plan-template.md`
+- `14-observability-strategy-template.md`
 
-**Number 11:** Session 11 (`/create-gh-issues`) doesn't create local files—it pushes issues directly to GitHub, so it needs no template.
+**Post-Cascade Extensions (15-22):**
+- `15-ux-research-template.md`
+- `16-naming-candidates-template.md`
+- `17-messaging-framework-template.md`
+- `18-content-guidelines-template.md`
+- `19-brand-identity-template.md`
+- `20-analytics-plan-template.md`
+- `21-growth-strategy-template.md`
+- `22-financial-model-template.md`
 
-**Number 12:** Session 12 (`/scaffold-project`) generates actual code files (not markdown documentation), so it doesn't use a traditional markdown template.
+### Templates That Intentionally Don't Exist
+
+**Session 10 (Generate Backlog):**
+- **No `10-backlog-template.md`**
+- Reason: Generates 30-50 individual user story files, not a single document
+- Instead uses: `backlog-issue-template.md` for story structure
+- Output: `product-guidelines/10-backlog/` directory with `story-001.md`, `story-002.md`, etc.
+
+**Session 11 (Create GitHub Issues):**
+- **No `11-template.md`**
+- Reason: Operational command that pushes Session 10 stories to GitHub via `gh` CLI
+- No file output - creates GitHub issues directly
+- References: Existing backlog stories from Session 10
+
+**Session 12 (Scaffold Project):**
+- **No `12-project-scaffold-template.md`**
+- Reason: **Generative code creation**, not document generation
+- Creates actual code files (package.json, docker-compose.yml, directory structure)
+- Each tech stack requires different scaffolding (Next.js ≠ Go ≠ React Native)
+- Outputs:
+  - `product-guidelines/12-project-scaffold.md` - Scaffold documentation
+  - Actual code files in repository root (framework-specific)
+- Template would be meaningless - can't template code for unknown tech stacks
 
 ### Why "04" Appears Three Times
 
@@ -47,158 +75,146 @@ Session 4 (`/generate-strategy`) creates **four separate tactical foundation fil
 
 All are created in a single session but stored as separate documents for modularity and focused reference.
 
-## Essentials Templates
+---
 
-Some sessions create **two versions** of output:
-1. **Full template** - Comprehensive documentation for human reference
-2. **Essentials template** - Condensed version optimized for AI context in Session 10
+## The Essentials File Pattern
 
-### Why Essentials Exist
+### What Are Essentials Files?
 
-Session 10 (`/generate-backlog`) reads ALL previous outputs to generate a comprehensive product backlog. To optimize token usage and reduce costs, we create "essentials" versions that contain only the critical information needed for backlog generation.
+Some sessions create TWO files:
+1. **Full version** (`XX-name.md`) - Complete detailed specification
+2. **Essentials version** (`XX-name-essentials.md`) - Condensed for downstream consumption
 
-| Full Template | Essentials Template | Size Reduction |
-|---------------|---------------------|----------------|
-| `01-product-strategy-template.md` | `01-product-strategy-essentials-template.md` | ~65% smaller |
-| `07-database-schema-template.md` | `07-database-schema-essentials-template.md` | ~56% smaller |
-| `08-api-contracts-template.md` | `08-api-contracts-essentials-template.md` | ~80% smaller |
-| `09-test-strategy-template.md` | `09-test-strategy-essentials-template.md` | ~66% smaller |
+### When to Create Essentials Files
 
-**Naming Convention**: Essentials templates use the same session number as their full counterparts with an `-essentials` suffix (e.g., `01-product-strategy-essentials-template.md`).
+Create an essentials file when **ALL THREE** conditions are met:
 
-## Post-Core Extension Templates (15-22)
+1. **Read by core cascade Sessions 10 (backlog) and/or 12 (scaffold)**
+2. **Full file is large** (>5KB) with extensive schemas, specs, or examples
+3. **Token reduction matters** - Downstream sessions don't need every detail
 
-These templates support **optional post-cascade commands** that extend the core framework. They are numbered `15` through `22` to distinguish them from the core cascade (00-14) while maintaining consistent numbering:
+### Sessions WITH Essentials Files
 
-### Branding Extensions (After Session 5+)
-- **15** `15-brand-naming-template.md` → `/discover-naming` → `15-brand-naming.md`
-- **16** `16-brand-messaging-template.md` → `/define-messaging` → `16-brand-messaging.md`
-- **17** `17-brand-identity-template.md` → `/design-brand-identity` → `17-brand-identity.md`
-- **18** `18-content-guidelines-template.md` → `/create-content-guidelines` → `18-content-guidelines.md`
+| Session | Full File | Essentials | Reduction | Why? |
+|---------|-----------|------------|-----------|------|
+| 01 | `01-product-strategy.md` | `01-product-strategy-essentials.md` | 65% | Backlog needs strategic context, not full competitive analysis |
+| 02b | `02b-coding-standards.md` | `02b-coding-standards-essentials.md` | 70% | Backlog/scaffold need key standards, not every linting rule |
+| 07 | `07-database-schema.md` | `07-database-schema-essentials.md` | 56% | API contracts need table relationships, not full migration SQL |
+| 08 | `08-api-contracts.md` | `08-api-contracts-essentials.md` | 80% | Backlog needs endpoint list, not full OpenAPI specs |
+| 09 | `09-test-strategy.md` | `09-test-strategy-essentials.md` | 66% | Scaffold needs test approach, not detailed test case examples |
+| 09b | `09b-application-architecture.md` | `09b-application-architecture-essentials.md` | 60% | Scaffold needs layer structure, not every class/function |
 
-### Product Extensions (After Session 6+)
-- **19** `19-user-experience-template.md` → `/design-user-experience` → `19-user-experience.md`
-- **20** `20-analytics-plan-template.md` → `/setup-analytics` → `20-analytics-plan.md`
-- **21** `21-growth-strategy-template.md` → `/design-growth-strategy` → `21-growth-strategy.md`
-- **22** `22-financial-model-template.md` → `/create-financial-model` → `22-financial-model.md`
+### Sessions WITHOUT Essentials Files
 
-### Special Templates
-- `00-user-journey-interview-template.md` - Structured interview guide for Session 1 (16 progressive questions to gather user journey information)
-- `issue-template.md` - Used by Session 10 to generate individual backlog issue files
+**Session 05 (Brand Strategy):**
+- No essentials file
+- Reason: Only read by **post-cascade extensions** (discover-naming, define-messaging, design-brand-identity)
+- Those commands need full brand personality, not condensed version
+- Not read by Sessions 10 or 12
 
-## Template Structure
+**Session 06 (Design System):**
+- No essentials file
+- Reason: Only read by **post-cascade extensions** and **dev-time commands** (plan-issue, implement-issue)
+- UI implementation needs complete component specs, color tokens, spacing system
+- Not read by Sessions 10 or 12
+- Template already small (1.7KB) - condensing wouldn't save tokens
 
-All templates follow a consistent structure:
+### How to Create Essentials Files
 
-1. **Context sections** - Placeholders for user-specific information
-2. **Decision trees** - Guided questions to help make strategic choices
-3. **Examples** - Concrete illustrations of good vs. poor implementations
-4. **Cross-references** - Links to related cascade outputs
-5. **Validation checklists** - Ensure completeness before moving forward
+Essentials templates define condensed structure:
+- `01-product-strategy-essentials-template.md`
+- `02b-coding-standards-essentials-template.md`
+- `07-database-schema-essentials-template.md`
+- `08-api-contracts-essentials-template.md`
+- `09-test-strategy-essentials-template.md`
+- `09b-application-architecture-essentials-template.md`
 
-## Command-Template Mapping
+Commands generate both files in the same session:
+```markdown
+## Steps to Execute
 
-Each command file in `.claude/commands/` references one or more templates:
-
-**Core Cascade Commands:**
+1. Read previous cascade outputs
+2. Generate full specification
+3. Write `XX-name.md`
+4. Create condensed version for downstream sessions
+5. Write `XX-name-essentials.md`
 ```
-Session 1:  /refine-journey           → 00-user-journey-interview-template.md (interview guide)
-                                        00-user-journey-template.md (output structure)
-Session 2:  /create-product-strategy  → 01-product-strategy-template.md, 01-product-strategy-essentials-template.md
-Session 3:  /choose-tech-stack        → 02-tech-stack-template.md
-Session 4:  /generate-strategy        → 03-mission-template.md, 04-{metrics,monetization,architecture}-template.md
-Session 5:  /create-brand-strategy    → 05-brand-strategy-template.md
-Session 6:  /create-design            → 06-design-system-template.md
-Session 7:  /design-database-schema   → 07-database-schema-template.md, 07-database-schema-essentials-template.md
-Session 8:  /generate-api-contracts   → 08-api-contracts-template.md, 08-api-contracts-essentials-template.md
-Session 9:  /create-test-strategy     → 09-test-strategy-template.md, 09-test-strategy-essentials-template.md
-Session 10: /generate-backlog         → issue-template.md
-Session 11: /create-gh-issues         → (none - GitHub API)
-Session 12: /scaffold-project         → (none - code generation)
-Session 13: /plan-deployment          → 13-deployment-plan-template.md
-Session 14: /design-observability     → 14-observability-strategy-template.md
-```
-
-**Post-Cascade Commands:**
-```
-/discover-naming            → 15-brand-naming-template.md
-/define-messaging           → 16-brand-messaging-template.md
-/design-brand-identity      → 17-brand-identity-template.md
-/create-content-guidelines  → 18-content-guidelines-template.md
-/design-user-experience     → 19-user-experience-template.md
-/setup-analytics            → 20-analytics-plan-template.md
-/design-growth-strategy     → 21-growth-strategy-template.md
-/create-financial-model     → 22-financial-model-template.md
-/review-code                → (none - code review framework)
-```
-
-## Using Templates
-
-Templates are **structure guides**, not rigid forms:
-
-1. **Commands read templates** to understand output format
-2. **Claude interviews the user** to gather context
-3. **Output files follow template structure** but with user-specific content
-4. **Templates ensure consistency** across different product implementations
-
-## Cascade Flow Visualization
-
-```
-Session 1:  00-user-journey.md                    ← Foundation
-              ↓
-Session 2:  01-product-strategy.md                ← Market validation
-            01-product-strategy-essentials.md
-              ↓
-Session 3:  02-tech-stack.md                      ← Technology choices
-              ↓
-Session 4:  03-mission.md                         ← Tactical foundation
-            04-metrics.md
-            04-monetization.md
-            04-architecture.md
-              ↓
-Session 5:  05-brand-strategy.md                  ← Brand & design
-              ↓
-Session 6:  06-design-system.md
-              ↓
-Session 7:  07-database-schema.md                 ← Technical specs
-            07-database-schema-essentials.md
-              ↓
-Session 8:  08-api-contracts.md
-            08-api-contracts-essentials.md
-              ↓
-Session 9:  09-test-strategy.md
-            09-test-strategy-essentials.md
-              ↓
-Session 10: 10-backlog/                           ← Execution
-              ↓
-Session 11: (GitHub issues)
-              ↓
-Session 12: 12-project-scaffold.md + code/
-              ↓
-Session 13: 13-deployment-plan.md                 ← Operations
-              ↓
-Session 14: 14-observability-strategy.md
-```
-
-## Maintenance
-
-When modifying templates:
-
-1. **Preserve numbering** - Numbers match cascade order, not sequential counting
-2. **Update both versions** - If a template has an essentials version, update both
-3. **Check command references** - Ensure `.claude/commands/*.md` files reference correct template paths
-4. **Test the cascade** - Run affected commands to verify template changes work correctly
-5. **Document changes** - Update this README if template structure or purpose changes
-
-## Questions?
-
-- **Why is numbering not sequential?** - Numbers represent cascade sessions (1-14), not file count
-- **Why do some numbers repeat?** - Session 4 creates 4 files; sessions 7-9 create full + essentials versions
-- **Can I add custom templates?** - Yes, for custom post-cascade commands; use unnumbered naming
-- **Should I modify templates?** - Customize for your needs, but preserve overall structure for consistency
 
 ---
 
-**Version:** 1.0
-**Last Updated:** 2025-11-14
-**Framework:** Stack-Driven Product Development
+## Template File Naming Convention
+
+### Standard Pattern
+`[session-number]-[output-name]-template.md`
+
+Examples:
+- `00-user-journey-template.md`
+- `02-tech-stack-template.md`
+- `09b-application-architecture-template.md`
+
+### Special Cases
+
+**Interview templates:**
+- `00-user-journey-interview-template.md` (used during Session 1 progressive interrogation)
+
+**Essentials templates:**
+- `[session-number]-[output-name]-essentials-template.md`
+- Example: `01-product-strategy-essentials-template.md`
+
+**Backlog story template:**
+- `backlog-issue-template.md` (used by Session 10 for each user story)
+
+---
+
+## Template Structure
+
+Every template should include:
+
+### 1. Section Headings
+Clear structure for output organization
+
+### 2. Validation Criteria
+What makes "excellent" vs "needs work"
+
+### 3. Decision Rationale Sections
+"What We DIDN'T Choose" for major decisions with 2+ alternatives
+
+### 4. Journey Traceability Reminders
+Prompt to reference specific user journey steps and value ratios
+
+### 5. Specificity Examples
+Show concrete examples vs generic antipatterns
+
+### 6. Quality Standards
+- Journey alignment (references specific journey steps)
+- Specificity (named personas, concrete examples)
+- Completeness (all sections filled)
+- Technical soundness (indexes, error handling, SLOs)
+
+---
+
+## Common Questions
+
+**Q: Why doesn't Session 10 have a numbered template?**
+A: Session 10 generates many files (30-50 stories), not one document. Uses `backlog-issue-template.md` instead.
+
+**Q: Why doesn't Session 12 have a template?**
+A: Session 12 generates actual code files (package.json, docker-compose.yml) specific to chosen tech stack. Can't template code for unknown technologies.
+
+**Q: When should I create an essentials file?**
+A: Only when the session is read by Sessions 10/12 AND the full file is large enough that token reduction matters.
+
+**Q: Why don't Sessions 5 and 6 have essentials files?**
+A: They're only read by post-cascade extensions that need full context, not by Sessions 10/12.
+
+**Q: Can I add a new template?**
+A: Yes, but follow the cascade integration pattern:
+1. Determine session number and output name
+2. Define what makes output "excellent" (validation criteria)
+3. Include journey traceability prompts
+4. Update corresponding command to read template
+5. Test with real journey (not generic example)
+
+---
+
+**Remember:** Templates guide structure and quality standards. They're read by commands to know what to generate, not filled in like forms. The framework is generative, not prescriptive.
