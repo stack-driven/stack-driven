@@ -1570,7 +1570,7 @@ product-guidelines/12-project-scaffold/
 ## After Generation
 
 ```
-✅ Session 8 complete! Development environment ready.
+✅ Session 12 complete! Development environment ready.
 
 Your Scaffold:
 📁 Complete directory structure

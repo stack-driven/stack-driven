@@ -171,7 +171,7 @@ Use `/templates/issue-template.md` for EVERY story.
 ## After Generation
 
 ```
-✅ Session 7 complete! Production backlog generated.
+✅ Session 10 complete! Production backlog generated.
 
 Your Backlog:
 📦 [X] epics covering full user journey
