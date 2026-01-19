@@ -686,7 +686,7 @@ npm-debug.log*
 
 **Prerequisites**: Check if `product-guidelines/09b-application-architecture-essentials.md` exists. If it doesn't, skip this step gracefully and proceed with config-only scaffold (backward compatible with projects that haven't run Session 9b).
 
-**Philosophy**: This is a **GENERATIVE** process, not template-based. Generate code that follows best practices for the SPECIFIC tech stack chosen in Session 3, adhering to coding standards from Session 3.5. Do NOT use generic templates - analyze the stack and generate appropriate code.
+**Philosophy**: This is a **GENERATIVE** process, not template-based. Generate code that follows best practices for the SPECIFIC tech stack chosen in Session 3, adhering to coding standards from Session 3b. Do NOT use generic templates - analyze the stack and generate appropriate code.
 
 **Why**: Bridges gap between configuration and implementation. Developers get 60-80% of boilerplate code pre-generated with proper structure, allowing them to focus on business logic.
 

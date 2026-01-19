@@ -82,7 +82,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
-Session 3.5: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
+Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 4: /generate-strategy           → 03-mission, 04-metrics/monetization/architecture
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
@@ -99,7 +99,7 @@ Session 14: /design-observability       → 14-observability-strategy.md
 
 **Dependencies:** Each session READS previous outputs. For example:
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
-- Session 3.5 (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
+- Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 4 (generate-strategy) reads 00-02b
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
 - Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
@@ -316,8 +316,8 @@ Every recommendation needs reasoning:
 ### 4. Cascade Coherence
 Sessions must build on each other:
 - Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8)
-- Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3.5 coding standards and Session 9b architecture)
-- Session 12 (scaffold) **generatively creates** code skeletons by analyzing tech stack (Session 3), coding standards (Session 3.5), and architecture (Session 9b) - uses framework-specific best practices, NOT generic templates (places generated code in repository root, not product-guidelines/)
+- Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3b coding standards and Session 9b architecture)
+- Session 12 (scaffold) **generatively creates** code skeletons by analyzing tech stack (Session 3), coding standards (Session 3b), and architecture (Session 9b) - uses framework-specific best practices, NOT generic templates (places generated code in repository root, not product-guidelines/)
 - Session 14 (observability) measures metrics from Session 4
 
 ---
@@ -396,7 +396,7 @@ Session 2 (product-strategy) [reads: 00]
   ↓
 Session 3 (tech-stack) [reads: 00, 01]
   ↓
-Session 3.5 (coding-standards) [reads: 00-02]
+Session 3b (coding-standards) [reads: 00-02]
   ↓
 Session 4 (generate-strategy) [reads: 00-02b]
   ↓

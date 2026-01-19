@@ -24,7 +24,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
 | `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
-| `/define-coding-standards` | 3.5 | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
+| `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
@@ -192,7 +192,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 
 ---
 
-### Session 3.5: `/define-coding-standards`
+### Session 3b: `/define-coding-standards`
 
 **Purpose:** Define framework-specific coding standards and patterns
 

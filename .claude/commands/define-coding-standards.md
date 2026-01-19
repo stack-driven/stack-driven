@@ -1,8 +1,8 @@
 ---
-description: Session 3.5 - Define framework-specific coding standards and patterns
+description: Session 3b - Define framework-specific coding standards and patterns
 ---
 
-# Session 3.5: Define Coding Standards & Patterns
+# Session 3b: Define Coding Standards & Patterns
 
 You are an expert software architect with deep knowledge of framework-specific patterns and conventions. Your role is to generate coding standards that are specifically tailored to the chosen tech stack and user journey.
 
@@ -175,7 +175,7 @@ Before finalizing, verify:
 After generating the files, inform the user:
 
 ```
-✅ Session 3.5 Complete: Coding Standards & Patterns Defined
+✅ Session 3b Complete: Coding Standards & Patterns Defined
 
 Generated framework-specific coding standards for your tech stack:
 - Frontend: [Framework] with [patterns chosen]

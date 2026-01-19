@@ -54,8 +54,8 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, defines coding standards)
 
-Session 3.5: /define-coding-standards  → product-guidelines/02b-coding-standards.md
-                                        product-guidelines/02b-coding-standards-essentials.md
+Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
+                                       product-guidelines/02b-coding-standards-essentials.md
   ↓ (AI reads all previous + standards, derives tactics)
 
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
@@ -163,8 +163,8 @@ product-guidelines/
 ├── 01-product-strategy.md (Session 2)
 ├── 01-product-strategy-essentials.md (Session 2)
 ├── 02-tech-stack.md (Session 3)
-├── 02b-coding-standards.md (Session 3.5)
-├── 02b-coding-standards-essentials.md (Session 3.5)
+├── 02b-coding-standards.md (Session 3b)
+├── 02b-coding-standards-essentials.md (Session 3b)
 ├── 03-mission.md (Session 4)
 ├── 04-metrics.md (Session 4)
 ├── 04-monetization.md (Session 4)
