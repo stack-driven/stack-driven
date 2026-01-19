@@ -50,7 +50,7 @@ Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy-essentials.md
-Read: product-guidelines/09.5-application-architecture-essentials.md
+Read: product-guidelines/09b-application-architecture-essentials.md
 Read: product-guidelines/10-backlog/BACKLOG.md
 ```
 
@@ -60,7 +60,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
-- `09.5-application-architecture-essentials.md` (~60% smaller) - Contains service/repository/controller signatures for code skeleton generation
+- `09b-application-architecture-essentials.md` (~60% smaller) - Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy for code skeleton generation
 
 **Extract**:
 - **Project name** (from journey)
@@ -680,15 +680,15 @@ npm-debug.log*
 
 ---
 
-### Step 4.5: Generate Code Skeletons (from Session 9.5)
+### Step 4.5: Generate Code Skeletons (from Session 9b)
 
-**Based on** `09.5-application-architecture-essentials.md`, generate initial code files with method signatures.
+**Based on** `09b-application-architecture-essentials.md`, generate initial code files with method signatures.
 
 **Why**: Bridges gap between configuration and implementation. Developers can immediately start implementing services with proper structure.
 
 #### A. Service Files
 
-For each service from Session 9.5, create file with:
+For each service from Session 9b, create file with:
 - Class definition
 - Constructor with dependencies (from architecture)
 - Method signatures (from architecture)
@@ -722,7 +722,7 @@ export class DocumentService {
     throw new Error('Not implemented');
   }
 
-  // ... other methods from Session 9.5
+  // ... other methods from Session 9b
 }
 ```
 
@@ -754,12 +754,12 @@ class AssessmentService:
         """
         raise NotImplementedError()
 
-    # ... other methods from Session 9.5
+    # ... other methods from Session 9b
 ```
 
 #### B. Repository Files
 
-For each repository from Session 9.5:
+For each repository from Session 9b:
 
 **Example:**
 ```typescript
@@ -780,13 +780,13 @@ export class DocumentRepository {
     return this.prisma.document.findUnique({ where: { id } });
   }
 
-  // ... other methods from Session 9.5
+  // ... other methods from Session 9b
 }
 ```
 
 #### C. Controller/Handler Files
 
-For each controller from Session 9.5:
+For each controller from Session 9b:
 
 **Example:**
 ```typescript
@@ -810,7 +810,7 @@ export class DocumentController {
     }
   }
 
-  // ... other endpoints from Session 9.5
+  // ... other endpoints from Session 9b
 }
 ```
 
@@ -852,7 +852,7 @@ export class DIContainer {
     const documentService = new DocumentService(documentRepository, storageAdapter);
     this.services.set('DocumentService', documentService);
 
-    // TODO: Register other services from Session 9.5
+    // TODO: Register other services from Session 9b
   }
 
   static getInstance(): DIContainer {
@@ -909,7 +909,7 @@ describe('DocumentService', () => {
     it.todo('should throw error for file too large');
   });
 
-  // TODO: Add tests for other methods from Session 9.5
+  // TODO: Add tests for other methods from Session 9b
 });
 ```
 
