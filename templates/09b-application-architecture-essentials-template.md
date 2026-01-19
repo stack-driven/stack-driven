@@ -1,8 +1,8 @@
 # Application Architecture Essentials (For Backlog Generation)
 
 **Purpose:** Condensed application architecture for Session 10 backlog generation
-**Full Version:** See `09.5-application-architecture.md` for complete details
-**File location:** `product-guidelines/09.5-application-architecture-essentials.md`
+**Full Version:** See `09b-application-architecture.md` for complete details
+**File location:** `product-guidelines/09b-application-architecture-essentials.md`
 
 ---
 
@@ -166,13 +166,13 @@ PageName
 - [ServiceName] depends on: [RepositoryName], [AdapterName]
 - [ServiceName2] depends on: [RepositoryName2], [ServiceName]
 
-**Implementation Order Recommendation**:
-1. Integration Adapters (no dependencies)
-2. Repositories (depend on ORM only)
-3. Services (depend on repositories + adapters)
-4. Controllers (depend on services)
-5. Components (depend on API endpoints)
+**Implementation Order Recommendation** (with estimated effort per unit):
+1. Integration Adapters (no dependencies) - ~2-4 hours per adapter
+2. Repositories (depend on ORM only) - ~1-2 hours per repository
+3. Services (depend on repositories + adapters) - ~4-8 hours per service
+4. Controllers (depend on services) - ~2-4 hours per controller
+5. Components (depend on API endpoints) - ~4-8 hours per page component, ~1-3 hours per reusable component
 
 ---
 
-**For complete architecture details, business rules, and design decisions, see: `09.5-application-architecture.md`**
+**For complete architecture details, business rules, and design decisions, see: `09b-application-architecture.md`**

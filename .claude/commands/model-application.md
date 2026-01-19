@@ -128,6 +128,13 @@ For each journey step or major domain entity, ask:
 - FrameworkService (CRUD for frameworks)
 - Each service = thin wrapper around repository (anti-pattern if no business logic)
 
+**Anti-Pattern: Generic "Manager" or "Helper" Services** (Avoid):
+- ❌ DataManager (what data? what management operations?)
+- ❌ DocumentHelper (what help? too vague)
+- ❌ ProcessingManager (what processing? which entities?)
+- ✅ DocumentService (handles document lifecycle - clear responsibility)
+- ✅ AssessmentService (handles compliance assessment workflow - specific)
+
 **For each service, define**:
 - **Responsibility**: What business capability does this service provide?
 - **Journey Mapping**: Which journey step(s) does this serve?
@@ -590,12 +597,12 @@ Return 201 with Document (includes signed URL)
 ### Step 9: Generate Output Files
 
 Use templates:
-- `templates/09.5-application-architecture-template.md` for full version
-- `templates/09.5-application-architecture-essentials-template.md` for condensed version
+- `templates/09b-application-architecture-template.md` for full version
+- `templates/09b-application-architecture-essentials-template.md` for condensed version
 
 Write to:
-- `product-guidelines/09.5-application-architecture.md` (full documentation)
-- `product-guidelines/09.5-application-architecture-essentials.md` (~60% smaller, for Session 10 consumption)
+- `product-guidelines/09b-application-architecture.md` (full documentation)
+- `product-guidelines/09b-application-architecture-essentials.md` (~60% smaller, for Session 10 consumption)
 
 **Full version includes**:
 - Journey mapping (services to journey steps)
@@ -714,13 +721,13 @@ Write to:
 
 ## Output Files
 
-1. **`product-guidelines/09.5-application-architecture.md`**: Full documentation (600-800 lines)
+1. **`product-guidelines/09b-application-architecture.md`**: Full documentation (600-800 lines)
    - Complete service/repository/controller definitions
    - Business rules and journey mappings
    - Component architecture with props/state
    - Detailed architecture decisions with alternatives
 
-2. **`product-guidelines/09.5-application-architecture-essentials.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
+2. **`product-guidelines/09b-application-architecture-essentials.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
    - Service list with method signatures
    - Repository list with key methods
    - Controller endpoint mappings
@@ -780,8 +787,8 @@ This architecture enables:
 - Session 12: Code skeleton generation with method signatures
 
 Files created:
-- product-guidelines/09.5-application-architecture.md
-- product-guidelines/09.5-application-architecture-essentials.md
+- product-guidelines/09b-application-architecture.md
+- product-guidelines/09b-application-architecture-essentials.md
 
 Next, we'll generate your product backlog.
 
@@ -793,9 +800,9 @@ Or check progress: /cascade-status
 
 ## Reference
 
-- Template (full): `/templates/09.5-application-architecture-template.md`
-- Template (essentials): `/templates/09.5-application-architecture-essentials-template.md`
-- Example: `/examples/compliance-saas/09.5-application-architecture.md`
+- Template (full): `/templates/09b-application-architecture-template.md`
+- Template (essentials): `/templates/09b-application-architecture-essentials-template.md`
+- Example: `/examples/compliance-saas/09b-application-architecture.md`
 
 ---
 
