@@ -518,9 +518,16 @@ We welcome contributions that:
 
 ---
 
+## Documentation
+
+- **README.md** (this file): Overview, quick start, philosophy
+- **CLAUDE.md**: Detailed codebase instructions for Claude Code
+- **CASCADE-DEPENDENCIES.md**: Visual dependency map showing which sessions read which files
+- **COMMAND-REFERENCE.md**: Complete slash command documentation
+
 ## Community & Support
 
-- **Documentation**: You're reading it! Start with `/cascade-status`
+- **Getting Help**: Start with `/cascade-status` to check your progress
 - **Issues**: Found a bug or unclear prompt? Open an issue
 - **Discussions**: Share your cascade results
 - **Examples**: Completed a cascade? Consider contributing as example
