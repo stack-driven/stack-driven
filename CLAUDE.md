@@ -89,6 +89,7 @@ Session 6: /create-design               → 06-design-system.md
 Session 7: /design-database-schema      → 07-database-schema.md
 Session 8: /generate-api-contracts      → 08-api-contracts.md
 Session 9: /create-test-strategy        → 09-test-strategy.md
+Session 9b: /model-application          → 09b-application-architecture.md, 09b-essentials
 Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories)
 Session 11: /create-gh-issues           → Push to GitHub
 Session 12: /scaffold-project           → 12-project-scaffold.md + code files
@@ -100,7 +101,8 @@ Session 14: /design-observability       → 14-observability-strategy.md
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
 - Session 3.5 (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 4 (generate-strategy) reads 00-02b
-- Session 10 (backlog) reads ALL previous sessions (00-09 including 02b) and essentials files
+- Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
+- Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
 
 **Never skip sessions** - later sessions need previous outputs for context.
 
@@ -190,8 +192,9 @@ Examples:
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md`
 - `07-database-schema.md` + `07-database-schema-essentials.md`
 - `08-api-contracts.md` + `08-api-contracts-essentials.md`
+- `09b-application-architecture.md` + `09b-application-architecture-essentials.md`
 
-**Why?** Keeps token usage manageable when Session 10 (/generate-backlog) reads all previous sessions.
+**Why?** Keeps token usage manageable when Session 10 (/generate-backlog) and Session 12 (/scaffold-project) read all previous sessions.
 
 ### 5. Quality Validation Framework
 
@@ -312,8 +315,9 @@ Every recommendation needs reasoning:
 
 ### 4. Cascade Coherence
 Sessions must build on each other:
-- Session 10 (backlog) reads outputs from Sessions 1-9 (including Session 3.5 coding standards)
-- Session 12 (scaffold) implements tech choices from Session 3 and coding patterns from Session 3.5
+- Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8)
+- Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3.5 coding standards and Session 9b architecture)
+- Session 12 (scaffold) implements tech choices from Session 3, coding patterns from Session 3.5, and generates code skeletons from Session 9b
 - Session 14 (observability) measures metrics from Session 4
 
 ---
@@ -406,11 +410,14 @@ Session 8 (api-contracts) [reads: 00-07]
   ↓
 Session 9 (test-strategy) [reads: 00-08]
   ↓
-Session 10 (backlog) [reads: 00-09 including 02b + essentials files]
+Session 9b (application-architecture) [reads: 00, 02, 02b-essentials*, 04, 07-essentials*, 08-essentials*]
+  * Essentials files used to reduce token usage (architecture doesn't need full schemas/contracts)
+  ↓
+Session 10 (backlog) [reads: 00-09b including 02b + all essentials files]
   ↓
 Session 11 (create-gh-issues) [reads: 10-backlog/]
   ↓
-Session 12 (scaffold) [reads: 00-11 including 02b]
+Session 12 (scaffold) [reads: 00-11 including 02b, 09b-essentials]
   ↓
 Session 13 (deployment) [reads: 00-12]
   ↓
