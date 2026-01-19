@@ -696,7 +696,6 @@ npm-debug.log*
    - Read `02-tech-stack.md` - Understand language, framework, ORM, testing tools
    - Read `02b-coding-standards-essentials.md` - Understand file structure, naming conventions, patterns
    - Read `09b-application-architecture-essentials.md` - Extract services, repositories, controllers, adapters
-   - Read `10-backlog/*.md` - Extract story numbers and titles for TODO comments
 
 2. **Analyze Tech Stack** and determine:
    - **Backend language**: TypeScript, Python, Go, Java, C#, Ruby, PHP, Rust, etc.
@@ -705,25 +704,16 @@ npm-debug.log*
    - **Testing framework**: Jest, Vitest, pytest, Go testing, JUnit, xUnit, RSpec, etc.
    - **DI pattern**: Framework-specific (NestJS decorators, FastAPI Depends, Spring annotations, manual DI container, etc.)
 
-3. **Match Backlog Stories to Architecture**:
-   - For each method in services/repositories/controllers, find related backlog story
-   - **Matching strategy**:
-     a. Search `10-backlog/*.md` for story titles containing the method/feature name
-     b. If exact match found → use that story number (e.g., `#42`)
-     c. If multiple matches → use first match, add comment noting alternatives
-     d. If no match → use placeholder `TBD` with comment `// No matching story - add reference manually`
-   - Store story mappings for use in TODO comments
-
-4. **Generate Code Files** using best practices for the specific stack:
+3. **Generate Code Files** using best practices for the specific stack:
    - **File placement**: Follow Session 2b directory structure exactly
    - **Naming conventions**: Follow Session 2b (PascalCase, snake_case, etc.)
    - **Code style**: Follow Session 2b patterns (class-based, functional, composition)
    - **Type annotations**: Use language's type system appropriately
    - **Error handling**: Use framework-specific error patterns
    - **Dependency injection**: Use framework's DI approach (decorators, Depends, manual, etc.)
-   - **TODO comments**: Reference specific backlog stories with numbers
+   - **TODO comments**: Use simple "TODO: Implement" markers without story references
 
-5. **Validate Generated Code**:
+4. **Validate Generated Code**:
    - Ensure all imports resolve correctly
    - Run type checker if applicable:
      - TypeScript: `tsc --noEmit`
@@ -740,7 +730,7 @@ For each service from Session 9b, **generate** a code file following the tech st
 - Class/module definition appropriate to language (class for OOP, module for functional)
 - Constructor/initialization with dependencies (from architecture)
 - Method signatures with proper type annotations (from architecture)
-- TODO comments referencing matched backlog stories
+- Simple TODO comments for implementation
 - Business rules documentation from Session 9b
 - Journey step context comments for each method
 - Error handling patterns specific to framework
@@ -777,7 +767,7 @@ export class DocumentService {
 
   /**
    * Upload document to storage and create database record
-   * TODO: Implement (Story #42 - Document Upload)
+   * TODO: Implement document upload functionality
    */
   async uploadDocument(
     userId: string,
@@ -789,7 +779,7 @@ export class DocumentService {
 
   /**
    * Retrieve document by ID with access control
-   * TODO: Implement (Story #43 - Document Retrieval)
+   * TODO: Implement document retrieval with access control
    */
   async getDocument(documentId: string, userId: string): Promise<Document | null> {
     throw new Error('Not implemented');
@@ -827,7 +817,7 @@ class AssessmentService:
     ) -> Assessment:
         """
         Create new compliance assessment for document
-        TODO: Implement (Story #52 - Create Assessment)
+        TODO: Implement assessment creation logic
         """
         raise NotImplementedError()
 ```
@@ -859,7 +849,7 @@ func NewDocumentService(repo repositories.DocumentRepository, storage StorageAda
 }
 
 // UploadDocument uploads file and creates database record
-// TODO: Implement (Story #42 - Document Upload)
+// TODO: Implement document upload
 func (s *DocumentService) UploadDocument(ctx context.Context, userID string, file []byte) (*types.Document, error) {
     return nil, fmt.Errorf("not implemented")
 }
@@ -904,18 +894,18 @@ export class DocumentRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(data: Prisma.DocumentCreateInput): Promise<Document> {
-    // TODO: Implement (Story #44 - Document Repository)
+    // TODO: Implement create method
     return this.prisma.document.create({ data });
   }
 
   async findById(id: string): Promise<Document | null> {
-    // TODO: Implement
+    // TODO: Implement findById method
     return this.prisma.document.findUnique({ where: { id } });
   }
 
   // Specialized query using documents_user_id_idx + documents_created_at_idx
   async findRecentByUserId(userId: string, limit: number = 10): Promise<Document[]> {
-    // TODO: Implement (Story #45 - Recent Documents Query)
+    // TODO: Implement recent documents query
     return this.prisma.document.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
@@ -973,7 +963,7 @@ export class DocumentController {
 
   async uploadDocument(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // TODO: Implement (Story #45 - Upload Document Endpoint)
+      // TODO: Implement upload document endpoint
       // 1. Validate request (file type, size, metadata)
       // 2. Call documentService.uploadDocument()
       // 3. Return response with document ID and signed URL
@@ -1024,7 +1014,7 @@ async def upload_document(
 ):
     """
     Upload document endpoint
-    TODO: Implement (Story #45 - Upload Document Endpoint)
+    TODO: Implement upload document endpoint
     Implements: POST /api/documents from Session 8
     """
     # TODO: 1. Validate file type and size
@@ -1134,12 +1124,12 @@ class TestAssessmentService:
 
     @pytest.mark.asyncio
     async def test_create_assessment_success(self, service):
-        """TODO: Implement (Story #52)"""
+        """TODO: Implement test for successful assessment creation"""
         pytest.skip("Not implemented")
 
     @pytest.mark.asyncio
     async def test_create_assessment_invalid_framework(self, service):
-        """TODO: Implement - should raise error for unknown framework"""
+        """TODO: Implement test for invalid framework error"""
         pytest.skip("Not implemented")
 ```
 
@@ -1314,10 +1304,10 @@ func main() {
 - Developers know exactly what to implement (no architectural decisions needed)
 - Test stubs prevent forgetting to write tests
 - DI setup ensures proper dependency management
-- TODO comments reference specific backlog stories
+- TODO comments mark implementation points clearly
 - Generated code compiles/type-checks immediately
 - Architecture from Session 9b enforced in code structure
-- Backlog stories from Session 10 linked via TODO comments
+- Clean separation of concerns (services, repositories, controllers)
 
 **Code Generation Summary**:
 
@@ -1328,14 +1318,14 @@ After completing Step 4.5, the repository should contain:
 - ✅ Test stub files (testing scaffolding)
 - ✅ Dependency injection container (wiring)
 - ✅ All code compiles without errors (type-checked)
-- ✅ TODO comments link to Session 10 backlog stories
+- ✅ TODO comments mark implementation points
 - ✅ Files organized per Session 2b coding standards
 
 **Validation**:
 - Run type checker: `npm run type-check` (TypeScript) or `mypy .` (Python)
 - Verify all imports resolve correctly
 - Check that DI container registers all components
-- Ensure TODO comments include story numbers
+- Ensure TODO comments are present and descriptive
 
 ---
 
