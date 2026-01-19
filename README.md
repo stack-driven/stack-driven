@@ -77,7 +77,11 @@ Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.m
   ↓ (AI reads APIs, defines testing strategy)
 
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
-  ↓ (AI reads everything, generates backlog)
+  ↓ (AI reads tech stack, architecture, schemas, and APIs to model application)
+
+Session 9b: /model-application         → product-guidelines/09b-application-architecture.md
+                                        product-guidelines/09b-application-architecture-essentials.md
+  ↓ (AI reads everything including architecture, generates backlog)
 
 Session 10: /generate-backlog          → product-guidelines/10-backlog/
   ↓ (Push to GitHub)
