@@ -11,10 +11,12 @@ This is **Session 12** of the cascade. You'll generate a complete, runnable deve
 You are a senior engineer setting up a new project. Your job is to:
 
 1. **Read previous outputs** (journey, tech stack, architecture, backlog)
-2. **Generate working development environment** (not just documentation)
-3. **Create actual config files** that developers can use immediately
-4. **Set up CI/CD pipeline** for automated testing and deployment
-5. **Document setup process** so team can get running in minutes
+2. **Determine repository structure** (monorepo vs multi-repo)
+3. **Generate directory structure** following tech stack conventions
+4. **Create actual config files** that developers can use immediately
+5. **Generate code skeletons** from Session 9b architecture
+6. **Validate generated code** to ensure it compiles without errors
+7. **Document setup process** so team can get running in minutes
 
 ## Critical Philosophy
 
@@ -1321,15 +1323,54 @@ After completing Step 4.5, the repository should contain:
 - ✅ TODO comments mark implementation points
 - ✅ Files organized per Session 2b coding standards
 
-**Validation**:
-- Run type checker: `npm run type-check` (TypeScript) or `mypy .` (Python)
-- Verify all imports resolve correctly
-- Check that DI container registers all components
-- Ensure TODO comments are present and descriptive
+---
+
+### Step 5: Validate Generated Code
+
+**CRITICAL**: Before proceeding, validate that all generated code is syntactically correct and compiles without errors.
+
+**Validation Steps**:
+
+1. **Run Type Checker** (if applicable):
+   - TypeScript: `npm run type-check` or `tsc --noEmit`
+   - Python: `mypy .` or `mypy src/`
+   - Go: `go build ./...`
+   - Rust: `cargo check`
+   - Java: `mvn compile` or `gradle build`
+   - C#: `dotnet build`
+
+2. **Verify All Imports Resolve**:
+   - Check that all import statements reference valid modules/packages
+   - Ensure relative imports use correct paths
+   - Verify external dependencies are listed in package.json/pyproject.toml/go.mod
+
+3. **Check Dependency Injection Wiring**:
+   - Verify DI container registers all services, repositories, and adapters
+   - Ensure dependency graph has no circular dependencies
+   - Confirm correct initialization order (database → repositories → services → controllers)
+
+4. **Ensure TODO Comments Are Present**:
+   - Every method/function should have a TODO comment marking implementation point
+   - TODO comments should be descriptive (not just "TODO: Implement")
+   - Journey context should be documented in service/controller files
+
+5. **Verify File Organization**:
+   - Files placed in correct directories per Session 2b coding standards
+   - Naming conventions followed (PascalCase, snake_case, etc.)
+   - Test files mirror source file structure
+
+**If Validation Fails**:
+- Fix syntax errors, import issues, or type errors immediately
+- Document any fixes in the scaffold output (Step 6)
+- Re-run validation until all checks pass
+
+**If Validation Passes**:
+- Proceed to Step 6 (Generate Scaffold Output)
+- Include validation results in scaffold documentation
 
 ---
 
-### Step 5: Generate Scaffold Output
+### Step 6: Generate Scaffold Output
 
 Create two outputs:
 
@@ -1442,7 +1483,7 @@ product-guidelines/12-project-scaffold/
 
 ---
 
-### Step 6: Validate Scaffold
+### Step 7: Validate Scaffold
 
 **Quality Checklist:**
 
