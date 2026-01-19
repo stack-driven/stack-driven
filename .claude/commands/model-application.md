@@ -1,14 +1,14 @@
 ---
-description: Session 9.5 - Model application architecture layer
+description: Session 9b - Model application architecture layer
 ---
 
-# Model Application Architecture (Session 9.5)
+# Model Application Architecture (Session 9b)
 
 You are helping the user model the application's structural organization - service layer, repositories, controllers, components - based on journey steps, database entities, API endpoints, and tech stack choices. This bridges the gap between API specifications (Session 8) and implementation (Session 10 backlog, Session 12 scaffold).
 
 ## When to Use This
 
-**This is Session 9.5** in the core Stack-Driven cascade. Run it:
+**This is Session 9b** in the core Stack-Driven cascade. Run it:
 - After Session 9 (`/create-test-strategy` - testing approach)
 - Before Session 10 (`/generate-backlog` - implementation planning)
 - When you need to define how your application code should be organized
@@ -774,7 +774,7 @@ Before completing, verify:
 
 **Next Steps**:
 ```
-✅ Session 9.5 complete! Application architecture modeled.
+✅ Session 9b complete! Application architecture modeled.
 
 Your architecture bridges the gap between specifications and implementation:
 - Services: [Count] services mapped to journey steps
