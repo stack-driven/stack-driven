@@ -317,7 +317,7 @@ Every recommendation needs reasoning:
 Sessions must build on each other:
 - Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8)
 - Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3.5 coding standards and Session 9b architecture)
-- Session 12 (scaffold) implements tech choices from Session 3, coding patterns from Session 3.5, and generates code skeletons from Session 9b (places generated code in repository root, not product-guidelines/)
+- Session 12 (scaffold) **generatively creates** code skeletons by analyzing tech stack (Session 3), coding standards (Session 3.5), and architecture (Session 9b) - uses framework-specific best practices, NOT generic templates (places generated code in repository root, not product-guidelines/)
 - Session 14 (observability) measures metrics from Session 4
 
 ---
