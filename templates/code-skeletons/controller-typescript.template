@@ -1,0 +1,82 @@
+/**
+ * {{controllerName}}
+ *
+ * Resource: {{resourceName}}
+ * Base Path: {{basePath}} (from Session 8 API Contracts)
+ *
+ * Generated from Session 9b Application Architecture
+ */
+
+{{#imports}}
+import { {{name}} } from '{{path}}';
+{{/imports}}
+
+export class {{controllerName}} {
+  constructor(
+{{#dependencies}}
+    private readonly {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+  ) {}
+
+{{#endpoints}}
+  /**
+   * {{httpMethod}} {{path}}
+   *
+   * {{description}}
+   *
+   * Journey Context: {{journeyContext}}
+   * OpenAPI Reference: {{openApiReference}}
+   *
+{{#requestValidation}}
+   * Request Validation:
+{{#rules}}
+   * - {{rule}}
+{{/rules}}
+{{/requestValidation}}
+   *
+{{#responseStatuses}}
+   * Response Status Codes:
+{{#statuses}}
+   * - {{code}} {{description}}
+{{/statuses}}
+{{/responseStatuses}}
+   *
+   * TODO: Implement (Story #{{storyNumber}} from Session 10)
+   */
+  async {{handlerName}}(
+    req: {{requestType}},
+    res: {{responseType}}{{#hasNext}},
+    next: {{nextType}}{{/hasNext}}
+  ): Promise<void> {
+    try {
+      // TODO: Implementation in Story #{{storyNumber}}
+{{#implementationSteps}}
+      // {{step}}
+{{/implementationSteps}}
+
+      // Call service
+      const result = await this.{{serviceName}}.{{serviceMethod}}(
+{{#serviceCallParams}}
+        {{param}}{{#notLast}},{{/notLast}}
+{{/serviceCallParams}}
+      );
+
+      res.status({{successStatusCode}}).json({
+        success: true,
+        data: result
+      });
+    } catch (error) {
+{{#hasNext}}
+      next(error);
+{{/hasNext}}
+{{^hasNext}}
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+{{/hasNext}}
+    }
+  }
+
+{{/endpoints}}
+}

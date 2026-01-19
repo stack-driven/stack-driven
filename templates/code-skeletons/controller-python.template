@@ -1,0 +1,83 @@
+"""
+{{controllerName}}
+
+Resource: {{resourceName}}
+Base Path: {{basePath}} (from Session 8 API Contracts)
+
+Generated from Session 9b Application Architecture
+"""
+
+from typing import Optional, List{{#additionalImports}}, {{name}}{{/additionalImports}}
+{{#imports}}
+from {{path}} import {{name}}
+{{/imports}}
+
+
+class {{controllerName}}:
+    """Controller for {{resourceName}} endpoints"""
+
+    def __init__(
+        self,
+{{#dependencies}}
+        {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+    ):
+{{#dependencies}}
+        self.{{name}} = {{name}}
+{{/dependencies}}
+
+{{#endpoints}}
+    async def {{handlerName}}(
+        self,
+{{#parameters}}
+        {{name}}: {{type}}{{#notLast}},{{/notLast}}
+{{/parameters}}
+    ) -> {{returnType}}:
+        """
+        {{httpMethod}} {{path}}
+
+        {{description}}
+
+        Journey Context: {{journeyContext}}
+        OpenAPI Reference: {{openApiReference}}
+
+{{#requestValidation}}
+        Request Validation:
+{{#rules}}
+        - {{rule}}
+{{/rules}}
+{{/requestValidation}}
+
+{{#responseStatuses}}
+        Response Status Codes:
+{{#statuses}}
+        - {{code}} {{description}}
+{{/statuses}}
+{{/responseStatuses}}
+
+        TODO: Implement (Story #{{storyNumber}} from Session 10)
+
+        Implementation Steps:
+{{#implementationSteps}}
+        {{stepNumber}}. {{step}}
+{{/implementationSteps}}
+        """
+        try:
+            # TODO: Implementation in Story #{{storyNumber}}
+
+            # Call service
+            result = await self.{{serviceName}}.{{serviceMethod}}(
+{{#serviceCallParams}}
+                {{param}}{{#notLast}},{{/notLast}}
+{{/serviceCallParams}}
+            )
+
+            return {
+                "success": True,
+                "data": result
+            }
+        except Exception as error:
+            # TODO: Proper error handling (Story #{{storyNumber}})
+            raise
+
+{{/endpoints}}

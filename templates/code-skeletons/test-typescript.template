@@ -1,0 +1,59 @@
+/**
+ * {{testSuiteName}}
+ *
+ * Tests for: {{componentName}}
+ * Test Type: {{testType}}
+ *
+ * Generated from Session 9 Test Strategy
+ */
+
+{{#imports}}
+import { {{name}} } from '{{path}}';
+{{/imports}}
+
+describe('{{componentName}}', () => {
+{{#dependencies}}
+  let {{name}}: jest.Mocked<{{type}}>;
+{{/dependencies}}
+  let {{instanceName}}: {{componentType}};
+
+  beforeEach(() => {
+    // Create mocks
+{{#dependencies}}
+    {{name}} = {
+{{#methods}}
+      {{methodName}}: jest.fn(){{#notLast}},{{/notLast}}
+{{/methods}}
+    } as any;
+{{/dependencies}}
+
+    // Instantiate component under test
+    {{instanceName}} = new {{componentType}}(
+{{#dependencies}}
+      {{name}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+    );
+  });
+
+{{#testGroups}}
+  describe('{{methodName}}', () => {
+{{#testCases}}
+    it('{{testDescription}}', async () => {
+      // TODO: Test implementation (Story #{{storyNumber}})
+      // Arrange
+      // - Setup test data
+      // - Configure mocks
+
+      // Act
+      // - Call method under test
+
+      // Assert
+      // - Verify expected behavior
+      // - Verify mock calls
+    });
+
+{{/testCases}}
+  });
+
+{{/testGroups}}
+});

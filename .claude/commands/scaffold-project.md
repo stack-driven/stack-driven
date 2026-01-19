@@ -682,9 +682,46 @@ npm-debug.log*
 
 ### Step 4.5: Generate Code Skeletons (from Session 9b)
 
+**IMPORTANT**: This step generates actual code files in the **repository root** (not `product-guidelines/`). These are working code files that developers can immediately run and implement.
+
+**Prerequisites**: Check if `product-guidelines/09b-application-architecture-essentials.md` exists. If it doesn't, skip this step gracefully and proceed with config-only scaffold (backward compatible with projects that haven't run Session 9b).
+
 **Based on** `09b-application-architecture-essentials.md`, generate initial code files with method signatures.
 
 **Why**: Bridges gap between configuration and implementation. Developers can immediately start implementing services with proper structure.
+
+**Code Generation Process**:
+
+1. **Read Architecture Essentials**: Load `09b-application-architecture-essentials.md` to extract:
+   - Service list with method signatures
+   - Repository list with key methods
+   - Controller endpoint mappings
+   - Component hierarchy (if frontend)
+   - Integration adapters
+
+2. **Determine Language/Framework**: From `02-tech-stack.md`, identify:
+   - Backend language (TypeScript/Python/Go)
+   - Backend framework (Express/FastAPI/NestJS/Django)
+   - Frontend framework (Next.js/React/Vue or none)
+   - ORM (Prisma/TypeORM/SQLAlchemy)
+
+3. **Select Templates**: Based on language, use templates from `/templates/code-skeletons/`:
+   - `service-{language}.template` for service classes
+   - `repository-{language}.template` for repository classes
+   - `controller-{language}.template` for controllers/handlers
+   - `test-{language}.template` for test stubs
+   - `di-container-{language}.template` for dependency injection
+
+4. **Generate Files**: For each architectural component, render template and write to repository root:
+   - Place files according to coding standards from Session 2b
+   - Include TODO comments with backlog story references
+   - Add proper imports and type annotations
+   - Ensure dependency injection is set up correctly
+
+5. **Validate Generated Code**: Run type checker to ensure code compiles:
+   - TypeScript: `tsc --noEmit` (if TypeScript project)
+   - Python: `mypy` (if Python project)
+   - If errors, fix and regenerate
 
 #### A. Service Files
 
@@ -693,6 +730,23 @@ For each service from Session 9b, create file with:
 - Constructor with dependencies (from architecture)
 - Method signatures (from architecture)
 - TODO comments referencing backlog stories
+- Business rules from Session 9b
+- Journey step context for each method
+
+**File Location**: Place in repository root following coding standards from Session 2b:
+- TypeScript projects: `src/features/{feature-name}/services/{ServiceName}.ts`
+- Python projects: `src/services/{service_name}.py` or `app/services/{service_name}.py`
+- Use directory structure from Session 2b coding standards
+
+**Template Used**: `/templates/code-skeletons/service-{language}.template`
+
+**Data Mapping**:
+- `serviceName`: From Session 9b service list
+- `serviceResponsibility`: From Session 9b service description
+- `journeyStep`: Which journey step(s) this serves
+- `dependencies`: Repository and adapter dependencies
+- `methods`: Method signatures with parameters and return types
+- `storyNumber`: Reference to Session 10 backlog stories (fuzzy match by method name)
 
 **Example (TypeScript):**
 ```typescript
@@ -759,7 +813,27 @@ class AssessmentService:
 
 #### B. Repository Files
 
-For each repository from Session 9b:
+For each repository from Session 9b, create file with:
+- Class/interface definition
+- Constructor with ORM client dependency
+- CRUD method signatures
+- Specialized query methods from architecture
+- Index usage comments from Session 7
+- Journey context for specialized queries
+
+**File Location**: Place in repository root following coding standards:
+- TypeScript: `src/features/{feature-name}/repositories/{RepositoryName}.ts`
+- Python: `src/repositories/{repository_name}.py` or `app/repositories/{repository_name}.py`
+
+**Template Used**: `/templates/code-skeletons/repository-{language}.template`
+
+**Data Mapping**:
+- `repositoryName`: From Session 9b repository list
+- `entityName`: Database table/entity name from Session 7
+- `ormName`: ORM from tech stack (Prisma/TypeORM/SQLAlchemy)
+- `methods`: CRUD + specialized query methods
+- `indexUsed`: Database indexes from Session 7 schema
+- `queryPattern`: SQL pattern comment for clarity
 
 **Example:**
 ```typescript
@@ -786,7 +860,29 @@ export class DocumentRepository {
 
 #### C. Controller/Handler Files
 
-For each controller from Session 9b:
+For each controller from Session 9b, create file with:
+- Class definition (or router/handler functions depending on framework)
+- Constructor with service dependencies
+- Endpoint handler methods matching API contracts from Session 8
+- Middleware chain comments
+- Request validation logic
+- Error handling patterns
+- OpenAPI spec references
+
+**File Location**: Place in repository root following coding standards:
+- TypeScript: `src/features/{feature-name}/controllers/{ControllerName}.ts`
+- Python FastAPI: `src/routers/{resource_name}.py` or `app/routers/{resource_name}.py`
+- Framework-specific patterns from Session 2b
+
+**Template Used**: `/templates/code-skeletons/controller-{language}.template`
+
+**Data Mapping**:
+- `controllerName`: From Session 9b controller list
+- `resourceName`: API resource name (e.g., "documents")
+- `basePath`: API path prefix from Session 8 (e.g., "/api/documents")
+- `endpoints`: Handler methods for each API endpoint from Session 8
+- `middleware`: Authentication, validation, rate limiting
+- `openApiReference`: Link to Session 8 API contract
 
 **Example:**
 ```typescript
@@ -814,9 +910,84 @@ export class DocumentController {
 }
 ```
 
-#### D. Dependency Injection Setup
+#### D. Test Stubs
 
-Create DI container that wires dependencies:
+For each service/repository, create test file with:
+- Test suite structure (describe/test blocks)
+- Mock setup for dependencies
+- Test case placeholders with TODO markers
+- Test case descriptions from Session 9 test strategy
+
+**File Location**: Mirror source file structure in test directory:
+- TypeScript: `src/features/{feature-name}/services/{ServiceName}.test.ts`
+- Python: `tests/unit/services/test_{service_name}.py`
+
+**Template Used**: `/templates/code-skeletons/test-{language}.template`
+
+**Data Mapping**:
+- `testSuiteName`: Test suite name (e.g., "DocumentService Tests")
+- `componentName`: Component under test
+- `testType`: Unit/Integration from Session 9
+- `testGroups`: One per method with multiple test cases
+- `storyNumber`: Link to backlog story
+
+**Example:**
+```typescript
+// src/features/documents/services/DocumentService.test.ts
+
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { DocumentService } from './DocumentService';
+import { DocumentRepository } from '../repositories/DocumentRepository';
+import { StorageAdapter } from '@/integrations/storage/StorageAdapter';
+
+describe('DocumentService', () => {
+  let documentService: DocumentService;
+  let mockDocumentRepository: DocumentRepository;
+  let mockStorageAdapter: StorageAdapter;
+
+  beforeEach(() => {
+    mockDocumentRepository = {
+      create: vi.fn(),
+      findById: vi.fn(),
+    } as any;
+
+    mockStorageAdapter = {
+      uploadFile: vi.fn(),
+      getSignedUrl: vi.fn(),
+    } as any;
+
+    documentService = new DocumentService(mockDocumentRepository, mockStorageAdapter);
+  });
+
+  describe('uploadDocument', () => {
+    it.todo('should upload document to storage');
+    it.todo('should create document record in database');
+    it.todo('should return document with signed URL');
+    it.todo('should throw error for invalid file type');
+  });
+
+  // TODO: Add tests for other methods from Session 9b
+});
+```
+
+#### E. Dependency Injection Setup
+
+Create DI container that wires all dependencies together:
+- Singleton pattern for container
+- Register all services, repositories, adapters
+- Resolve dependencies in correct order
+- Helper functions for service resolution
+
+**File Location**: Place in config directory:
+- TypeScript: `src/config/di-container.ts`
+- Python: `src/config/di_container.py` or use framework's DI (FastAPI Depends)
+
+**Template Used**: `/templates/code-skeletons/di-container-{language}.template`
+
+**Data Mapping**:
+- Extract all services, repositories, adapters from Session 9b
+- Determine dependency graph (which services need which repositories)
+- Generate registration code in correct order
 
 **Example:**
 ```typescript
@@ -918,6 +1089,27 @@ describe('DocumentService', () => {
 - Test stubs prevent forgetting to write tests
 - DI setup ensures proper dependency management
 - TODO comments reference specific backlog stories
+- Generated code compiles/type-checks immediately
+- Architecture from Session 9b enforced in code structure
+- Backlog stories from Session 10 linked via TODO comments
+
+**Code Generation Summary**:
+
+After completing Step 4.5, the repository should contain:
+- ✅ Service classes with method signatures (business logic layer)
+- ✅ Repository classes/interfaces (data access layer)
+- ✅ Controller/handler files (HTTP endpoint layer)
+- ✅ Test stub files (testing scaffolding)
+- ✅ Dependency injection container (wiring)
+- ✅ All code compiles without errors (type-checked)
+- ✅ TODO comments link to Session 10 backlog stories
+- ✅ Files organized per Session 2b coding standards
+
+**Validation**:
+- Run type checker: `npm run type-check` (TypeScript) or `mypy .` (Python)
+- Verify all imports resolve correctly
+- Check that DI container registers all components
+- Ensure TODO comments include story numbers
 
 ---
 

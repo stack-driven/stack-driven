@@ -1,0 +1,70 @@
+"""
+{{testSuiteName}}
+
+Tests for: {{componentName}}
+Test Type: {{testType}}
+
+Generated from Session 9 Test Strategy
+"""
+
+import pytest
+from unittest.mock import Mock, AsyncMock
+{{#imports}}
+from {{path}} import {{name}}
+{{/imports}}
+
+
+class Test{{componentName}}:
+    """Test suite for {{componentName}}"""
+
+    @pytest.fixture
+    def {{instanceName}}(self{{#dependencies}}, mock_{{name}}{{/dependencies}}):
+        """Create instance under test with mocked dependencies"""
+        return {{componentType}}(
+{{#dependencies}}
+            {{name}}=mock_{{name}}{{#notLast}},{{/notLast}}
+{{/dependencies}}
+        )
+
+{{#dependencies}}
+    @pytest.fixture
+    def mock_{{name}}(self):
+        """Mock {{type}}"""
+        mock = Mock(spec={{type}})
+{{#methods}}
+        mock.{{methodName}} = AsyncMock()
+{{/methods}}
+        return mock
+
+{{/dependencies}}
+
+{{#testGroups}}
+    # Tests for {{methodName}}
+{{#testCases}}
+    @pytest.mark.asyncio
+    async def test_{{testMethodName}}(
+        self,
+        {{instanceName}}{{#dependencies}},
+        mock_{{name}}{{/dependencies}}
+    ):
+        """
+        {{testDescription}}
+
+        TODO: Test implementation (Story #{{storyNumber}})
+        """
+        # TODO: Implement test (Story #{{storyNumber}})
+        # Arrange
+        # - Setup test data
+        # - Configure mocks
+
+        # Act
+        # - Call method under test
+
+        # Assert
+        # - Verify expected behavior
+        # - Verify mock calls
+        pytest.skip("TODO: Implement (Story #{{storyNumber}})")
+
+{{/testCases}}
+
+{{/testGroups}}

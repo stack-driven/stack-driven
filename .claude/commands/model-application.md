@@ -30,6 +30,11 @@ Create comprehensive application architecture including:
 This enables:
 - **Session 10** to generate specific, implementation-ready user stories ("Implement DocumentService.uploadDocument()")
 - **Session 12** to generate actual code skeletons with method signatures and dependency injection
+  - Session 12 reads the essentials file from this session
+  - Generates service classes, repository interfaces, controller handlers, test stubs
+  - Places generated code in repository root (not product-guidelines/)
+  - Includes TODO comments referencing Session 10 backlog stories
+  - Ensures generated code compiles/type-checks before completion
 
 ---
 

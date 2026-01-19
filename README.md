@@ -86,7 +86,8 @@ Session 11: /create-gh-issues          → GitHub issues
   ↓ (Generate working development environment)
 
 Session 12: /scaffold-project          → product-guidelines/12-project-scaffold.md
-                                        product-guidelines/12-project-scaffold/ (actual code files)
+                                        product-guidelines/12-project-scaffold/ (config files)
+                                        + Code skeletons in repository root (from Session 9b)
   ↓ (Plan deployment strategy)
 
 Session 13: /plan-deployment           → product-guidelines/13-deployment-plan.md
@@ -139,13 +140,13 @@ After each session, I'll tell you exactly what to run next:
 - `/create-test-strategy` - Defines comprehensive testing strategy (unit, integration, E2E)
 - `/generate-backlog` - Generates 30-50 prioritized user stories informed by technical specs
 - `/create-gh-issues` - Pushes backlog to GitHub
-- `/scaffold-project` - Generates working development environment with actual code files
+- `/scaffold-project` - Generates working development environment with config files and code skeletons (services, repositories, controllers, tests from Session 9b architecture)
 - `/plan-deployment` - Creates deployment strategy with CI/CD and environments
 - `/design-observability` - Designs monitoring, alerting, and SLO strategy
 
 ### 4. Build
 
-Your production-ready system is ready with database schema, API contracts, testing strategy, package configs, Docker Compose, CI/CD pipeline, deployment strategy, observability setup, and documentation. Copy the scaffold files and start implementing your prioritized backlog.
+Your production-ready system is ready with database schema, API contracts, testing strategy, package configs, Docker Compose, CI/CD pipeline, code skeletons with method signatures, deployment strategy, observability setup, and documentation. The generated code includes service classes, repository interfaces, controllers, test stubs, and dependency injection—all referencing your backlog stories via TODO comments. Start implementing immediately.
 
 **Total time**: 8-10 hours to go from idea to production-ready system with complete technical specifications.
 

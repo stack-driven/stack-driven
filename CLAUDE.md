@@ -92,7 +92,7 @@ Session 9: /create-test-strategy        → 09-test-strategy.md
 Session 9b: /model-application          → 09b-application-architecture.md, 09b-essentials
 Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories)
 Session 11: /create-gh-issues           → Push to GitHub
-Session 12: /scaffold-project           → 12-project-scaffold.md + code files
+Session 12: /scaffold-project           → 12-project-scaffold.md + code files + code skeletons
 Session 13: /plan-deployment            → 13-deployment-plan.md
 Session 14: /design-observability       → 14-observability-strategy.md
 ```
@@ -317,7 +317,7 @@ Every recommendation needs reasoning:
 Sessions must build on each other:
 - Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8)
 - Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3.5 coding standards and Session 9b architecture)
-- Session 12 (scaffold) implements tech choices from Session 3, coding patterns from Session 3.5, and generates code skeletons from Session 9b
+- Session 12 (scaffold) implements tech choices from Session 3, coding patterns from Session 3.5, and generates code skeletons from Session 9b (places generated code in repository root, not product-guidelines/)
 - Session 14 (observability) measures metrics from Session 4
 
 ---
