@@ -81,6 +81,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 ```
 Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
+Session 2.5: /document-constraints      → 02a-constraints.md, 02a-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
 Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
@@ -99,10 +100,11 @@ Session 14: /design-observability       → 14-observability-strategy.md
 ```
 
 **Dependencies:** Each session READS previous outputs. For example:
-- Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
+- Session 2.5 (constraints) reads 00-journey + 01-strategy
+- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists)
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
-- Session 4 (generate-strategy) reads 00-02b (and 02c if it exists)
+- Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
 - Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
 
@@ -406,11 +408,13 @@ Session 1 (journey)
   ↓
 Session 2 (product-strategy) [reads: 00]
   ↓
-Session 3 (tech-stack) [reads: 00, 01]
+Session 2.5 (constraints) [reads: 00, 01]
+  ↓
+Session 3 (tech-stack) [reads: 00, 01, 02a (if exists)]
   ↓
 Session 3b (coding-standards) [reads: 00-02]
   ↓
-Session 4 (generate-strategy) [reads: 00-02b]
+Session 4 (generate-strategy) [reads: 00-02a (if exists), 02b, 02c (if exists)]
   ↓
 Session 5 (brand-strategy) [reads: 00-04]
   ↓

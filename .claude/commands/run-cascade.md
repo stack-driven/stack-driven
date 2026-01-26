@@ -34,13 +34,17 @@ ls -la product-guidelines/
 Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
 - `01-product-strategy.md` + `01-product-strategy-essentials.md` → Session 2 complete
+- `02a-constraints.md` + `02a-constraints-essentials.md` → Session 2.5 complete
 - `02-tech-stack.md` → Session 3 complete
+- `02b-coding-standards.md` + `02b-coding-standards-essentials.md` → Session 3b complete
+- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` → Session 3c complete (optional)
 - `03-mission.md` + `04-metrics.md` + `04-monetization.md` + `04-architecture.md` → Session 4 complete
 - `05-brand-strategy.md` → Session 5 complete
 - `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
 - `08-api-contracts.md` → Session 8 complete
 - `09-test-strategy.md` → Session 9 complete
+- `09b-application-architecture.md` + `09b-application-architecture-essentials.md` → Session 9b complete
 - `10-backlog/` directory → Session 10 complete
 - `12-project-scaffold.md` → Session 12 complete
 - `13-deployment-plan.md` → Session 13 complete
@@ -58,11 +62,25 @@ Use this decision logic to determine what to execute:
 - Run Session 2: `/create-product-strategy`
 - Then ask user if they want to continue
 
-**If 00-01 exist (both full and essentials):**
+**If 00-01 exist (both full and essentials) but not 02a:**
+- Run Session 2.5: `/document-constraints`
+- Then ask user if they want to continue
+
+**If 00-02a exist (both full and essentials):**
 - Run Session 3: `/choose-tech-stack`
 - Then ask user if they want to continue
 
-**If 00-02 exist:**
+**If 00-02 exist but not 02b:**
+- Run Session 3b: `/define-coding-standards`
+- Then ask user if they want to continue
+
+**If 00-02b exist (both full and essentials):**
+- Check if `02-tech-stack.md` mentions AI provider
+- If yes: Run Session 3c: `/define-ai-integration-strategy`
+- If no: Run Session 4: `/generate-strategy`
+- Then ask user if they want to continue
+
+**If 00-02c exist (optional AI integration complete):**
 - Run Session 4: `/generate-strategy`
 - Then ask user if they want to continue
 
@@ -90,7 +108,11 @@ Use this decision logic to determine what to execute:
 - Run Session 9: `/create-test-strategy`
 - Then ask user if they want to continue
 
-**If 00-09 exist:**
+**If 00-09 exist but not 09b:**
+- Run Session 9b: `/model-application`
+- Then ask user if they want to continue
+
+**If 00-09b exist (both full and essentials):**
 - Run Session 10: `/generate-backlog`
 - Then ask user if they want to continue
 

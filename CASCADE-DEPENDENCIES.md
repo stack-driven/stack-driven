@@ -53,6 +53,29 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ---
 
+### Session 2.5: `/document-constraints`
+**Outputs:**
+- `02a-constraints.md`
+- `02a-constraints-essentials.md`
+
+**Reads:**
+```
+├─ 📄 product-guidelines/00-user-journey.md
+├─ 📄 product-guidelines/01-product-strategy.md
+├─ 🔧 /templates/02a-constraints-template.md
+└─ 🔧 /templates/02a-constraints-essentials-template.md
+```
+
+**Dependencies:** Sessions 1, 2
+
+**Downstream consumers of essentials:**
+- Session 3 (choose-tech-stack)
+- Session 4 (generate-strategy)
+- Session 10 (generate-backlog)
+- Session 12 (scaffold-project)
+
+---
+
 ### Session 3: `/choose-tech-stack`
 **Outputs:** `02-tech-stack.md`
 
@@ -60,10 +83,12 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
+├─ 📋 product-guidelines/02a-constraints.md (if exists)
+├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 └─ 🔧 /templates/02-tech-stack-template.md
 ```
 
-**Dependencies:** Sessions 1, 2
+**Dependencies:** Sessions 1, 2, 2.5 (if exists)
 
 **Why read full 01 not essentials?** Tech stack needs detailed market analysis, competitive positioning, and roadmap themes from full strategy to derive optimal technical choices.
 
@@ -135,6 +160,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📋 product-guidelines/01-product-strategy-essentials.md
 ├─ 📄 product-guidelines/02-tech-stack.md
+├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
 ├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
 └─ 🔧 /templates/03-mission-template.md
@@ -143,7 +169,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
     /templates/04-architecture-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 3b, 3c (optional)
+**Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (optional)
 
 **Why essentials for 01 and 02b?** Session 4 needs vision, positioning, goals, and principles (in essentials) but not detailed market analysis. Similarly needs coding patterns but not detailed implementation examples.
 
@@ -297,7 +323,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📋 product-guidelines/01-product-strategy-essentials.md
 ├─ 📄 product-guidelines/02-tech-stack.md
+├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
+├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
 ├─ 📄 product-guidelines/03-mission.md
 ├─ 📄 product-guidelines/04-metrics.md
 ├─ 📄 product-guidelines/04-monetization.md
@@ -309,7 +337,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 └─ 🔧 /templates/issue-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 3b, 4, 7, 8, 9, 9b
+**Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b
 
 **Why all these files?** Backlog is the convergence point where all previous decisions materialize into user stories:
 - 00 (journey) → Epic structure, story prioritization
@@ -352,7 +380,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📋 product-guidelines/01-product-strategy-essentials.md
 ├─ 📄 product-guidelines/02-tech-stack.md
+├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
+├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
 ├─ 📄 product-guidelines/04-architecture.md
 ├─ 📋 product-guidelines/07-database-schema-essentials.md
 ├─ 📋 product-guidelines/08-api-contracts-essentials.md
@@ -362,7 +392,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 └─ 🔧 /templates/12-project-scaffold-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 3b, 4, 7, 8, 9, 9b, 10
+**Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b, 10
 
 **Why all these essentials files?** Scaffold GENERATES actual code:
 - 00 (journey) → Project name, domain concepts
