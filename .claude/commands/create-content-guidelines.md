@@ -24,34 +24,29 @@ You are helping the user create a comprehensive content style guide that covers 
 
 ## Your Task
 
-Create a detailed content style guide using the prompt in `/prompts/branding/content-guidelines.md`.
+Create a detailed content style guide following the instructions below.
 
 ### Steps to Execute
 
-1. **Read the content guidelines prompt**:
-   ```bash
-   Read /prompts/branding/content-guidelines.md
-   ```
-
-2. **Read the template structure**:
+1. **Read the template structure**:
    ```bash
    Read templates/18-content-guidelines-template.md
    ```
 
-3. **Check for messaging inputs** (recommended):
+2. **Check for messaging inputs** (recommended):
    ```bash
    Read product-guidelines/10-brand-messaging.md
    ```
    - If exists: Expand messaging framework into detailed guidelines
    - If not exists: Create guidelines from scratch with user input
 
-4. **Check for design system** (optional):
+3. **Check for design system** (optional):
    ```bash
    Read product-guidelines/06-design-system.md
    ```
    - If exists: Ensure content guidelines align with visual design tone
 
-5. **Interview the user** following the content guidelines prompt:
+4. **Interview the user** with content guideline questions:
    - **Grammar and style**: AP? Chicago? Custom rules?
    - **Formatting**: Numbers, dates, capitalization, punctuation
    - **Voice consistency**: Examples of on-brand vs off-brand
@@ -59,7 +54,7 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
    - **Microcopy patterns**: Buttons, forms, errors, empty states
    - **Localization**: Translation guidance, cultural considerations
 
-6. **Develop content guidelines**:
+5. **Develop content guidelines**:
    - Voice and tone foundation (with 10+ examples)
    - Grammar and mechanics (specific rules)
    - Word list (prefer/avoid terms)
@@ -69,7 +64,7 @@ Create a detailed content style guide using the prompt in `/prompts/branding/con
    - Localization principles
    - Content checklist for review
 
-7. **Write the output**:
+6. **Write the output**:
    ```bash
    Write product-guidelines/18-content-guidelines.md
    ```

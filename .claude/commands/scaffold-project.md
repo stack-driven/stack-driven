@@ -86,7 +86,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 
 ### Step 2: Determine Repository Structure
 
-**Read architecture decision** (from `05-architecture.md`):
+**Read architecture decision** (from `04-architecture.md`):
 - Monorepo or multi-repo?
 - Microservices or monolith?
 - Number of distinct services?
@@ -599,7 +599,7 @@ jobs:
 
 ## Architecture
 
-[Key points from 05-architecture.md]
+[Key points from 04-architecture.md]
 
 ## Contributing
 

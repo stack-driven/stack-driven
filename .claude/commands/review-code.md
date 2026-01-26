@@ -18,26 +18,21 @@ You are helping the user review code using a comprehensive code review framework
 
 ## Your Task
 
-Guide the user through code review using the framework in `/prompts/technical/code-review.md`.
+Guide the user through code review using the comprehensive framework below.
 
 ### Steps to Execute
 
-1. **Read the code review prompt**:
-   ```bash
-   Read /prompts/technical/code-review.md
-   ```
-
-2. **Ask what to review**:
+1. **Ask what to review**:
    - GitHub PR URL (if `gh` CLI available)
    - File paths to review
    - Specific concerns (performance? security? style?)
 
-3. **Read the code** to be reviewed:
+2. **Read the code** to be reviewed:
    ```bash
    Read [files to review]
    ```
 
-4. **Apply the code review framework**:
+3. **Apply the code review framework**:
    - **Correctness**: Does it work? Are there bugs?
    - **Architecture**: Does it fit the system design?
    - **Readability**: Can others understand it?
@@ -48,13 +43,13 @@ Guide the user through code review using the framework in `/prompts/technical/co
    - **Documentation**: Are complex parts explained?
    - **Style**: Does it follow project conventions?
 
-5. **Provide structured feedback**:
+4. **Provide structured feedback**:
    - **Critical** (must fix before merge)
    - **Important** (should fix, but not blocking)
    - **Nit** (nice to have, style preference)
    - **Praise** (what's done well)
 
-6. **Output the review**:
+5. **Output the review**:
    - Summarize findings
    - Provide specific line-by-line feedback
    - Suggest improvements
@@ -67,7 +62,7 @@ This command does NOT write to `/product-guidelines`. It provides immediate feed
 
 ## Code Review Checklist
 
-Use the comprehensive checklist from `/prompts/technical/code-review.md`:
+Use this comprehensive checklist:
 
 ### 1. Correctness
 - [ ] Does the code do what it's supposed to do?

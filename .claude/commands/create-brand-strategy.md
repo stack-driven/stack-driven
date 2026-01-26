@@ -54,7 +54,7 @@ Your brand strategy must connect to these inputs. Don't create brand in isolatio
 
 ## Your Task
 
-Create a comprehensive brand strategy document by following the prompt in `/prompts/branding/brand-strategy.md`.
+Create a comprehensive brand strategy document following the instructions below.
 
 ### Steps to Execute
 
