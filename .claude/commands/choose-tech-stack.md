@@ -35,7 +35,6 @@ Use the Read tool to read:
 - `product-guidelines/00-user-journey.md`
 - `product-guidelines/01-product-strategy.md`
 - `product-guidelines/02a-constraints.md` (if it exists)
-- `product-guidelines/02a-constraints-essentials.md` (if it exists)
 
 **Extract from Journey**:
 - Core user flow (Steps 1-5)
