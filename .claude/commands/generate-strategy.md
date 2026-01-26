@@ -34,7 +34,7 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 
-# Check if constraints exist (Session 2.5 is new)
+# Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints-essentials.md exists:
   Read: product-guidelines/02a-constraints-essentials.md
 

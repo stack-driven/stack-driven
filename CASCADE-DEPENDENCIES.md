@@ -53,7 +53,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ---
 
-### Session 2.5: `/document-constraints`
+### Session 2a: `/document-constraints`
 **Outputs:**
 - `02a-constraints.md`
 - `02a-constraints-essentials.md`

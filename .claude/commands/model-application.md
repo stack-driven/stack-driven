@@ -646,7 +646,7 @@ Write to:
 - [ ] All third-party integrations have adapters or usage notes
 
 **Consistency**:
-- [ ] Naming follows coding standards (Session 2b)
+- [ ] Naming follows coding standards (Session 3b)
 - [ ] Dependency injection pattern consistent across services
 - [ ] Error handling approach consistent
 - [ ] All services have same structure (responsibility, dependencies, methods)
@@ -654,7 +654,7 @@ Write to:
 **Tech Stack Alignment**:
 - [ ] Framework patterns match tech stack choice (NestJS decorators, FastAPI dependency injection, etc.)
 - [ ] ORM usage matches database library from Session 3
-- [ ] State management matches coding standards from Session 2b
+- [ ] State management matches coding standards from Session 3b
 - [ ] Component organization matches framework conventions
 
 **Enablement for Future Sessions**:

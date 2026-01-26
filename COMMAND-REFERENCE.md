@@ -23,7 +23,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 |---------|---------|------|----------------|
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
 | `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
-| `/document-constraints` | 2b | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
+| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
@@ -151,7 +151,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 
 ---
 
-### Session 2b: `/document-constraints`
+### Session 2a: `/document-constraints`
 
 **Purpose:** Document real-world constraints between product strategy and tech stack selection
 

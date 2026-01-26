@@ -727,9 +727,9 @@ npm-debug.log*
    - **DI pattern**: Framework-specific (NestJS decorators, FastAPI Depends, Spring annotations, manual DI container, etc.)
 
 3. **Generate Code Files** using best practices for the specific stack:
-   - **File placement**: Follow Session 2b directory structure exactly
-   - **Naming conventions**: Follow Session 2b (PascalCase, snake_case, etc.)
-   - **Code style**: Follow Session 2b patterns (class-based, functional, composition)
+   - **File placement**: Follow Session 3b directory structure exactly
+   - **Naming conventions**: Follow Session 3b (PascalCase, snake_case, etc.)
+   - **Code style**: Follow Session 3b patterns (class-based, functional, composition)
    - **Type annotations**: Use language's type system appropriately
    - **Error handling**: Use framework-specific error patterns
    - **Dependency injection**: Use framework's DI approach (decorators, Depends, manual, etc.)
@@ -757,7 +757,7 @@ For each service from Session 9b, **generate** a code file following the tech st
 - Journey step context comments for each method
 - Error handling patterns specific to framework
 
-**File Location**: Follow Session 2b directory structure exactly (varies by stack and project preferences)
+**File Location**: Follow Session 3b directory structure exactly (varies by stack and project preferences)
 
 **Generation Guidelines by Stack**:
 - **TypeScript OOP**: Classes with private readonly dependencies, async methods, proper types
@@ -890,7 +890,7 @@ For each repository from Session 9b, **generate** a data access layer file:
 - Journey context for specialized queries
 - Error handling for not found/duplicate cases
 
-**File Location**: Follow Session 2b directory structure
+**File Location**: Follow Session 3b directory structure
 
 **Generation Guidelines by ORM**:
 - **Prisma (TypeScript)**: Class wrapping PrismaClient, typed inputs/outputs, async methods
@@ -950,7 +950,7 @@ For each controller from Session 9b, **generate** an HTTP handler file:
 - **SECURE error handling** (see security note below)
 - OpenAPI spec references from Session 8
 
-**File Location**: Follow Session 2b directory structure
+**File Location**: Follow Session 3b directory structure
 
 **Generation Guidelines by Framework**:
 - **Express (TypeScript)**: Controller classes with Request/Response, middleware chain
@@ -1056,7 +1056,7 @@ For each service/repository/controller, **generate** test files with proper stru
 - Test case names from Session 9 test strategy
 - Arrange-Act-Assert (AAA) structure comments
 
-**File Location**: Follow Session 2b test directory structure
+**File Location**: Follow Session 3b test directory structure
 
 **Generation Guidelines by Testing Framework**:
 - **Jest/Vitest (TypeScript)**: describe/it blocks, vi.fn() or jest.fn() mocks, beforeEach setup
@@ -1165,7 +1165,7 @@ class TestAssessmentService:
 - Dependency graph resolution in correct order
 - Singleton/scoped lifetime management where appropriate
 
-**File Location**: Follow Session 2b structure or framework conventions
+**File Location**: Follow Session 3b structure or framework conventions
 
 **Generation Guidelines by Framework DI Pattern**:
 
@@ -1448,7 +1448,7 @@ After completing Step 4.5, the repository should contain:
 - ✅ AI integration adapters (if Session 3c exists)
 - ✅ All code compiles without errors (type-checked)
 - ✅ TODO comments mark implementation points
-- ✅ Files organized per Session 2b coding standards
+- ✅ Files organized per Session 3b coding standards
 
 ---
 
@@ -1482,7 +1482,7 @@ After completing Step 4.5, the repository should contain:
    - Journey context should be documented in service/controller files
 
 5. **Verify File Organization**:
-   - Files placed in correct directories per Session 2b coding standards
+   - Files placed in correct directories per Session 3b coding standards
    - Naming conventions followed (PascalCase, snake_case, etc.)
    - Test files mirror source file structure
 

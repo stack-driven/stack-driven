@@ -34,7 +34,7 @@ ls -la product-guidelines/
 Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
 - `01-product-strategy.md` + `01-product-strategy-essentials.md` → Session 2 complete
-- `02a-constraints.md` + `02a-constraints-essentials.md` → Session 2.5 complete
+- `02a-constraints.md` + `02a-constraints-essentials.md` → Session 2a complete
 - `02-tech-stack.md` → Session 3 complete
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md` → Session 3b complete
 - `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` → Session 3c complete (optional)
@@ -63,7 +63,7 @@ Use this decision logic to determine what to execute:
 - Then ask user if they want to continue
 
 **If 00-01 exist (both full and essentials) but not 02a:**
-- Run Session 2.5: `/document-constraints`
+- Run Session 2a: `/document-constraints`
 - Then ask user if they want to continue
 
 **If 00-02a exist (both full and essentials):**

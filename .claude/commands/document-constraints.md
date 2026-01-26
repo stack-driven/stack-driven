@@ -1,10 +1,10 @@
 ---
-description: Session 2.5 - Document business, technical, organizational, and compliance constraints
+description: Session 2a - Document business, technical, organizational, and compliance constraints
 ---
 
-# Session 2.5: Document Constraints
+# Session 2a: Document Constraints
 
-This is **Session 2.5** of the cascade. You'll document all constraints—limitations and restrictions—that will guide technical decisions, especially tech stack selection in Session 3.
+This is **Session 2a** of the cascade. You'll document all constraints—limitations and restrictions—that will guide technical decisions, especially tech stack selection in Session 3.
 
 ## Your Role
 
@@ -192,7 +192,7 @@ Before writing files:
 
 Show summary:
 ```
-✅ Session 2.5 complete! Constraints documented.
+✅ Session 2a complete! Constraints documented.
 
 Your Constraints:
 🛠️  Technical: [Key technical constraints]

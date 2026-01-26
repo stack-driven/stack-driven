@@ -23,7 +23,7 @@ You are helping the user navigate the Stack-Driven framework - core cascade (Ses
 Session 1: /refine-journey             → product-guidelines/00-user-journey.md
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
                                          product-guidelines/01-product-strategy-essentials.md
-Session 2.5: /document-constraints     → product-guidelines/02a-constraints.md
+Session 2a: /document-constraints     → product-guidelines/02a-constraints.md
                                          product-guidelines/02a-constraints-essentials.md
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
@@ -120,8 +120,8 @@ CORE CASCADE (Required - Always Start Here)
 ✅ 00-user-journey.md            (Session 1 ✓)
 ✅ 01-product-strategy.md        (Session 2 ✓)
 ✅ 01-product-strategy-essentials.md (Session 2 ✓)
-❌ 02a-constraints.md            (Session 2.5 - Not started)
-❌ 02a-constraints-essentials.md (Session 2.5 - Not started)
+❌ 02a-constraints.md            (Session 2a - Not started)
+❌ 02a-constraints-essentials.md (Session 2a - Not started)
 ✅ 02-tech-stack.md              (Session 3 ✓)
 ❌ 02b-coding-standards.md       (Session 3b - Not started)
 ❌ 02b-coding-standards-essentials.md (Session 3b - Not started)
@@ -175,9 +175,9 @@ Based on what files exist, determine the next recommended action:
 - **Recommend**: Session 2 (`/create-product-strategy`)
 
 **If 00 and 01 exist (but not 02a)**:
-- **Recommend**: Session 2.5 (`/document-constraints`)
+- **Recommend**: Session 2a (`/document-constraints`)
 
-**If 00-02a exist (Session 2.5 complete)**:
+**If 00-02a exist (Session 2a complete)**:
 - **Recommend**: Session 3 (`/choose-tech-stack`)
 
 **If 00-02 exist (but not 02b)**:
@@ -456,7 +456,7 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 **Core Cascade (Required - Always Start Here)**:
 - `/refine-journey` - Session 1: User journey
 - `/create-product-strategy` - Session 2: Market validation, competitive analysis, strategic goals
-- `/document-constraints` - Session 2.5: Document technical, organizational, and compliance constraints
+- `/document-constraints` - Session 2a: Document technical, organizational, and compliance constraints
 - `/choose-tech-stack` - Session 3: Tech stack
 - `/define-coding-standards` - Session 3b: Framework-specific coding standards and patterns
 - `/generate-strategy` - Session 4: Mission, metrics, monetization, architecture

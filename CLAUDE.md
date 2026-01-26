@@ -81,7 +81,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 ```
 Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
-Session 2.5: /document-constraints      → 02a-constraints.md, 02a-essentials
+Session 2a: /document-constraints       → 02a-constraints.md, 02a-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
 Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
@@ -100,7 +100,7 @@ Session 14: /design-observability       → 14-observability-strategy.md
 ```
 
 **Dependencies:** Each session READS previous outputs. For example:
-- Session 2.5 (constraints) reads 00-journey + 01-strategy
+- Session 2a (constraints) reads 00-journey + 01-strategy
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists)
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
@@ -409,7 +409,7 @@ Session 1 (journey)
   ↓
 Session 2 (product-strategy) [reads: 00]
   ↓
-Session 2.5 (constraints) [reads: 00, 01]
+Session 2a (constraints) [reads: 00, 01]
   ↓
 Session 3 (tech-stack) [reads: 00, 01, 02a (if exists)]
   ↓
