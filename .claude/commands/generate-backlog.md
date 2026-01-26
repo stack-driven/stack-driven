@@ -19,6 +19,11 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/02b-coding-standards-essentials.md
+
+# Check if AI integration strategy exists (Session 3c is optional)
+If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
+
 Read: product-guidelines/03-mission.md
 Read: product-guidelines/04-metrics.md
 Read: product-guidelines/04-monetization.md
@@ -32,6 +37,7 @@ Read: product-guidelines/09b-application-architecture-essentials.md
 **Context Optimization**: We read essentials files for significant context reduction:
 - `01-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
 - `02b-coding-standards-essentials.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
+- `02c-ai-integration-strategy-essentials.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
 - `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
 - `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
 - `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
@@ -57,6 +63,7 @@ For EACH journey step, create stories that:
 2. **Use specified tech stack**
 3. **Implement designed components**
 4. **Track defined metrics**
+5. **If AI integration exists, implement AI features** (prompt engineering, RAG setup, model routing, etc.)
 
 **Story Format** (use `/templates/issue-template.md`):
 ```markdown
@@ -95,6 +102,16 @@ Every backlog MUST include these legal/compliance stories:
 - **Data Processing Agreement** (for B2B/Enterprise): GDPR/compliance requirements
 
 These are P0 priorities - production applications cannot launch without them.
+
+**AI-Specific Stories (if 02c-ai-integration-strategy exists)**:
+
+When AI integration strategy is present, include these stories based on the chosen patterns:
+- **Prompt Engineering**: Stories for crafting and testing prompts for each AI feature
+- **RAG Implementation** (if using RAG): Vector store setup, chunking strategy, retrieval optimization
+- **Model Routing** (if using multiple models): Router implementation, fallback logic
+- **Cost Monitoring**: Usage tracking, budget alerts, optimization stories
+- **AI Quality Assurance**: Response validation, accuracy testing, feedback loops
+- **Compliance Setup** (if regulated): DPA configuration, data retention policies
 
 ### Step 4: Apply RICE Prioritization
 

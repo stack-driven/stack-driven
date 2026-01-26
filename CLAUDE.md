@@ -83,6 +83,7 @@ Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
 Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
+Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
 Session 4: /generate-strategy           → 03-mission, 04-metrics/monetization/architecture
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
@@ -100,7 +101,8 @@ Session 14: /design-observability       → 14-observability-strategy.md
 **Dependencies:** Each session READS previous outputs. For example:
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
-- Session 4 (generate-strategy) reads 00-02b
+- Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
+- Session 4 (generate-strategy) reads 00-02b (and 02c if it exists)
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
 - Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
 

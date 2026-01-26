@@ -48,6 +48,11 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/02b-coding-standards-essentials.md
+
+# Check if AI integration strategy exists (Session 3c is optional)
+If product-guidelines/02c-ai-integration-strategy.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy.md
+
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-contracts-essentials.md
@@ -59,6 +64,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 **Context Optimization**: We read essentials versions for significant context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
+- `02c-ai-integration-strategy.md` (full file if exists) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
@@ -70,6 +76,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 - **Coding standards** (directory structure patterns, file organization, naming conventions)
 - **Architecture decisions** (monorepo vs multi-repo, patterns, modules)
 - **Services/modules needed** (from backlog epics)
+- **AI configuration (if exists)** (API keys setup, model selection, SDK initialization)
 
 ### Step 2: Determine Repository Structure
 
@@ -360,8 +367,20 @@ JWT_EXPIRES_IN=7d
 
 # Third-party services (from tech stack integrations)
 # STRIPE_SECRET_KEY=sk_test_...
-# OPENAI_API_KEY=sk-...
 # SENDGRID_API_KEY=SG...
+
+# AI Configuration (if AI integration strategy exists - Session 3c)
+# Based on chosen provider and patterns from 02c-ai-integration-strategy.md
+# OPENAI_API_KEY=sk-...  # If using OpenAI
+# ANTHROPIC_API_KEY=sk-...  # If using Claude
+# GEMINI_API_KEY=...  # If using Gemini
+# AZURE_OPENAI_API_KEY=...  # If using Azure OpenAI
+# AZURE_OPENAI_ENDPOINT=https://...  # If using Azure OpenAI
+
+# Vector Database (if using RAG pattern from Session 3c)
+# PINECONE_API_KEY=...  # If using Pinecone
+# WEAVIATE_URL=http://localhost:8080  # If using Weaviate
+# QDRANT_URL=http://localhost:6333  # If using Qdrant
 
 # Environment
 NODE_ENV=development
@@ -372,9 +391,10 @@ NODE_ENV=development
 ```
 
 **Add variables based on:**
-- Tech stack integrations (Stripe, OpenAI, etc.)
+- Tech stack integrations (Stripe, payment providers, etc.)
 - Authentication method (Clerk, Auth0, etc.)
 - Deployment target (Vercel, AWS, etc.)
+- AI integration strategy (if Session 3c exists - API keys, vector DB URLs, model configs)
 
 #### D. CI/CD Pipeline (GitHub Actions)
 
@@ -1311,6 +1331,112 @@ func main() {
 - Architecture from Session 9b enforced in code structure
 - Clean separation of concerns (services, repositories, controllers)
 
+#### F. AI Integration Adapters (If Session 3c Exists)
+
+**Generate** AI SDK integration files if `02c-ai-integration-strategy.md` exists:
+
+**What to include**:
+- AI provider SDK initialization (OpenAI, Anthropic, Gemini, etc.)
+- Model configuration from Session 3c choices
+- Prompt templates for each AI feature
+- Error handling and fallback strategies
+- Rate limiting and retry logic
+- Cost tracking utilities
+- RAG components if using retrieval pattern (vector store client, chunking utilities)
+
+**File Location**:
+- `src/integrations/ai/` or `src/adapters/ai/`
+- Separate files per provider if using multiple models
+
+**Example (TypeScript with OpenAI):**
+```typescript
+// src/integrations/ai/OpenAIAdapter.ts
+
+import OpenAI from 'openai';
+
+/**
+ * OpenAI Integration Adapter
+ * @ai-strategy Implements Session 3c AI integration patterns
+ */
+export class OpenAIAdapter {
+  private client: OpenAI;
+
+  constructor() {
+    this.client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+
+  /**
+   * Generate assessment based on document content
+   * TODO: Implement prompt engineering from Session 3c
+   */
+  async generateAssessment(
+    documentContent: string,
+    frameworks: string[]
+  ): Promise<string> {
+    // TODO: Implement with prompt template
+    throw new Error('Not implemented');
+  }
+}
+```
+
+**Example (Python with Anthropic):**
+```python
+# src/integrations/ai/anthropic_adapter.py
+
+import os
+import anthropic
+from typing import List
+
+class AnthropicAdapter:
+    """
+    Anthropic Claude Integration Adapter
+    @ai-strategy Implements Session 3c AI integration patterns
+    """
+
+    def __init__(self):
+        self.client = anthropic.Anthropic(
+            api_key=os.environ.get("ANTHROPIC_API_KEY")
+        )
+
+    async def generate_assessment(
+        self,
+        document_content: str,
+        frameworks: List[str]
+    ) -> str:
+        """
+        Generate assessment using Claude
+        TODO: Implement prompt engineering from Session 3c
+        """
+        raise NotImplementedError()
+```
+
+**Package Dependencies to Add**:
+
+For JavaScript/TypeScript projects, add to appropriate package.json:
+```json
+{
+  "dependencies": {
+    "openai": "^4.0.0",  // if using OpenAI
+    "@anthropic-ai/sdk": "^0.20.0",  // if using Anthropic
+    "@google/generative-ai": "^0.1.0",  // if using Gemini
+    "@pinecone-database/pinecone": "^2.0.0",  // if using Pinecone for RAG
+    "langchain": "^0.1.0"  // if using LangChain for orchestration
+  }
+}
+```
+
+For Python projects, add to pyproject.toml:
+```toml
+[tool.poetry.dependencies]
+openai = "^1.0.0"  # if using OpenAI
+anthropic = "^0.20.0"  # if using Anthropic
+google-generativeai = "^0.1.0"  # if using Gemini
+pinecone-client = "^3.0.0"  # if using Pinecone for RAG
+langchain = "^0.1.0"  # if using LangChain for orchestration
+```
+
 **Code Generation Summary**:
 
 After completing Step 4.5, the repository should contain:
@@ -1319,6 +1445,7 @@ After completing Step 4.5, the repository should contain:
 - ✅ Controller/handler files (HTTP endpoint layer)
 - ✅ Test stub files (testing scaffolding)
 - ✅ Dependency injection container (wiring)
+- ✅ AI integration adapters (if Session 3c exists)
 - ✅ All code compiles without errors (type-checked)
 - ✅ TODO comments mark implementation points
 - ✅ Files organized per Session 2b coding standards

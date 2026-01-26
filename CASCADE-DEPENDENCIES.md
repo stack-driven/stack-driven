@@ -93,6 +93,36 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ---
 
+### Session 3c: `/define-ai-integration-strategy` (Optional)
+**Outputs:**
+- `02c-ai-integration-strategy.md`
+- `02c-ai-integration-strategy-essentials.md`
+
+**Reads:**
+```
+├─ 📄 product-guidelines/00-user-journey.md
+├─ 📄 product-guidelines/01-product-strategy.md
+├─ 📄 product-guidelines/02-tech-stack.md
+├─ 🔧 /templates/02c-ai-integration-strategy-template.md
+└─ 🔧 /templates/02c-ai-integration-strategy-essentials-template.md
+```
+
+**Dependencies:** Sessions 1, 2, 3
+
+**Condition:** Only runs if AI provider is present in tech stack
+
+**Downstream consumers of essentials:**
+- Session 4 (generate-strategy)
+- Session 7 (database-schema) - for vector DB if RAG
+- Session 8 (api-contracts) - for AI endpoints
+- Session 9b (model-application) - for AI service layer
+- Session 10 (generate-backlog) - for AI implementation stories
+- Session 12 (scaffold-project) - for AI SDK configuration
+- Session 13 (deployment) - for API key management
+- Session 14 (observability) - for token tracking
+
+---
+
 ### Session 4: `/generate-strategy`
 **Outputs:**
 - `03-mission.md`
@@ -106,13 +136,14 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📋 product-guidelines/01-product-strategy-essentials.md
 ├─ 📄 product-guidelines/02-tech-stack.md
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
+├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
 └─ 🔧 /templates/03-mission-template.md
     /templates/04-metrics-template.md
     /templates/04-monetization-template.md
     /templates/04-architecture-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 3b
+**Dependencies:** Sessions 1, 2, 3, 3b, 3c (optional)
 
 **Why essentials for 01 and 02b?** Session 4 needs vision, positioning, goals, and principles (in essentials) but not detailed market analysis. Similarly needs coding patterns but not detailed implementation examples.
 
