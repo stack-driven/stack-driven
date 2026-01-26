@@ -18,6 +18,11 @@ You're a technical product manager creating a systematic backlog from all cascad
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+
+# Check if constraints exist (Session 2a is optional)
+If product-guidelines/02a-constraints-essentials.md exists:
+  Read: product-guidelines/02a-constraints-essentials.md
+
 Read: product-guidelines/02b-coding-standards-essentials.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
@@ -36,6 +41,7 @@ Read: product-guidelines/09b-application-architecture-essentials.md
 
 **Context Optimization**: We read essentials files for significant context reduction:
 - `01-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
+- `02a-constraints-essentials.md` (if exists) - 70% reduction: Contains critical technical, organizational, and compliance constraints with trade-off decisions—without detailed constraint explanations and validation checklists.
 - `02b-coding-standards-essentials.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
 - `02c-ai-integration-strategy-essentials.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
 - `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.

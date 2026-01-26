@@ -47,11 +47,16 @@ After 11 sessions, users have:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+
+# Check if constraints exist (Session 2a is optional)
+If product-guidelines/02a-constraints-essentials.md exists:
+  Read: product-guidelines/02a-constraints-essentials.md
+
 Read: product-guidelines/02b-coding-standards-essentials.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
-If product-guidelines/02c-ai-integration-strategy.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy.md
+If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
 
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
@@ -63,8 +68,9 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 
 **Context Optimization**: We read essentials versions for significant context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
+- `02a-constraints-essentials.md` (if exists, ~70% smaller) - Contains critical technical, organizational, and compliance constraints with trade-off decisions
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
-- `02c-ai-integration-strategy.md` (full file if exists) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
+- `02c-ai-integration-strategy-essentials.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
