@@ -20,34 +20,29 @@ You are helping the user create a comprehensive deployment strategy including CI
 
 ## Your Task
 
-Create a comprehensive deployment strategy using the prompt in `/prompts/operations/deployment.md`.
+Create a comprehensive deployment strategy following the instructions below.
 
 ### Steps to Execute
 
-1. **Read the deployment prompt**:
-   ```bash
-   Read /prompts/operations/deployment.md
-   ```
-
-2. **Read the template structure**:
+1. **Read the template structure**:
    ```bash
    Read templates/13-deployment-plan-template.md
    ```
 
-3. **Check for architecture from Session 4** (recommended):
+2. **Check for architecture from Session 4** (recommended):
    ```bash
    Read product-guidelines/04-architecture.md
    ```
    - Understand system components and dependencies
    - Identify deployment requirements
 
-4. **Check for tech stack from Session 3** (recommended):
+3. **Check for tech stack from Session 3** (recommended):
    ```bash
    Read product-guidelines/02-tech-stack.md
    ```
    - Know what needs to be deployed (frontend, backend, database, etc.)
 
-5. **Interview the user** following the deployment prompt:
+4. **Interview the user** with deployment questions:
    - **Current state**: How do you deploy now? What's painful?
    - **Environments**: How many? (dev, staging, prod? More?)
    - **CI/CD**: What needs to happen on every commit? Tests? Linting? Build?
@@ -59,7 +54,7 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
    - **Monitoring**: How to know if deployment succeeded?
    - **Runbooks**: What could go wrong? How to fix?
 
-6. **Develop deployment plan**:
+5. **Develop deployment plan**:
    - Environment strategy (dev, staging, prod + ephemeral)
    - CI/CD pipeline (detailed workflow for each repo/service)
    - Deployment patterns (rolling, canary, feature flags)
@@ -72,7 +67,7 @@ Create a comprehensive deployment strategy using the prompt in `/prompts/operati
    - Security considerations
    - Cost optimization
 
-7. **Write the output**:
+6. **Write the output**:
    ```bash
    Write product-guidelines/13-deployment-plan.md
    ```

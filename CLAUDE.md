@@ -39,11 +39,11 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 ### Core Structure
 
-**`/.claude/commands/`** - The 27 slash commands that power the framework
+**`/.claude/commands/`** - The slash commands that power the framework (35 total)
 - Core cascade: 14 session commands (refine-journey → design-observability)
 - Post-cascade extensions: 8 optional deep-dive commands (naming, UX, analytics, growth)
 - Meta commands: cascade-status, run-cascade
-- Dev commands: validate-outputs, review-code, implement-issue
+- Dev commands: validate-outputs, review-code, implement-issue, plan-issue, post-plan, post-plan-and-implement, challenger, refractor, update-claudemd, resolve-conflicts, analyze-codebase
 - Each command is a markdown file with detailed prompts for Claude
 
 **`/templates/`** - Template files used by commands to generate user outputs
@@ -81,6 +81,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 ```
 Session 1: /refine-journey              → 00-user-journey.md
 Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
+Session 2a: /document-constraints       → 02a-constraints.md, 02a-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
 Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
@@ -99,10 +100,11 @@ Session 14: /design-observability       → 14-observability-strategy.md
 ```
 
 **Dependencies:** Each session READS previous outputs. For example:
-- Session 3 (tech-stack) reads 00-journey + 01-strategy + 01-essentials
+- Session 2a (constraints) reads 00-journey + 01-strategy
+- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists)
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
-- Session 4 (generate-strategy) reads 00-02b (and 02c if it exists)
+- Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
 - Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
 
@@ -191,7 +193,9 @@ Some sessions create TWO files:
 
 **Sessions WITH essentials files:**
 - `01-product-strategy.md` + `01-product-strategy-essentials.md` (65% reduction)
+- `02a-constraints.md` + `02a-constraints-essentials.md` (70% reduction)
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md` (70% reduction)
+- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` (70% reduction)
 - `07-database-schema.md` + `07-database-schema-essentials.md` (56% reduction)
 - `08-api-contracts.md` + `08-api-contracts-essentials.md` (80% reduction)
 - `09-test-strategy.md` + `09-test-strategy-essentials.md` (66% reduction)
@@ -201,12 +205,14 @@ Some sessions create TWO files:
 - `05-brand-strategy.md` - Only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity)
 - `06-design-system.md` - Only read by post-cascade extensions and dev-time commands (plan-issue, implement-issue)
 
-**Why this distinction?** Essentials files exist ONLY when:
-1. The session is read by core cascade Sessions 10 (backlog) and 12 (scaffold)
-2. The full file is large/detailed with schemas, specs, or extensive examples
-3. Token reduction matters for cascade performance
+**Why this distinction?** Essentials files exist ONLY when ALL three criteria are met:
+1. **Read by core cascade** - The session is consumed by core cascade Sessions 10 (backlog) and/or 12 (scaffold)
+2. **Large/detailed content** - The full file contains extensive schemas, specifications, or detailed examples
+3. **Token efficiency matters** - Condensing provides meaningful performance improvement for cascade operations
 
-Sessions 5 and 6 are read only by optional post-cascade commands, and their full context (brand personality, design system components) is needed by those commands. Additionally, Session 6's template is already small (1.7KB).
+Sessions 5 and 6 don't have essentials because they're only read by optional post-cascade commands (not core cascade Sessions 10 or 12). Those commands need the full context (brand personality, design system components). Additionally, Session 6's template is already compact (1.7KB).
+
+In contrast, sessions 02c, 09, and 09b DO have essentials because they're read by core cascade sessions (Session 10 reads all essentials; Session 9b reads 02b-essentials; Session 12 reads 09b-essentials) where token reduction significantly improves performance.
 
 ### 5. Quality Validation Framework
 
@@ -406,11 +412,13 @@ Session 1 (journey)
   ↓
 Session 2 (product-strategy) [reads: 00]
   ↓
-Session 3 (tech-stack) [reads: 00, 01]
+Session 2a (constraints) [reads: 00, 01]
+  ↓
+Session 3 (tech-stack) [reads: 00, 01, 02a (if exists)]
   ↓
 Session 3b (coding-standards) [reads: 00-02]
   ↓
-Session 4 (generate-strategy) [reads: 00-02b]
+Session 4 (generate-strategy) [reads: 00-02a (if exists), 02b, 02c (if exists)]
   ↓
 Session 5 (brand-strategy) [reads: 00-04]
   ↓

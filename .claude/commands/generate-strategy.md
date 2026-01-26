@@ -33,6 +33,11 @@ You are a product strategist deriving tactical decisions from previous cascade o
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+
+# Check if constraints exist (Session 2a is optional)
+If product-guidelines/02a-constraints-essentials.md exists:
+  Read: product-guidelines/02a-constraints-essentials.md
+
 Read: product-guidelines/02b-coding-standards-essentials.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
@@ -42,6 +47,7 @@ If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
 
 **Context Optimization**: We read the essentials versions for optimal context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
+- `02a-constraints-essentials.md` (~70% smaller, if exists) - Contains technical, organizational, and compliance constraints—provides boundaries for architecture decisions.
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions—provides context for architecture decisions without detailed implementation examples.
 - `02c-ai-integration-strategy-essentials.md` (~60% smaller, if exists) - Contains AI implementation patterns, model choices, and cost projections—provides critical AI architecture decisions without detailed compliance documentation.
 
@@ -60,6 +66,12 @@ If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
 - Core technologies chosen
 - Journey-tech mappings
 - Technical constraints/capabilities
+
+**Extract from Constraints (if exists)**:
+- Budget constraints (affects monetization strategy)
+- Timeline constraints (affects architecture complexity)
+- Compliance requirements (affects data architecture)
+- Non-negotiable journey elements (affects metrics)
 
 **Extract from Coding Standards**:
 - Framework-specific architectural patterns

@@ -29,35 +29,30 @@ You are helping the user create detailed UX design including research, informati
 
 ## Your Task
 
-Create comprehensive UX design documentation using the prompt in `/prompts/design/user-experience.md`.
+Create comprehensive UX design documentation following the instructions below.
 
 ### Steps to Execute
 
-1. **Read the UX design prompt**:
-   ```bash
-   Read /prompts/design/user-experience.md
-   ```
-
-2. **Read the template structure**:
+1. **Read the template structure**:
    ```bash
    Read templates/19-user-experience-template.md
    ```
 
-3. **Check for cascade inputs** (required):
+2. **Check for cascade inputs** (required):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/05-architecture.md
+   Read product-guidelines/04-architecture.md
    ```
    - User journey shows the high-level flow
    - Architecture shows technical constraints and patterns
 
-4. **Check for backlog** (recommended):
+3. **Check for backlog** (recommended):
    ```bash
-   Read product-guidelines/07-backlog/
+   Read product-guidelines/10-backlog/
    ```
    - Backlog shows specific features to design for
 
-5. **Interview the user** following the UX design prompt:
+4. **Interview the user** with UX design questions:
    - **UX Research**: Who are users? What research do you have? Gaps?
    - **Information Architecture**: How is content organized? Navigation structure?
    - **User Flows**: What are the critical paths? Happy paths and edge cases?
@@ -68,7 +63,7 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
    - **Prototyping Plan**: What needs interactive validation?
    - **Usability Testing**: What will you test? With whom?
 
-6. **Develop UX design**:
+5. **Develop UX design**:
    - User research summary (personas, pain points, jobs-to-be-done)
    - Information architecture (site map, navigation hierarchy)
    - User flows (5-10 critical paths with decision points)
@@ -78,7 +73,7 @@ Create comprehensive UX design documentation using the prompt in `/prompts/desig
    - Accessibility requirements
    - Prototyping and testing plan
 
-7. **Write the output**:
+6. **Write the output**:
    ```bash
    Write product-guidelines/19-user-experience.md
    ```
@@ -124,7 +119,7 @@ The output follows this structure:
 ```
 You: Let's design your user experience. First, let me check your user journey and architecture...
 
-[Read product-guidelines/00-user-journey.md and product-guidelines/05-architecture.md]
+[Read product-guidelines/00-user-journey.md and product-guidelines/04-architecture.md]
 
 You: Great! Your journey shows [key insight]. Now, what user research do you have? Have you interviewed users? Run surveys? What do you KNOW vs ASSUME?
 

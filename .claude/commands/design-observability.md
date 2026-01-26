@@ -20,39 +20,34 @@ You are helping the user create a comprehensive observability strategy including
 
 ## Your Task
 
-Create a comprehensive observability strategy using the prompt in `/prompts/operations/monitoring.md`.
+Create a comprehensive observability strategy following the instructions below.
 
 ### Steps to Execute
 
-1. **Read the observability prompt**:
-   ```bash
-   Read /prompts/operations/monitoring.md
-   ```
-
-2. **Read the template structure**:
+1. **Read the template structure**:
    ```bash
    Read templates/14-observability-strategy-template.md
    ```
 
-3. **Check for architecture from Session 4** (recommended):
+2. **Check for architecture from Session 4** (recommended):
    ```bash
    Read product-guidelines/04-architecture.md
    ```
    - Understand system components to monitor
 
-4. **Check for metrics from Session 4** (recommended):
+3. **Check for metrics from Session 4** (recommended):
    ```bash
    Read product-guidelines/04-metrics.md
    ```
    - Business metrics inform technical monitoring
 
-5. **Check for deployment plan** (recommended):
+4. **Check for deployment plan** (recommended):
    ```bash
    Read product-guidelines/13-deployment-plan.md
    ```
    - Monitoring integrates with deployment
 
-6. **Interview the user** following the observability prompt:
+5. **Interview the user** with observability questions:
    - **Current state**: What monitoring do you have? What's missing?
    - **Golden signals**: Latency, traffic, errors, saturation - what to track?
    - **Logging strategy**: What to log? Structured logs? Retention?
@@ -64,7 +59,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
    - **Incident response**: Runbooks, on-call rotation, post-mortems?
    - **Tools**: Datadog? Grafana? CloudWatch? Prometheus? OpenTelemetry?
 
-7. **Develop observability strategy**:
+6. **Develop observability strategy**:
    - Observability principles (what and why)
    - Golden signals for each service
    - Logging strategy (structured logs, retention, search)
@@ -79,7 +74,7 @@ Create a comprehensive observability strategy using the prompt in `/prompts/oper
    - Tool recommendations
    - Cost estimates
 
-8. **Write the output**:
+7. **Write the output**:
    ```bash
    Write product-guidelines/14-observability-strategy.md
    ```

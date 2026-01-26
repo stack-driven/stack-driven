@@ -12,7 +12,7 @@ You are helping the user design a comprehensive visual brand identity including 
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Brand strategy established (`product-guidelines/05-brand-strategy.md`)
 - ✅ Design system created (`product-guidelines/06-design-system.md`) - recommended but optional
-- ✅ Brand name chosen (from `product-guidelines/brand-naming.md` or already decided) - optional but helpful
+- ✅ Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided) - optional but helpful
 
 Your visual identity should express the brand personality and values defined in your brand strategy, not be created in a vacuum.
 
@@ -52,7 +52,7 @@ This command READS previous outputs to create journey-grounded visual identity:
 
 4. **Read the brand name** (if exists):
    ```bash
-   Read product-guidelines/brand-naming.md
+   Read product-guidelines/15-brand-naming.md
    ```
    - Chosen name to incorporate into logo
    - Name meaning and associations
@@ -70,7 +70,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    Read product-guidelines/00-user-journey.md
    Read product-guidelines/05-brand-strategy.md
    Read product-guidelines/06-design-system.md  # If exists
-   Read product-guidelines/brand-naming.md   # If exists
+   Read product-guidelines/15-brand-naming.md   # If exists
    ```
 
 2. **Read the template structure**:
@@ -376,11 +376,11 @@ This visual identity expresses [brand personality] and will help [journey audien
 
 ## Reference
 
-- Template: `/templates/brand-identity-template.md`
+- Template: `/templates/17-brand-identity-template.md`
 - Example: `/examples/compliance-saas/branding/` (if available)
 - Related: `product-guidelines/05-brand-strategy.md` (conceptual foundation)
 - Related: `product-guidelines/06-design-system.md` (UI implementation)
-- Related: `product-guidelines/brand-naming.md` (name to incorporate)
+- Related: `product-guidelines/15-brand-naming.md` (name to incorporate)
 
 ---
 

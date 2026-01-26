@@ -509,7 +509,7 @@ DocumentController: 201 response with Document + signed URL
     └── e2e/
 ```
 
-**Naming Conventions** (from Session 2b coding standards):
+**Naming Conventions** (from Session 3b coding standards):
 - Services: `[Entity]Service` (PascalCase)
 - Repositories: `[Entity]Repository`
 - Controllers: `[Entity]Controller`
@@ -565,7 +565,7 @@ DocumentController: 201 response with Document + signed URL
 - [ ] Frontend pages map to journey steps (if applicable)
 
 **Consistency**:
-- [ ] Naming follows coding standards from Session 2b
+- [ ] Naming follows coding standards from Session 3b
 - [ ] Dependency injection pattern consistent
 - [ ] All services have same structure (responsibility, dependencies, methods)
 

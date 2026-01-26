@@ -47,11 +47,16 @@ After 11 sessions, users have:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
+
+# Check if constraints exist (Session 2a is optional)
+If product-guidelines/02a-constraints-essentials.md exists:
+  Read: product-guidelines/02a-constraints-essentials.md
+
 Read: product-guidelines/02b-coding-standards-essentials.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
-If product-guidelines/02c-ai-integration-strategy.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy.md
+If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
 
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
@@ -63,8 +68,9 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 
 **Context Optimization**: We read essentials versions for significant context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
+- `02a-constraints-essentials.md` (if exists, ~70% smaller) - Contains critical technical, organizational, and compliance constraints with trade-off decisions
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
-- `02c-ai-integration-strategy.md` (full file if exists) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
+- `02c-ai-integration-strategy-essentials.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
@@ -80,7 +86,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 
 ### Step 2: Determine Repository Structure
 
-**Read architecture decision** (from `05-architecture.md`):
+**Read architecture decision** (from `04-architecture.md`):
 - Monorepo or multi-repo?
 - Microservices or monolith?
 - Number of distinct services?
@@ -593,7 +599,7 @@ jobs:
 
 ## Architecture
 
-[Key points from 05-architecture.md]
+[Key points from 04-architecture.md]
 
 ## Contributing
 
@@ -727,9 +733,9 @@ npm-debug.log*
    - **DI pattern**: Framework-specific (NestJS decorators, FastAPI Depends, Spring annotations, manual DI container, etc.)
 
 3. **Generate Code Files** using best practices for the specific stack:
-   - **File placement**: Follow Session 2b directory structure exactly
-   - **Naming conventions**: Follow Session 2b (PascalCase, snake_case, etc.)
-   - **Code style**: Follow Session 2b patterns (class-based, functional, composition)
+   - **File placement**: Follow Session 3b directory structure exactly
+   - **Naming conventions**: Follow Session 3b (PascalCase, snake_case, etc.)
+   - **Code style**: Follow Session 3b patterns (class-based, functional, composition)
    - **Type annotations**: Use language's type system appropriately
    - **Error handling**: Use framework-specific error patterns
    - **Dependency injection**: Use framework's DI approach (decorators, Depends, manual, etc.)
@@ -757,7 +763,7 @@ For each service from Session 9b, **generate** a code file following the tech st
 - Journey step context comments for each method
 - Error handling patterns specific to framework
 
-**File Location**: Follow Session 2b directory structure exactly (varies by stack and project preferences)
+**File Location**: Follow Session 3b directory structure exactly (varies by stack and project preferences)
 
 **Generation Guidelines by Stack**:
 - **TypeScript OOP**: Classes with private readonly dependencies, async methods, proper types
@@ -890,7 +896,7 @@ For each repository from Session 9b, **generate** a data access layer file:
 - Journey context for specialized queries
 - Error handling for not found/duplicate cases
 
-**File Location**: Follow Session 2b directory structure
+**File Location**: Follow Session 3b directory structure
 
 **Generation Guidelines by ORM**:
 - **Prisma (TypeScript)**: Class wrapping PrismaClient, typed inputs/outputs, async methods
@@ -950,7 +956,7 @@ For each controller from Session 9b, **generate** an HTTP handler file:
 - **SECURE error handling** (see security note below)
 - OpenAPI spec references from Session 8
 
-**File Location**: Follow Session 2b directory structure
+**File Location**: Follow Session 3b directory structure
 
 **Generation Guidelines by Framework**:
 - **Express (TypeScript)**: Controller classes with Request/Response, middleware chain
@@ -1056,7 +1062,7 @@ For each service/repository/controller, **generate** test files with proper stru
 - Test case names from Session 9 test strategy
 - Arrange-Act-Assert (AAA) structure comments
 
-**File Location**: Follow Session 2b test directory structure
+**File Location**: Follow Session 3b test directory structure
 
 **Generation Guidelines by Testing Framework**:
 - **Jest/Vitest (TypeScript)**: describe/it blocks, vi.fn() or jest.fn() mocks, beforeEach setup
@@ -1165,7 +1171,7 @@ class TestAssessmentService:
 - Dependency graph resolution in correct order
 - Singleton/scoped lifetime management where appropriate
 
-**File Location**: Follow Session 2b structure or framework conventions
+**File Location**: Follow Session 3b structure or framework conventions
 
 **Generation Guidelines by Framework DI Pattern**:
 
@@ -1448,7 +1454,7 @@ After completing Step 4.5, the repository should contain:
 - ✅ AI integration adapters (if Session 3c exists)
 - ✅ All code compiles without errors (type-checked)
 - ✅ TODO comments mark implementation points
-- ✅ Files organized per Session 2b coding standards
+- ✅ Files organized per Session 3b coding standards
 
 ---
 
@@ -1482,7 +1488,7 @@ After completing Step 4.5, the repository should contain:
    - Journey context should be documented in service/controller files
 
 5. **Verify File Organization**:
-   - Files placed in correct directories per Session 2b coding standards
+   - Files placed in correct directories per Session 3b coding standards
    - Naming conventions followed (PascalCase, snake_case, etc.)
    - Test files mirror source file structure
 

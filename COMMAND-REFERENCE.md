@@ -23,6 +23,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 |---------|---------|------|----------------|
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
 | `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
+| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
@@ -140,13 +141,60 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 - Creates strategic positioning
 - Maps product vision to journey
 
-**Next step:** Run `/choose-tech-stack`
+**Next step:** Run `/document-constraints` (optional) or `/choose-tech-stack`
 
 **Tips:**
 - Be realistic about market size
 - Identify 3-5 key competitors
 - Focus on differentiation from journey value
 - Align vision with aha moment
+
+---
+
+### Session 2a: `/document-constraints`
+
+**Purpose:** Document real-world constraints between product strategy and tech stack selection
+
+**When to run:** After Session 2 (product strategy defined), before Session 3 (optional)
+
+**Time required:** 20-30 minutes
+
+**What it creates:**
+- Technical constraints (team skills, existing infrastructure, required integrations)
+- Organizational constraints (budget, timeline, team size)
+- Compliance constraints (data residency, industry regulations, certifications)
+- Journey-optimal vs. constraint-realistic trade-offs
+- Non-negotiable journey elements that must be preserved
+
+**Inputs (what it reads):**
+- `product-guidelines/00-user-journey.md` - Journey requirements to preserve
+- `product-guidelines/01-product-strategy.md` - Strategic context and scale expectations
+
+**Outputs:**
+- `product-guidelines/02a-constraints.md` (comprehensive documentation)
+- `product-guidelines/02a-constraints-essentials.md` (for AI reading)
+
+**What it does:**
+- Documents real-world limitations that affect technical decisions
+- Identifies where constraints force trade-offs from journey-optimal
+- Captures non-negotiable journey elements that cannot be compromised
+- Provides realistic boundaries for tech stack and architecture choices
+- Ensures subsequent sessions recommend implementable (not just ideal) solutions
+
+**Example constraints:**
+- Technical: Team knows Python/Django (3 years experience), no Go/Rust expertise
+- Organizational: $200/month budget, 6-month timeline to MVP, solo founder
+- Compliance: HIPAA required (healthcare data), data must stay in US
+- Trade-off: Journey-optimal would be real-time WebSockets, but constraint-realistic is polling (simpler for solo founder)
+
+**Next step:** Run `/choose-tech-stack`
+
+**Tips:**
+- Be honest about team capabilities (recommend learning curve vs. productivity)
+- Document budget realistically (hosting, tools, services)
+- Identify true compliance requirements (not nice-to-haves)
+- Note which journey elements are non-negotiable vs. flexible
+- This session is optional but highly valuable for realistic recommendations
 
 ---
 

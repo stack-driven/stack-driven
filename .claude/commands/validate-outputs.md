@@ -254,6 +254,22 @@ Provide a comprehensive quality report with this structure:
 **Areas to Improve**:
 - [Specific improvements needed]
 
+### 02a-constraints.md [✅/⚠️/❌]
+**Quality**: [Excellent/Good/Needs Improvement]
+**Validation Criteria**:
+- [ ] Every constraint is truly non-negotiable (not just preference)
+- [ ] Constraints include concrete impact on tech/journey
+- [ ] Journey-optimal vs. constraint-realistic trade-offs documented
+- [ ] Non-negotiable journey elements identified
+- [ ] Budget constraints are realistic (not aspirational)
+- [ ] Timeline constraints have hard dates (not "ASAP")
+
+**Strengths**:
+- [What's done well]
+
+**Areas to Improve**:
+- [Specific improvements needed]
+
 [Repeat for each file]
 
 ## What's Done Well ✨

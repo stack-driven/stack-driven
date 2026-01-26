@@ -25,21 +25,16 @@ You are helping the user create a comprehensive analytics implementation plan in
 
 ## Your Task
 
-Create a comprehensive analytics implementation plan using the prompt in `/prompts/analytics/metrics.md`.
+Create a comprehensive analytics implementation plan following the instructions below.
 
 ### Steps to Execute
 
-1. **Read the analytics prompt**:
-   ```bash
-   Read /prompts/analytics/metrics.md
-   ```
-
-2. **Read the template structure**:
+1. **Read the template structure**:
    ```bash
    Read templates/20-analytics-plan-template.md
    ```
 
-3. **Check for metrics from Session 3** (required):
+2. **Check for metrics from Session 3** (required):
    ```bash
    Read product-guidelines/03-metrics.md
    ```
@@ -48,13 +43,13 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
    - Health metrics
    - Guardrail metrics
 
-4. **Check for user journey** (recommended):
+3. **Check for user journey** (recommended):
    ```bash
    Read product-guidelines/00-user-journey.md
    ```
    - Identify key moments to track
 
-5. **Interview the user** following the analytics prompt:
+4. **Interview the user** with analytics questions:
    - **Current state**: What analytics do you have now? Gaps?
    - **Event taxonomy**: How will you name events? Naming convention?
    - **User identification**: Anonymous tracking? User IDs? Cross-device?
@@ -66,7 +61,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
    - **Tools**: What analytics stack? (Amplitude, Mixpanel, Segment, etc.)
    - **Privacy**: GDPR, CCPA compliance? Consent management?
 
-6. **Develop analytics plan**:
+5. **Develop analytics plan**:
    - Event taxonomy (naming conventions, structure)
    - Event tracking plan (30-50 events with properties)
    - User properties (demographics, firmographics, behavior)
@@ -79,7 +74,7 @@ Create a comprehensive analytics implementation plan using the prompt in `/promp
    - Privacy and compliance requirements
    - Implementation priorities (phase 1, 2, 3)
 
-7. **Write the output**:
+6. **Write the output**:
    ```bash
    Write product-guidelines/20-analytics-plan.md
    ```
