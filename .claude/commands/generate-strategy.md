@@ -34,11 +34,16 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/01-product-strategy-essentials.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/02b-coding-standards-essentials.md
+
+# Check if AI integration strategy exists (Session 3c is optional)
+If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
 ```
 
 **Context Optimization**: We read the essentials versions for optimal context reduction:
 - `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions—provides context for architecture decisions without detailed implementation examples.
+- `02c-ai-integration-strategy-essentials.md` (~60% smaller, if exists) - Contains AI implementation patterns, model choices, and cost projections—provides critical AI architecture decisions without detailed compliance documentation.
 
 **Extract from Journey**:
 - Step 3 (aha moment) - where primary value is delivered
@@ -60,6 +65,12 @@ Read: product-guidelines/02b-coding-standards-essentials.md
 - Framework-specific architectural patterns
 - File organization and module structure
 - Naming conventions and code organization principles
+
+**Extract from AI Integration Strategy (if exists)**:
+- AI implementation patterns chosen (direct API, RAG, agents, etc.)
+- Model routing decisions and fallback strategies
+- Cost projections and optimization strategies
+- MVP vs scale phasing for AI features
 
 ### Step 2: Derive Mission Statement
 
