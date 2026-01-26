@@ -193,6 +193,7 @@ Some sessions create TWO files:
 
 **Sessions WITH essentials files:**
 - `01-product-strategy.md` + `01-product-strategy-essentials.md` (65% reduction)
+- `02a-constraints.md` + `02a-constraints-essentials.md` (70% reduction)
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md` (70% reduction)
 - `07-database-schema.md` + `07-database-schema-essentials.md` (56% reduction)
 - `08-api-contracts.md` + `08-api-contracts-essentials.md` (80% reduction)

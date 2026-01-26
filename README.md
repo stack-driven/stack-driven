@@ -49,7 +49,11 @@ Session 1: /refine-journey             → product-guidelines/00-user-journey.md
   ↓ (AI reads journey, validates with market)
 
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
-  ↓ (AI reads journey + strategy, chooses tech)
+  ↓ (AI reads journey + strategy, documents constraints)
+
+Session 2b: /document-constraints     → product-guidelines/02a-constraints.md
+                                        product-guidelines/02a-constraints-essentials.md
+  ↓ (AI reads journey + strategy + constraints, chooses tech)
 
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, defines coding standards)
@@ -170,6 +174,8 @@ product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
 ├── 01-product-strategy-essentials.md (Session 2)
+├── 02a-constraints.md (Session 2b)
+├── 02a-constraints-essentials.md (Session 2b)
 ├── 02-tech-stack.md (Session 3)
 ├── 02b-coding-standards.md (Session 3b)
 ├── 02b-coding-standards-essentials.md (Session 3b)
