@@ -15,7 +15,7 @@ This is a **post-core extension** that creates a comprehensive, data-driven grow
 - ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
 
 **Ideally after Session 7+** when you also have:
-- ✅ Backlog generated (`product-guidelines/09-backlog/`)
+- ✅ Backlog generated (`product-guidelines/10-backlog/`)
 - So growth experiments can be prioritized in development
 
 **Skip this** if:
@@ -81,7 +81,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 5. **Read analytics plan** (if available):
    ```bash
-   Read product-guidelines/17-analytics-plan.md
+   Read product-guidelines/20-analytics-plan.md
    ```
    - What events are tracked? (measurement capability)
    - What funnels exist? (conversion tracking)
@@ -104,7 +104,7 @@ Use the Read tool to read all cascade inputs listed above.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/growth-strategy-template.md
+Read templates/21-growth-strategy-template.md
 ```
 
 ### Step 3: Analyze Growth Model
@@ -690,10 +690,10 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 
 ## Reference
 
-- Template: `/templates/growth-strategy-template.md`
+- Template: `/templates/21-growth-strategy-template.md`
 - Related: `/product-guidelines/04-metrics.md` (North Star and input metrics)
 - Related: `/product-guidelines/04-monetization.md` (conversion and expansion)
-- Related: `/product-guidelines/analytics-plan.md` (measurement capability)
+- Related: `product-guidelines/20-analytics-plan.md` (measurement capability)
 
 ---
 

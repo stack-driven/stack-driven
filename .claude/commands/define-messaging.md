@@ -12,7 +12,7 @@ You are helping the user create a comprehensive brand messaging framework that c
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Mission statement (`product-guidelines/03-mission.md`)
 - ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
-- ✅ Brand name chosen (from `product-guidelines/brand-naming.md` or already decided)
+- ✅ Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided)
 
 Your messaging should communicate [journey value] in [brand voice], not be created in isolation.
 
@@ -50,7 +50,7 @@ This command READS previous outputs to create journey-grounded messaging:
 
 4. **Read the brand name** (if available):
    ```bash
-   Read product-guidelines/brand-naming.md  # If naming was done
+   Read product-guidelines/15-brand-naming.md  # If naming was done
    ```
    - Use chosen name in messaging
 
@@ -67,7 +67,7 @@ Create a brand messaging framework that expresses the journey value in your bran
    Read product-guidelines/00-user-journey.md
    Read product-guidelines/03-mission.md
    Read product-guidelines/05-brand-strategy.md
-   Read product-guidelines/brand-naming.md  # If exists
+   Read product-guidelines/15-brand-naming.md  # If exists
    ```
 
 2. **Read the template structure**:

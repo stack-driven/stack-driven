@@ -35,7 +35,7 @@ Create a detailed content style guide following the instructions below.
 
 2. **Check for messaging inputs** (recommended):
    ```bash
-   Read product-guidelines/10-brand-messaging.md
+   Read product-guidelines/16-brand-messaging.md
    ```
    - If exists: Expand messaging framework into detailed guidelines
    - If not exists: Create guidelines from scratch with user input
@@ -109,7 +109,7 @@ The output follows this structure:
 ```
 You: Let's create your content guidelines. First, let me check if you have brand messaging...
 
-[Check for product-guidelines/10-brand-messaging.md]
+[Check for product-guidelines/16-brand-messaging.md]
 
 You: Great! I see your voice is [casual/witty/professional]. Now let's get specific. Which style guide do you follow? AP? Chicago? Or custom rules?
 

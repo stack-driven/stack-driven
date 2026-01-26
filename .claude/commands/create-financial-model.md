@@ -15,7 +15,7 @@ This is a **post-core extension** that creates a comprehensive financial model g
 - ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
 
 **Ideally after additional strategy work** when you also have:
-- ✅ Growth strategy created (`product-guidelines/growth-strategy.md`)
+- ✅ Growth strategy created (`product-guidelines/21-growth-strategy.md`)
 - ✅ Tech stack chosen (`product-guidelines/02-tech-stack.md`)
 - So cost structure and customer acquisition costs are grounded in reality
 
@@ -92,7 +92,7 @@ This command READS previous outputs to ground financial projections in reality:
 
 6. **Read the growth strategy** (if available):
    ```bash
-   Read product-guidelines/growth-strategy.md
+   Read product-guidelines/21-growth-strategy.md
    ```
    - What are the acquisition channels? (affects CAC)
    - What's the growth model? (viral, content, sales)
@@ -118,7 +118,7 @@ Use the Read tool to read all cascade inputs listed above.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/financial-model-template.md
+Read templates/22-financial-model-template.md
 ```
 
 ### Step 3: Calculate Unit Economics
