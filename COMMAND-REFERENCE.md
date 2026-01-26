@@ -228,13 +228,61 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 - FastAPI: Service layer with dependency injection
 - Express: Controller-Service-Repository pattern
 
-**Next step:** Run `/generate-strategy`
+**Next step:** Run `/define-ai-integration-strategy` (if AI in tech stack) or `/generate-strategy`
 
 **Tips:**
 - Every pattern includes journey rationale
 - Code examples are complete and compilable
 - Patterns ensure consistency across AI sessions
 - "What We DIDN'T Choose" documents alternatives
+
+---
+
+### Session 3c: `/define-ai-integration-strategy`
+
+**Purpose:** Define comprehensive AI integration strategy with cost projections
+
+**When to run:** After Session 3b, only if AI is included in your tech stack
+
+**Time required:** 30-40 minutes
+
+**What it creates:**
+- AI feature requirements mapped to journey steps
+- Implementation pattern decision (Direct API, RAG, Function Calling, Agents)
+- Model selection and routing strategy with cost projections
+- Prompt engineering approach
+- Security guardrails and compliance approach
+- MVP vs scale implementation plan
+
+**Inputs (what it reads):**
+- `product-guidelines/00-user-journey.md` - AI touchpoints and requirements
+- `product-guidelines/01-product-strategy.md` - Scale, budget, compliance context
+- `product-guidelines/02-tech-stack.md` - AI provider and infrastructure
+
+**Outputs:**
+- `product-guidelines/02c-ai-integration-strategy.md` (comprehensive strategy)
+- `product-guidelines/02c-ai-integration-strategy-essentials.md` (for AI agents)
+
+**How it works:**
+- Analyzes journey for AI requirements (latency, quality, volume)
+- Calculates actual token usage and monthly costs
+- Recommends implementation patterns based on use cases
+- Provides compliance approach (APIs with BAAs/DPAs, not self-hosting)
+- Defines MVP priorities vs future optimizations
+
+**Key decisions:**
+- Model selection (GPT-4o mini vs Claude Sonnet vs others)
+- RAG architecture if document processing needed
+- Caching strategy (60-73% cost reduction typical)
+- Fallback chains for reliability
+- Rate limiting and budget controls
+
+**Next step:** Run `/generate-strategy`
+
+**Tips:**
+- Shows actual cost calculations, not estimates
+- Honest about latency limitations
+- Skip if no AI in your product
 
 ---
 

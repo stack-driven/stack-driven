@@ -26,6 +26,8 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
                                         product-guidelines/02b-coding-standards-essentials.md
+Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md (optional)
+                                              product-guidelines/02c-ai-integration-strategy-essentials.md
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                          product-guidelines/04-metrics.md
                                          product-guidelines/04-monetization.md
@@ -175,6 +177,11 @@ Based on what files exist, determine the next recommended action:
 - **Recommend**: Session 3b (`/define-coding-standards`)
 
 **If 00-02b exist (Session 3b complete)**:
+- **Check**: Does `02-tech-stack.md` mention AI provider?
+  - If yes: **Recommend**: Session 3c (`/define-ai-integration-strategy`)
+  - If no: **Recommend**: Session 4 (`/generate-strategy`)
+
+**If 00-02c exist (Session 3c complete)**:
 - **Recommend**: Session 4 (`/generate-strategy`)
 
 **If 00-04 architecture exist (Session 4 complete)**:

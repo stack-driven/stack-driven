@@ -56,7 +56,11 @@ Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
                                        product-guidelines/02b-coding-standards-essentials.md
-  ↓ (AI reads all previous + standards, derives tactics)
+  ↓ (AI reads all previous + standards, defines AI strategy if AI in stack)
+
+Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md
+                                              product-guidelines/02c-ai-integration-strategy-essentials.md
+  ↓ (AI reads all previous + AI strategy, derives tactics)
 
 Session 4: /generate-strategy          → product-guidelines/03-mission.md
                                         product-guidelines/04-metrics.md
