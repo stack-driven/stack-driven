@@ -34,7 +34,199 @@ Create comprehensive API contracts including:
 
 ## Process
 
-### Step 1: Read Previous Outputs
+### Step 1: Analyze API Paradigm Requirements
+
+**Before generating endpoints, analyze the journey and tech stack to determine the optimal API paradigm.**
+
+This systematic analysis prevents defaulting to REST without consideration of alternatives (GraphQL, gRPC, WebSocket, hybrid). Every API decision must trace back to journey requirements.
+
+#### Decision Tree: What API Paradigm Should This Be?
+
+Analyze these five decision points in order, referencing the serialization guide (`reference-material/serialization-guide.md`) for format selection logic:
+
+**1. Real-time requirements? (Check Journey Steps)**
+```
+Question: Does any journey step require <1s updates or live collaboration?
+
+Where to find input:
+- Journey steps (00-user-journey.md): Look for phrases like "real-time", "live sync", "collaborative editing", "instant updates"
+- Product strategy (01-product-strategy.md): Check for "real-time" features
+
+Decision logic:
+├─ <1s latency needs (trading, gaming, live collab) → WebSocket / Server-Sent Events
+├─ 1-30s acceptable (document processing, AI analysis) → REST with polling
+└─ Async operations (5+ min) → REST with webhooks or long-polling
+
+Serialization: WebSocket typically uses JSON (browser compatibility) or MessagePack (binary efficiency)
+
+Example journey phrases that indicate real-time:
+- "See other users' changes immediately"
+- "Live cursor positions"
+- "Instant notifications"
+- "Collaborative whiteboard"
+- "Real-time dashboards"
+
+Counter-example (NOT real-time):
+- "User uploads document, waits for AI analysis" → REST (async job polling acceptable)
+```
+
+**2. Data fetching flexibility needs? (Check Journey + Mobile)**
+```
+Question: Do clients need highly variable data shapes or mobile bandwidth optimization?
+
+Where to find input:
+- Journey (00-user-journey.md): Multiple client types (web, mobile, desktop)?
+- Tech stack (02-tech-stack.md): Did Session 3 choose mobile-first or include native apps?
+- Product strategy: Bandwidth-constrained users (international, mobile-heavy)?
+
+Decision logic:
+├─ Mobile clients with limited bandwidth → GraphQL (field selection)
+├─ Vastly different data needs per client type → GraphQL (flexible queries)
+├─ 50+ optional fields per resource → GraphQL (avoid over-fetching)
+└─ Standard B2B SaaS with predictable queries → REST (simpler)
+
+Example indicators for GraphQL:
+- "Mobile app needs profile with photo thumbnails, web needs full resolution"
+- "Different views need different field sets"
+- "Customer wants to minimize API calls for mobile data costs"
+
+Counter-example (REST sufficient):
+- "Standard CRUD on documents, frameworks, assessments" → REST
+```
+
+**3. Microservices architecture? (Check Tech Stack from Session 3)**
+```
+Question: Did Session 3 choose microservices vs monolith?
+
+Where to find input:
+- Tech stack (02-tech-stack.md): Architecture decision (monolith / microservices)
+- Architecture (04-architecture.md): Service boundaries
+
+Decision logic:
+├─ Microservices chosen → **Hybrid**: gRPC for internal service-to-service + REST for external API
+│  └─ Internal: Use gRPC + Protobuf (high-performance, type-safe)
+│  └─ External: Use REST + JSON (standard, debuggable, client-friendly)
+├─ Monolith chosen → REST (single API surface)
+└─ Planned future microservices → Start REST, design for future gRPC addition
+
+Serialization formats:
+- gRPC → Protocol Buffers (schema-based, compact)
+- REST external → JSON (universal support)
+- Internal high-perf → MessagePack or Protobuf
+
+Why hybrid for microservices:
+- External clients expect REST (easy debugging, wide tooling)
+- Internal services benefit from gRPC (fast, type-safe, streaming)
+- Separation of concerns: public API stability vs internal efficiency
+```
+
+**4. Third-party integrations? (Check Product Strategy)**
+```
+Question: Does strategy mention marketplace, partner APIs, or public API?
+
+Where to find input:
+- Product strategy (01-product-strategy.md): "Marketplace", "Partner integrations", "Public API", "Ecosystem"
+- Constraints (02a-constraints.md): Integration requirements
+
+Decision logic:
+├─ Public API for third-party developers → REST + HATEOAS (API discoverability)
+├─ Marketplace / partner integrations → REST (standard, easy onboarding)
+├─ Webhooks for event notifications → REST callbacks
+└─ Internal-only API → Simple REST (no HATEOAS overhead)
+
+Why REST + HATEOAS for third-party:
+- Self-documenting (links to related resources)
+- Easier for external developers
+- Reduces support burden
+
+Counter-example (simple REST):
+- "Single-page app with dedicated backend" → No third-party access
+```
+
+**5. Performance critical? (Check Architecture + Scale)**
+```
+Question: Does the journey have high-throughput service-to-service calls or extreme performance needs?
+
+Where to find input:
+- Architecture (04-architecture.md): Performance requirements, SLOs
+- Journey: Volume expectations (requests per second, concurrent users)
+
+Decision logic:
+├─ High-throughput service-to-service (>10k req/s) → gRPC (binary, fast)
+├─ Standard B2B SaaS patterns (<1k req/s) → REST (sufficient, easier debugging)
+└─ Performance-sensitive internal APIs → Consider Protobuf or MessagePack
+
+Serialization guide reference (lines 1116-1139 in serialization guide):
+- <1000 req/s → JSON/text is fine
+- >10k req/s → Optimize with binary (Protobuf, MessagePack)
+- Latency SLA <10ms → Consider FlatBuffers (zero-copy)
+
+Counter-example (REST sufficient):
+- "B2B SaaS with 500 users, 50 concurrent" → REST is plenty fast
+```
+
+#### Default: REST with JSON
+
+**If none of the above criteria apply, default to REST:**
+- Simple, proven, debuggable
+- Universal tooling (Postman, curl, browser DevTools)
+- Standard for B2B SaaS and web applications
+- Easy onboarding for developers
+- Large ecosystem (OpenAPI, client SDKs)
+
+**Document why more complex paradigms weren't needed** in the "What We DIDN'T Choose" section.
+
+#### Serialization Format Selection
+
+Based on the chosen paradigm, recommend serialization format using decision tree from `reference-material/serialization-guide.md` (lines 939-1071):
+
+**Format mapping:**
+- **REST API (public)** → JSON (universal support, human-readable)
+- **REST API (internal, high-traffic)** → JSON or MessagePack (balance convenience/performance)
+- **gRPC** → Protocol Buffers (native to gRPC)
+- **GraphQL** → JSON (standard)
+- **WebSocket** → JSON (browser-native) or MessagePack (binary efficiency)
+- **Financial data** → JSON with Decimal strings (exact precision)
+- **File upload** → multipart/form-data (for files) + JSON (for metadata)
+
+See serialization guide Section 6 (Decision Framework) for detailed format comparison.
+
+#### Output Format: API Paradigm Decision Section
+
+After analyzing the five decision points, add this section to `08-api-contracts.md`:
+
+```markdown
+## API Paradigm Decision
+
+**Chosen Style**: [REST / REST+HATEOAS / GraphQL / gRPC / WebSocket / Hybrid]
+
+**Journey-Based Reasoning**:
+- [Reference specific journey steps that drove this decision]
+- [Cite concrete requirements: latency needs, client types, scale, integrations]
+- [Example: "Step 3 requires 5-10 min AI processing → REST with polling (202 Accepted + status endpoint), not WebSocket (overkill for async jobs)"]
+
+**Serialization Format**: [JSON / Protobuf / MessagePack / Hybrid]
+- [Explain format choice based on paradigm and performance needs]
+- [Reference serialization guide decision tree if relevant]
+- [Example: "JSON for external API (universal support), Protobuf for future internal services (if microservices migration occurs)"]
+
+**Scale-Forward Strategy**:
+- [How this design supports future growth without breaking changes]
+- [Example: "Start with REST+JSON monolith. If microservices later: keep REST external (stable), add gRPC between internal services (performance), use API gateway for routing."]
+- [Document when to reconsider: "If mobile app added → evaluate GraphQL for bandwidth optimization"]
+
+**Alternatives Explicitly Rejected**:
+- **GraphQL**: [Why it doesn't fit this journey - e.g., "Simple CRUD patterns, no over-fetching problem, REST sufficient"]
+- **gRPC**: [Why it doesn't fit - e.g., "Web-based journey needs browser compatibility, no extreme performance requirements"]
+- **WebSocket**: [Why it doesn't fit - e.g., "Polling every 5s acceptable for document processing status, WebSocket adds complexity without benefit"]
+- **[Other paradigms considered]**: [Reasoning for rejection]
+```
+
+**Validation**: Ensure every statement in this section references specific inputs (journey steps, tech stack decisions, scale projections). If you can't cite a concrete reason from previous sessions, the paradigm choice may be arbitrary.
+
+---
+
+### Step 2: Read Previous Outputs
 
 **Required inputs:**
 
@@ -88,7 +280,7 @@ Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes afte
 
 ---
 
-### Step 2: Identify Core Resources
+### Step 3: Identify Core Resources
 
 **Decision Tree - Resource Identification:**
 
@@ -116,7 +308,7 @@ For each entity in database schema or backlog, ask:
 
 ---
 
-### Step 3: Define Endpoint Structure
+### Step 4: Define Endpoint Structure
 
 **Endpoint Naming Conventions:**
 
@@ -158,7 +350,7 @@ For each entity in database schema or backlog, ask:
 
 ---
 
-### Step 4: Define Request and Response Schemas
+### Step 5: Define Request and Response Schemas
 
 For EACH endpoint, define:
 - **Request schema** (path params, query params, headers, body)
@@ -208,7 +400,7 @@ GET /api/assessments/:id
 
 ---
 
-### Step 5: Define Authentication and Authorization
+### Step 6: Define Authentication and Authorization
 
 **Authentication Strategy:**
 
@@ -251,7 +443,7 @@ From tech stack, determine auth method:
 
 ---
 
-### Step 6: Define Error Handling
+### Step 7: Define Error Handling
 
 **Error Response Format:**
 
@@ -303,7 +495,7 @@ Server Errors:
 
 ---
 
-### Step 7: Define Rate Limiting and Pagination
+### Step 8: Define Rate Limiting and Pagination
 
 **Rate Limiting Strategy:**
 
@@ -352,7 +544,7 @@ Server Errors:
 
 ---
 
-### Step 8: Generate OpenAPI Specification
+### Step 9: Generate OpenAPI Specification
 
 Create complete OpenAPI 3.0 specification. Use template at `templates/08-api-contracts-template.md` for detailed structure.
 
@@ -372,20 +564,21 @@ Create complete OpenAPI 3.0 specification. Use template at `templates/08-api-con
 
 ---
 
-### Step 9: Document API Design Decisions
+### Step 10: Document API Design Decisions
 
 Write `product-guidelines/08-api-contracts.md` with:
+- **API Paradigm Decision**: Include the section generated in Step 1 (Chosen Style, Journey-Based Reasoning, Serialization Format, Scale-Forward Strategy, Alternatives Explicitly Rejected)
 - **Overview**: API style, base URLs, versioning strategy, endpoint count
 - **Authentication**: Method and how to use it
 - **Core Resources**: For each resource: purpose (journey connection), endpoints table, key design decisions
 - **Patterns**: Rate limiting, error handling, pagination
 - **OpenAPI Spec**: Link to `openapi.yaml` file
 - **Testing**: Example curl/httpie commands
-- **"What We DIDN'T Choose"**: Alternatives considered (GraphQL, gRPC, etc.) with reasoning
+- **"What We DIDN'T Choose"**: Additional alternatives beyond paradigm decision (e.g., header-based versioning, API gateway, etc.)
 
 ---
 
-### Step 10: Create Essentials Version for Backlog Generation
+### Step 11: Create Essentials Version for Backlog Generation
 
 **IMPORTANT**: Create a condensed essentials version optimized for Session 10 (backlog generation).
 
@@ -435,7 +628,7 @@ Use template at `templates/08-api-contracts-essentials-template.md` to create `p
 
 ---
 
-### Step 11: Validate API Design
+### Step 12: Validate API Design
 
 **Quality Checklist:**
 

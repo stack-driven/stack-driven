@@ -1,8 +1,104 @@
-# OpenAPI 3.0 Specification Template
+# API Contracts Template
 
-Use this template as a reference for creating complete OpenAPI specifications. Adapt to your specific project needs.
+> This template guides the structure of `product-guidelines/08-api-contracts.md`
 
-## Complete OpenAPI Structure
+## Required Sections
+
+### API Paradigm Decision
+
+**This section MUST come first**, documenting the systematic analysis from Step 1 of the generate-api-contracts command.
+
+```markdown
+## API Paradigm Decision
+
+**Chosen Style**: [REST / REST+HATEOAS / GraphQL / gRPC / WebSocket / Hybrid (specify components)]
+
+**Journey-Based Reasoning**:
+- [Reference specific journey steps that drove this decision]
+- [Cite concrete requirements: latency needs, client types, scale projections, integration requirements]
+- [Example: "Step 3 (AI document assessment) requires 5-10 min processing → REST with async job polling (202 Accepted + status endpoint), not WebSocket (overkill for long-running async jobs)"]
+- [Example: "Journey has standard web CRUD patterns → REST sufficient, GraphQL adds complexity without bandwidth benefit"]
+
+**Serialization Format**: [JSON / Protobuf / MessagePack / Hybrid (specify usage)]
+- [Explain format choice based on paradigm and performance needs]
+- [Reference serialization guide decision tree if relevant]
+- [Example: "JSON for external API (universal support, human-readable debugging)"]
+- [Example: "Hybrid: JSON for REST endpoints + Protobuf for future internal gRPC services (if microservices migration occurs)"]
+- [Example for financial: "JSON with Decimal string representation for monetary amounts (exact precision, no binary float rounding errors)"]
+
+**Scale-Forward Strategy**:
+- [How this design supports future growth without breaking external contracts]
+- [Migration path if requirements change]
+- [Example: "Start with REST+JSON monolith. If microservices later: keep REST external (stable public API), add gRPC between internal services (performance), use API gateway for routing."]
+- [Document when to reconsider: "If mobile app added with bandwidth constraints → evaluate GraphQL for field-level selection optimization"]
+- [Example: "If real-time collaboration added → add WebSocket for live updates alongside REST for standard operations"]
+
+**Alternatives Explicitly Rejected**:
+
+**GraphQL**:
+- What: Query language allowing clients to request exact fields needed, single endpoint for all queries
+- Why not chosen: [Journey-specific reasoning]
+  - Example: "Simple CRUD patterns with predictable queries → REST sufficient"
+  - Example: "No over-fetching problem (mobile bandwidth not constrained)"
+  - Example: "Team familiar with REST, GraphQL adds learning curve without clear benefit"
+  - Example: "50+ optional fields per resource would justify GraphQL, but our entities are focused (10-15 fields each)"
+- Reconsider if: [Specific trigger conditions]
+  - Example: "Mobile app added with variable data needs across screens"
+  - Example: "Third-party developers need flexible API without versioning"
+  - Example: "Over-fetching becomes measurable performance problem"
+
+**gRPC**:
+- What: High-performance RPC with Protocol Buffers (binary), bidirectional streaming
+- Why not chosen: [Journey-specific reasoning]
+  - Example: "Web-based journey → browsers need grpc-web proxy (adds complexity)"
+  - Example: "No network bottleneck (<1k req/s) → REST/JSON sufficient and easier to debug"
+  - Example: "External API → REST has better tooling (Postman, curl, browser DevTools)"
+  - Example: "Performance requirements met by REST (no <10ms latency SLA)"
+- Reconsider if: [Specific trigger conditions]
+  - Example: "Microservices with high-throughput service-to-service calls (>10k req/s)"
+  - Example: "Need bidirectional streaming (not just client→server or server→client)"
+  - Example: "Internal-only APIs where debugging complexity acceptable"
+
+**WebSocket (Real-Time)**:
+- What: Persistent bidirectional connection for instant updates (<1s latency)
+- Why not chosen: [Journey-specific reasoning]
+  - Example: "Document processing takes 5-10 min → polling every 5s acceptable, WebSocket overkill"
+  - Example: "No collaborative editing → no need for live multi-user sync"
+  - Example: "Async operations → REST 202 Accepted + status polling simpler than WebSocket connection management"
+  - Example: "WebSocket adds complexity: connection scaling, reconnection logic, fallback strategies"
+- Reconsider if: [Specific trigger conditions]
+  - Example: "Need <1s updates (live dashboards, trading, gaming)"
+  - Example: "Collaborative features added (multiple users editing same resource)"
+  - Example: "Mobile app where polling drains battery"
+
+**REST + HATEOAS (Hypermedia)**:
+- What: REST with hyperlinks to related resources (self-documenting API)
+- Why not chosen: [Journey-specific reasoning]
+  - Example: "Single-page app with known backend → no need for API discoverability"
+  - Example: "No third-party developers → HATEOAS overhead without benefit"
+  - Example: "Standard REST simpler for internal team"
+- Reconsider if: [Specific trigger conditions]
+  - Example: "Public API for third-party developers (reduces documentation burden)"
+  - Example: "Marketplace/partner integrations (API discoverability valuable)"
+  - Example: "Client needs vary significantly (HATEOAS enables adaptive clients)"
+
+**[Other paradigms considered]**: [Add any additional paradigms evaluated]
+```
+
+**Validation**: Every statement in this section MUST reference specific inputs from:
+- Journey steps (00-user-journey.md)
+- Tech stack decisions (02-tech-stack.md)
+- Architecture requirements (04-architecture.md)
+- Product strategy (01-product-strategy.md)
+- Scale projections
+
+If you cannot cite a concrete reason from previous sessions, the paradigm choice may be arbitrary and violates framework philosophy.
+
+---
+
+### OpenAPI 3.0 Specification Structure
+
+After the API Paradigm Decision section, include the complete OpenAPI spec. Use the structure below:
 
 ```yaml
 openapi: 3.0.3
@@ -768,10 +864,50 @@ components:
         example: -created_at
 ```
 
+---
+
+### Additional Required Sections
+
+After the OpenAPI specification, include:
+
+**Overview**:
+- API style (from Paradigm Decision)
+- Base URLs
+- Versioning strategy
+- Total endpoint count
+
+**Authentication**:
+- Auth method (from tech stack)
+- How to obtain tokens
+- Token format and placement
+- Token lifetime and refresh
+
+**Core Resources** (for each):
+- Purpose (journey connection)
+- Endpoints table
+- Key design decisions
+
+**Patterns**:
+- Rate limiting implementation
+- Error handling conventions
+- Pagination strategy
+
+**Testing Examples**:
+- curl/httpie commands for key endpoints
+- Example requests and responses
+
+**What We DIDN'T Choose** (beyond paradigm section):
+- Header-based API versioning
+- Full OAuth 2.0 server
+- API Gateway (Kong, AWS)
+- Other implementation alternatives
+
+---
+
 ## Notes
 
 - Replace all `[Resource]`, `[Project Name]`, `[domain]`, etc. with actual values
-- Add all your project-specific endpoints and schemas
+- Add all project-specific endpoints and schemas
 - Use `$ref` to reuse schemas and avoid duplication
 - Include examples for better documentation
 - Mark required fields explicitly

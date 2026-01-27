@@ -6,9 +6,21 @@
 
 ---
 
+## API Paradigm Decision Summary
+
+> See `08-api-contracts.md` for complete paradigm analysis with journey-based reasoning and scale-forward strategy.
+
+- **Chosen Style**: [REST / REST+HATEOAS / GraphQL / gRPC / WebSocket / Hybrid]
+- **Serialization**: [JSON / Protobuf / MessagePack / Hybrid]
+- **Rationale**: [1-2 sentence summary of why this paradigm, citing journey steps or requirements]
+  - Example: "REST chosen for standard B2B SaaS CRUD patterns. No real-time requirements (<1s), no mobile bandwidth constraints, no microservices. Polling acceptable for 5-10 min async operations."
+- **Rejected**: [List alternatives considered: GraphQL, gRPC, WebSocket, etc.]
+
+---
+
 ## API Configuration
 
-- **API Style**: [REST/GraphQL/gRPC from tech stack]
+- **API Style**: [REST/GraphQL/gRPC from paradigm decision above]
 - **Authentication**: [JWT/OAuth2/Session/API Key from tech stack]
 - **Base URL**: `https://api.[domain].com`
 - **Pagination**: [Cursor-based/Offset-based]
