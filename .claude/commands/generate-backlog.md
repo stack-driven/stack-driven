@@ -34,7 +34,8 @@ Read: product-guidelines/04-metrics.md
 Read: product-guidelines/04-monetization.md
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
-Read: product-guidelines/08-api-contracts-essentials.md
+Read: product-guidelines/08-api-design-essentials.md
+Read: product-guidelines/08b-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy-essentials.md
 Read: product-guidelines/09b-application-architecture-essentials.md
 ```
@@ -45,7 +46,8 @@ Read: product-guidelines/09b-application-architecture-essentials.md
 - `02b-coding-standards-essentials.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
 - `02c-ai-integration-strategy-essentials.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
 - `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
-- `08-api-contracts-essentials.md` (not `08-api-contracts.md`) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
+- `08-api-design-essentials.md` (Session 8) - Condensed: Contains API paradigm (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth method, rate limiting, pagination approach, and error format—without decision trees, journey analysis, and alternatives.
+- `08b-api-contracts-essentials.md` (Session 8b) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
 - `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
 - `09b-application-architecture-essentials.md` (not `09b-application-architecture.md`) - ~60% reduction: Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy—without business rules, implementation details, design decisions, and architecture rationale.
 

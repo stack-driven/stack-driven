@@ -1,8 +1,9 @@
-# API Contracts Essentials (For Backlog Generation)
+# API Contracts Essentials (For Scaffold Generation - Session 8b)
 
-> This is a condensed version for Session 10 (backlog generation).
-> See `08-api-contracts.md` for complete OpenAPI 3.0 specification with request/response schemas,
+> **Note**: This is a condensed version for Session 12 (scaffold generation).
+> See `08b-api-contracts.md` for complete OpenAPI 3.0 specification with request/response schemas,
 > error definitions, authentication flows, pagination examples, and component schemas.
+> See `08-api-design.md` (Session 8) for high-level API design decisions (paradigm, serialization, auth strategy).
 
 ---
 
@@ -111,49 +112,56 @@ Resource-specific filters vary, common examples:
 
 ---
 
-## Notes for Backlog Generation
+## Notes for Scaffold Generation (Session 12)
 
-### Story Scoping
+### Endpoint Implementation Patterns
 
-**Simple endpoint stories** (1-2 days):
-- Single CRUD operations: `POST /api/[resource]`, `GET /api/[resource]/{id}`
-- Example: "User can create [resource1]" → Implement POST endpoint
+**Simple CRUD endpoints**:
+- Single resource operations: `POST /api/[resource]`, `GET /api/[resource]/{id}`
+- Generate controller/handler stubs for each endpoint
+- Include validation middleware from schemas
 
-**Medium endpoint stories** (2-4 days):
-- List endpoints with pagination/filtering: `GET /api/[resource]`
-- Custom actions: `POST /api/[resource]/{id}/[action]`
-- Example: "User can filter [resource1] by status" → Add query params + filtering logic
+**List endpoints with pagination**:
+- List operations: `GET /api/[resource]`
+- Include pagination logic (cursor or offset from 08-api-design.md)
+- Include filtering and sorting parameters
 
-**Complex endpoint stories** (4+ days - should be split):
-- File uploads with processing
-- Bulk operations
-- Complex analytics aggregations
+**Custom action endpoints**:
+- Actions on resources: `POST /api/[resource]/{id}/[action]`
+- Generate service methods for business logic
+- Include async handling if 202 Accepted pattern used
 
-### Multi-tenancy Considerations
+### Multi-tenancy Implementation
 
 All endpoints (except auth and public) must:
-- Verify team membership
-- Filter data by `team_id`
-- Include "data isolation" in acceptance criteria
+- Include team/user ownership checks
+- Filter queries by `team_id` or `user_id`
+- Use middleware for authorization
 
-### Authentication Flow
+### Authentication Implementation
 
-Stories that need authentication endpoints:
-- User registration flow → `POST /api/auth/signup`
-- Login flow → `POST /api/auth/login`
-- Token refresh → `POST /api/auth/refresh`
+Implement auth middleware:
+- Token validation (JWT/OAuth from 08-api-design.md)
+- User/team context injection
+- Public endpoint exclusions
 
 ---
 
 ## References
 
-For complete API specification including:
+For complete API technical specification:
 - Full OpenAPI 3.0 YAML
 - Request/response schemas with validation rules
 - Error response definitions
-- Authentication flow details
 - Component schemas and reusable definitions
 - Example requests and responses
-- Rate limiting and retry strategies
 
-See: `product-guidelines/08-api-contracts.md`
+See: `product-guidelines/08b-api-contracts.md`
+
+For high-level API design decisions:
+- API paradigm (REST/GraphQL/gRPC)
+- Serialization format (JSON/Protobuf/MessagePack)
+- Authentication strategy
+- Rate limiting and pagination approaches
+
+See: `product-guidelines/08-api-design.md`

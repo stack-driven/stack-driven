@@ -79,10 +79,15 @@ Session 6: /create-design               → product-guidelines/06-design-system.
   ↓ (AI reads all previous, designs technical specs)
 
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
-  ↓ (AI reads schema, designs API surface)
+  ↓ (AI reads schema, designs high-level API architecture)
 
-Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.md
-  ↓ (AI reads APIs, defines testing strategy)
+Session 8: /generate-api-design        → product-guidelines/08-api-design.md
+                                         product-guidelines/08-api-design-essentials.md
+  ↓ (AI reads API design, generates detailed contracts)
+
+Session 8b: /generate-api-contracts    → product-guidelines/08b-api-contracts.md
+                                         product-guidelines/08b-api-contracts-essentials.md
+  ↓ (AI reads contracts, defines testing strategy)
 
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
   ↓ (AI reads tech stack, architecture, schemas, and APIs to model application)
@@ -186,7 +191,10 @@ product-guidelines/
 ├── 05-brand-strategy.md (Session 5)
 ├── 06-design-system.md (Session 6)
 ├── 07-database-schema.md (Session 7)
-├── 08-api-contracts.md (Session 8)
+├── 08-api-design.md (Session 8)
+├── 08-api-design-essentials.md (Session 8)
+├── 08b-api-contracts.md (Session 8b)
+├── 08b-api-contracts-essentials.md (Session 8b)
 ├── 09-test-strategy.md (Session 9)
 ├── 10-backlog/ (Session 10)
 ├── 12-project-scaffold/ (Session 12 - actual code files)

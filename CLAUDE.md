@@ -89,7 +89,8 @@ Session 4: /generate-strategy           → 03-mission, 04-metrics/monetization/
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
 Session 7: /design-database-schema      → 07-database-schema.md
-Session 8: /generate-api-contracts      → 08-api-contracts.md
+Session 8: /generate-api-design         → 08-api-design.md, 08-api-design-essentials.md
+Session 8b: /generate-api-contracts     → 08b-api-contracts.md, 08b-api-contracts-essentials.md
 Session 9: /create-test-strategy        → 09-test-strategy.md
 Session 9b: /model-application          → 09b-application-architecture.md, 09b-essentials
 Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories)
@@ -105,8 +106,11 @@ Session 14: /design-observability       → 14-observability-strategy.md
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
+- Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-essentials
+- Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-essentials
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
-- Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files
+- Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files including 08-api-design-essentials
+- Session 12 (scaffold) reads ALL previous sessions including 08b-api-contracts-essentials
 
 **Never skip sessions** - later sessions need previous outputs for context.
 
@@ -197,7 +201,8 @@ Some sessions create TWO files:
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md` (70% reduction)
 - `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` (70% reduction)
 - `07-database-schema.md` + `07-database-schema-essentials.md` (56% reduction)
-- `08-api-contracts.md` + `08-api-contracts-essentials.md` (80% reduction)
+- `08-api-design.md` + `08-api-design-essentials.md` (Session 8 - high-level API decisions for backlog)
+- `08b-api-contracts.md` + `08b-api-contracts-essentials.md` (Session 8b - technical specs for scaffold)
 - `09-test-strategy.md` + `09-test-strategy-essentials.md` (66% reduction)
 - `09b-application-architecture.md` + `09b-application-architecture-essentials.md` (60% reduction)
 
@@ -212,7 +217,11 @@ Some sessions create TWO files:
 
 Sessions 5 and 6 don't have essentials because they're only read by optional post-cascade commands (not core cascade Sessions 10 or 12). Those commands need the full context (brand personality, design system components). Additionally, Session 6's template is already compact (1.7KB).
 
-In contrast, sessions 02c, 09, and 09b DO have essentials because they're read by core cascade sessions (Session 10 reads all essentials; Session 9b reads 02b-essentials; Session 12 reads 09b-essentials) where token reduction significantly improves performance.
+In contrast, sessions 02c, 08, 08b, 09, and 09b DO have essentials because they're read by core cascade sessions:
+- Session 8 essentials → Session 10 (backlog) reads API paradigm/serialization decisions
+- Session 8b essentials → Session 12 (scaffold) reads endpoint lists for code generation
+- Session 10 reads all essentials; Session 9b reads 02b-essentials; Session 12 reads 09b-essentials
+Token reduction significantly improves performance.
 
 ### 5. Quality Validation Framework
 
@@ -426,18 +435,22 @@ Session 6 (design) [reads: 00-05]
   ↓
 Session 7 (database-schema) [reads: 00-06]
   ↓
-Session 8 (api-contracts) [reads: 00-07]
+Session 8 (api-design) [reads: 00, 02, 04, 07-essentials]
   ↓
-Session 9 (test-strategy) [reads: 00-08]
+Session 8b (api-contracts) [reads: 08-api-design, 00, 02, 04, 07-essentials]
+  ↓
+Session 9 (test-strategy) [reads: 00-08b]
   ↓
 Session 9b (application-architecture) [reads: 00, 02, 02b-essentials*, 04, 07-essentials*, 08-essentials*]
   * Essentials files used to reduce token usage (architecture doesn't need full schemas/contracts)
   ↓
-Session 10 (backlog) [reads: 00-09b including 02b + all essentials files]
+Session 10 (backlog) [reads: 00-09b including 02b + all essentials files including 08-api-design-essentials*]
+  * Reads API design decisions (paradigm, serialization) for API-driven stories
   ↓
 Session 11 (create-gh-issues) [reads: 10-backlog/]
   ↓
-Session 12 (scaffold) [reads: 00-11 including 02b, 09b-essentials]
+Session 12 (scaffold) [reads: 00-11 including 02b, 09b-essentials, 08b-api-contracts-essentials*]
+  * Reads endpoint lists for controller/route generation
   ↓
 Session 13 (deployment) [reads: 00-12]
   ↓

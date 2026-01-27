@@ -46,12 +46,12 @@ Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md (from Session 7)
-Read: product-guidelines/08-api-contracts-essentials.md (from Session 8)
+Read: product-guidelines/08b-api-contracts-essentials.md (from Session 8b)
 ```
 
 **Context Optimization**: We read essentials versions for significant context reduction:
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for test planning
-- `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
+- `08b-api-contracts-essentials.md` (~79% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
 
 **Optional inputs (if available):**
 
@@ -1318,7 +1318,7 @@ Don't waste time on:
 - Tech stack: `product-guidelines/02-tech-stack.md`
 - Architecture: `product-guidelines/04-architecture.md`
 - Database schema: `product-guidelines/07-database-schema.md` (from Session 7)
-- API contracts: `product-guidelines/08-api-contracts.md` (from Session 8)
+- API contracts: `product-guidelines/08b-api-contracts.md` (from Session 8b)
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 - Scaffold: `product-guidelines/12-project-scaffold.md` (generated after in Session 12)
 

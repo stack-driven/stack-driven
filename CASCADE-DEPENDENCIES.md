@@ -139,7 +139,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Downstream consumers of essentials:**
 - Session 4 (generate-strategy)
 - Session 7 (database-schema) - for vector DB if RAG
-- Session 8 (api-contracts) - for AI endpoints
+- Session 8 (api-design) - for API paradigm decisions
+- Session 8b (api-contracts) - for AI endpoints
 - Session 9b (model-application) - for AI service layer
 - Session 10 (generate-backlog) - for AI implementation stories
 - Session 12 (scaffold-project) - for AI SDK configuration
@@ -226,7 +227,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Dependencies:** Sessions 1, 3, 4
 
 **Downstream consumers of essentials:**
-- Session 8 (generate-api-contracts)
+- Session 8 (generate-api-design)
+- Session 8b (generate-api-contracts)
 - Session 9 (create-test-strategy)
 - Session 9b (model-application)
 - Session 10 (generate-backlog)
@@ -236,10 +238,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ---
 
-### Session 8: `/generate-api-contracts`
+### Session 8: `/generate-api-design`
 **Outputs:**
-- `08-api-contracts.md`
-- `08-api-contracts-essentials.md`
+- `08-api-design.md`
+- `08-api-design-essentials.md`
 
 **Reads:**
 ```
@@ -247,10 +249,36 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/02-tech-stack.md
 ├─ 📄 product-guidelines/04-architecture.md
 ├─ 📋 product-guidelines/07-database-schema-essentials.md
-└─ 🔧 /templates/08-api-contracts-template.md
+├─ 🔧 /templates/08-api-design-template.md
+└─ 📚 /reference-material/serialization-guide.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7
+
+**Downstream consumers of essentials:**
+- Session 8b (generate-api-contracts) - reads API paradigm decisions
+- Session 10 (generate-backlog) - reads API paradigm and serialization for API-driven stories
+
+**Why essentials?** 79% reduction. Contains API paradigm decision (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth approach, rate limiting strategy—sufficient for backlog generation without detailed analysis sections.
+
+---
+
+### Session 8b: `/generate-api-contracts`
+**Outputs:**
+- `08b-api-contracts.md`
+- `08b-api-contracts-essentials.md`
+
+**Reads:**
+```
+├─ 📄 product-guidelines/08-api-design.md
+├─ 📄 product-guidelines/00-user-journey.md
+├─ 📄 product-guidelines/02-tech-stack.md
+├─ 📄 product-guidelines/04-architecture.md
+├─ 📋 product-guidelines/07-database-schema-essentials.md
+└─ 🔧 /templates/08b-api-contracts-template.md
+```
+
+**Dependencies:** Sessions 1, 3, 4, 7, 8
 
 **Downstream consumers of essentials:**
 - Session 9 (create-test-strategy)
@@ -258,7 +286,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 - Session 10 (generate-backlog)
 - Session 12 (scaffold-project)
 
-**Why essentials?** 80% reduction. Contains endpoint list organized by journey step—sufficient for test strategy and backlog without full request/response schemas, validation rules, error codes.
+**Why essentials?** 79% reduction. Contains endpoint list organized by journey step—sufficient for test strategy, backlog, and scaffold generation without full request/response schemas, validation rules, error codes.
 
 ---
 
@@ -273,11 +301,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/02-tech-stack.md
 ├─ 📄 product-guidelines/04-architecture.md
 ├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 📋 product-guidelines/08-api-contracts-essentials.md
+├─ 📋 product-guidelines/08b-api-contracts-essentials.md
 └─ 🔧 /templates/09-test-strategy-template.md
 ```
 
-**Dependencies:** Sessions 1, 3, 4, 7, 8
+**Dependencies:** Sessions 1, 3, 4, 7, 8b
 
 **Downstream consumers of essentials:**
 - Session 10 (generate-backlog)
@@ -647,7 +675,8 @@ ALL files in product-guidelines/
 - ✅ Session 5 (brand-strategy)
 - ✅ Session 6 (create-design)
 - ✅ Session 7 (database-schema)
-- ✅ Session 8 (api-contracts)
+- ✅ Session 8 (api-design)
+- ✅ Session 8b (api-contracts)
 - ✅ Session 9 (test-strategy)
 - ✅ Session 9b (model-application)
 - ✅ Session 10 (backlog)
@@ -664,7 +693,8 @@ ALL files in product-guidelines/
 - ✅ Session 3b (coding-standards) - needs framework choices
 - ✅ Session 4 (generate-strategy) - architecture depends on tech
 - ✅ Session 7 (database-schema) - ORM/migration tool choice
-- ✅ Session 8 (api-contracts) - API framework patterns
+- ✅ Session 8 (api-design) - API paradigm selection
+- ✅ Session 8b (api-contracts) - API framework patterns
 - ✅ Session 9 (test-strategy) - testing frameworks
 - ✅ Session 9b (model-application) - framework-specific patterns
 - ✅ Session 10 (backlog) - technical approach in stories
@@ -679,7 +709,8 @@ ALL files in product-guidelines/
 
 ### If you modify `07-database-schema.md`:
 **Direct impact:**
-- ✅ Session 8 (api-contracts) - depends on database structure
+- ✅ Session 8 (api-design) - API paradigm may change based on data model
+- ✅ Session 8b (api-contracts) - depends on database structure
 - ✅ Session 9 (test-strategy) - database testing patterns
 - ✅ Session 9b (model-application) - entity/repository modeling
 - ✅ Session 10 (backlog) - data model references
@@ -687,7 +718,7 @@ ALL files in product-guidelines/
 
 **Cascade impact:** Moderate (affects data layer and above)
 
-**Action:** Regenerate Sessions 8-12
+**Action:** Regenerate Sessions 8, 8b, 9-12
 
 ---
 

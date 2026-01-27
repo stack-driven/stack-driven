@@ -35,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Core Cascade Expansion (14 sessions):**
 - Session 7: `/design-database-schema` - Complete database schema with ERD and migrations
-- Session 8: `/generate-api-contracts` - OpenAPI specifications and endpoint definitions
+- Session 8: `/generate-api-design` - High-level API architecture (paradigm, serialization, auth, rate limiting)
+- Session 8b: `/generate-api-contracts` - OpenAPI specifications and endpoint definitions
 - Session 9: `/create-test-strategy` - Comprehensive testing strategy (unit, integration, E2E)
 - Session 12: `/scaffold-project` - Working development environment with actual code files
 - Session 13: `/plan-deployment` - Deployment strategy and CI/CD pipeline

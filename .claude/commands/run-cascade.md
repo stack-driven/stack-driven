@@ -42,7 +42,8 @@ Identify which sessions are complete based on these files:
 - `05-brand-strategy.md` → Session 5 complete
 - `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
-- `08-api-contracts.md` → Session 8 complete
+- `08-api-design.md` + `08-api-design-essentials.md` → Session 8 complete
+- `08b-api-contracts.md` + `08b-api-contracts-essentials.md` → Session 8b complete
 - `09-test-strategy.md` → Session 9 complete
 - `09b-application-architecture.md` + `09b-application-architecture-essentials.md` → Session 9b complete
 - `10-backlog/` directory → Session 10 complete
@@ -101,10 +102,14 @@ Use this decision logic to determine what to execute:
   - Stop here
 
 **If 00-07 exist:**
-- Run Session 8: `/generate-api-contracts`
+- Run Session 8: `/generate-api-design`
 - Then ask user if they want to continue
 
-**If 00-08 exist:**
+**If 00-08 api design exist (both full and essentials):**
+- Run Session 8b: `/generate-api-contracts`
+- Then ask user if they want to continue
+
+**If 00-08b api contracts exist (both full and essentials):**
 - Run Session 9: `/create-test-strategy`
 - Then ask user if they want to continue
 
@@ -371,7 +376,8 @@ Continue? (yes/no)
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
 7. `/design-database-schema` → 07-database-schema
-8. `/generate-api-contracts` → 08-api-contracts
+8. `/generate-api-design` → 08-api-design, 08-api-design-essentials
+8b. `/generate-api-contracts` → 08b-api-contracts, 08b-api-contracts-essentials
 9. `/create-test-strategy` → 09-test-strategy
 10. `/generate-backlog` → 10-backlog/
 11. `/create-gh-issues` → GitHub

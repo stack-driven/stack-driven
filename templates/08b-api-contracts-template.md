@@ -1,6 +1,8 @@
-# OpenAPI 3.0 Specification Template
+# API Contracts Template (Session 8b) - Technical Implementation
 
-Use this template as a reference for creating complete OpenAPI specifications. Adapt to your specific project needs.
+> **Note**: This template focuses on technical implementation (OpenAPI/Protobuf schemas, endpoints, request/response examples). For high-level API design decisions (paradigm, serialization format, auth strategy), see `08-api-design.md` (Session 8).
+
+Use this template as a reference for creating complete OpenAPI specifications or Protocol Buffer definitions. Adapt to your specific project needs and implement the decisions from Session 8 (API Design).
 
 ## Complete OpenAPI Structure
 

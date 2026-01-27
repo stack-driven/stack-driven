@@ -37,7 +37,10 @@ Session 4: /generate-strategy          → product-guidelines/03-mission.md
 Session 5: /create-brand-strategy      → product-guidelines/05-brand-strategy.md
 Session 6: /create-design              → product-guidelines/06-design-system.md
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
-Session 8: /generate-api-contracts     → product-guidelines/08-api-contracts.md
+Session 8: /generate-api-design        → product-guidelines/08-api-design.md
+                                         product-guidelines/08-api-design-essentials.md
+Session 8b: /generate-api-contracts    → product-guidelines/08b-api-contracts.md
+                                         product-guidelines/08b-api-contracts-essentials.md
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
 Session 9b: /model-application         → product-guidelines/09b-application-architecture.md
                                          product-guidelines/09b-application-architecture-essentials.md
@@ -103,7 +106,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02a-constraints.md`, `02a-constraints-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-contracts.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02a-constraints.md`, `02a-constraints-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-design.md`, `08-api-design-essentials.md`, `08b-api-contracts.md`, `08b-api-contracts-essentials.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
 - **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
@@ -132,7 +135,10 @@ CORE CASCADE (Required - Always Start Here)
 ❌ 05-brand-strategy.md          (Session 5 - Not started)
 ❌ 06-design-system.md           (Session 6 - Not started)
 ❌ 07-database-schema.md         (Session 7 - Not started)
-❌ 08-api-contracts.md           (Session 8 - Not started)
+❌ 08-api-design.md              (Session 8 - Not started)
+❌ 08-api-design-essentials.md   (Session 8 - Not started)
+❌ 08b-api-contracts.md          (Session 8b - Not started)
+❌ 08b-api-contracts-essentials.md (Session 8b - Not started)
 ❌ 09-test-strategy.md           (Session 9 - Not started)
 ❌ 09b-application-architecture.md (Session 9b - Not started)
 ❌ 10-backlog/                   (Session 10 - Not started)
@@ -206,9 +212,12 @@ Based on what files exist, determine the next recommended action:
   - `/create-financial-model` (product-guidelines/22-financial-model.md)
 
 **If 00-07 database exists (Session 7 complete)**:
-- **Recommend**: Session 8 (`/generate-api-contracts`)
+- **Recommend**: Session 8 (`/generate-api-design`)
 
-**If 00-08 api exists (Session 8 complete)**:
+**If 00-08 api design exists (Session 8 complete)**:
+- **Recommend**: Session 8b (`/generate-api-contracts`)
+
+**If 00-08b api contracts exist (Session 8b complete)**:
 - **Recommend**: Session 9 (`/create-test-strategy`)
 
 **If 00-09 test exists (Session 9 complete)**:
@@ -318,7 +327,10 @@ Your Cascade Progress:
 ❌ 05-brand-strategy.md      (Not started)
 ❌ 06-design-system.md       (Not started)
 ❌ 07-database-schema.md     (Not started)
-❌ 08-api-contracts.md       (Not started)
+❌ 08-api-design.md          (Not started)
+❌ 08-api-design-essentials.md (Not started)
+❌ 08b-api-contracts.md      (Not started)
+❌ 08b-api-contracts-essentials.md (Not started)
 ❌ 09-test-strategy.md       (Not started)
 ❌ 10-backlog/               (Not started)
 ❌ 12-project-scaffold.md    (Not started)
@@ -463,7 +475,8 @@ You're adding comprehensive planning! Consider UX flows for complete product def
 - `/create-brand-strategy` - Session 5: Brand foundation (expresses journey value)
 - `/create-design` - Session 6: Design system (brings brand to life)
 - `/design-database-schema` - Session 7: Database schema & migrations
-- `/generate-api-contracts` - Session 8: API contracts & OpenAPI specs
+- `/generate-api-design` - Session 8: High-level API architecture decisions (paradigm, serialization, auth)
+- `/generate-api-contracts` - Session 8b: API contracts & OpenAPI specs
 - `/create-test-strategy` - Session 9: Testing strategy
 - `/model-application` - Session 9b: Application architecture (services, repositories, controllers)
 - `/generate-backlog` - Session 10: User stories

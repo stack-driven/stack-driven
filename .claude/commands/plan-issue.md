@@ -56,7 +56,7 @@ Based on issue type, load these files from `product-guidelines/`:
 | Issue Type | Guidelines to Load |
 |------------|-------------------|
 | UI/Frontend | `06-design-system.md` |
-| API/Backend | `08-api-contracts.md`, `04-architecture.md` |
+| API/Backend | `08-api-design.md`, `08b-api-contracts.md`, `04-architecture.md` |
 | Database | `07-database-schema.md` |
 | New Feature | `00-user-journey.md`, `04-metrics.md` |
 | Bug Fix | Relevant technical specs only |
@@ -129,7 +129,7 @@ Create a detailed plan using this structure:
 {Reference components, colors, typography from 06-design-system.md}
 
 **API Contract Reference:** {If API work}
-{Reference endpoints, request/response schemas from 08-api-contracts.md}
+{Reference API paradigm/serialization from 08-api-design.md, endpoints/schemas from 08b-api-contracts.md}
 
 **Database Schema Reference:** {If database work}
 {Reference tables, relationships from 07-database-schema.md}

@@ -60,7 +60,7 @@ If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
 
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
-Read: product-guidelines/08-api-contracts-essentials.md
+Read: product-guidelines/08b-api-contracts-essentials.md
 Read: product-guidelines/09-test-strategy-essentials.md
 Read: product-guidelines/09b-application-architecture-essentials.md
 Read: product-guidelines/10-backlog/BACKLOG.md
@@ -72,7 +72,7 @@ Read: product-guidelines/10-backlog/BACKLOG.md
 - `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
 - `02c-ai-integration-strategy-essentials.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
 - `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
-- `08-api-contracts-essentials.md` (~80% smaller) - Contains endpoint list organized by journey step
+- `08b-api-contracts-essentials.md` (Session 8b, ~80% smaller) - Contains endpoint list organized by journey step for controller/route generation
 - `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
 - `09b-application-architecture-essentials.md` (~60% smaller) - Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy for code skeleton generation
 

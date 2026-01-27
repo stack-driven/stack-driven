@@ -103,7 +103,9 @@ For each output file that exists, check against these criteria:
 - [ ] Metrics (Session 4) measure mission fulfillment
 - [ ] Design system (Session 6) serves brand strategy (Session 5)
 - [ ] Database schema (Session 7) matches architecture principles (Session 4)
-- [ ] API contracts (Session 8) align with database schema (Session 7)
+- [ ] API paradigm (Session 8) traces to journey requirements (real-time, data flexibility, performance)
+- [ ] Serialization format (Session 8) aligns with API paradigm and journey constraints
+- [ ] API contracts (Session 8b) implement Session 8 decisions and align with database schema (Session 7)
 - [ ] Backlog stories (Session 10) reference specific journey steps
 - [ ] Test strategy (Session 9) covers critical journey paths
 

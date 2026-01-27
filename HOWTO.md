@@ -113,7 +113,8 @@ After each session, I'll tell you what to run next. The complete flow:
 /create-brand-strategy       # Session 5: Brand positioning
 /create-design               # Session 6: Design system
 /design-database-schema      # Session 7: Database design
-/generate-api-contracts      # Session 8: API specifications
+/generate-api-design         # Session 8: High-level API architecture
+/generate-api-contracts      # Session 8b: OpenAPI specifications
 /create-test-strategy        # Session 9: Testing approach
 /generate-backlog            # Session 10: User stories (30-50)
 /create-gh-issues            # Session 11: Push to GitHub
