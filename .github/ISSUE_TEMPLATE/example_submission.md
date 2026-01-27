@@ -51,7 +51,8 @@ assignees: ''
 - [ ] Session 5: Brand Strategy
 - [ ] Session 6: Design System
 - [ ] Session 7: Database Schema
-- [ ] Session 8: API Contracts
+- [ ] Session 8: API Design (high-level architecture)
+- [ ] Session 8b: API Contracts (OpenAPI specs)
 - [ ] Session 9: Test Strategy
 - [ ] Session 10: Backlog
 - [ ] Session 11: GitHub Issues (optional)
