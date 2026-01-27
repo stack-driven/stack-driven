@@ -1,17 +1,18 @@
 ---
-description: Session 8 - Generate comprehensive API contracts with OpenAPI specification
+description: Session 8b - Generate technical API contracts (OpenAPI/Protobuf specs, schemas, endpoints)
 ---
 
-# Generate API Contracts (Session 8)
+# Generate API Contracts (Session 8b)
 
-You are helping the user create comprehensive API contracts including OpenAPI/Swagger specifications, endpoint definitions, request/response schemas, authentication patterns, and error handling. This happens after defining the database schema (Session 7), but BEFORE generating the backlog, so that backlog items can be informed by the API surface area.
+You are helping the user create technical API implementation specifications including OpenAPI/Protobuf schemas, endpoint definitions, request/response examples, and validation rules. This happens after defining high-level API design (Session 8), implementing the paradigm and serialization format decisions.
 
 ## When to Use This
 
-**This is Session 8** in the core Stack-Driven cascade. Run it:
+**This is Session 8b** in the core Stack-Driven cascade. Run it:
+- After Session 8 (`/generate-api-design` - paradigm, serialization, auth strategy)
 - After Session 7 (`/design-database-schema` - data model)
-- Before Session 10 (`/generate-backlog` - implementation planning)
-- When you need to define your API contracts based on journey, architecture, and data model
+- Before Session 9 (`/create-test-strategy` - testing approach)
+- When you need to define technical API contracts based on API design decisions
 
 **Skip this** if:
 - You're building a frontend-only application (no backend)
@@ -20,19 +21,38 @@ You are helping the user create comprehensive API contracts including OpenAPI/Sw
 
 ## Your Task
 
-Create comprehensive API contracts including:
-- OpenAPI 3.0 specification
+Create technical API implementation specifications:
+- OpenAPI 3.0 specification (if REST/GraphQL)
+- Protocol Buffers schemas (if gRPC)
 - Endpoint definitions with HTTP methods, paths, and parameters
 - Request and response schemas with validation rules
-- Authentication and authorization patterns
-- Error handling and status codes
-- Rate limiting and pagination strategies
-- Versioning approach
-- API documentation with examples
+- Component schemas and reusable definitions
+- Example requests and responses
+- Validation rules and constraints
 
 ---
 
 ## Process
+
+### Step 0: Read API Design Decisions (Session 8)
+
+**CRITICAL - Read this first:**
+
+```
+Read: product-guidelines/08-api-design.md (from previous session - Session 8)
+```
+
+**Extract from API Design**:
+- **API Paradigm**: REST, GraphQL, gRPC, WebSocket, or hybrid
+- **Serialization Format**: JSON, Protobuf, MessagePack, or hybrid
+- **Authentication Strategy**: Method, token placement, lifetime
+- **Rate Limiting Strategy**: Limits by tier, endpoint-specific rules
+- **Pagination Approach**: Cursor-based or offset-based
+- **Error Handling Format**: Standard error structure and status codes
+
+**Why this matters**: Session 8b implements the architectural decisions from Session 8. If API design chose gRPC, you'll create Protocol Buffer schemas. If it chose REST with JSON, you'll create OpenAPI specs. If it chose hybrid (gRPC internal + REST external), you'll create both.
+
+---
 
 ### Step 1: Read Previous Outputs
 
@@ -42,10 +62,10 @@ Create comprehensive API contracts including:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md (from previous session)
+Read: product-guidelines/07-database-schema-essentials.md
 ```
 
-**Context Optimization**: We read the essentials version of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API design without column details, indexes, and migrations.
+**Context Optimization**: We read the essentials version of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations.
 
 **Optional inputs (if available):**
 
@@ -352,9 +372,16 @@ Server Errors:
 
 ---
 
-### Step 8: Generate OpenAPI Specification
+### Step 8: Generate API Specification
 
-Create complete OpenAPI 3.0 specification. Use template at `templates/08-api-contracts-template.md` for detailed structure.
+**For REST/GraphQL** (JSON serialization):
+Create complete OpenAPI 3.0 specification. Use template at `templates/08b-api-contracts-template.md` for detailed structure.
+
+**For gRPC** (Protobuf serialization):
+Create Protocol Buffer `.proto` files with service definitions, message types, and RPC methods.
+
+**For Hybrid** (e.g., gRPC internal + REST external):
+Create both OpenAPI specs (external REST API) and Protobuf schemas (internal gRPC services).
 
 **Key sections to include:**
 - `info`: title, description (with auth/rate limit/error conventions), version, contact
@@ -372,43 +399,44 @@ Create complete OpenAPI 3.0 specification. Use template at `templates/08-api-con
 
 ---
 
-### Step 9: Document API Design Decisions
+### Step 9: Document API Technical Implementation
 
-Write `product-guidelines/08-api-contracts.md` with:
-- **Overview**: API style, base URLs, versioning strategy, endpoint count
-- **Authentication**: Method and how to use it
-- **Core Resources**: For each resource: purpose (journey connection), endpoints table, key design decisions
-- **Patterns**: Rate limiting, error handling, pagination
-- **OpenAPI Spec**: Link to `openapi.yaml` file
-- **Testing**: Example curl/httpie commands
-- **"What We DIDN'T Choose"**: Alternatives considered (GraphQL, gRPC, etc.) with reasoning
+Write `product-guidelines/08b-api-contracts.md` with:
+- **Overview**: Link to `08-api-design.md` for paradigm/serialization decisions, endpoint count
+- **Core Resources**: For each resource: purpose (journey connection), endpoints table
+- **OpenAPI Spec**: Complete specification or link to `openapi.yaml` file
+- **Protobuf Schemas**: (if gRPC) Complete `.proto` files or links
+- **Request/Response Examples**: Sample payloads for key endpoints
+- **Validation Rules**: Field constraints, required fields, formats
+- **Testing**: Example curl/httpie/grpcurl commands
+
+**Note**: High-level design decisions (paradigm, serialization, auth strategy, rate limiting, pagination) are in `08-api-design.md` (Session 8). This file focuses on technical implementation.
 
 ---
 
-### Step 10: Create Essentials Version for Backlog Generation
+### Step 10: Create Essentials Version for Scaffold Generation
 
-**IMPORTANT**: Create a condensed essentials version optimized for Session 10 (backlog generation).
+**IMPORTANT**: Create a condensed essentials version optimized for Session 12 (scaffold generation).
 
-Use template at `templates/08-api-contracts-essentials-template.md` to create `product-guidelines/08-api-contracts-essentials.md` with:
+Use template at `templates/08b-api-contracts-essentials-template.md` to create `product-guidelines/08b-api-contracts-essentials.md` with:
 
 **What to include** (target: 100-150 lines):
-- API configuration (style, auth, pagination, rate limiting)
+- API configuration (reference to 08-api-design.md for decisions)
 - Endpoint lists organized by journey step
 - Brief description for each endpoint (one line)
 - Common patterns (pagination params, response codes)
-- Story scoping guidance for backlog generation
+- Implementation guidance for scaffold generation
 
-**What to EXCLUDE** (these belong in full `08-api-contracts.md`):
+**What to EXCLUDE** (these belong in full `08b-api-contracts.md`):
 - Complete OpenAPI 3.0 specification
 - Request/response schemas
 - Error response definitions
-- Authentication flow details
 - Component schemas
 - Example requests/responses
 - Validation rules
 - Rate limit headers
 
-**Why**: Session 10 (backlog generation) only needs the endpoint list to create stories. Loading the full 782-line OpenAPI spec bloats context by ~3,128 tokens when only ~280 tokens are needed.
+**Why**: Session 12 (scaffold generation) only needs the endpoint list to create controller/route stubs. Loading the full 782-line OpenAPI spec bloats context by ~3,128 tokens when only ~280 tokens are needed.
 
 **Format**:
 ```markdown
@@ -481,37 +509,11 @@ Use template at `templates/08-api-contracts-essentials-template.md` to create `p
 
 ---
 
-## What We DIDN'T Choose (And Why)
+## Note on Architectural Alternatives
 
-### GraphQL API
-**What**: Query language letting clients request exact data needed
-**Why not**: Journey has simple CRUD (not complex graphs), team knows REST better, no over-fetching problem
-**Reconsider if**: Mobile app needs bandwidth optimization, UI needs highly variable data shapes, 50+ optional fields per entity
+**Paradigm alternatives** (REST vs GraphQL vs gRPC) are covered in Session 8 (`08-api-design.md`). This session implements the chosen paradigm with technical specifications.
 
-### gRPC API
-**What**: High-performance RPC with Protocol Buffers (binary)
-**Why not**: Web-based journey (browsers need grpc-web proxy), no network bottleneck, REST/JSON easier to debug
-**Reconsider if**: Microservices with service-to-service calls, need bidirectional streaming, internal-only APIs
-
-### Header-Based API Versioning
-**What**: Version in `Accept: application/vnd.myapi.v2+json` header instead of URL
-**Why not**: URL versioning (`/v1/`, `/v2/`) is simpler, more explicit, easier to debug
-**Reconsider if**: Building hypermedia API (HATEOAS), version applies to entire surface
-
-### Full OAuth 2.0 Server
-**What**: OAuth with authorization code flow, client credentials, refresh tokens
-**Why not**: B2B SaaS uses Clerk/Auth0 (not app authorization), high complexity, no third-party app integrations yet
-**Reconsider if**: Building platform with third-party apps (Slack/GitHub-style), need programmatic API access
-
-### WebSocket for Real-Time
-**What**: Persistent bidirectional connection
-**Why not**: Polling every 2-5 seconds is acceptable for document processing, WebSocket adds complexity (scaling, connection mgmt)
-**Reconsider if**: Need <500ms updates (real-time collab), many users watching same resource, mobile app (battery)
-
-### API Gateway (Kong, AWS)
-**What**: Centralized gateway for rate limiting, auth, logging, routing
-**Why not**: MVP stage (single service), framework middleware sufficient, operational complexity, cost
-**Reconsider if**: Microservices architecture, advanced rate limiting needs, detailed API analytics
+If you discover that the chosen paradigm doesn't fit specific endpoints during implementation, document it but don't override Session 8. Discuss with the user and potentially re-run `/generate-api-design` with updated analysis.
 
 ---
 
@@ -526,10 +528,11 @@ Use template at `templates/08-api-contracts-essentials-template.md` to create `p
 
 ## Output Files
 
-1. **`product-guidelines/08-api-contracts.md`**: Full documentation (architecture, design decisions, endpoints, auth, errors, testing, OpenAPI spec)
-2. **`product-guidelines/08-api-contracts-essentials.md`**: Condensed version for Session 10 (backlog generation) - endpoint lists only (~150 lines)
-3. **`product-guidelines/08-api-contracts/openapi.yaml`**: Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
-4. **`product-guidelines/08-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
+1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, examples, testing)
+2. **`product-guidelines/08b-api-contracts-essentials.md`**: Condensed version for Session 12 (scaffold generation) - endpoint lists only (~150 lines)
+3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST/GraphQL): Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
+4. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
+5. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -558,57 +561,69 @@ Before completing this session, verify:
 - [ ] HTTP status codes used correctly
 - [ ] Security best practices followed (HTTPS, auth, rate limits)
 
+**API Design Alignment (Session 8):**
+- [ ] Paradigm matches `08-api-design.md` decision (REST/GraphQL/gRPC/hybrid)
+- [ ] Serialization format matches decision (JSON/Protobuf/MessagePack)
+- [ ] Auth method from `08-api-design.md` implemented
+- [ ] Rate limiting strategy from `08-api-design.md` applied
+- [ ] Pagination approach from `08-api-design.md` used
+- [ ] Error format from `08-api-design.md` followed
+
 **Tech Stack Alignment:**
-- [ ] API style matches tech stack decision
-- [ ] Auth method from tech stack implemented
 - [ ] Framework-specific patterns leveraged
 - [ ] Documentation tool compatible with stack
 
 **Documentation:**
-- [ ] "What We DIDN'T Choose" section complete (3+ alternatives)
 - [ ] Each endpoint has purpose explanation
-- [ ] Design decisions reference journey
-- [ ] Testing examples provided
+- [ ] Endpoints reference journey steps
+- [ ] Testing examples provided (curl/httpie/grpcurl)
 - [ ] Setup instructions clear
+- [ ] Link to `08-api-design.md` for high-level decisions
 
-**Essentials Version (for backlog generation):**
-- [ ] Essentials file created at `08-api-contracts-essentials.md`
+**Essentials Version (for scaffold generation):**
+- [ ] Essentials file created at `08b-api-contracts-essentials.md`
 - [ ] All endpoints listed with journey step mapping
 - [ ] File is 100-200 lines (not bloated with schemas)
-- [ ] Includes API config, pagination patterns, response codes
+- [ ] Includes API config references to `08-api-design.md`
 - [ ] References full file for complete specification
 
 ---
 
 ## After This Session
 
-**Next steps**: Copy `openapi.yaml` to project → set up Swagger/ReDoc UI → generate client SDKs → implement endpoints → write API tests
+**Next steps**:
+- Run `/create-test-strategy` (Session 9) to define testing approach
+- Session 10 (`/generate-backlog`) will use `08-api-design-essentials.md` for API-driven stories
+- Session 12 (`/scaffold-project`) will use `08b-api-contracts-essentials.md` to generate endpoint stubs
 
-**Use contracts for**: Backend implementation, frontend dev (know available APIs), API docs, client SDK generation, contract testing
-
-**Future extensions**: Webhooks for async events, GraphQL layer if complexity grows, API versioning for breaking changes, API gateway for microservices
+**Use contracts for**:
+- Backend implementation (controllers, routes, handlers)
+- Frontend development (know available APIs)
+- API documentation (Swagger UI, Redoc, grpcui)
+- Client SDK generation (openapi-generator, protoc plugins)
+- Contract testing (Pact, Dredd, grpc-testing)
 
 ---
 
 ## Remember
 
-**Every endpoint must serve the user journey.**
+**Implement the decisions from Session 8 (API Design).**
 
-Don't create endpoints "just in case". Design APIs based on:
-1. What user actions require API support? → Endpoints
-2. What data flows through the system? → Schemas
-3. How do users interact with features? → Request/response patterns
-4. What security is needed? → Auth and rate limiting
+This session focuses on technical implementation. Don't make new architectural decisions here. Instead:
+1. Read `08-api-design.md` for paradigm, serialization, auth, rate limiting, pagination decisions
+2. Create technical specs (OpenAPI/Protobuf) that implement those decisions
+3. Define endpoints, schemas, and validation rules
+4. Provide examples and testing guidance
 
-If you can't trace an endpoint back to a journey step or backlog feature, you probably don't need it.
+If you find the API design decisions don't work for a specific endpoint, note it but don't override Session 8. Discuss with the user and potentially re-run Session 8 with updated analysis.
 
 **Reference files:**
+- **API Design** (Session 8): `product-guidelines/08-api-design.md` - **READ THIS FIRST**
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
 - Architecture: `product-guidelines/04-architecture.md`
-- Database schema: `product-guidelines/07-database-schema.md` (from previous session)
-- Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
+- Database schema: `product-guidelines/07-database-schema-essentials.md`
 
 ---
 
-**Now, read previous outputs and design API contracts that serve your users' journey!**
+**Now, read API design decisions (Session 8) and create technical API contracts!**
