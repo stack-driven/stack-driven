@@ -30,7 +30,8 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
 | `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema-essentials.md` |
-| `/generate-api-contracts` | 8 | 45-60 min | `08-api-contracts.md`, `08-api-contracts-essentials.md` |
+| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design-essentials.md` |
+| `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts-essentials.md` |
 | `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy-essentials.md` |
 | `/generate-backlog` | 10 | 60-90 min | `10-backlog/*.md` (30-50 issues) |
 | `/create-gh-issues` | 11 | 10-15 min | GitHub issues |
@@ -496,7 +497,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 - Table definitions
 - Migration scripts ready to run
 
-**Next step:** Run `/generate-api-contracts`
+**Next step:** Run `/generate-api-design`
 
 **Tips:**
 - Schema should support all journey steps
@@ -505,11 +506,39 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 
 ---
 
-### Session 8: `/generate-api-contracts`
+### Session 8: `/generate-api-design`
+
+**Purpose:** Design high-level API architecture (paradigm, serialization, auth, rate limiting)
+
+**When to run:** After Session 7 (database schema designed)
+
+**Time required:** 30-45 minutes
+
+**What it does:**
+- Analyzes journey requirements to recommend API paradigm (REST/GraphQL/gRPC/WebSocket)
+- Determines optimal serialization format (JSON/Protobuf/MessagePack)
+- Designs authentication and authorization approach
+- Defines rate limiting and pagination strategies
+- Creates scale-forward API strategy
+
+**Outputs:**
+- `08-api-design.md` - Complete API architecture decisions
+- `08-api-design-essentials.md` - Condensed version for backlog generation (Session 10)
+
+**Next step:** Run `/generate-api-contracts`
+
+**Tips:**
+- Every paradigm choice traces to journey requirements
+- Serialization aligned with performance needs
+- Document alternatives in "What We DIDN'T Choose"
+
+---
+
+### Session 8b: `/generate-api-contracts`
 
 **Purpose:** Generate comprehensive API contracts with OpenAPI specification
 
-**When to run:** After Session 7 (database schema designed)
+**When to run:** After Session 8 (API design complete)
 
 **Time required:** 45-60 minutes
 
@@ -521,13 +550,14 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 - Error handling
 
 **Inputs (what it reads):**
+- `product-guidelines/08-api-design.md` - API paradigm and architecture decisions
 - `product-guidelines/00-user-journey.md` - Journey flows
 - `product-guidelines/07-database-schema.md` - Data models
 - `product-guidelines/02-tech-stack.md` - API framework
 
 **Outputs:**
-- `product-guidelines/08-api-contracts.md` (documentation)
-- `product-guidelines/08-api-contracts-essentials.md` (for AI reading)
+- `product-guidelines/08b-api-contracts.md` (documentation)
+- `product-guidelines/08b-api-contracts-essentials.md` (for scaffold generation - Session 12)
 
 **What it generates:**
 - Complete OpenAPI spec
