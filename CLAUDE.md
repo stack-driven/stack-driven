@@ -441,7 +441,7 @@ Session 8b (api-contracts) [reads: 08-api-design, 00, 02, 04, 07-essentials]
   ↓
 Session 9 (test-strategy) [reads: 00-08b]
   ↓
-Session 9b (application-architecture) [reads: 00, 02, 02b-essentials*, 04, 07-essentials*, 08-essentials*]
+Session 9b (application-architecture) [reads: 00, 02, 02b-essentials*, 04, 07-essentials*, 08b-essentials*]
   * Essentials files used to reduce token usage (architecture doesn't need full schemas/contracts)
   ↓
 Session 10 (backlog) [reads: 00-09b including 02b + all essentials files including 08-api-design-essentials*]

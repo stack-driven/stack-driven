@@ -50,7 +50,7 @@ Read: product-guidelines/02-tech-stack.md (for framework choices, patterns)
 Read: product-guidelines/02b-coding-standards-essentials.md (for framework-specific patterns)
 Read: product-guidelines/04-architecture.md (for high-level architectural patterns)
 Read: product-guidelines/07-database-schema-essentials.md (for entities and relationships)
-Read: product-guidelines/08-api-contracts-essentials.md (for endpoints and operations)
+Read: product-guidelines/08b-api-contracts-essentials.md (for endpoints and operations)
 ```
 
 **Context Optimization**: We read essentials versions of coding standards, database schema, and API contracts for significant context reduction while maintaining necessary information for architecture modeling.
