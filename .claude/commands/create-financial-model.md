@@ -11,8 +11,8 @@ This is a **post-core extension** that creates a comprehensive financial model g
 **Run AFTER Session 4+** when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
-- ✅ Metrics established (`product-guidelines/04-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
+- ✅ Metrics established (`product-guidelines/03b-metrics.md`)
+- ✅ Monetization model defined (`product-guidelines/03c-monetization.md`)
 
 **Ideally after additional strategy work** when you also have:
 - ✅ Growth strategy created (`product-guidelines/21-growth-strategy.md`)
@@ -76,7 +76,7 @@ This command READS previous outputs to ground financial projections in reality:
 
 4. **Read the metrics**:
    ```bash
-   Read product-guidelines/04-metrics.md
+   Read product-guidelines/03b-metrics.md
    ```
    - What's the North Star metric? (ties to revenue)
    - What are conversion rates? (signup→activation→paid)
@@ -84,7 +84,7 @@ This command READS previous outputs to ground financial projections in reality:
 
 5. **Read the monetization model**:
    ```bash
-   Read product-guidelines/04-monetization.md
+   Read product-guidelines/03c-monetization.md
    ```
    - What's the pricing structure? (Free/Paid tiers, enterprise)
    - What's the value metric? (per-user, per-usage, per-outcome)

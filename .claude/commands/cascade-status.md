@@ -30,9 +30,9 @@ Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standard
                                         product-guidelines/02b-coding-standards-essentials.md
 Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md (optional)
                                               product-guidelines/02c-ai-integration-strategy-essentials.md
-Session 4: /generate-strategy          → product-guidelines/03-mission.md
-                                         product-guidelines/04-metrics.md
-                                         product-guidelines/04-monetization.md
+Session 4: /generate-strategy          → product-guidelines/03a-mission.md
+                                         product-guidelines/03b-metrics.md
+                                         product-guidelines/03c-monetization.md
                                          product-guidelines/04-architecture.md
 Session 5: /create-brand-strategy      → product-guidelines/05-brand-strategy.md
 Session 6: /create-design              → product-guidelines/06-design-system.md
@@ -106,7 +106,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02a-constraints.md`, `02a-constraints-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-design.md`, `08-api-design-essentials.md`, `08b-api-contracts.md`, `08b-api-contracts-essentials.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02a-constraints.md`, `02a-constraints-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-design.md`, `08-api-design-essentials.md`, `08b-api-contracts.md`, `08b-api-contracts-essentials.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
 - **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
@@ -128,9 +128,9 @@ CORE CASCADE (Required - Always Start Here)
 ✅ 02-tech-stack.md              (Session 3 ✓)
 ❌ 02b-coding-standards.md       (Session 3b - Not started)
 ❌ 02b-coding-standards-essentials.md (Session 3b - Not started)
-❌ 03-mission.md                 (Session 4 - Not started)
-❌ 04-metrics.md                 (Session 4 - Not started)
-❌ 04-monetization.md            (Session 4 - Not started)
+❌ 03a-mission.md                (Session 4 - Not started)
+❌ 03b-metrics.md                (Session 4 - Not started)
+❌ 03c-monetization.md           (Session 4 - Not started)
 ❌ 04-architecture.md            (Session 4 - Not started)
 ❌ 05-brand-strategy.md          (Session 5 - Not started)
 ❌ 06-design-system.md           (Session 6 - Not started)
@@ -261,9 +261,9 @@ For the next recommended session, display:
 - product-guidelines/02-tech-stack.md (your chosen tech stack)
 
 📤 Will create:
-- product-guidelines/03-mission.md (mission statement derived from journey)
-- product-guidelines/04-metrics.md (North Star metric and success metrics)
-- product-guidelines/04-monetization.md (pricing strategy aligned with value)
+- product-guidelines/03a-mission.md (mission statement derived from journey)
+- product-guidelines/03b-metrics.md (North Star metric and success metrics)
+- product-guidelines/03c-monetization.md (pricing strategy aligned with value)
 - product-guidelines/04-architecture.md (architecture principles)
 
 ⏱️ Estimated time: 15-20 minutes (AI-assisted conversation)
@@ -320,9 +320,9 @@ Your Cascade Progress:
 ❌ 01-product-strategy.md    (Not started)
 ❌ 01-product-strategy-essentials.md (Not started)
 ❌ 02-tech-stack.md          (Not started)
-❌ 03-mission.md             (Not started)
-❌ 04-metrics.md             (Not started)
-❌ 04-monetization.md        (Not started)
+❌ 03a-mission.md            (Not started)
+❌ 03b-metrics.md            (Not started)
+❌ 03c-monetization.md       (Not started)
 ❌ 04-architecture.md        (Not started)
 ❌ 05-brand-strategy.md      (Not started)
 ❌ 06-design-system.md       (Not started)

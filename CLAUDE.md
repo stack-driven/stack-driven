@@ -85,7 +85,7 @@ Session 2a: /document-constraints       → 02a-constraints.md, 02a-essentials
 Session 3: /choose-tech-stack           → 02-tech-stack.md
 Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
 Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
-Session 4: /generate-strategy           → 03-mission, 04-metrics/monetization/architecture
+Session 4: /generate-strategy           → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
 Session 7: /design-database-schema      → 07-database-schema.md

@@ -11,8 +11,8 @@ This is a **post-core extension** that creates a comprehensive, data-driven grow
 **Run AFTER Session 4+** when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
 - ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
-- ✅ Metrics established (`product-guidelines/04-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/04-monetization.md`)
+- ✅ Metrics established (`product-guidelines/03b-metrics.md`)
+- ✅ Monetization model defined (`product-guidelines/03c-monetization.md`)
 
 **Ideally after Session 7+** when you also have:
 - ✅ Backlog generated (`product-guidelines/10-backlog/`)
@@ -65,7 +65,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 3. **Read the metrics**:
    ```bash
-   Read product-guidelines/04-metrics.md
+   Read product-guidelines/03b-metrics.md
    ```
    - What's the North Star metric? (primary growth goal)
    - What are the input metrics? (growth levers)
@@ -73,7 +73,7 @@ This command READS previous outputs to ground growth strategy in reality:
 
 4. **Read the monetization model**:
    ```bash
-   Read product-guidelines/04-monetization.md
+   Read product-guidelines/03c-monetization.md
    ```
    - What's the pricing model? (freemium, trial, paid)
    - Where's the conversion point? (free→paid optimization)
@@ -383,7 +383,7 @@ Retention metrics:
 
 ### Step 7: Design Monetization Optimization
 
-**Read monetization model** (`product-guidelines/04-monetization.md`) and optimize for growth.
+**Read monetization model** (`product-guidelines/03c-monetization.md`) and optimize for growth.
 
 **Conversion optimization**:
 
@@ -513,7 +513,7 @@ When to reconsider: If expanding to consumer compliance (personal tax, legal) wi
 
 ### Step 9: Define Growth Metrics & Goals
 
-**Growth metrics** (separate from product metrics in `04-metrics.md`):
+**Growth metrics** (separate from product metrics in `03b-metrics.md`):
 
 ```
 North Star Growth: [Growth rate of North Star metric]
@@ -599,7 +599,7 @@ Before writing output:
 - [ ] Retention strategy = habit around journey value?
 - [ ] Experiments have clear hypotheses and success criteria?
 - [ ] ICE scores prioritize experiments objectively?
-- [ ] Metrics align with North Star from `04-metrics.md`?
+- [ ] Metrics align with North Star from `03b-metrics.md`?
 - [ ] "What We DIDN'T Choose" includes 2-4 alternatives with reasoning?
 - [ ] Every decision has "When to reconsider" conditions?
 
@@ -633,7 +633,7 @@ Before writing output:
 ```
 You: I've read your user journey, product strategy, metrics, and monetization. Let's design a growth strategy to scale user acquisition and retention.
 
-Your journey shows [target user] reaching value at [Step 3: aha moment]. Your North Star is [metric from 04-metrics.md], currently at [X], targeting [Y].
+Your journey shows [target user] reaching value at [Step 3: aha moment]. Your North Star is [metric from 03b-metrics.md], currently at [X], targeting [Y].
 
 First, let's identify your growth model. Your users [describe behavior]. This suggests [growth model type]. Does that match your intuition?
 
@@ -691,8 +691,8 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 ## Reference
 
 - Template: `/templates/21-growth-strategy-template.md`
-- Related: `/product-guidelines/04-metrics.md` (North Star and input metrics)
-- Related: `/product-guidelines/04-monetization.md` (conversion and expansion)
+- Related: `/product-guidelines/03b-metrics.md` (North Star and input metrics)
+- Related: `/product-guidelines/03c-monetization.md` (conversion and expansion)
 - Related: `product-guidelines/20-analytics-plan.md` (measurement capability)
 
 ---

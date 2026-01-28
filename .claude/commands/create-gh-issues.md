@@ -118,9 +118,9 @@ Or start building immediately with your prioritized backlog!
 What's next?
 1. 🚀 Run /scaffold-project to generate working dev environment (Session 9)
 2. 💻 Or start building! Your backlog is prioritized (P0 stories first)
-3. 📊 Track metrics: Implement metrics from product-guidelines/04-metrics.md
+3. 📊 Track metrics: Implement metrics from product-guidelines/03b-metrics.md
 4. 🔄 Iterate: Run /refine-journey if your understanding evolves
-5. 💰 Validate pricing: Test monetization from product-guidelines/04-monetization.md
+5. 💰 Validate pricing: Test monetization from product-guidelines/03c-monetization.md
 
 Check cascade anytime: /cascade-status
 ```

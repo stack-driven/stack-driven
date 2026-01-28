@@ -5,8 +5,8 @@
 > **Derived from**:
 > - `product-guidelines/00-user-journey.md` (Journey economics and value delivery)
 > - `product-guidelines/01-product-strategy.md` (Market size and competitive landscape)
-> - `product-guidelines/04-monetization.md` (Pricing structure and ARPU)
-> - `product-guidelines/04-metrics.md` (Conversion rates and retention)
+> - `product-guidelines/03c-monetization.md` (Pricing structure and ARPU)
+> - `product-guidelines/03b-metrics.md` (Conversion rates and retention)
 > - `product-guidelines/growth-strategy.md` (Acquisition channels and CAC - if available)
 
 ---

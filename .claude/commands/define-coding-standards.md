@@ -20,7 +20,7 @@ Before starting, ensure you have:
 - Session 00: User Journey (`product-guidelines/00-user-journey.md`)
 - Session 01: Product Strategy (`product-guidelines/01-product-strategy.md`)
 - Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`)
-- Session 03: Mission (`product-guidelines/03-mission.md`)
+- Session 03: Mission (`product-guidelines/03a-mission.md`)
 
 ## Steps to Execute
 
@@ -30,7 +30,7 @@ Read the following files in order:
 1. `product-guidelines/00-user-journey.md` - Understand the journey steps and value delivery
 2. `product-guidelines/01-product-strategy.md` - Understand the product context
 3. `product-guidelines/02-tech-stack.md` - Extract the chosen frameworks and languages
-4. `product-guidelines/03-mission.md` - Understand the product vision
+4. `product-guidelines/03a-mission.md` - Understand the product vision
 
 Extract key information:
 - Frontend framework(s) chosen

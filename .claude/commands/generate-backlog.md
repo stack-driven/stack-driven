@@ -29,9 +29,9 @@ Read: product-guidelines/02b-coding-standards-essentials.md
 If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
   Read: product-guidelines/02c-ai-integration-strategy-essentials.md
 
-Read: product-guidelines/03-mission.md
-Read: product-guidelines/04-metrics.md
-Read: product-guidelines/04-monetization.md
+Read: product-guidelines/03a-mission.md
+Read: product-guidelines/03b-metrics.md
+Read: product-guidelines/03c-monetization.md
 Read: product-guidelines/04-architecture.md
 Read: product-guidelines/07-database-schema-essentials.md
 Read: product-guidelines/08-api-design-essentials.md

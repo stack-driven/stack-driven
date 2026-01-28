@@ -38,7 +38,7 @@ Identify which sessions are complete based on these files:
 - `02-tech-stack.md` → Session 3 complete
 - `02b-coding-standards.md` + `02b-coding-standards-essentials.md` → Session 3b complete
 - `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` → Session 3c complete (optional)
-- `03-mission.md` + `04-metrics.md` + `04-monetization.md` + `04-architecture.md` → Session 4 complete
+- `03a-mission.md` + `03b-metrics.md` + `03c-monetization.md` + `04-architecture.md` → Session 4 complete
 - `05-brand-strategy.md` → Session 5 complete
 - `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
@@ -330,9 +330,9 @@ User: yes
 - product-guidelines/02-tech-stack.md
 
 📤 Will create:
-- product-guidelines/03-mission.md
-- product-guidelines/04-metrics.md
-- product-guidelines/04-monetization.md
+- product-guidelines/03a-mission.md
+- product-guidelines/03b-metrics.md
+- product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
 
 ⏱️ Estimated time: 15-20 minutes
@@ -347,9 +347,9 @@ User: yes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Created:
-- product-guidelines/03-mission.md
-- product-guidelines/04-metrics.md
-- product-guidelines/04-monetization.md
+- product-guidelines/03a-mission.md
+- product-guidelines/03b-metrics.md
+- product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
 
 📊 Progress: ████░░░░░░░░░░ 29% (4/14 sessions)
@@ -372,7 +372,7 @@ Continue? (yes/no)
 1. `/refine-journey` → 00-user-journey.md
 2. `/create-product-strategy` → 01, 01-essentials
 3. `/choose-tech-stack` → 02
-4. `/generate-strategy` → 03-mission, 04-metrics, 04-monetization, 04-architecture
+4. `/generate-strategy` → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
 7. `/design-database-schema` → 07-database-schema

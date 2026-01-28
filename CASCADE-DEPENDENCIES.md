@@ -104,11 +104,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
 ├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 🔧 /templates/02b-coding-standards-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 4 (03-mission.md from generate-strategy)
+**Dependencies:** Sessions 1, 2, 3, 4 (03a-mission.md from generate-strategy)
 
 **Downstream consumers of essentials:**
 - Session 4 (generate-strategy)
@@ -151,9 +151,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ### Session 4: `/generate-strategy`
 **Outputs:**
-- `03-mission.md`
-- `04-metrics.md`
-- `04-monetization.md`
+- `03a-mission.md`
+- `03b-metrics.md`
+- `03c-monetization.md`
 - `04-architecture.md`
 
 **Reads:**
@@ -164,9 +164,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
 ├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-└─ 🔧 /templates/03-mission-template.md
-    /templates/04-metrics-template.md
-    /templates/04-monetization-template.md
+└─ 🔧 /templates/03a-mission-template.md
+    /templates/03b-metrics-template.md
+    /templates/03c-monetization-template.md
     /templates/04-architecture-template.md
 ```
 
@@ -183,8 +183,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md (optional)
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md (optional)
 └─ 🔧 /templates/05-brand-strategy-template.md
 ```
 
@@ -354,9 +354,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
 ├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md
-├─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md
+├─ 📄 product-guidelines/03c-monetization.md
 ├─ 📄 product-guidelines/04-architecture.md
 ├─ 📋 product-guidelines/07-database-schema-essentials.md
 ├─ 📋 product-guidelines/08-api-contracts-essentials.md
@@ -463,14 +463,14 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 **Reads:**
 ```
 ├─ 📄 product-guidelines/04-architecture.md
-├─ 📄 product-guidelines/04-metrics.md
+├─ 📄 product-guidelines/03b-metrics.md
 ├─ 📄 product-guidelines/13-deployment-plan.md (optional)
 └─ 🔧 /templates/14-observability-strategy-template.md
 ```
 
 **Dependencies:** Session 4, optionally Session 13
 
-**Why 04-metrics?** Business metrics inform technical monitoring (e.g., track "documents processed" metric with counters, measure "processing time" with histograms).
+**Why 03b-metrics?** Business metrics inform technical monitoring (e.g., track "documents processed" metric with counters, measure "processing time" with histograms).
 
 ---
 
@@ -481,7 +481,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 📄 product-guidelines/05-brand-strategy.md
 ```
 
@@ -494,7 +494,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 📄 product-guidelines/05-brand-strategy.md
 ```
 
@@ -532,7 +532,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-metrics.md
+├─ 📄 product-guidelines/03b-metrics.md
 └─ 📄 product-guidelines/06-design-system.md
 ```
 
@@ -545,9 +545,9 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md
-└─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md
+└─ 📄 product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -559,8 +559,8 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/04-metrics.md
-└─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03b-metrics.md
+└─ 📄 product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -801,7 +801,7 @@ Essentials files target **30-80% reduction** from full versions:
 2  → create-product-strategy  01-product-strategy.md + essentials
 3  → choose-tech-stack        02-tech-stack.md
 3b → define-coding-standards  02b-coding-standards.md + essentials
-4  → generate-strategy        03-mission, 04-metrics/monetization/architecture
+4  → generate-strategy        03a-mission, 03b-metrics/monetization/architecture
 5  → create-brand-strategy    05-brand-strategy.md
 6  → create-design            06-design-system.md
 7  → design-database-schema   07-database-schema.md + essentials

@@ -812,7 +812,7 @@ different needs).
 
 ### North Star Growth
 
-**Metric**: [North Star metric from product-guidelines/04-metrics.md]
+**Metric**: [North Star metric from product-guidelines/03b-metrics.md]
 
 **Current**: [X]
 

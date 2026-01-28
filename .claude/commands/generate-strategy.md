@@ -179,9 +179,9 @@ If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
 
 Create 4 files:
 
-### 1. `product-guidelines/03-mission.md`
+### 1. `product-guidelines/03a-mission.md`
 
-Use `/templates/03-mission-template.md`.
+Use `/templates/03a-mission-template.md`.
 
 **Key Sections**:
 - Mission statement (one sentence)
@@ -189,9 +189,9 @@ Use `/templates/03-mission-template.md`.
 - Mission tests (feature, partnership, hiring decisions)
 - Connection to journey (which step), to metrics (North Star), to monetization
 
-### 2. `product-guidelines/04-metrics.md`
+### 2. `product-guidelines/03b-metrics.md`
 
-Use `/templates/04-metrics-template.md`.
+Use `/templates/03b-metrics-template.md`.
 
 **Key Sections**:
 - North Star metric (definition, why, targets)
@@ -200,9 +200,9 @@ Use `/templates/04-metrics-template.md`.
 - Counter-metrics (what won't sacrifice)
 - Connection to journey steps, to monetization
 
-### 3. `product-guidelines/04-monetization.md`
+### 3. `product-guidelines/03c-monetization.md`
 
-Use `/templates/04-monetization-template.md`.
+Use `/templates/03c-monetization-template.md`.
 
 **Key Sections**:
 - Pricing model (with rationale from journey)
@@ -247,9 +247,9 @@ Your Strategy:
 🏗️  Architecture: [Key principle]
 
 Files created:
-- product-guidelines/03-mission.md
-- product-guidelines/04-metrics.md
-- product-guidelines/04-monetization.md
+- product-guidelines/03a-mission.md
+- product-guidelines/03b-metrics.md
+- product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
 
 Next, we'll create a brand strategy that expresses your journey value.
@@ -268,7 +268,7 @@ Or check progress: /cascade-status
 
 ## Reference Files
 
-- Templates: `/templates/03-mission-template.md`, `/templates/04-metrics-template.md`, `/templates/04-monetization-template.md`, `/templates/04-architecture-template.md`
+- Templates: `/templates/03a-mission-template.md`, `/templates/03b-metrics-template.md`, `/templates/03c-monetization-template.md`, `/templates/04-architecture-template.md`
 - Examples: `/examples/compliance-saas/foundation/` and `/examples/compliance-saas/stack/`
 
 ---
