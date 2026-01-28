@@ -92,7 +92,7 @@ Session 7: /design-database-schema      → 07-database-schema.md
 Session 8: /generate-api-design         → 08-api-design.md, 08-api-design-essentials.md
 Session 8b: /generate-api-contracts     → 08b-api-contracts.md, 08b-api-contracts-essentials.md
 Session 9: /create-test-strategy        → 09-test-strategy.md
-Session 9b: /model-application          → 09b-application-architecture.md, 09b-essentials
+Session 9b: /model-application          → 09b-application-architecture.md, 09b-application-architecture-essentials.md
 Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories)
 Session 11: /create-gh-issues           → Push to GitHub
 Session 12: /scaffold-project           → 12-project-scaffold.md + code files + code skeletons
