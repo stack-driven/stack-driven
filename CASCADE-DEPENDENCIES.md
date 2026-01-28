@@ -369,15 +369,15 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Why all these files?** Backlog is the convergence point where all previous decisions materialize into user stories:
 - 00 (journey) → Epic structure, story prioritization
-- 01-essentials (product-strategy) → Vision, goals for story context
+- 01-product-strategy-essentials → Vision, goals for story context
 - 02 (tech-stack) → Technical implementation approach in stories
-- 02b-essentials (coding-standards) → File organization, naming for implementation tasks
+- 02b-coding-standards-essentials → File organization, naming for implementation tasks
 - 03 (mission) → Product context in story descriptions
 - 04 (metrics/monetization/architecture) → Success criteria, tracking, technical constraints
-- 07-essentials (database-schema) → Data model references in stories
-- 08-essentials (api-contracts) → Endpoint implementation stories
-- 09-essentials (test-strategy) → Testing acceptance criteria
-- 09b-essentials (application-architecture) → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
+- 07-database-schema-essentials → Data model references in stories
+- 08b-api-contracts-essentials → Endpoint implementation stories
+- 09-test-strategy-essentials → Testing acceptance criteria
+- 09b-application-architecture-essentials → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
 
 **Note:** Sessions 5 (brand-strategy) and 6 (design-system) NOT read. Backlog focuses on technical implementation user stories. Design/brand context comes from journey and product strategy.
 
@@ -424,14 +424,14 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Why all these essentials files?** Scaffold GENERATES actual code:
 - 00 (journey) → Project name, domain concepts
-- 01-essentials (product-strategy) → Vision for code comments
+- 01-product-strategy-essentials → Vision for code comments
 - 02 (tech-stack) → Languages, frameworks, tools to scaffold
-- 02b-essentials (coding-standards) → Directory structure, file organization, naming conventions
+- 02b-coding-standards-essentials → Directory structure, file organization, naming conventions
 - 04 (architecture) → Monorepo/multi-repo, service structure
-- 07-essentials (database-schema) → Entity classes, repository interfaces
-- 08-essentials (api-contracts) → Controller/handler method stubs
-- 09-essentials (test-strategy) → Test file structure, coverage setup
-- 09b-essentials (application-architecture) → Service classes with method signatures, dependency injection
+- 07-database-schema-essentials → Entity classes, repository interfaces
+- 08b-api-contracts-essentials → Controller/handler method stubs
+- 09-test-strategy-essentials → Test file structure, coverage setup
+- 09b-application-architecture-essentials → Service classes with method signatures, dependency injection
 - 10 (backlog) → TODO comments linking to user stories
 
 **Important:** Scaffold uses framework-specific best practices (e.g., Next.js App Router patterns), NOT generic templates. Code placed in repository root, not product-guidelines/.

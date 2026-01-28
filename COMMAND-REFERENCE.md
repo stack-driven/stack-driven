@@ -33,6 +33,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 | `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design-essentials.md` |
 | `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts-essentials.md` |
 | `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy-essentials.md` |
+| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md`, `09b-application-architecture-essentials.md` |
 | `/generate-backlog` | 10 | 60-90 min | `10-backlog/*.md` (30-50 issues) |
 | `/create-gh-issues` | 11 | 10-15 min | GitHub issues |
 | `/scaffold-project` | 12 | 30-45 min | `12-project-scaffold.md`, `12-project-scaffold/*` |

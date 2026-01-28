@@ -80,11 +80,11 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 
 ```
 Session 1: /refine-journey              → 00-user-journey.md
-Session 2: /create-product-strategy     → 01-product-strategy.md, 01-essentials
-Session 2a: /document-constraints       → 02a-constraints.md, 02a-essentials
+Session 2: /create-product-strategy     → 01-product-strategy.md, 01-product-strategy-essentials.md
+Session 2a: /document-constraints       → 02a-constraints.md, 02a-constraints-essentials.md
 Session 3: /choose-tech-stack           → 02-tech-stack.md
-Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-essentials
-Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-essentials
+Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-coding-standards-essentials.md
+Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-ai-integration-strategy-essentials.md
 Session 4: /generate-strategy           → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 Session 5: /create-brand-strategy       → 05-brand-strategy.md
 Session 6: /create-design               → 06-design-system.md
@@ -106,9 +106,9 @@ Session 14: /design-observability       → 14-observability-strategy.md
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
-- Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-essentials
-- Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-essentials
-- Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-essentials + 04-architecture + 07-essentials + 08-essentials
+- Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-database-schema-essentials
+- Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema-essentials
+- Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards-essentials + 04-architecture + 07-database-schema-essentials + 08b-api-contracts-essentials
 - Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and essentials files including 08-api-design-essentials
 - Session 12 (scaffold) reads ALL previous sessions including 08b-api-contracts-essentials
 
@@ -220,7 +220,7 @@ Sessions 5 and 6 don't have essentials because they're only read by optional pos
 In contrast, sessions 02c, 08, 08b, 09, and 09b DO have essentials because they're read by core cascade sessions:
 - Session 8 essentials → Session 10 (backlog) reads API paradigm/serialization decisions
 - Session 8b essentials → Session 12 (scaffold) reads endpoint lists for code generation
-- Session 10 reads all essentials; Session 9b reads 02b-essentials; Session 12 reads 09b-essentials
+- Session 10 reads all essentials; Session 9b reads 02b-coding-standards-essentials; Session 12 reads 09b-application-architecture-essentials
 Token reduction significantly improves performance.
 
 ### 5. Quality Validation Framework
@@ -435,13 +435,13 @@ Session 6 (design) [reads: 00-05]
   ↓
 Session 7 (database-schema) [reads: 00-06]
   ↓
-Session 8 (api-design) [reads: 00, 02, 04, 07-essentials]
+Session 8 (api-design) [reads: 00, 02, 04, 07-database-schema-essentials]
   ↓
-Session 8b (api-contracts) [reads: 08-api-design, 00, 02, 04, 07-essentials]
+Session 8b (api-contracts) [reads: 08-api-design, 00, 02, 04, 07-database-schema-essentials]
   ↓
 Session 9 (test-strategy) [reads: 00-08b]
   ↓
-Session 9b (application-architecture) [reads: 00, 02, 02b-essentials*, 04, 07-essentials*, 08b-essentials*]
+Session 9b (application-architecture) [reads: 00, 02, 02b-coding-standards-essentials*, 04, 07-database-schema-essentials*, 08b-api-contracts-essentials*]
   * Essentials files used to reduce token usage (architecture doesn't need full schemas/contracts)
   ↓
 Session 10 (backlog) [reads: 00-09b including 02b + all essentials files including 08-api-design-essentials*]
@@ -449,7 +449,7 @@ Session 10 (backlog) [reads: 00-09b including 02b + all essentials files includi
   ↓
 Session 11 (create-gh-issues) [reads: 10-backlog/]
   ↓
-Session 12 (scaffold) [reads: 00-11 including 02b, 09b-essentials, 08b-api-contracts-essentials*]
+Session 12 (scaffold) [reads: 00-11 including 02b, 09b-application-architecture-essentials, 08b-api-contracts-essentials*]
   * Reads endpoint lists for controller/route generation
   ↓
 Session 13 (deployment) [reads: 00-12]
