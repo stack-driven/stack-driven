@@ -36,7 +36,7 @@ Create a comprehensive analytics implementation plan following the instructions 
 
 2. **Check for metrics from Session 3** (required):
    ```bash
-   Read product-guidelines/03-metrics.md
+   Read product-guidelines/03b-metrics.md
    ```
    - North Star metric
    - Input metrics
@@ -121,7 +121,7 @@ The output follows this structure:
 ```
 You: Let's setup your analytics. First, let me check your metrics from Session 3...
 
-[Read product-guidelines/03-metrics.md]
+[Read product-guidelines/03b-metrics.md]
 
 You: Perfect! Your North Star is [metric] and you have [X] input metrics. Now, what analytics do you currently have? Google Analytics? Custom events? Nothing?
 

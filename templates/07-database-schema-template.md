@@ -423,7 +423,7 @@ This schema design is complete when:
 
 - **User Journey**: `product-guidelines/00-user-journey.md`
 - **Tech Stack**: `product-guidelines/02-tech-stack.md`
-- **Architecture**: `product-guidelines/05-architecture.md`
+- **Architecture**: `product-guidelines/04-architecture.md`
 - **Backlog**: `product-guidelines/07-backlog/BACKLOG.md`
 - **Migration Files**: `product-guidelines/07-database-schema/migrations/`
 

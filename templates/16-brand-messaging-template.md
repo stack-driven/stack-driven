@@ -22,10 +22,10 @@ This document defines the brand messaging framework that guides all customer com
 **Journey value** (from `product-guidelines/00-user-journey.md`):
 - [What value gets delivered? When is the "aha moment"?]
 
-**Mission foundation** (from `product-guidelines/02-mission.md`):
+**Mission foundation** (from `product-guidelines/03a-mission.md`):
 - [Your mission statement]
 
-**Brand voice** (from `product-guidelines/08-brand-strategy.md`):
+**Brand voice** (from `product-guidelines/05-brand-strategy.md`):
 - [Key personality traits - how you sound]
 
 **Messaging Goal**:

@@ -702,7 +702,7 @@ This testing strategy is complete when:
 
 - **User Journey**: `product-guidelines/00-user-journey.md`
 - **Tech Stack**: `product-guidelines/02-tech-stack.md`
-- **Architecture**: `product-guidelines/05-architecture.md`
+- **Architecture**: `product-guidelines/04-architecture.md`
 - **Backlog**: `product-guidelines/07-backlog/BACKLOG.md`
 - **Scaffold**: `product-guidelines/07-project-scaffold.md`
 - **Test Configuration**: `product-guidelines/09-test-strategy/` (generated files)
