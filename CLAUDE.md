@@ -102,9 +102,9 @@ Session 14: /design-observability       → 14-observability-strategy.md
 
 **Dependencies:** Each session READS previous outputs. For example:
 - Session 2a (constraints) reads 00-journey + 01-strategy
-- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists)
+- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
-- Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if AI in stack)
+- Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
 - Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-database-schema-essentials
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema-essentials
@@ -424,9 +424,11 @@ Session 2 (product-strategy) [reads: 00]
 Session 2a (constraints) [reads: 00, 01]
   ↓
 Session 3 (tech-stack) [reads: 00, 01, 02a (if exists)]
-  ↓
+  ↓ ONLY detects if AI required, does NOT choose provider
 Session 3b (coding-standards) [reads: 00-02]
   ↓
+Session 3c (ai-integration-strategy) [reads: 00, 01, 02] (OPTIONAL - only if "AI Integration: Required")
+  ↓ Makes ALL AI decisions and UPDATES 02-tech-stack.md with provider
 Session 4 (generate-strategy) [reads: 00-02a (if exists), 02b, 02c (if exists)]
   ↓
 Session 5 (brand-strategy) [reads: 00-04]

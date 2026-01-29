@@ -21,9 +21,10 @@ Before starting, ensure you have:
 - Session 01: Product Strategy (`product-guidelines/01-product-strategy.md`)
 - Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`)
 
-**IMPORTANT**: This session assumes AI is part of the tech stack. If no AI provider is listed in `02-tech-stack.md`, inform the user to either:
-1. Run `/choose-tech-stack` again and include an AI provider, OR
-2. Skip this session if AI isn't needed for their product
+**IMPORTANT**: This session requires that AI Integration is marked as "Required" in `02-tech-stack.md`. Check the tech stack file first:
+- If "AI Integration: Required" → Proceed with this session
+- If "AI Integration: Not Required" → Inform user to skip this session
+- If tech stack doesn't have the AI Integration field → Inform user to re-run `/choose-tech-stack` first
 
 ## Steps to Execute
 
@@ -133,21 +134,54 @@ Distill to actionable decisions only (no rationale):
 - Compliance config (if applicable)
 - MVP priorities
 
-### Step 6: Validate Output
+### Step 6: Update Tech Stack File
+
+**CRITICAL CASCADE STEP**: Now that you've made all AI decisions, update the tech stack file to complete the cascade.
+
+Read `product-guidelines/02-tech-stack.md` and update the AI Integration line:
+
+**From:**
+```
+**AI Integration**: Required
+```
+
+**To:**
+```
+**AI**: [Provider and Model] (defined in Session 3c)
+```
+
+For example:
+- `**AI**: Claude Sonnet 4.5 (defined in Session 3c)`
+- `**AI**: GPT-4o mini + Claude Haiku (defined in Session 3c)`
+- `**AI**: Gemini Pro 1.5 (defined in Session 3c)`
+
+Also add a brief note referencing Session 3c:
+```
+> **AI Strategy**: See `product-guidelines/02c-ai-integration-strategy.md` for full implementation details including RAG architecture, cost projections, and security guardrails.
+```
+
+This ensures that:
+1. Later sessions (4, 7, 8, 9b, 10, 12) have AI provider context in tech stack
+2. Tech stack file remains the "single source of truth" for stack summary
+3. Session 3c essentials file provides detailed implementation guidance
+
+### Step 7: Validate Output
 
 Before finalizing:
 1. **Cost validation**: Does estimated cost fit budget?
 2. **Latency validation**: Can architecture meet requirements?
 3. **Infrastructure validation**: Does tech stack support recommendations?
 4. **Team validation**: Does team have required expertise?
+5. **Tech stack updated**: Did you successfully update `02-tech-stack.md` with AI provider?
 
 Flag any concerns prominently in the output.
 
-### Step 7: Set Next Steps
+### Step 8: Set Next Steps
 
 Inform the user:
 - ✅ Generated `product-guidelines/02c-ai-integration-strategy.md`
 - ✅ Generated `product-guidelines/02c-ai-integration-strategy-essentials.md`
+- ✅ Updated `product-guidelines/02-tech-stack.md` with AI provider selection
 - 📍 This strategy will inform Sessions 4, 7, 8, 9b, 10, 12, 13, and 14
 - 👉 Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture
 
@@ -172,9 +206,17 @@ Your output must be:
 
 ## Edge Cases
 
-**No AI in tech stack**:
+**AI Integration Not Required**:
 ```
-Output: "No AI provider found in tech stack. Please run `/choose-tech-stack` first."
+Output: "Your tech stack shows 'AI Integration: Not Required'. This session is only needed if AI is required for your journey. Skipping Session 3c and proceeding to Session 4.
+
+Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture."
+Exit without generating files.
+```
+
+**AI Integration field missing**:
+```
+Output: "Could not find 'AI Integration' field in tech stack. Please re-run `/choose-tech-stack` to update your tech stack with the correct format."
 Exit without generating files.
 ```
 
