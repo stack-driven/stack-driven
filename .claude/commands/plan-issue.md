@@ -47,7 +47,7 @@ Extract:
 Based on issue type, load these files from `product-guidelines/`:
 
 **Always read:**
-- `00-user-journey.md` - Understand which journey step this serves
+- `00-user-journey.ctx.md` - Understand which journey step this serves
 - `02-tech-stack.md` - Technology choices and patterns
 - `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions
 
@@ -58,7 +58,7 @@ Based on issue type, load these files from `product-guidelines/`:
 | UI/Frontend | `06-design-system.md` (no .ctx version) |
 | API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.md` |
 | Database | `07-database-schema.ctx.md` |
-| New Feature | `00-user-journey.md`, `03b-metrics.md` |
+| New Feature | `00-user-journey.ctx.md`, `03b-metrics.md` |
 | Bug Fix | Relevant technical specs only |
 | Testing | `09-test-strategy.ctx.md` |
 | Infrastructure | `04-architecture.md`, `13-deployment-plan.md` |
