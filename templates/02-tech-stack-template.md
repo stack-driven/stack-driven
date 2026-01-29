@@ -11,9 +11,11 @@
 **Database**: [Primary database]
 **Cache**: [Cache solution]
 **Storage**: [Object storage]
-**AI**: [AI provider and model]
+**AI Integration**: [Required / Not Required]
 **Auth**: [Authentication provider]
 **Hosting**: [Where deployed]
+
+> **Note**: If AI Integration is Required, detailed AI provider and model selections will be made in Session 3c (`/define-ai-integration-strategy`). This maintains proper cascade ordering where Session 3c makes ALL AI-specific decisions.
 
 ---
 

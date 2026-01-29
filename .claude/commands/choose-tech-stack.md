@@ -179,14 +179,18 @@ Need graph queries?
   Yes → PostgreSQL with extensions or Neo4j
 ```
 
-**AI Provider Decision Tree:**
-```
-Does journey require:
-  Deep reasoning? → Claude (Sonnet or Opus)
-  Function calling/structured output? → GPT-4
-  Speed + cost optimization? → Claude Haiku or GPT-3.5
-  Vision (image understanding)? → GPT-4V or Claude with vision
-```
+**AI Requirement Detection:**
+
+Analyze the journey for AI/ML requirements:
+- Does journey involve document processing, text generation, classification, or understanding?
+- Does journey require image/vision processing?
+- Does journey need intelligent automation or recommendations?
+- Does journey involve natural language understanding or generation?
+
+If YES to any: Set "AI Integration: Required" in tech stack output
+If NO to all: Set "AI Integration: Not Required" in tech stack output
+
+**IMPORTANT**: Do NOT choose AI provider or model here. That decision happens in Session 3c (`/define-ai-integration-strategy`) to maintain proper cascade ordering.
 
 ### Step 4: Make Recommendations
 
@@ -225,7 +229,7 @@ Use `/templates/02-tech-stack-template.md` as structure.
    - Database: [Choice]
    - Cache: [Choice if needed]
    - Storage: [Choice if needed]
-   - AI: [Provider + model if AI-heavy]
+   - AI Integration: [Required / Not Required]
    - Auth: [Provider - Clerk, Auth0, Supabase, etc.]
    - Hosting: [Where it runs]
 
@@ -293,7 +297,7 @@ Once you've created the file:
    - Frontend: [Choice] (for [journey reason])
    - Backend: [Choice] (for [journey reason])
    - Database: [Choice] (for [journey reason])
-   - AI: [Choice if applicable] (for [journey reason])
+   - AI Integration: [Required/Not Required] (for [journey reason])
 
    Estimated MVP cost: $[X]/month
    ```
@@ -302,6 +306,25 @@ Once you've created the file:
    - "Chose [tech] over [alternative] because your journey requires [requirement]"
 
 3. **Next steps**:
+
+   **If AI Integration is Required:**
+   ```
+   ✅ Session 3 complete!
+
+   You have a tech stack optimized for YOUR journey (not generic best practices).
+
+   Your journey requires AI integration. Next, you'll define your AI strategy:
+   - AI provider and model selection
+   - Implementation patterns (RAG, function calling, etc.)
+   - Cost projections and optimization
+   - Security and compliance approach
+
+   When ready, run: /define-ai-integration-strategy
+
+   Or check your progress: /cascade-status
+   ```
+
+   **If AI Integration is NOT Required:**
    ```
    ✅ Session 3 complete!
 

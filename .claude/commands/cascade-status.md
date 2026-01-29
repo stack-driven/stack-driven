@@ -190,9 +190,10 @@ Based on what files exist, determine the next recommended action:
 - **Recommend**: Session 3b (`/define-coding-standards`)
 
 **If 00-02b exist (Session 3b complete)**:
-- **Check**: Does `02-tech-stack.md` mention AI provider?
-  - If yes: **Recommend**: Session 3c (`/define-ai-integration-strategy`)
-  - If no: **Recommend**: Session 4 (`/generate-strategy`)
+- **Check**: Read `02-tech-stack.md` and look for "AI Integration: Required"
+  - If "AI Integration: Required": **Recommend**: Session 3c (`/define-ai-integration-strategy`)
+  - If "AI Integration: Not Required": **Recommend**: Session 4 (`/generate-strategy`)
+  - If neither (old format with AI provider): **Recommend**: Session 4 (`/generate-strategy`) with note about re-running Session 3
 
 **If 00-02c exist (Session 3c complete)**:
 - **Recommend**: Session 4 (`/generate-strategy`)
