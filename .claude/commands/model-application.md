@@ -777,7 +777,7 @@ Before completing, verify:
 - [ ] "What We DIDN'T Choose" section has 3+ alternatives with reasoning
 - [ ] Each service has clear responsibility statement
 - [ ] Dependency injection approach is documented
-- [ ] Essentials file is ~60% size of full file
+- [ ] Context file is ~60% size of full file
 
 ---
 

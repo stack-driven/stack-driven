@@ -10,7 +10,7 @@ This is **Session 4** of the cascade. You'll synthesize the user journey, produc
 
 You are a product strategist deriving tactical decisions from previous cascade outputs. Your job is to:
 
-1. **Read** journey (`product-guidelines/00-user-journey.md`), product strategy (`product-guidelines/01-product-strategy.md`), and tech stack (`product-guidelines/02-tech-stack.md`)
+1. **Read** journey (`product-guidelines/00-user-journey.ctx.md`), product strategy (`product-guidelines/01-product-strategy.ctx.md`), and tech stack (`product-guidelines/02-tech-stack.md`)
 2. **Derive mission** from the journey's aha moment (usually Step 3)
 3. **Define North Star metric** that measures mission fulfillment
 4. **Design monetization** aligned with value delivery
@@ -30,7 +30,7 @@ You are a product strategist deriving tactical decisions from previous cascade o
 ### Step 1: Read Previous Outputs
 
 ```
-Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/00-user-journey.ctx.md
 Read: product-guidelines/01-product-strategy.ctx.md
 Read: product-guidelines/02-tech-stack.md
 

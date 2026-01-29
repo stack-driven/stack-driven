@@ -448,7 +448,7 @@ The distillation agent will create a condensed version optimized for Session 12 
 
 **Format**:
 ```markdown
-# API Contracts Essentials (For Backlog Generation)
+# API Contracts Context (For Backlog Generation)
 
 > See `08-api-contracts.md` for complete OpenAPI 3.0 specification
 

@@ -63,11 +63,11 @@ Use this decision logic to determine what to execute:
 - Run Session 2: `/create-product-strategy`
 - Then ask user if they want to continue
 
-**If 00-01 exist (both full and essentials) but not 02a:**
+**If 00-01 exist (both full and context files) but not 02a:**
 - Run Session 2a: `/document-constraints`
 - Then ask user if they want to continue
 
-**If 00-02a exist (both full and essentials):**
+**If 00-02a exist (both full and context files):**
 - Run Session 3: `/choose-tech-stack`
 - Then ask user if they want to continue
 
@@ -75,7 +75,7 @@ Use this decision logic to determine what to execute:
 - Run Session 3b: `/define-coding-standards`
 - Then ask user if they want to continue
 
-**If 00-02b exist (both full and essentials):**
+**If 00-02b exist (both full and context files):**
 - Check if `02-tech-stack.md` contains "AI Integration: Required"
 - If yes: Run Session 3c: `/define-ai-integration-strategy`
 - If "AI Integration: Not Required": Run Session 4: `/generate-strategy`
@@ -106,11 +106,11 @@ Use this decision logic to determine what to execute:
 - Run Session 8: `/generate-api-design`
 - Then ask user if they want to continue
 
-**If 00-08 api design exist (both full and essentials):**
+**If 00-08 api design exist (both full and context files):**
 - Run Session 8b: `/generate-api-contracts`
 - Then ask user if they want to continue
 
-**If 00-08b api contracts exist (both full and essentials):**
+**If 00-08b api contracts exist (both full and context files):**
 - Run Session 9: `/create-test-strategy`
 - Then ask user if they want to continue
 
@@ -118,7 +118,7 @@ Use this decision logic to determine what to execute:
 - Run Session 9b: `/model-application`
 - Then ask user if they want to continue
 
-**If 00-09b exist (both full and essentials):**
+**If 00-09b exist (both full and context files):**
 - Run Session 10: `/generate-backlog`
 - Then ask user if they want to continue
 

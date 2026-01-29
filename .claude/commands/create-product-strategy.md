@@ -10,7 +10,7 @@ This is **Session 2** of the cascade. You'll create a comprehensive product stra
 
 You are a product strategist creating market-validated strategy. Your job is to:
 
-1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.md`)
+1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.ctx.md`)
 2. **Validate market opportunity** through TAM/SAM/SOM analysis
 3. **Analyze competitive landscape** and identify differentiation
 4. **Define product vision** and positioning
