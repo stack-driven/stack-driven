@@ -47,8 +47,8 @@ Extract:
 Based on issue type, load these files from `product-guidelines/`:
 
 **Always read:**
-- `00-user-journey.ctx.md` - Understand which journey step this serves
-- `02-tech-stack.ctx.md` - Technology choices and patterns
+- `00-user-journey.md` - Understand which journey step this serves
+- `02-tech-stack.md` - Technology choices and patterns
 - `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions
 
 **Conditionally read based on issue labels/content:**
@@ -56,12 +56,12 @@ Based on issue type, load these files from `product-guidelines/`:
 | Issue Type | Guidelines to Load |
 |------------|-------------------|
 | UI/Frontend | `06-design-system.md` (no .ctx version) |
-| API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.ctx.md` |
+| API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.md` |
 | Database | `07-database-schema.ctx.md` |
-| New Feature | `00-user-journey.ctx.md`, `03b-metrics.ctx.md` |
-| Bug Fix | Relevant .ctx.md technical specs only |
+| New Feature | `00-user-journey.md`, `03b-metrics.md` |
+| Bug Fix | Relevant technical specs only |
 | Testing | `09-test-strategy.ctx.md` |
-| Infrastructure | `04-architecture.ctx.md`, `13-deployment-plan.ctx.md` |
+| Infrastructure | `04-architecture.md`, `13-deployment-plan.md` |
 
 **Smart detection:**
 - Search issue body for keywords: "API", "database", "UI", "frontend", "backend"
@@ -381,5 +381,3 @@ The plan you create will be consumed by `/implement-issue`, so:
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
-
-IM
