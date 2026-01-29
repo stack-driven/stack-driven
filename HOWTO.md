@@ -142,9 +142,9 @@ product-guidelines/
 ├── 00-user-journey.md          # Your specific user journey
 ├── 01-product-strategy.md      # Market analysis, positioning
 ├── 02-tech-stack.md            # Recommended stack with reasoning
-├── 03-mission.md               # Your product mission
-├── 04-metrics.md               # Success metrics (North Star, etc.)
-├── 04-monetization.md          # Pricing strategy
+├── 03a-mission.md               # Your product mission
+├── 03b-metrics.md               # Success metrics (North Star, etc.)
+├── 03c-monetization.md          # Pricing strategy
 ├── 04-architecture.md          # System architecture
 ├── 05-brand-strategy.md        # Brand positioning
 ├── 06-design-system.md         # UI components, colors, typography

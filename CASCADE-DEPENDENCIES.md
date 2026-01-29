@@ -104,11 +104,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
 ├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 🔧 /templates/02b-coding-standards-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 4 (03-mission.md from generate-strategy)
+**Dependencies:** Sessions 1, 2, 3, 4 (03a-mission.md from generate-strategy)
 
 **Downstream consumers of essentials:**
 - Session 4 (generate-strategy)
@@ -151,9 +151,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ### Session 4: `/generate-strategy`
 **Outputs:**
-- `03-mission.md`
-- `04-metrics.md`
-- `04-monetization.md`
+- `03a-mission.md`
+- `03b-metrics.md`
+- `03c-monetization.md`
 - `04-architecture.md`
 
 **Reads:**
@@ -164,9 +164,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
 ├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-└─ 🔧 /templates/03-mission-template.md
-    /templates/04-metrics-template.md
-    /templates/04-monetization-template.md
+└─ 🔧 /templates/03a-mission-template.md
+    /templates/03b-metrics-template.md
+    /templates/03c-monetization-template.md
     /templates/04-architecture-template.md
 ```
 
@@ -183,8 +183,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md (optional)
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md (optional)
 └─ 🔧 /templates/05-brand-strategy-template.md
 ```
 
@@ -354,9 +354,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
 ├─ 📋 product-guidelines/02b-coding-standards-essentials.md
 ├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md
-├─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md
+├─ 📄 product-guidelines/03c-monetization.md
 ├─ 📄 product-guidelines/04-architecture.md
 ├─ 📋 product-guidelines/07-database-schema-essentials.md
 ├─ 📋 product-guidelines/08-api-contracts-essentials.md
@@ -369,15 +369,15 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Why all these files?** Backlog is the convergence point where all previous decisions materialize into user stories:
 - 00 (journey) → Epic structure, story prioritization
-- 01-essentials (product-strategy) → Vision, goals for story context
+- 01-product-strategy-essentials → Vision, goals for story context
 - 02 (tech-stack) → Technical implementation approach in stories
-- 02b-essentials (coding-standards) → File organization, naming for implementation tasks
+- 02b-coding-standards-essentials → File organization, naming for implementation tasks
 - 03 (mission) → Product context in story descriptions
 - 04 (metrics/monetization/architecture) → Success criteria, tracking, technical constraints
-- 07-essentials (database-schema) → Data model references in stories
-- 08-essentials (api-contracts) → Endpoint implementation stories
-- 09-essentials (test-strategy) → Testing acceptance criteria
-- 09b-essentials (application-architecture) → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
+- 07-database-schema-essentials → Data model references in stories
+- 08b-api-contracts-essentials → Endpoint implementation stories
+- 09-test-strategy-essentials → Testing acceptance criteria
+- 09b-application-architecture-essentials → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
 
 **Note:** Sessions 5 (brand-strategy) and 6 (design-system) NOT read. Backlog focuses on technical implementation user stories. Design/brand context comes from journey and product strategy.
 
@@ -424,14 +424,14 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Why all these essentials files?** Scaffold GENERATES actual code:
 - 00 (journey) → Project name, domain concepts
-- 01-essentials (product-strategy) → Vision for code comments
+- 01-product-strategy-essentials → Vision for code comments
 - 02 (tech-stack) → Languages, frameworks, tools to scaffold
-- 02b-essentials (coding-standards) → Directory structure, file organization, naming conventions
+- 02b-coding-standards-essentials → Directory structure, file organization, naming conventions
 - 04 (architecture) → Monorepo/multi-repo, service structure
-- 07-essentials (database-schema) → Entity classes, repository interfaces
-- 08-essentials (api-contracts) → Controller/handler method stubs
-- 09-essentials (test-strategy) → Test file structure, coverage setup
-- 09b-essentials (application-architecture) → Service classes with method signatures, dependency injection
+- 07-database-schema-essentials → Entity classes, repository interfaces
+- 08b-api-contracts-essentials → Controller/handler method stubs
+- 09-test-strategy-essentials → Test file structure, coverage setup
+- 09b-application-architecture-essentials → Service classes with method signatures, dependency injection
 - 10 (backlog) → TODO comments linking to user stories
 
 **Important:** Scaffold uses framework-specific best practices (e.g., Next.js App Router patterns), NOT generic templates. Code placed in repository root, not product-guidelines/.
@@ -463,14 +463,14 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 **Reads:**
 ```
 ├─ 📄 product-guidelines/04-architecture.md
-├─ 📄 product-guidelines/04-metrics.md
+├─ 📄 product-guidelines/03b-metrics.md
 ├─ 📄 product-guidelines/13-deployment-plan.md (optional)
 └─ 🔧 /templates/14-observability-strategy-template.md
 ```
 
 **Dependencies:** Session 4, optionally Session 13
 
-**Why 04-metrics?** Business metrics inform technical monitoring (e.g., track "documents processed" metric with counters, measure "processing time" with histograms).
+**Why 03b-metrics?** Business metrics inform technical monitoring (e.g., track "documents processed" metric with counters, measure "processing time" with histograms).
 
 ---
 
@@ -481,7 +481,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 📄 product-guidelines/05-brand-strategy.md
 ```
 
@@ -494,7 +494,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
+├─ 📄 product-guidelines/03a-mission.md
 └─ 📄 product-guidelines/05-brand-strategy.md
 ```
 
@@ -532,7 +532,7 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-metrics.md
+├─ 📄 product-guidelines/03b-metrics.md
 └─ 📄 product-guidelines/06-design-system.md
 ```
 
@@ -545,9 +545,9 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03-mission.md
-├─ 📄 product-guidelines/04-metrics.md
-└─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03a-mission.md
+├─ 📄 product-guidelines/03b-metrics.md
+└─ 📄 product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -559,8 +559,8 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ```
 ├─ 📄 product-guidelines/00-user-journey.md
 ├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/04-metrics.md
-└─ 📄 product-guidelines/04-monetization.md
+├─ 📄 product-guidelines/03b-metrics.md
+└─ 📄 product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -801,7 +801,7 @@ Essentials files target **30-80% reduction** from full versions:
 2  → create-product-strategy  01-product-strategy.md + essentials
 3  → choose-tech-stack        02-tech-stack.md
 3b → define-coding-standards  02b-coding-standards.md + essentials
-4  → generate-strategy        03-mission, 04-metrics/monetization/architecture
+4  → generate-strategy        03a-mission, 03b-metrics/monetization/architecture
 5  → create-brand-strategy    05-brand-strategy.md
 6  → create-design            06-design-system.md
 7  → design-database-schema   07-database-schema.md + essentials

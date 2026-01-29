@@ -17,7 +17,7 @@ This document defines the brand strategy that guides all brand decisions, visual
 **Journey value moment** (from `product-guidelines/00-user-journey.md`):
 - [What's the "aha moment"? When does value get delivered?]
 
-**Mission promise** (from `product-guidelines/02-mission.md`):
+**Mission promise** (from `product-guidelines/03a-mission.md`):
 - [What's your mission statement?]
 
 **Connection**:

@@ -16,9 +16,9 @@ This directory contains template files that define the structure, validation cri
 - `01-product-strategy-template.md`
 - `02-tech-stack-template.md`
 - `02b-coding-standards-template.md`
-- `03-mission-template.md`
-- `04-metrics-template.md`
-- `04-monetization-template.md`
+- `03a-mission-template.md`
+- `03b-metrics-template.md`
+- `03c-monetization-template.md`
 - `04-architecture-template.md`
 - `05-brand-strategy-template.md`
 - `06-design-system-template.md`
@@ -68,9 +68,9 @@ This directory contains template files that define the structure, validation cri
 ### Why "04" Appears Three Times
 
 Session 4 (`/generate-strategy`) creates **four separate tactical foundation files**:
-- `03-mission.md` - Your product's purpose and core values
-- `04-metrics.md` - North Star metric and success measurements
-- `04-monetization.md` - Revenue model and pricing strategy
+- `03a-mission.md` - Your product's purpose and core values
+- `03b-metrics.md` - North Star metric and success measurements
+- `03c-monetization.md` - Revenue model and pricing strategy
 - `04-architecture.md` - High-level technical architecture
 
 All are created in a single session but stored as separate documents for modularity and focused reference.

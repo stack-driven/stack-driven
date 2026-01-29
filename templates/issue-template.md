@@ -9,7 +9,7 @@
 > - `00-user-journey.md` - User journey and value delivery
 > - `02-tech-stack.md` - Technology choices and rationale
 > - `06-design-system.md` - Design components and patterns
-> - `04-metrics.md` - Success metrics and tracking
+> - `03b-metrics.md` - Success metrics and tracking
 > - `07-database-schema.md` - Database schema and relationships
 > - `08-api-contracts.md` - API specifications
 

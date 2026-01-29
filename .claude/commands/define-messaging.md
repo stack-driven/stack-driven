@@ -10,7 +10,7 @@ You are helping the user create a comprehensive brand messaging framework that c
 
 **Run AFTER `/create-brand-strategy`** when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Mission statement (`product-guidelines/03-mission.md`)
+- ✅ Mission statement (`product-guidelines/03a-mission.md`)
 - ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
 - ✅ Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided)
 
@@ -36,7 +36,7 @@ This command READS previous outputs to create journey-grounded messaging:
 
 2. **Read the mission**:
    ```bash
-   Read product-guidelines/03-mission.md
+   Read product-guidelines/03a-mission.md
    ```
    - This becomes your value proposition foundation
 
@@ -65,7 +65,7 @@ Create a brand messaging framework that expresses the journey value in your bran
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/03-mission.md
+   Read product-guidelines/03a-mission.md
    Read product-guidelines/05-brand-strategy.md
    Read product-guidelines/15-brand-naming.md  # If exists
    ```

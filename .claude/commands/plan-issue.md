@@ -58,7 +58,7 @@ Based on issue type, load these files from `product-guidelines/`:
 | UI/Frontend | `06-design-system.md` |
 | API/Backend | `08-api-design.md`, `08b-api-contracts.md`, `04-architecture.md` |
 | Database | `07-database-schema.md` |
-| New Feature | `00-user-journey.md`, `04-metrics.md` |
+| New Feature | `00-user-journey.md`, `03b-metrics.md` |
 | Bug Fix | Relevant technical specs only |
 | Testing | `09-test-strategy.md` |
 | Infrastructure | `04-architecture.md`, `13-deployment-plan.md` |
@@ -110,7 +110,7 @@ Create a detailed plan using this structure:
 **User Value:** {Specific value this delivers - be concrete}
 - Example: "Reduces compliance officer's document review time from 4 hours to 60 seconds"
 
-**Success Metric:** {Which metric from 04-metrics.md this impacts}
+**Success Metric:** {Which metric from 03b-metrics.md this impacts}
 
 ## Product Context & Guidelines
 

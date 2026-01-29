@@ -10,7 +10,7 @@ You are helping the user discover the perfect brand name through systematic gene
 
 **Run AFTER `/create-brand-strategy`** when you have:
 - ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Mission statement (`product-guidelines/03-mission.md`)
+- ✅ Mission statement (`product-guidelines/03a-mission.md`)
 - ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
 
 Your brand name should express the value delivered in the user journey, grounded in your brand strategy.
@@ -34,7 +34,7 @@ This command READS previous outputs to create journey-aligned names:
 
 2. **Read the mission**:
    ```bash
-   Read product-guidelines/03-mission.md
+   Read product-guidelines/03a-mission.md
    ```
    - What promise are you making?
    - What outcome do users achieve?
@@ -59,7 +59,7 @@ Generate brand name candidates that express the value from the user journey thro
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/03-mission.md
+   Read product-guidelines/03a-mission.md
    Read product-guidelines/05-brand-strategy.md
    ```
 

@@ -26,13 +26,14 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 | `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
-| `/generate-strategy` | 4 | 45-60 min | `03-mission.md`, `04-metrics.md`, `04-monetization.md`, `04-architecture.md` |
+| `/generate-strategy` | 4 | 45-60 min | `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
 | `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema-essentials.md` |
 | `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design-essentials.md` |
 | `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts-essentials.md` |
 | `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy-essentials.md` |
+| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md`, `09b-application-architecture-essentials.md` |
 | `/generate-backlog` | 10 | 60-90 min | `10-backlog/*.md` (30-50 issues) |
 | `/create-gh-issues` | 11 | 10-15 min | GitHub issues |
 | `/scaffold-project` | 12 | 30-45 min | `12-project-scaffold.md`, `12-project-scaffold/*` |
@@ -354,9 +355,9 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 - `product-guidelines/02-tech-stack.md` - Technology choices
 
 **Outputs:**
-- `product-guidelines/03-mission.md`
-- `product-guidelines/04-metrics.md`
-- `product-guidelines/04-monetization.md`
+- `product-guidelines/03a-mission.md`
+- `product-guidelines/03b-metrics.md`
+- `product-guidelines/03c-monetization.md`
 - `product-guidelines/04-architecture.md`
 
 **What it derives:**
@@ -398,8 +399,8 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 
 **Inputs (what it reads):**
 - `product-guidelines/00-user-journey.md` - User and value
-- `product-guidelines/03-mission.md` - Mission and promise
-- `product-guidelines/04-metrics.md` - Success measures
+- `product-guidelines/03a-mission.md` - Mission and promise
+- `product-guidelines/03b-metrics.md` - Success measures
 
 **Outputs:**
 - `product-guidelines/05-brand-strategy.md`
@@ -771,7 +772,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 **Inputs (what it reads):**
 - `product-guidelines/02-tech-stack.md` - Hosting platform
 - `product-guidelines/04-architecture.md` - Deployment patterns
-- `product-guidelines/04-metrics.md` - Success metrics
+- `product-guidelines/03b-metrics.md` - Success metrics
 
 **Outputs:**
 - `product-guidelines/13-deployment-plan.md`
@@ -810,7 +811,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 
 **Inputs (what it reads):**
 - `product-guidelines/00-user-journey.md` - Critical paths to monitor
-- `product-guidelines/04-metrics.md` - Business metrics
+- `product-guidelines/03b-metrics.md` - Business metrics
 - `product-guidelines/13-deployment-plan.md` - Infrastructure
 
 **Outputs:**
@@ -999,7 +1000,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 - Privacy and compliance considerations
 
 **Inputs:**
-- `product-guidelines/04-metrics.md` - What to measure
+- `product-guidelines/03b-metrics.md` - What to measure
 - `product-guidelines/00-user-journey.md` - Critical paths
 
 **Outputs:**
@@ -1029,7 +1030,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 
 **Inputs:**
 - `product-guidelines/00-user-journey.md` - Target audience
-- `product-guidelines/04-monetization.md` - Unit economics
+- `product-guidelines/03c-monetization.md` - Unit economics
 - `product-guidelines/01-product-strategy.md` - Market size
 
 **Outputs:**
@@ -1058,7 +1059,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 - Fundraising considerations
 
 **Inputs:**
-- `product-guidelines/04-monetization.md` - Pricing
+- `product-guidelines/03c-monetization.md` - Pricing
 - `product-guidelines/21-growth-strategy.md` - Acquisition costs
 - `product-guidelines/01-product-strategy.md` - Market size
 

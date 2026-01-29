@@ -1,6 +1,6 @@
 # Success Metrics: [Your Product Name]
 
-> **Derived from**: product-guidelines/02-mission.md (North Star = mission outcome quantified)
+> **Derived from**: product-guidelines/03a-mission.md (North Star = mission outcome quantified)
 
 ---
 

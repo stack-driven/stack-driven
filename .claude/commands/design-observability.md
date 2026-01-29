@@ -37,7 +37,7 @@ Create a comprehensive observability strategy following the instructions below.
 
 3. **Check for metrics from Session 4** (recommended):
    ```bash
-   Read product-guidelines/04-metrics.md
+   Read product-guidelines/03b-metrics.md
    ```
    - Business metrics inform technical monitoring
 
@@ -123,7 +123,7 @@ The output follows this structure:
 ```
 You: Let's design your observability strategy. First, let me check your architecture and metrics...
 
-[Read product-guidelines/04-architecture.md and product-guidelines/04-metrics.md]
+[Read product-guidelines/04-architecture.md and product-guidelines/03b-metrics.md]
 
 You: Got it - you have [services] and care about [business metrics]. What monitoring do you have today? What's missing?
 

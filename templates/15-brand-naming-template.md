@@ -15,10 +15,10 @@ This document captures the brand naming discovery process, including candidates,
 **Journey transformation** (from `product-guidelines/00-user-journey.md`):
 - [What transformation do users experience? From what → to what?]
 
-**Mission promise** (from `product-guidelines/02-mission.md`):
+**Mission promise** (from `product-guidelines/03a-mission.md`):
 - [What's your mission statement?]
 
-**Brand personality** (from `product-guidelines/08-brand-strategy.md`):
+**Brand personality** (from `product-guidelines/05-brand-strategy.md`):
 - [Key personality traits - formal/casual, professional/playful, etc.]
 
 **Naming Goal**:

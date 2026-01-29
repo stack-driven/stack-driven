@@ -66,9 +66,9 @@ Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integr
                                               product-guidelines/02c-ai-integration-strategy-essentials.md
   ↓ (AI reads all previous + AI strategy, derives tactics)
 
-Session 4: /generate-strategy          → product-guidelines/03-mission.md
-                                        product-guidelines/04-metrics.md
-                                        product-guidelines/04-monetization.md
+Session 4: /generate-strategy          → product-guidelines/03a-mission.md
+                                        product-guidelines/03b-metrics.md
+                                        product-guidelines/03c-monetization.md
                                         product-guidelines/04-architecture.md
   ↓ (AI reads all previous, creates brand strategy)
 
@@ -184,9 +184,9 @@ product-guidelines/
 ├── 02-tech-stack.md (Session 3)
 ├── 02b-coding-standards.md (Session 3b)
 ├── 02b-coding-standards-essentials.md (Session 3b)
-├── 03-mission.md (Session 4)
-├── 04-metrics.md (Session 4)
-├── 04-monetization.md (Session 4)
+├── 03a-mission.md (Session 4)
+├── 03b-metrics.md (Session 4)
+├── 03c-monetization.md (Session 4)
 ├── 04-architecture.md (Session 4)
 ├── 05-brand-strategy.md (Session 5)
 ├── 06-design-system.md (Session 6)
