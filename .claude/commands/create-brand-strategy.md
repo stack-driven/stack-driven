@@ -25,7 +25,7 @@ This command READS previous outputs to ground your brand in reality:
 
 1. **Read the user journey**:
    ```bash
-   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
    ```
    - Identify: What problem do users struggle with?
    - Identify: What's the "aha moment" in the journey?
@@ -33,18 +33,36 @@ This command READS previous outputs to ground your brand in reality:
 
 2. **Read the product strategy**:
    ```bash
-   Read product-guidelines/01-product-strategy.md
+   Read product-guidelines/01-product-strategy.ctx.md  # (context version for token efficiency)
    ```
    - Understand your market positioning and competitive differentiation
 
-3. **Read the mission**:
+3. **Read constraints (if exists)**:
+   ```bash
+   Read product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
+   ```
+   - Understand limitations that affect brand positioning
+
+4. **Read coding standards (if exists)**:
+   ```bash
+   Read product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
+   ```
+   - Understand technical culture that affects brand personality
+
+5. **Read AI integration strategy (if exists)**:
+   ```bash
+   Read product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)
+   ```
+   - Understand AI capabilities that may inform brand messaging
+
+6. **Read the mission**:
    ```bash
    Read product-guidelines/03a-mission.md
    ```
    - Your mission = the promise to deliver journey value
    - Brand purpose should express WHY you keep this promise
 
-4. **Read the metrics** (optional):
+7. **Read the metrics** (optional):
    ```bash
    Read product-guidelines/03b-metrics.md
    ```
@@ -60,8 +78,12 @@ Create a comprehensive brand strategy document following the instructions below.
 
 1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
-   Read product-guidelines/00-user-journey.md
-   Read product-guidelines/01-product-strategy.md
+   Read product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+   Read product-guidelines/01-product-strategy.ctx.md  # (context version for token efficiency)
+   Read product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+   Read product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
+   Read product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
+   Read product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)
    Read product-guidelines/03a-mission.md
    Read product-guidelines/03b-metrics.md  # Optional
    Read product-guidelines/04-architecture.md  # For technical constraints

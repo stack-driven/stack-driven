@@ -15,7 +15,7 @@ You're a technical product manager creating a systematic backlog from all cascad
 ### Step 1: Read ALL Previous Outputs
 
 ```
-Read: product-guidelines/00-user-journey.md
+Read: product-guidelines/00-user-journey.ctx.md
 Read: product-guidelines/01-product-strategy.ctx.md
 Read: product-guidelines/02-tech-stack.md
 

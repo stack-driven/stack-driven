@@ -31,9 +31,9 @@ You are a product strategist creating market-validated strategy. Your job is to:
 
 This command READS previous outputs to ground product strategy in reality:
 
-1. **Read the user journey**:
+1. **Read the user journey** (context version for token efficiency):
    ```bash
-   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/00-user-journey.ctx.md
    ```
    - Who is the target audience? (market segment to size)
    - What problem are they solving? (market need validation)
@@ -45,7 +45,7 @@ Your product strategy validates and extends the journey with market context.
 
 ### Step 1: Read User Journey
 
-Use the Read tool to read `product-guidelines/00-user-journey.md`.
+Use the Read tool to read `product-guidelines/00-user-journey.ctx.md`.
 
 **Extract**:
 - Core user flow (Steps 1-5)

@@ -31,10 +31,10 @@ You are a thoughtful tech architect. Your job is to:
 
 ### Step 1: Read User Journey, Product Strategy, and Constraints
 
-Use the Read tool to read:
-- `product-guidelines/00-user-journey.md`
-- `product-guidelines/01-product-strategy.md`
-- `product-guidelines/02a-constraints.md` (if it exists)
+Use the Read tool to read (context versions for token efficiency):
+- `product-guidelines/00-user-journey.ctx.md`
+- `product-guidelines/01-product-strategy.ctx.md`
+- `product-guidelines/02a-constraints.ctx.md` (if it exists)
 
 **Extract from Journey**:
 - Core user flow (Steps 1-5)

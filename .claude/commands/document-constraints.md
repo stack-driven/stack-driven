@@ -28,11 +28,11 @@ You are a pragmatic product strategist helping document reality. Your job is to:
 
 ## Cascade Inputs
 
-Read previous outputs:
+Read previous outputs (context versions for token efficiency):
 
 ```bash
-Read product-guidelines/00-user-journey.md
-Read product-guidelines/01-product-strategy.md
+Read product-guidelines/00-user-journey.ctx.md
+Read product-guidelines/01-product-strategy.ctx.md
 ```
 
 **Extract from Journey**:

@@ -59,13 +59,14 @@ Read: product-guidelines/08-api-design.md (from previous session - Session 8)
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema.ctx.md
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
 ```
 
-**Context Optimization**: We read the context file of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations.
+**Context Optimization**: We read .ctx.md files for significant context reduction. The database schema context file (~56% smaller) contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations. The API design context file contains high-level decisions (paradigm, serialization, auth) without full analysis.
 
 **Optional inputs (if available):**
 

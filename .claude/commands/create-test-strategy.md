@@ -42,16 +42,19 @@ Create comprehensive testing strategy including:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema.ctx.md (from Session 7)
-Read: product-guidelines/08b-api-contracts.ctx.md (from Session 8b)
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
 ```
 
 **Context Optimization**: We read .ctx.md files for significant context reduction:
-- `07-database-schema.ctx.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for test planning
-- `08b-api-contracts.ctx.md` (~79% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
+- `00-user-journey.ctx.md` - Journey steps and critical paths
+- `07-database-schema.ctx.md` (~56% smaller) - Table list, ERD, relationships sufficient for test planning
+- `08-api-design.ctx.md` - API paradigm and auth decisions
+- `08b-api-contracts.ctx.md` (~79% smaller) - Endpoint list organized by journey step, sufficient for test coverage planning
 
 **Optional inputs (if available):**
 

@@ -44,33 +44,34 @@ After 11 sessions, users have:
 ### Step 1: Read ALL Previous Outputs
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy.ctx.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
+Read: product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
 
 # Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints.ctx.md exists:
-  Read: product-guidelines/02a-constraints.ctx.md
+  Read: product-guidelines/02a-constraints.ctx.md (context version for token efficiency)
 
-Read: product-guidelines/02b-coding-standards.ctx.md
+Read: product-guidelines/02b-coding-standards.ctx.md (context version for token efficiency)
 
 # Check if AI integration strategy exists (Session 3c is optional)
 If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy.ctx.md
+  Read: product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
 
-Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema.ctx.md
-Read: product-guidelines/08b-api-contracts.ctx.md
-Read: product-guidelines/09-test-strategy.ctx.md
-Read: product-guidelines/09b-application-architecture.ctx.md
+Read: product-guidelines/04-architecture.md (no .ctx version, always read full file)
+Read: product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
+Read: product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
+Read: product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)
+Read: product-guidelines/09b-application-architecture.ctx.md (context version for token efficiency)
 Read: product-guidelines/10-backlog/BACKLOG.md
 ```
 
 **Context Optimization**: We read .ctx.md files for significant context reduction:
+- `00-user-journey.ctx.md` (~70% smaller) - Contains journey steps, aha moment, and value ratio
 - `01-product-strategy.ctx.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
 - `02a-constraints.ctx.md` (if exists, ~70% smaller) - Contains critical technical, organizational, and compliance constraints with trade-off decisions
 - `02b-coding-standards.ctx.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
-- `02c-ai-integration-strategy.ctx.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
+- `02c-ai-integration-strategy.ctx.md` (if exists, ~70% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
 - `07-database-schema.ctx.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
 - `08b-api-contracts.ctx.md` (Session 8b, ~80% smaller) - Contains endpoint list organized by journey step for controller/route generation
 - `09-test-strategy.ctx.md` (~66% smaller) - Contains coverage targets, test types, and quality gates

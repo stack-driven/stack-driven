@@ -16,10 +16,10 @@ You are an expert AI systems architect with deep knowledge of LLMs, RAG architec
 
 ## Prerequisites
 
-Before starting, ensure you have:
-- Session 00: User Journey (`product-guidelines/00-user-journey.md`)
-- Session 01: Product Strategy (`product-guidelines/01-product-strategy.md`)
-- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`)
+Before starting, ensure you have (context versions for token efficiency):
+- Session 00: User Journey (`product-guidelines/00-user-journey.ctx.md`)
+- Session 01: Product Strategy (`product-guidelines/01-product-strategy.ctx.md`)
+- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`) - no .ctx version, always read full file
 
 **IMPORTANT**: This session requires that AI Integration is marked as "Required" in `02-tech-stack.md`. Check the tech stack file first:
 - If "AI Integration: Required" → Proceed with this session
@@ -30,10 +30,10 @@ Before starting, ensure you have:
 
 ### Step 1: Load and Analyze Previous Sessions
 
-Read the following files in order:
-1. `product-guidelines/00-user-journey.md` - Extract AI touchpoints and requirements
-2. `product-guidelines/01-product-strategy.md` - Extract scale, budget, and risk context
-3. `product-guidelines/02-tech-stack.md` - Extract chosen AI provider and infrastructure
+Read the following files in order (context versions for token efficiency):
+1. `product-guidelines/00-user-journey.ctx.md` - Extract AI touchpoints and requirements
+2. `product-guidelines/01-product-strategy.ctx.md` - Extract scale, budget, and risk context
+3. `product-guidelines/02-tech-stack.md` - Extract chosen AI provider and infrastructure (no .ctx version)
 
 Analyze for:
 - **Journey AI touchpoints**: Which steps use AI? What tasks? What latency needs?

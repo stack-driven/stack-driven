@@ -45,15 +45,15 @@ This enables:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md (for journey steps and user actions)
-Read: product-guidelines/02-tech-stack.md (for framework choices, patterns)
-Read: product-guidelines/02b-coding-standards.ctx.md (for framework-specific patterns)
-Read: product-guidelines/04-architecture.md (for high-level architectural patterns)
-Read: product-guidelines/07-database-schema.ctx.md (for entities and relationships)
-Read: product-guidelines/08b-api-contracts.ctx.md (for endpoints and operations)
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/04-architecture.md
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
 ```
 
-**Context Optimization**: We read .ctx.md files for coding standards, database schema, and API contracts for significant context reduction while maintaining necessary information for architecture modeling.
+**Context Optimization**: We read .ctx.md files for journey, coding standards, database schema, and API contracts for significant context reduction (~60-80% smaller) while maintaining necessary information for architecture modeling.
 
 **Extract from Journey**:
 - What are the main journey steps that need code implementation?

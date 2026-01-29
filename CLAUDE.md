@@ -231,7 +231,67 @@ In contrast, sessions 02c, 08, 08b, 09, and 09b DO have context files because th
 - Session 10 reads all .ctx.md files; Session 9b reads 02b-coding-standards.ctx.md; Session 12 reads 09b-application-architecture.ctx.md
 Token reduction significantly improves performance.
 
-### 5. Quality Validation Framework
+### 5. Decision Matrix: When to Read .ctx.md vs .md
+
+This matrix documents which file version each session should read for optimal token efficiency while maintaining quality.
+
+**Always Read .ctx.md (Token Optimization):**
+
+Use context files when:
+- Building on previous decisions (need decisions only, not rationale)
+- Loading context for code generation (need configs, not explanations)
+- Cascade execution reading multiple previous sessions (cumulative token savings)
+- Implementation/planning commands needing technical specs
+
+**Always Read Full .md (Comprehensive Context):**
+
+Use source files when:
+- User explicitly asks to review full document
+- Validation/quality checks needing to verify rationale (/validate-outputs)
+- Need to understand "why" for plan challenges or design reviews
+- Files that don't have .ctx versions (tech-stack, architecture, mission, metrics, monetization, brand-strategy, design-system)
+
+**Session-by-Session Matrix:**
+
+| Session | Reads From | Uses .ctx.md? | Rationale |
+|---------|-----------|---------------|-----------|
+| 2 | 00 | .ctx.md | Needs journey steps, not interview process |
+| 2a | 00, 01 | .ctx.md | Needs journey + vision, not market analysis |
+| 3 | 00, 01, 02a | .ctx.md | Needs journey + constraints, not rationale |
+| 3b | 00, 01, 02 | .ctx.md for 00-01; full for 02 | Tech stack has no .ctx version |
+| 3c | 00, 01, 02 | .ctx.md for 00-01; full for 02 | Tech stack decisions needed |
+| 4 | 00-02c | .ctx.md where exists; full for 02 | Needs all previous decisions |
+| 5 | 00-04 | .ctx.md for 00-02c; full for 02, 03a-04 | Strategic foundation |
+| 6 | 00-05 | .ctx.md for 00-02c; full for others | Journey + brand strategy |
+| 7 | 00-06 | .ctx.md for 00-02c; full for others | Journey + design decisions |
+| 8 | 00, 02, 04, 07 | .ctx.md for 00, 07; full for 02, 04 | Schema names, not field details |
+| 8b | 00, 02, 04, 07, 08 | .ctx.md for 00, 07, 08; full for 02, 04 | API decisions, not alternatives |
+| 9 | 00-08b | .ctx.md for 00, 07, 08, 08b; full for 02, 04 | All technical decisions |
+| 9b | 00, 02, 02b, 04, 07, 08b | .ctx.md for 00, 02b, 07, 08b; full for 02, 04 | Schemas + contracts for modeling |
+| 10 | 00-09b + all .ctx | .ctx.md for ALL eligible files | **CRITICAL** - massive token savings |
+| 11 | 10-backlog | Full .md | Backlog stories (no .ctx version) |
+| 12 | 00-11 | .ctx.md for 00, 01, 02a, 02b, 02c, 07, 08b, 09, 09b; full for others | Specs for scaffold |
+| 13 | 00-12 | .ctx.md for all eligible; full for 02, 04, others | Architecture + scaffold specs |
+| 14 | 00-13 | .ctx.md for all eligible; full for 02, 04, 03b, 13 | Metrics + deployment specs |
+
+**Dev Commands:**
+
+| Command | Reads | Uses .ctx.md? | Rationale |
+|---------|-------|---------------|-----------|
+| /plan-issue | 02 (always), conditional reads | .ctx.md for 02b, 07, 08, 08b, 09; full for 02, 06, 04 | Tech choices + specs |
+| /implement-issue | Uses plan only | N/A | Relies on plan context |
+| /post-plan-and-implement | Same as plan-issue | Same as plan-issue | Combined workflow |
+
+**Files That NEVER Have .ctx Versions:**
+- `02-tech-stack.md` - Core tech decisions, always read full
+- `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md` - Already concise
+- `04-architecture.md` - Core architecture principles, always read full
+- `05-brand-strategy.md` - Only read by post-cascade extensions (need full context)
+- `06-design-system.md` - Only read by post-cascade extensions and dev commands (need full specs)
+- `10-backlog/` stories - User stories don't have condensed versions
+- `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md` - Final outputs
+
+### 6. Quality Validation Framework
 
 `/validate-outputs` checks for:
 - **Journey alignment** (critical): References specific journey steps, quantified value ratio
@@ -241,17 +301,25 @@ Token reduction significantly improves performance.
 - **Consistency** (important): Tech aligns with journey, mission aligns with aha moment
 - **Technical soundness** (important): Indexes in schemas, error responses in APIs, SLO/SLI in observability
 
-### 6. Issue Implementation Pattern
+### 7. Issue Implementation Pattern
+
+`/plan-issue` loads context and creates implementation plan:
+1. Always read `02-tech-stack.md` (full version - no .ctx)
+2. Always read `02b-coding-standards.ctx.md` (patterns, file organization)
+3. Conditionally read based on issue type:
+   - UI work → `06-design-system.md` (full - no .ctx version)
+   - API work → `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`
+   - Database work → `07-database-schema.ctx.md`
+   - Testing → `09-test-strategy.ctx.md`
+   - Infrastructure → `04-architecture.md` (full - no .ctx version)
 
 `/implement-issue` follows strict workflow:
-1. Load relevant product-guidelines as guardrails (always read `02-tech-stack.md`)
-2. UI work → read `06-design-system.md`
-3. API work → read `08-api-contracts.md`
-4. Database work → read `07-database-schema.md`
-5. Create branch: `[issue-number]-slug`
-6. Implement following approved plan
-7. Commit: `feat: description (closes #[number])`
-8. PR with "Closes #[number]" in body
+1. Fetch approved plan from issue comments
+2. Uses plan as complete context (plan already contains all necessary product-guidelines)
+3. Create branch: `[issue-number]-slug`
+4. Implement following plan exactly
+5. Commit: `feat: description (closes #[number])`
+6. PR with "Closes #[number]" in body
 
 ---
 
