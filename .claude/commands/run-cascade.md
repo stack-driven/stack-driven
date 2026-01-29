@@ -76,9 +76,10 @@ Use this decision logic to determine what to execute:
 - Then ask user if they want to continue
 
 **If 00-02b exist (both full and essentials):**
-- Check if `02-tech-stack.md` mentions AI provider
+- Check if `02-tech-stack.md` contains "AI Integration: Required"
 - If yes: Run Session 3c: `/define-ai-integration-strategy`
-- If no: Run Session 4: `/generate-strategy`
+- If "AI Integration: Not Required": Run Session 4: `/generate-strategy`
+- If neither (old format): Run Session 4 with note about re-running Session 3
 - Then ask user if they want to continue
 
 **If 00-02c exist (optional AI integration complete):**
