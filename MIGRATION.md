@@ -304,7 +304,7 @@ git push origin main
 ```bash
 git checkout main
 git reset --hard backup-before-automation-update
-git push origin main --force  # ⚠️ Use with caution
+git push origin main --force  # (Warning) Use with caution
 ```
 
 ---
@@ -363,14 +363,14 @@ curl -o /tmp/post-plan.md https://raw.githubusercontent.com/bru-digital/stack-dr
 curl -o /tmp/post-plan-and-implement.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/.claude/commands/post-plan-and-implement.md && \
 curl -o /tmp/claude-fix-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-fix-review.yml && \
 curl -o /tmp/claude-code-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-code-review.yml && \
-echo "✅ All files downloaded to /tmp/"
+echo "(✓) All files downloaded to /tmp/"
 
 # Copy all files at once (from your project root)
 cp /tmp/post-plan.md .claude/commands/ && \
 cp /tmp/post-plan-and-implement.md .claude/commands/ && \
 cp /tmp/claude-fix-review.yml .github/workflows/ && \
 cp /tmp/claude-code-review.yml .github/workflows/ && \
-echo "✅ All files copied"
+echo "(✓) All files copied"
 
 # Verify
 git status && gh workflow list

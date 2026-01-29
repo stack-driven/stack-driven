@@ -193,3 +193,7 @@ Phase 1 focuses on your North Star and core input metrics. Ready to start implem
 ---
 
 **Remember**: This is OPTIONAL but highly recommended. Good analytics = good decisions. Start with phase 1 and expand over time.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

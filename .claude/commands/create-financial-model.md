@@ -9,14 +9,14 @@ This is a **post-core extension** that creates a comprehensive financial model g
 ## When to Run This
 
 **Run AFTER Session 4+** when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
-- ✅ Metrics established (`product-guidelines/03b-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/03c-monetization.md`)
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Product strategy validated (`product-guidelines/01-product-strategy.md`)
+- [✓] Metrics established (`product-guidelines/03b-metrics.md`)
+- [✓] Monetization model defined (`product-guidelines/03c-monetization.md`)
 
 **Ideally after additional strategy work** when you also have:
-- ✅ Growth strategy created (`product-guidelines/21-growth-strategy.md`)
-- ✅ Tech stack chosen (`product-guidelines/02-tech-stack.md`)
+- [✓] Growth strategy created (`product-guidelines/21-growth-strategy.md`)
+- [✓] Tech stack chosen (`product-guidelines/02-tech-stack.md`)
 - So cost structure and customer acquisition costs are grounded in reality
 
 **Skip this** if:
@@ -910,10 +910,14 @@ After completing this session:
 8. **Sensitivity table**: For key assumptions, create a sensitivity table showing impact of +/- 20% changes.
 
 **Common pitfalls to avoid**:
-- ❌ Using "hockey stick" growth curves without justification
-- ❌ Ignoring churn in revenue projections (only counting new customers)
-- ❌ Underestimating costs (especially marketing and personnel)
-- ❌ Assuming 0% churn or 100% gross margin
-- ❌ Not including 6-month cash buffer in funding requirements
-- ❌ Forgetting to account for payment processing fees (3% of revenue)
-- ❌ Modeling 50%+ YoY growth without explaining how (channel capacity, team size, etc.)
+- [x] Using "hockey stick" growth curves without justification
+- [x] Ignoring churn in revenue projections (only counting new customers)
+- [x] Underestimating costs (especially marketing and personnel)
+- [x] Assuming 0% churn or 100% gross margin
+- [x] Not including 6-month cash buffer in funding requirements
+- [x] Forgetting to account for payment processing fees (3% of revenue)
+- [x] Modeling 50%+ YoY growth without explaining how (channel capacity, team size, etc.)
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

@@ -9,10 +9,10 @@ You are helping the user design a comprehensive visual brand identity including 
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** (Session 5) when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Brand strategy established (`product-guidelines/05-brand-strategy.md`)
-- ✅ Design system created (`product-guidelines/06-design-system.md`) - recommended but optional
-- ✅ Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided) - optional but helpful
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Brand strategy established (`product-guidelines/05-brand-strategy.md`)
+- [✓] Design system created (`product-guidelines/06-design-system.md`) - recommended but optional
+- [✓] Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided) - optional but helpful
 
 Your visual identity should express the brand personality and values defined in your brand strategy, not be created in a vacuum.
 
@@ -93,28 +93,28 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    What best expresses the brand personality?
 
    ├─ Wordmark (text-only logo)
-   │  ├─ ✅ Choose if: Name is distinctive, brand values clarity/directness
-   │  ├─ ✅ Choose if: B2B/professional context, trust is key
+   │  ├─ [✓] Choose if: Name is distinctive, brand values clarity/directness
+   │  ├─ [✓] Choose if: B2B/professional context, trust is key
    │  └─ Examples: Google, FedEx, Coca-Cola
    │
    ├─ Lettermark (initials/acronym)
-   │  ├─ ✅ Choose if: Long name needs abbreviation
-   │  ├─ ✅ Choose if: International audience (minimize language barriers)
+   │  ├─ [✓] Choose if: Long name needs abbreviation
+   │  ├─ [✓] Choose if: International audience (minimize language barriers)
    │  └─ Examples: IBM, HP, NASA
    │
    ├─ Icon + Wordmark (combination mark)
-   │  ├─ ✅ Choose if: Want visual + text recognition
-   │  ├─ ✅ Choose if: Need versatility (icon alone or with text)
+   │  ├─ [✓] Choose if: Want visual + text recognition
+   │  ├─ [✓] Choose if: Need versatility (icon alone or with text)
    │  └─ Examples: Adidas, Burger King, Lacoste
    │
    ├─ Abstract Symbol
-   │  ├─ ✅ Choose if: Creating new meaning/category
-   │  ├─ ✅ Choose if: Global brand with ambition for iconic status
+   │  ├─ [✓] Choose if: Creating new meaning/category
+   │  ├─ [✓] Choose if: Global brand with ambition for iconic status
    │  └─ Examples: Nike, Pepsi, Airbnb
    │
    └─ Pictorial Mark (literal icon)
-      ├─ ✅ Choose if: Industry/category needs instant recognition
-      ├─ ✅ Choose if: Icon reinforces brand story
+      ├─ [✓] Choose if: Industry/category needs instant recognition
+      ├─ [✓] Choose if: Icon reinforces brand story
       └─ Examples: Apple, Twitter, Target
    ```
 
@@ -313,13 +313,13 @@ You: Great! I'll develop [chosen concept] into a complete brand identity system 
 
 You: I've created your complete brand identity system in product-guidelines/17-brand-identity.md:
 
-✅ Logo system (primary + variations)
-✅ Color palette application
-✅ Typography standards
-✅ Visual elements and patterns
-✅ Usage guidelines (do's and don'ts)
-✅ Brand applications (digital, marketing, product)
-✅ Alternatives we didn't choose (and why)
+[✓] Logo system (primary + variations)
+[✓] Color palette application
+[✓] Typography standards
+[✓] Visual elements and patterns
+[✓] Usage guidelines (do's and don'ts)
+[✓] Brand applications (digital, marketing, product)
+[✓] Alternatives we didn't choose (and why)
 
 Every design decision traces back to your brand strategy: [key connections]
 
@@ -385,3 +385,7 @@ This visual identity expresses [brand personality] and will help [journey audien
 ---
 
 **Now, create a visual brand identity that expresses your journey value!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

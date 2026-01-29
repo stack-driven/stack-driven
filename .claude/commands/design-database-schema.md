@@ -971,3 +971,7 @@ If you can't trace a table back to a journey step, you probably don't need it.
 ---
 
 **Now, read previous outputs and design a database schema that serves your users' journey!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

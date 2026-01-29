@@ -6,12 +6,12 @@ Complete reference for all Stack-Driven slash commands.
 
 ## Overview
 
-Stack-Driven includes **27 slash commands** organized into five categories:
+Stack-Driven includes **36 slash commands** organized into four categories:
 
-1. **Core Cascade Commands** (15) - The main framework sessions
+1. **Core Cascade Commands** (19) - The main framework sessions
 2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
-4. **Development Commands** (2) - Code review and quality assurance
+4. **Development Commands** (7) - Code review and implementation workflow
 
 ---
 
@@ -26,6 +26,7 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 | `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
+| `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md`, `02c-ai-integration-strategy-essentials.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
@@ -68,6 +69,11 @@ Stack-Driven includes **27 slash commands** organized into five categories:
 |---------|-------------|---------|
 | `/validate-outputs` | During/after cascade | Validate cascade outputs for quality and completeness |
 | `/review-code` | During development | Guide comprehensive code review |
+| `/implement-issue [issue-number]` | During development | Implement GitHub issue following approved plan and create PR |
+| `/plan-issue [issue-number]` | Before implementation | Create detailed implementation plan for GitHub issue |
+| `/post-plan [issue-number]` | After planning | Post implementation plan as comment to GitHub issue |
+| `/post-plan-and-implement [issue-number]` | During development | Generate plan and auto-implement (full automation) |
+| `/update-claudemd` | After code changes | Automatically update CLAUDE.md file based on recent code changes |
 
 ---
 
@@ -1099,9 +1105,9 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 **Example output:**
 ```
 Core Cascade Progress:
-✅ Session 1: /refine-journey (complete)
-✅ Session 2: /create-product-strategy (complete)
-⏹️ Session 3: /choose-tech-stack (not started)
+[COMPLETE] Session 1: /refine-journey (complete)
+[COMPLETE] Session 2: /create-product-strategy (complete)
+[NOT STARTED] Session 3: /choose-tech-stack (not started)
 
 Next step: Run /choose-tech-stack
 ```

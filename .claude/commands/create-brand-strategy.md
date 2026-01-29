@@ -9,10 +9,10 @@ This is **Session 5** of the cascade. You'll create a comprehensive brand strate
 ## When to Use This
 
 **Run AFTER Session 4** (`/generate-strategy`) when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
-- ✅ Tech stack chosen (`product-guidelines/02-tech-stack.md`)
-- ✅ Tactical foundation established (`product-guidelines/03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`)
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Product strategy validated (`product-guidelines/01-product-strategy.md`)
+- [✓] Tech stack chosen (`product-guidelines/02-tech-stack.md`)
+- [✓] Tactical foundation established (`product-guidelines/03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`)
 
 Your brand should EXPRESS the value you deliver in the user journey, not be created in a vacuum.
 
@@ -149,7 +149,7 @@ User: [Lists values connected to journey delivery]
 
 You: Excellent! I've captured your brand strategy in product-guidelines/05-brand-strategy.md. Every section traces back to your user journey and mission.
 
-✅ Session 5 complete! Brand strategy created.
+[✓] Session 5 complete! Brand strategy created.
 
 Your brand expresses the value from your user journey:
 - Purpose: [Why you exist]
@@ -183,3 +183,7 @@ Your brand strategy is now grounded in the user journey and will inform your des
 ---
 
 **Now, create a brand strategy that expresses your journey value!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

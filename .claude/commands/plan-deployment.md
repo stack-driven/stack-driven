@@ -196,3 +196,7 @@ Ready to implement? Start with the CI/CD pipeline setup.
 ---
 
 **Remember**: This is a CORE session. Good deployment strategy = faster shipping and less stress. Deployment planning is essential for reliably delivering journey value to users.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

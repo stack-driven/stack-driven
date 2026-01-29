@@ -212,3 +212,7 @@ This validates your journey with market context. Everything traces back to the u
 ---
 
 **Remember**: Product strategy is now CORE (Session 2). It validates journey with market context before choosing technology. Everything connects back to the user journey.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

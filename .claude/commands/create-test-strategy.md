@@ -1325,3 +1325,7 @@ Don't waste time on:
 ---
 
 **Now, read previous outputs and create a testing strategy that ensures quality without slowing development!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

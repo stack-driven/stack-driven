@@ -387,7 +387,7 @@ Variant patterns:
 
 Visual hierarchy:
 - Score badge: Large (48px), color-coded (red <60%, yellow 60-80%, green >80%)
-- Requirements: Nested checklist with icons (✓ pass, ⚠ partial, ✗ fail)
+- Requirements: Nested checklist with icons (✓ pass, [Warning] partial, [x] fail)
 - Action buttons: Secondary (ghost), aligned right
 
 **5. Empty States**
@@ -431,16 +431,16 @@ Document the decisions you made and alternatives you rejected. This prevents fut
 
 Examples:
 - **Tailwind CSS**: Utility-first, fast prototyping, small bundle
-  - ✅ Choose if: Speed-focused, startup, small team
-  - ❌ Avoid if: Need strict design consistency, complex themes
+  - [✓] Choose if: Speed-focused, startup, small team
+  - [x] Avoid if: Need strict design consistency, complex themes
 
 - **Styled Components / Emotion**: CSS-in-JS, component-scoped styles
-  - ✅ Choose if: React-heavy, dynamic theming, complex logic
-  - ❌ Avoid if: Concerned about runtime cost, server-side rendering
+  - [✓] Choose if: React-heavy, dynamic theming, complex logic
+  - [x] Avoid if: Concerned about runtime cost, server-side rendering
 
 - **CSS Modules**: Scoped CSS, framework-agnostic
-  - ✅ Choose if: Want traditional CSS, avoid JS dependencies
-  - ❌ Avoid if: Need dynamic styles or theming
+  - [✓] Choose if: Want traditional CSS, avoid JS dependencies
+  - [x] Avoid if: Need dynamic styles or theming
 
 **Decision for Compliance SaaS**: Tailwind CSS
 - Rationale: Fast iteration, design tokens via config, team familiar
@@ -462,20 +462,20 @@ Why tokens matter:
 
 **Options**:
 - **Material UI (MUI)**: Full component library, opinionated design
-  - ✅ Choose if: Need rapid development, Material Design acceptable
-  - ❌ Avoid if: Need custom brand, concerned about bundle size
+  - [✓] Choose if: Need rapid development, Material Design acceptable
+  - [x] Avoid if: Need custom brand, concerned about bundle size
 
 - **Chakra UI**: Accessible, composable, flexible
-  - ✅ Choose if: Accessibility priority, need flexibility
-  - ❌ Avoid if: Don't need that many components
+  - [✓] Choose if: Accessibility priority, need flexibility
+  - [x] Avoid if: Don't need that many components
 
 - **shadcn/ui**: Copy-paste components, full control
-  - ✅ Choose if: Want control, can maintain components
-  - ❌ Avoid if: Team too small to maintain
+  - [✓] Choose if: Want control, can maintain components
+  - [x] Avoid if: Team too small to maintain
 
 - **Custom Components**: Built from scratch
-  - ✅ Choose if: Unique brand, specific needs, have design resources
-  - ❌ Avoid if: Small team, tight timeline
+  - [✓] Choose if: Unique brand, specific needs, have design resources
+  - [x] Avoid if: Small team, tight timeline
 
 **Decision for Compliance SaaS**: shadcn/ui + custom journey components
 - Rationale: Flexibility for unique journey flows (upload, assessment)
@@ -486,11 +486,11 @@ Why tokens matter:
 
 **Options**:
 - **Heroicons / Lucide**: SVG component library
-  - ✅ Choose if: React/Vue, want tree-shaking, modern approach
+  - [✓] Choose if: React/Vue, want tree-shaking, modern approach
 - **Font Awesome**: Icon font, wide selection
-  - ✅ Choose if: Need huge variety, legacy compatibility
+  - [✓] Choose if: Need huge variety, legacy compatibility
 - **Custom SVG sprites**: Minimal, only icons you need
-  - ✅ Choose if: Performance-critical, limited icon needs
+  - [✓] Choose if: Performance-critical, limited icon needs
 
 **Decision**: Lucide React
 - Rationale: Tree-shakeable, consistent style, good coverage
@@ -520,7 +520,7 @@ Rationale: B2B users prioritize speed over delight
 ## After Generation
 
 ```
-✅ Session 6 complete! Design system created.
+[✓] Session 6 complete! Design system created.
 
 Your design brings your brand to life and optimizes for [journey context]:
 - Brand Personality (from Session 5): [Attributes]
@@ -544,3 +544,7 @@ Or check progress: /cascade-status
 ---
 
 **Now, create a design system optimized for this specific journey!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

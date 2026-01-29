@@ -627,3 +627,7 @@ If you find the API design decisions don't work for a specific endpoint, note it
 ---
 
 **Now, read API design decisions (Session 8) and create technical API contracts!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

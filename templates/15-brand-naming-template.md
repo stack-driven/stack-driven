@@ -148,9 +148,9 @@ This document captures the brand naming discovery process, including candidates,
 **Trademark Status**: 🟢/🟡/🔴 [Brief assessment]
 
 **Domain Availability**:
-- `.com`: ✅/❌ [Available/Taken]
-- `.io`: ✅/❌
-- `.ai`: ✅/❌
+- `.com`: [✓]/[x] [Available/Taken]
+- `.io`: [✓]/[x]
+- `.ai`: [✓]/[x]
 - Alternative: [If .com taken, what's available?]
 
 **Pros**:
@@ -175,9 +175,9 @@ This document captures the brand naming discovery process, including candidates,
 **Trademark Status**: 🟢/🟡/🔴 [Brief assessment]
 
 **Domain Availability**:
-- `.com`: ✅/❌
-- `.io`: ✅/❌
-- `.ai`: ✅/❌
+- `.com`: [✓]/[x]
+- `.io`: [✓]/[x]
+- `.ai`: [✓]/[x]
 - Alternative: [If .com taken]
 
 **Pros**:

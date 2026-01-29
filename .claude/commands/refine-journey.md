@@ -157,7 +157,7 @@ Use the Write tool to create `product-guidelines/00-user-journey.md`.
 
 Once you've created the file:
 
-1. **Show a summary**: "✅ User journey defined!"
+1. **Show a summary**: "[✓] User journey defined!"
 2. **Highlight key insights**:
    - "Your primary user: [persona]"
    - "Core value: [what they get]"
@@ -166,7 +166,7 @@ Once you've created the file:
 
 3. **Next steps**:
    ```
-   ✅ Session 1 complete!
+   [✓] Session 1 complete!
 
    You've defined your user journey. Next, we'll choose a tech stack optimized for THIS journey (not generic best practices).
 
@@ -227,3 +227,7 @@ Once you've created the file:
 ---
 
 **Now, start the conversation!** Ask your first question to understand the user's problem and who experiences it.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

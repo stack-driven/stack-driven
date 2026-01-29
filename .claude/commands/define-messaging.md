@@ -9,10 +9,10 @@ You are helping the user create a comprehensive brand messaging framework that c
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Mission statement (`product-guidelines/03a-mission.md`)
-- ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
-- ✅ Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided)
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Mission statement (`product-guidelines/03a-mission.md`)
+- [✓] Brand strategy (`product-guidelines/05-brand-strategy.md`)
+- [✓] Brand name chosen (from `product-guidelines/15-brand-naming.md` or already decided)
 
 Your messaging should communicate [journey value] in [brand voice], not be created in isolation.
 
@@ -188,3 +188,7 @@ Your messaging framework expresses journey value in brand voice - grounded, not 
 ---
 
 **Remember**: This is POST-CORE. Messaging communicates journey value, it doesn't precede it. Every message traces back to the user journey.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

@@ -21,7 +21,7 @@ The build-versus-buy decision follows a clear hierarchy based on scale, technica
 | Team Expertise | Limited ML/DevOps | Strong MLOps team | Growing capabilities |
 | Time to Market | Days/weeks (MVP) | Months (infrastructure) | Iterative rollout |
 | Customization | Prompt engineering sufficient | Deep architectural changes | Feature-specific |
-| Compliance | **✅ HIPAA/SOC2/GDPR via APIs** | Optional for control | Risk-based segmentation |
+| Compliance | **[✓] HIPAA/SOC2/GDPR via APIs** | Optional for control | Risk-based segmentation |
 
 Cost comparisons reveal self-hosting requires substantial scale. Break-even occurs at approximately **22 million words per day**—roughly $65,000/year in API costs. When factoring engineering talent ($150K-200K for ML engineer + DevOps), infrastructure, and maintenance, total self-hosting costs reach **$200,000-250,000+ annually**. For most startups, the break-even point is further away than expected, and API costs at $5K-10K/month are dramatically cheaper than self-hosting.
 
@@ -126,9 +126,9 @@ Self-hosting has legitimate use cases unrelated to regulatory compliance:
 
 | Factor               | Use APIs                                       | Consider Self-Host                           | Compliance Reality              |
 |----------------------|------------------------------------------------|----------------------------------------------|---------------------------------|
-| HIPAA Data           | ✅ Use API with BAA (OpenAI, Anthropic, Azure, AWS) | Optional for maximum control                 | BAA + zero retention + encryption |
-| SOC2 Compliance      | ✅ Use SOC2-certified provider                 | Optional but adds audit complexity           | Certified vendor + secure config |
-| GDPR Data            | ✅ Use API with EU residency (OpenAI EU, Azure, Mistral) | Optional for sovereignty                     | DPA + SCCs + EU residency option |
+| HIPAA Data           | [✓] Use API with BAA (OpenAI, Anthropic, Azure, AWS) | Optional for maximum control                 | BAA + zero retention + encryption |
+| SOC2 Compliance      | [✓] Use SOC2-certified provider                 | Optional but adds audit complexity           | Certified vendor + secure config |
+| GDPR Data            | [✓] Use API with EU residency (OpenAI EU, Azure, Mistral) | Optional for sovereignty                     | DPA + SCCs + EU residency option |
 | Cost at MVP Scale    | $100-5,000/month                               | Not cost-effective                           | API dramatically cheaper         |
 | Cost at Scale        | $5K-15K/month break-even                       | Consider if >$200K/year justified            | Total cost of ownership matters  |
 | Time to Compliance   | Days (sign BAA/DPA, configure)                 | Months (build equivalent controls)           | Speed matters for MVP            |

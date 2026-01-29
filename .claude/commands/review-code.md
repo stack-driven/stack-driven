@@ -215,7 +215,7 @@ const createdAt = new Date();
 
 **Why**: Descriptive names make code self-documenting.
 
-## What's Done Well ✨
+## What's Done Well 
 
 - **Tests**: Great test coverage including edge cases
 - **Validation**: Input validation is thorough
@@ -240,3 +240,7 @@ Let me know if you'd like me to explain any of these in more detail!
 ---
 
 **Remember**: Code review is a learning opportunity for both reviewer and reviewee. Be thorough but kind, specific but not pedantic, critical but encouraging.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

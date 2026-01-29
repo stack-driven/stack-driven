@@ -343,10 +343,10 @@ gh issue comment 42 --body "/post-plan"
 ```
 
 **What happens:**
-1. ✅ Implementation plan generated (1-2 minutes)
-2. ✅ Plan posted as comment on issue
-3. ✅ `plan-ready` label added
-4. ⏸️ **Waits for human approval**
+1. (✓) Implementation plan generated (1-2 minutes)
+2. (✓) Plan posted as comment on issue
+3. (✓) `plan-ready` label added
+4. **Waits for human approval**
 5. Human reviews plan, then comments `@claude-implement` to proceed
 6. Implementation runs automatically
 7. PR created with code review
@@ -373,14 +373,14 @@ gh issue comment 42 --body "/post-plan-and-implement"
 ```
 
 **What happens:**
-1. ✅ Implementation plan generated (1-2 minutes)
-2. ✅ Plan posted as comment on issue
-3. ✅ `full-automation` label added
-4. ✅ `@claude-implement` comment posted automatically (triggers implementation)
-5. ✅ Implementation runs (10-20 minutes)
-6. ✅ PR created automatically
-7. ✅ Code review runs automatically
-8. ✅ Multi-round auto-fix cycles (up to 5 rounds)
+1. (✓) Implementation plan generated (1-2 minutes)
+2. (✓) Plan posted as comment on issue
+3. (✓) `full-automation` label added
+4. (✓) `@claude-implement` comment posted automatically (triggers implementation)
+5. (✓) Implementation runs (10-20 minutes)
+6. (✓) PR created automatically
+7. (✓) Code review runs automatically
+8. (✓) Multi-round auto-fix cycles (up to 5 rounds)
 9. 👀 **You review final PR and merge**
 
 **Timeline:** Issue → PR ready in 30-60 minutes (zero manual intervention)
@@ -409,7 +409,7 @@ Both workflows include **automatic review/fix cycles** to improve code quality:
    - Triggers new review round
 
 5. **Loop continues until:**
-   - No high/medium issues remain (✅ PR approved)
+   - No high/medium issues remain ((✓) PR approved)
    - OR 5 rounds reached (⛔ adds `review-blocked` label, requires manual intervention)
 
 **Example flow:**
@@ -423,7 +423,7 @@ Auto-fix commits fixes → Review Round 3: 1 issue found
   ↓
 Auto-fix commits fixes → Review Round 4: 0 issues found
   ↓
-✅ PR approved (stopped before round 5)
+(✓) PR approved (stopped before round 5)
 ```
 
 **If max rounds (5) reached:**

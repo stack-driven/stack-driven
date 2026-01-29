@@ -484,15 +484,15 @@ resource "aws_ecs_service" "api" {
 **Tool**: [AWS Secrets Manager / HashiCorp Vault / Doppler]
 
 **What goes in secrets**:
-- ✅ Database credentials
-- ✅ API keys (third-party services)
-- ✅ Encryption keys
-- ✅ OAuth client secrets
+- [✓] Database credentials
+- [✓] API keys (third-party services)
+- [✓] Encryption keys
+- [✓] OAuth client secrets
 
 **What goes in environment variables** (not secret):
-- ✅ Feature flags
-- ✅ Public API endpoints
-- ✅ Environment name
+- [✓] Feature flags
+- [✓] Public API endpoints
+- [✓] Environment name
 
 **Rotation policy**: [Every 90 days / On employee departure / As needed]
 
@@ -514,9 +514,9 @@ LOG_LEVEL=info
 ```
 
 **Never commit**:
-- ❌ `.env` files (use `.env.example`)
-- ❌ Secrets or credentials
-- ❌ API keys
+- [x] `.env` files (use `.env.example`)
+- [x] Secrets or credentials
+- [x] API keys
 
 **Access control**:
 - Developers: Read access to dev/staging secrets
@@ -799,11 +799,11 @@ After deploying:
 ### Secrets Management
 
 **Best practices**:
-- ✅ Rotate secrets every 90 days
-- ✅ Use unique secrets per environment
-- ✅ Never log secrets
-- ✅ Encrypt secrets at rest
-- ✅ Audit secret access
+- [✓] Rotate secrets every 90 days
+- [✓] Use unique secrets per environment
+- [✓] Never log secrets
+- [✓] Encrypt secrets at rest
+- [✓] Audit secret access
 
 ### Network Security
 
@@ -813,9 +813,9 @@ After deploying:
 - SSH: Only accessible from VPN/bastion
 
 **Encryption**:
-- ✅ TLS 1.3 for all traffic
-- ✅ Data encrypted at rest
-- ✅ Secrets encrypted in transit and at rest
+- [✓] TLS 1.3 for all traffic
+- [✓] Data encrypted at rest
+- [✓] Secrets encrypted in transit and at rest
 
 ---
 

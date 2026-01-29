@@ -394,21 +394,21 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 
 ### We Believe:
 
-**✓ User experience is the foundation** (not technology)
-**✓ Journey dictates stack** (not generic "best practices")
-**✓ Every decision traces to value** (no arbitrary choices)
-**✓ Boring is beautiful** (proven tech > exotic tech)
-**✓ Generative > Prescriptive** (analyze → recommend, don't dictate)
-**✓ Simple execution** (5-6 clear sessions, not 50 fragmented tasks)
-**✓ Focus is the ultimate advantage** (say no often)
+- **User experience is the foundation** (not technology)
+- **Journey dictates stack** (not generic "best practices")
+- **Every decision traces to value** (no arbitrary choices)
+- **Boring is beautiful** (proven tech > exotic tech)
+- **Generative > Prescriptive** (analyze → recommend, don't dictate)
+- **Simple execution** (5-6 clear sessions, not 50 fragmented tasks)
+- **Focus is the ultimate advantage** (say no often)
 
 ### We Reject:
 
-**✗ One-size-fits-all stacks** (Next.js isn't always the answer)
-**✗ Feature-first thinking** (builds what's interesting, not valuable)
-**✗ Resume-driven development** (Kubernetes because it's trendy)
-**✗ Technology-first thinking** (choosing tech before understanding users)
-**✗ Build-it-all syndrome** (can't say no to features)
+- **One-size-fits-all stacks** (Next.js isn't always the answer)
+- **Feature-first thinking** (builds what's interesting, not valuable)
+- **Resume-driven development** (Kubernetes because it's trendy)
+- **Technology-first thinking** (choosing tech before understanding users)
+- **Build-it-all syndrome** (can't say no to features)
 
 ---
 
@@ -416,23 +416,23 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 
 **After completing the cascade, you have**:
 
-📋 **Strategic Foundation**:
+**Strategic Foundation**:
 - Mission statement (derived from journey aha moment)
 - North Star metric (measures mission fulfillment)
 - Pricing strategy (aligned with value delivery)
 
-🛠️ **Technical Decisions**:
+**Technical Decisions**:
 - Tech stack (optimized for YOUR requirements)
 - Architecture principles (journey-optimized)
 - Design system (components for your specific flows)
 
-🎯 **Execution Backlog**:
+**Execution Backlog**:
 - 30-50 user stories (prioritized with RICE)
 - Every story traced to journey step
 - Dependencies mapped
 - Ready for GitHub
 
-💻 **Development Environment**:
+**Development Environment**:
 - Complete project scaffold (monorepo or single-repo)
 - Package manager configs (package.json / pyproject.toml)
 - Docker Compose for local development
@@ -440,7 +440,7 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 - Environment configuration templates
 - Setup documentation
 
-🚀 **Production Readiness**:
+**Production Readiness**:
 - Deployment strategy (environments, CI/CD, rollout)
 - Observability strategy (metrics, logs, traces, SLOs)
 - Incident response procedures

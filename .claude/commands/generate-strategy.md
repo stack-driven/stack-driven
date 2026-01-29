@@ -99,9 +99,9 @@ If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
 - Mission: "We help compliance officers approve documents 10x faster by transforming framework requirements into automated AI assessments"
 
 **Validation**:
-- Does it reference the journey aha moment? ✅
-- Is it specific (not generic)? ✅
-- Does it promise measurable outcome? ✅
+- Does it reference the journey aha moment? [✓]
+- Is it specific (not generic)? [✓]
+- Does it promise measurable outcome? [✓]
 
 ### Step 3: Define North Star Metric
 
@@ -238,13 +238,13 @@ Before writing files:
 
 Show summary:
 ```
-✅ Session 4 complete! Tactical foundation established.
+[✓] Session 4 complete! Tactical foundation established.
 
 Your Strategy:
-📋 Mission: [One-sentence mission]
-📊 North Star: [Metric name]
-💰 Pricing: [Model summary]
-🏗️  Architecture: [Key principle]
+  Mission: [One-sentence mission]
+  North Star: [Metric name]
+  Pricing: [Model summary]
+  Architecture: [Key principle]
 
 Files created:
 - product-guidelines/03a-mission.md
@@ -274,3 +274,7 @@ Or check progress: /cascade-status
 ---
 
 **Now, read the journey, product strategy, and tech stack, then generate all 4 tactical foundation files!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

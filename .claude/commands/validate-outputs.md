@@ -174,14 +174,14 @@ Provide a comprehensive quality report with this structure:
 
 ```markdown
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Stack-Driven Outputs Quality Report
+Stack-Driven Outputs Quality Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Summary
 
-✅ Outputs validated: [X] files
-⚠️  Issues found: [Y] critical, [Z] important
-🎯 Overall quality: [Excellent / Good / Needs Improvement / Needs Significant Work]
+[✓] Outputs validated: [X] files
+(Warning)  Issues found: [Y] critical, [Z] important
+ Overall quality: [Excellent / Good / Needs Improvement / Needs Significant Work]
 
 ## Critical Issues (Must Address)
 
@@ -204,51 +204,51 @@ Provide a comprehensive quality report with this structure:
 
 ## Quality Checklist Results
 
-### Journey Alignment ✅/⚠️/❌
-- [✅/⚠️/❌] References specific user journey
-- [✅/⚠️/❌] Decisions trace to user value
-- [✅/⚠️/❌] Quantified value ratio included
-- [✅/⚠️/❌] Serves critical path (Steps 1-3)
+### Journey Alignment [✓]/(Warning)/[x]
+- [[✓]/(Warning)/[x]] References specific user journey
+- [[✓]/(Warning)/[x]] Decisions trace to user value
+- [[✓]/(Warning)/[x]] Quantified value ratio included
+- [[✓]/(Warning)/[x]] Serves critical path (Steps 1-3)
 
-### Philosophy Adherence ✅/⚠️/❌
-- [✅/⚠️/❌] User-first thinking (not tech-first)
-- [✅/⚠️/❌] Generative (specific, not generic)
-- [✅/⚠️/❌] Journey-driven decisions
-- [✅/⚠️/❌] Decisions include reasoning
-- [✅/⚠️/❌] Boring is beautiful (proven tech)
+### Philosophy Adherence [✓]/(Warning)/[x]
+- [[✓]/(Warning)/[x]] User-first thinking (not tech-first)
+- [[✓]/(Warning)/[x]] Generative (specific, not generic)
+- [[✓]/(Warning)/[x]] Journey-driven decisions
+- [[✓]/(Warning)/[x]] Decisions include reasoning
+- [[✓]/(Warning)/[x]] Boring is beautiful (proven tech)
 
-### Completeness ✅/⚠️/❌
-- [✅/⚠️/❌] All template sections filled
-- [✅/⚠️/❌] "What We DIDN'T Choose" sections (2+ alternatives)
-- [✅/⚠️/❌] Decision rationale provided
-- [✅/⚠️/❌] Examples included
-- [✅/⚠️/❌] Trade-offs acknowledged
+### Completeness [✓]/(Warning)/[x]
+- [[✓]/(Warning)/[x]] All template sections filled
+- [[✓]/(Warning)/[x]] "What We DIDN'T Choose" sections (2+ alternatives)
+- [[✓]/(Warning)/[x]] Decision rationale provided
+- [[✓]/(Warning)/[x]] Examples included
+- [[✓]/(Warning)/[x]] Trade-offs acknowledged
 
-### Consistency ✅/⚠️/❌
-- [✅/⚠️/❌] Tech aligns with journey requirements
-- [✅/⚠️/❌] Mission promises aha moment value
-- [✅/⚠️/❌] Metrics measure mission fulfillment
-- [✅/⚠️/❌] Cross-file references correct
-- [✅/⚠️/❌] No contradictions between sessions
+### Consistency [✓]/(Warning)/[x]
+- [[✓]/(Warning)/[x]] Tech aligns with journey requirements
+- [[✓]/(Warning)/[x]] Mission promises aha moment value
+- [[✓]/(Warning)/[x]] Metrics measure mission fulfillment
+- [[✓]/(Warning)/[x]] Cross-file references correct
+- [[✓]/(Warning)/[x]] No contradictions between sessions
 
-### Specificity ✅/⚠️/❌
-- [✅/⚠️/❌] Specific personas (not "users")
-- [✅/⚠️/❌] Quantified improvements
-- [✅/⚠️/❌] Concrete examples
-- [✅/⚠️/❌] Named journey steps
-- [✅/⚠️/❌] Could NOT apply to different product
+### Specificity [✓]/(Warning)/[x]
+- [[✓]/(Warning)/[x]] Specific personas (not "users")
+- [[✓]/(Warning)/[x]] Quantified improvements
+- [[✓]/(Warning)/[x]] Concrete examples
+- [[✓]/(Warning)/[x]] Named journey steps
+- [[✓]/(Warning)/[x]] Could NOT apply to different product
 
-### Technical Soundness ✅/⚠️/❌
+### Technical Soundness [✓]/(Warning)/[x]
 (Only for technical sessions 7-14)
-- [✅/⚠️/❌] Database: relationships, indexes, constraints
-- [✅/⚠️/❌] APIs: error responses, validation
-- [✅/⚠️/❌] Tests: multiple levels, edge cases
-- [✅/⚠️/❌] Deployment: environments, rollback
-- [✅/⚠️/❌] Observability: SLO/SLI, not just tools
+- [[✓]/(Warning)/[x]] Database: relationships, indexes, constraints
+- [[✓]/(Warning)/[x]] APIs: error responses, validation
+- [[✓]/(Warning)/[x]] Tests: multiple levels, edge cases
+- [[✓]/(Warning)/[x]] Deployment: environments, rollback
+- [[✓]/(Warning)/[x]] Observability: SLO/SLI, not just tools
 
 ## File-by-File Assessment
 
-### 00-user-journey.md [✅/⚠️/❌]
+### 00-user-journey.md [[✓]/(Warning)/[x]]
 **Quality**: [Excellent/Good/Needs Improvement]
 **Strengths**:
 - [What's done well]
@@ -256,7 +256,7 @@ Provide a comprehensive quality report with this structure:
 **Areas to Improve**:
 - [Specific improvements needed]
 
-### 02a-constraints.md [✅/⚠️/❌]
+### 02a-constraints.md [[✓]/(Warning)/[x]]
 **Quality**: [Excellent/Good/Needs Improvement]
 **Validation Criteria**:
 - [ ] Every constraint is truly non-negotiable (not just preference)
@@ -274,7 +274,7 @@ Provide a comprehensive quality report with this structure:
 
 [Repeat for each file]
 
-## What's Done Well ✨
+## What's Done Well 
 
 [Highlight strong aspects across all outputs]
 - [Specific praise]
@@ -420,14 +420,14 @@ Run `/cascade-status` to see which sessions remain.
 
 **Message**:
 ```
-🎉 Excellent Quality!
+ Excellent Quality!
 
 Your cascade outputs demonstrate strong adherence to Stack-Driven principles:
-- Journey-driven decisions ✅
-- Specific, not generic ✅
-- Well-reasoned choices ✅
-- Alternatives considered ✅
-- Technical depth ✅
+- Journey-driven decisions [✓]
+- Specific, not generic [✓]
+- Well-reasoned choices [✓]
+- Alternatives considered [✓]
+- Technical depth [✓]
 
 [Still provide detailed checklist and specific praise]
 
@@ -450,3 +450,7 @@ This command does NOT write to `/product-guidelines`. It provides an immediate q
 ---
 
 **Remember**: Validation is about helping users create excellent outputs that truly serve their users. Be thorough but encouraging, critical but constructive, specific but not pedantic.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

@@ -86,23 +86,23 @@ This document defines the comprehensive observability strategy including metrics
 ### What to Log
 
 **Application logs**:
-- ✅ User actions (login, core actions)
-- ✅ Errors and exceptions
-- ✅ Performance bottlenecks
-- ✅ Security events (auth failures, access denied)
-- ✅ Business events (subscriptions, payments)
+- [✓] User actions (login, core actions)
+- [✓] Errors and exceptions
+- [✓] Performance bottlenecks
+- [✓] Security events (auth failures, access denied)
+- [✓] Business events (subscriptions, payments)
 
 **Infrastructure logs**:
-- ✅ Server start/stop
-- ✅ Deployment events
-- ✅ Configuration changes
-- ✅ Health check results
+- [✓] Server start/stop
+- [✓] Deployment events
+- [✓] Configuration changes
+- [✓] Health check results
 
 **What NOT to log**:
-- ❌ Passwords or credentials
-- ❌ Credit card numbers
-- ❌ Personal identification numbers
-- ❌ User-generated content (PII)
+- [x] Passwords or credentials
+- [x] Credit card numbers
+- [x] Personal identification numbers
+- [x] User-generated content (PII)
 
 ---
 
@@ -575,14 +575,14 @@ Critical User Flows:
 ### Error Budget Policy
 
 **When error budget is healthy** (> 50% remaining):
-- ✅ Ship new features
-- ✅ Deploy to production multiple times/day
-- ✅ Take calculated risks
+- [✓] Ship new features
+- [✓] Deploy to production multiple times/day
+- [✓] Take calculated risks
 
 **When error budget is low** (< 20% remaining):
-- ⚠️ Slow down feature releases
-- ⚠️ Increase testing
-- ⚠️ Focus on stability
+- (Warning) Slow down feature releases
+- (Warning) Increase testing
+- (Warning) Focus on stability
 
 **When error budget is exhausted** (0% remaining):
 - 🛑 Feature freeze

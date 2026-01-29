@@ -9,9 +9,9 @@ You are helping the user discover the perfect brand name through systematic gene
 ## When to Use This
 
 **Run AFTER `/create-brand-strategy`** when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Mission statement (`product-guidelines/03a-mission.md`)
-- ✅ Brand strategy (`product-guidelines/05-brand-strategy.md`)
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Mission statement (`product-guidelines/03a-mission.md`)
+- [✓] Brand strategy (`product-guidelines/05-brand-strategy.md`)
 
 Your brand name should express the value delivered in the user journey, grounded in your brand strategy.
 
@@ -175,3 +175,7 @@ Each name traces back to your user journey. Which direction resonates?
 ---
 
 **Remember**: This is POST-CORE. The name expresses journey value, not created in isolation. All names trace back to the user journey.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

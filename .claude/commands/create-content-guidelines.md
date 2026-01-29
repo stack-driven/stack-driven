@@ -159,3 +159,7 @@ Try writing a form error message using these guidelines - does it feel on-brand?
 ---
 
 **Remember**: This is OPTIONAL but highly valuable for consistency. Even small teams benefit from documented content patterns.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

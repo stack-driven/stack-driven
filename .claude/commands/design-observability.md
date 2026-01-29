@@ -209,3 +209,7 @@ Ready to implement? Start with golden signals and critical alerts.
 ---
 
 **Remember**: This is a CORE session. You can't improve what you can't measure. Good observability = good reliability and continuous delivery of journey value.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

@@ -40,10 +40,10 @@
 
 **We charge for [unit]** because:
 
-1. ✅ Aligns with value delivery: [Explanation]
-2. ✅ Users can predict costs: [Example calculation]
-3. ✅ Fair for variable usage: [Why fair]
-4. ✅ Natural expansion: [How usage grows]
+1. [✓] Aligns with value delivery: [Explanation]
+2. [✓] Users can predict costs: [Example calculation]
+3. [✓] Fair for variable usage: [Why fair]
+4. [✓] Natural expansion: [How usage grows]
 
 **Value Ratio**:
 - User pays: $[X] per [unit]

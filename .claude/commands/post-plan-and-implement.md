@@ -289,12 +289,12 @@ glab issue update $1 --label "full-automation"
 ```bash
 gh issue comment $1 --body "@claude-implement
 
-🤖 **Full automation triggered**
+ **Full automation triggered**
 
 This issue is being implemented automatically via the `/post-plan-and-implement` workflow.
 
 **Automation stages:**
-1. ✅ Plan generated and posted
+1. [✓] Plan generated and posted
 2. ⏳ Implementation in progress...
 3. ⏳ PR creation pending...
 4. ⏳ Code review pending...
@@ -316,12 +316,12 @@ Or GitLab:
 ```bash
 glab issue note $1 --message "@claude-implement
 
-🤖 **Full automation triggered**
+ **Full automation triggered**
 
 This issue is being implemented automatically via the \`/post-plan-and-implement\` workflow.
 
 **Automation stages:**
-1. ✅ Plan generated and posted
+1. [✓] Plan generated and posted
 2. ⏳ Implementation in progress...
 3. ⏳ MR creation pending...
 4. ⏳ Code review pending...
@@ -342,7 +342,7 @@ This issue is being implemented automatically via the \`/post-plan-and-implement
 Output to user:
 
 ```markdown
-✅ Full automation workflow initiated for issue #$1
+[✓] Full automation workflow initiated for issue #$1
 
 **Plan includes:**
 - Journey traceability to {step}
@@ -354,9 +354,9 @@ Output to user:
 - {list of loaded guidelines}
 
 **Automation status:**
-- Plan posted: ✅ Complete
-- Implementation triggered: ✅ Complete
-- Label added: ✅ full-automation
+- Plan posted: [✓] Complete
+- Implementation triggered: [✓] Complete
+- Label added: [✓] full-automation
 
 **View plan:** {issue URL}
 
@@ -430,3 +430,7 @@ This is a **fully-automated workflow**:
 **Automation confidence:**
 - Simple issues (well-scoped, clear requirements): High confidence
 - Complex issues (many components, breaking changes): Lower confidence, consider `/post-plan` instead
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

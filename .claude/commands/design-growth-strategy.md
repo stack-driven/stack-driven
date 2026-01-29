@@ -9,13 +9,13 @@ This is a **post-core extension** that creates a comprehensive, data-driven grow
 ## When to Run This
 
 **Run AFTER Session 4+** when you have:
-- ✅ User journey defined (`product-guidelines/00-user-journey.md`)
-- ✅ Product strategy validated (`product-guidelines/01-product-strategy.md`)
-- ✅ Metrics established (`product-guidelines/03b-metrics.md`)
-- ✅ Monetization model defined (`product-guidelines/03c-monetization.md`)
+- [✓] User journey defined (`product-guidelines/00-user-journey.md`)
+- [✓] Product strategy validated (`product-guidelines/01-product-strategy.md`)
+- [✓] Metrics established (`product-guidelines/03b-metrics.md`)
+- [✓] Monetization model defined (`product-guidelines/03c-monetization.md`)
 
 **Ideally after Session 7+** when you also have:
-- ✅ Backlog generated (`product-guidelines/10-backlog/`)
+- [✓] Backlog generated (`product-guidelines/10-backlog/`)
 - So growth experiments can be prioritized in development
 
 **Skip this** if:
@@ -193,15 +193,15 @@ Document 2-4 channels you're NOT pursuing initially:
 
 **Example**:
 ```
-❌ TV/Radio Advertising
+[x] TV/Radio Advertising
 Why not: Journey persona (compliance officers) doesn't discover B2B SaaS via broadcast media. Intent too low, attribution impossible, cost too high for our ACV ($3k/year).
 When to reconsider: If expanding to consumer compliance (tax prep, personal legal) with >$50M revenue and brand-building budget.
 
-❌ Affiliate Marketing
+[x] Affiliate Marketing
 Why not: Compliance officers don't trust financial incentives for compliance tool recommendations. Conflicts with brand value of "trustworthy."
 When to reconsider: Never for core product. Could work for adjacent products (training, templates) where affiliate incentives are accepted.
 
-❌ Cold Email Outreach
+[x] Cold Email Outreach
 Why not: Compliance officers are overwhelmed with vendors. Low response rates (<1%), damages brand, unsustainable. Our ACV ($3k) doesn't support SDR economics.
 When to reconsider: If moving upmarket (ACV >$15k, multi-team deals) where 1:1 sales makes sense.
 ```
@@ -272,11 +272,11 @@ Implication: Can't rely on loops alone, need strong channel strategy
 
 **Example**:
 ```
-❌ Referral Program ($50 credit for referring a friend)
+[x] Referral Program ($50 credit for referring a friend)
 Why not: Journey value is compliance trust, not discounts. Users don't refer because of financial incentives in this domain. Referrals happen through organic advocacy (consultant recommendations).
 When to reconsider: If data shows price is main objection (currently it's "does it work?"). Monitor: referral survey responses.
 
-❌ User-Generated Marketplace (users sell assessment templates)
+[x] User-Generated Marketplace (users sell assessment templates)
 Why not: Commoditizes core value (AI assessments). Creates support burden (quality control of user content). Journey users want trusted, official frameworks, not crowdsourced.
 When to reconsider: If users consistently request custom frameworks and we can't keep up. Would need moderation system + liability framework first.
 ```
@@ -429,11 +429,11 @@ Expansion tactics:
 
 **Example**:
 ```
-❌ Flat Monthly Pricing ($99/month unlimited)
+[x] Flat Monthly Pricing ($99/month unlimited)
 Why not: Journey value scales with usage (more assessments = more value). Flat pricing misaligns incentives—high-usage users get subsidized by low-usage, creating churn risk. Usage-based ($0.10/assessment) aligns cost with value.
 When to reconsider: If usage variance is low (all customers ~3,000 assessments/month) OR sales complexity from usage-based becomes barrier. Would need: 6+ months usage data, tight usage distribution.
 
-❌ Per-User Pricing ($29/user/month)
+[x] Per-User Pricing ($29/user/month)
 Why not: Journey is document-centric (assess documents), not user-centric (multiple users assess same docs). Per-user pricing penalizes team collaboration. Would limit team expansion (key retention strategy).
 When to reconsider: If collaboration features become primary value (multiplayer editing, real-time review) rather than document processing. Requires product pivot.
 ```
@@ -502,11 +502,11 @@ List 10-15 experiments prioritized by ICE score.
 **Example experiments NOT prioritized**:
 
 ```
-❌ Affiliate/Referral Program (ICE: 3.3)
+[x] Affiliate/Referral Program (ICE: 3.3)
 Why not: Low confidence users will refer for financial incentive in compliance domain. Low impact (even if 20% refer, only generates 5-10 signups/month at current scale). Medium ease but not worth opportunity cost.
 When to reconsider: If organic NPS >70 (high advocacy already) and referrals become top request. Monitor: unprompted referral rate, NPS trends.
 
-❌ TikTok/Instagram Social Media (ICE: 2.7)
+[x] TikTok/Instagram Social Media (ICE: 2.7)
 Why not: Journey persona (compliance officers) doesn't discover B2B tools on social. Very low intent. High effort (video content production). Misaligned with brand (professional, trustworthy).
 When to reconsider: If expanding to consumer compliance (personal tax, legal) with younger demographic. Would need: new persona, new content strategy, 6-month test budget.
 ```
@@ -667,7 +667,7 @@ Growth Goals (12 months):
 
 This gives you a data-driven growth roadmap. Start with the top 3 experiments and measure results before expanding.
 
-✅ Growth strategy complete!
+[✓] Growth strategy complete!
 
 When ready to build, run: /generate-backlog (to prioritize growth experiments as stories)
 Or check progress: /cascade-status
@@ -698,3 +698,7 @@ Your growth strategy is now grounded in the user journey and metric-driven.
 ---
 
 **Now, design a growth strategy that scales your journey value!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

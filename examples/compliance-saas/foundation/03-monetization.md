@@ -63,11 +63,11 @@
 
 **We charge per assessment** because:
 
-1. ✅ **Aligns with value delivery**: Each assessment saves 2-4 hours ($150-300 value)
-2. ✅ **Users can predict costs**: "I assess 50 docs/month = $5 cost, ~$7,500 savings"
-3. ✅ **Fair for variable usage**: Some months are heavy, some are light
-4. ✅ **Natural expansion**: Successful users assess more documents
-5. ✅ **Simple to understand**: No "credits" or abstract units
+1. [✓] **Aligns with value delivery**: Each assessment saves 2-4 hours ($150-300 value)
+2. [✓] **Users can predict costs**: "I assess 50 docs/month = $5 cost, ~$7,500 savings"
+3. [✓] **Fair for variable usage**: Some months are heavy, some are light
+4. [✓] **Natural expansion**: Successful users assess more documents
+5. [✓] **Simple to understand**: No "credits" or abstract units
 
 **Value Ratio**:
 - User pays: $0.10 per assessment

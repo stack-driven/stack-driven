@@ -23,15 +23,15 @@ You are a senior engineer setting up a new project. Your job is to:
 **This is where strategy meets reality.**
 
 After 11 sessions, users have:
-- ✅ Validated user journey
-- ✅ Validated product strategy
-- ✅ Chosen optimal tech stack
-- ✅ Defined strategy (mission, metrics, monetization, architecture)
-- ✅ Designed database schema
-- ✅ Generated API contracts
-- ✅ Created testing strategy
-- ✅ Generated prioritized backlog
-- ✅ Created GitHub issues
+- [✓] Validated user journey
+- [✓] Validated product strategy
+- [✓] Chosen optimal tech stack
+- [✓] Defined strategy (mission, metrics, monetization, architecture)
+- [✓] Designed database schema
+- [✓] Generated API contracts
+- [✓] Created testing strategy
+- [✓] Generated prioritized backlog
+- [✓] Created GitHub issues
 
 **What they DON'T have**: A single line of working code.
 
@@ -1446,15 +1446,15 @@ langchain = "^0.1.0"  # if using LangChain for orchestration
 **Code Generation Summary**:
 
 After completing Step 4.5, the repository should contain:
-- ✅ Service classes with method signatures (business logic layer)
-- ✅ Repository classes/interfaces (data access layer)
-- ✅ Controller/handler files (HTTP endpoint layer)
-- ✅ Test stub files (testing scaffolding)
-- ✅ Dependency injection container (wiring)
-- ✅ AI integration adapters (if Session 3c exists)
-- ✅ All code compiles without errors (type-checked)
-- ✅ TODO comments mark implementation points
-- ✅ Files organized per Session 3b coding standards
+- [✓] Service classes with method signatures (business logic layer)
+- [✓] Repository classes/interfaces (data access layer)
+- [✓] Controller/handler files (HTTP endpoint layer)
+- [✓] Test stub files (testing scaffolding)
+- [✓] Dependency injection container (wiring)
+- [✓] AI integration adapters (if Session 3c exists)
+- [✓] All code compiles without errors (type-checked)
+- [✓] TODO comments mark implementation points
+- [✓] Files organized per Session 3b coding standards
 
 ---
 
@@ -1537,20 +1537,20 @@ Create two outputs:
 ## Generated Files
 
 ### Configuration
-- ✅ `package.json` (or `pyproject.toml`)
-- ✅ `docker-compose.yml`
-- ✅ `.env.template`
-- ✅ `turbo.json` (if monorepo)
-- ✅ `tsconfig.json` (if TypeScript)
-- ✅ `.eslintrc.json`
-- ✅ `.prettierrc`
-- ✅ `.gitignore`
+- [✓] `package.json` (or `pyproject.toml`)
+- [✓] `docker-compose.yml`
+- [✓] `.env.template`
+- [✓] `turbo.json` (if monorepo)
+- [✓] `tsconfig.json` (if TypeScript)
+- [✓] `.eslintrc.json`
+- [✓] `.prettierrc`
+- [✓] `.gitignore`
 
 ### CI/CD
-- ✅ `.github/workflows/ci.yml`
+- [✓] `.github/workflows/ci.yml`
 
 ### Documentation
-- ✅ `README.md`
+- [✓] `README.md`
 
 ### Directory Structure
 [Full tree from Step 3]
@@ -1744,14 +1744,14 @@ product-guidelines/12-project-scaffold/
 ## After Generation
 
 ```
-✅ Session 12 complete! Development environment ready.
+[✓] Session 12 complete! Development environment ready.
 
 Your Scaffold:
-📁 Complete directory structure
-⚙️ Configuration files (package.json, docker-compose.yml, etc.)
-🔧 CI/CD pipeline (GitHub Actions)
-📝 Developer documentation (README.md)
-🐳 Local development services (Docker Compose)
+  Complete directory structure
+  Configuration files (package.json, docker-compose.yml, etc.)
+  CI/CD pipeline (GitHub Actions)
+  Developer documentation (README.md)
+  Local development services (Docker Compose)
 
 Next Steps:
 1. Copy files from product-guidelines/12-project-scaffold/ to your project root
@@ -1782,3 +1782,7 @@ When ready, start building or run: /cascade-status
 ---
 
 **Now, bridge the gap from strategy to working code! Generate a complete development environment!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
