@@ -112,7 +112,6 @@ Then, invoke the distillation sub-agent to create the context file:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/01-product-strategy.md
-- Context template: templates/01-product-strategy-template.ctx.md
 - Output file: product-guidelines/01-product-strategy.ctx.md
 ```
 

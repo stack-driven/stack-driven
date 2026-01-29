@@ -866,7 +866,6 @@ After writing the full schema, invoke the distillation sub-agent:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/07-database-schema.md
-- Context template: templates/07-database-schema-template.ctx.md
 - Output file: product-guidelines/07-database-schema.ctx.md
 ```
 

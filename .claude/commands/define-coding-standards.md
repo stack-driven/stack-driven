@@ -150,7 +150,6 @@ Then, invoke the distillation sub-agent to create the context file:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/02b-coding-standards.md
-- Context template: templates/02b-coding-standards-template.ctx.md
 - Output file: product-guidelines/02b-coding-standards.ctx.md
 ```
 

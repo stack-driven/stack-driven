@@ -175,7 +175,6 @@ After writing the full constraints file, invoke the distillation sub-agent:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/02a-constraints.md
-- Context template: templates/02a-constraints-template.ctx.md
 - Output file: product-guidelines/02a-constraints.ctx.md
 ```
 

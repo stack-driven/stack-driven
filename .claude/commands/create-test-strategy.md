@@ -1210,7 +1210,6 @@ After writing the full test strategy, invoke the distillation sub-agent:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/09-test-strategy.md
-- Context template: templates/09-test-strategy-template.ctx.md
 - Output file: product-guidelines/09-test-strategy.ctx.md
 ```
 

@@ -124,7 +124,6 @@ After writing the full strategy, invoke the distillation sub-agent:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/02c-ai-integration-strategy.md
-- Context template: templates/02c-ai-integration-strategy-template.ctx.md
 - Output file: product-guidelines/02c-ai-integration-strategy.ctx.md
 ```
 

@@ -17,11 +17,10 @@ You are a **context distillation specialist** that extracts decisions, configura
 
 ## Inputs (Required)
 
-You will receive three paths as parameters:
+You will receive two paths as parameters:
 
 1. **Source file path**: Path to comprehensive `.md` file (e.g., `product-guidelines/01-product-strategy.md`)
-2. **Context template path**: Path to context template defining output structure (e.g., `templates/01-product-strategy-template.ctx.md`)
-3. **Output file path**: Path where context file should be written (e.g., `product-guidelines/01-product-strategy.ctx.md`)
+2. **Output file path**: Path where context file should be written (e.g., `product-guidelines/01-product-strategy.ctx.md`)
 
 ## Extraction Rules
 
@@ -72,24 +71,13 @@ Use the Read tool to read the source file at the provided path.
 - Identify all decision statements, configurations, constraints
 - Note sections that contain rationale vs. sections that contain decisions
 - Estimate current token/line count for baseline measurement
+- Identify the section structure (headings, hierarchy) to preserve in context file
 
-### Step 2: Read Context Template
+### Step 2: Extract Decisions
 
-Use the Read tool to read the context template at the provided path.
+For each section in the source file:
 
-**Extract**:
-- Required section headings and hierarchy
-- Section ordering (context file must match template structure)
-- Any special formatting requirements
-- Target content type for each section
-
-The context template is your structural guide. Your output must follow its section organization exactly.
-
-### Step 3: Extract Decisions
-
-For each section in the context template:
-
-1. Find corresponding content in source file
+1. Preserve the section heading and hierarchy from source
 2. Extract ONLY decisions/configs/constraints (apply KEEP rules)
 3. Remove ALL rationale/alternatives/validation (apply REMOVE rules)
 4. Maintain original terminology and specific values
@@ -123,16 +111,16 @@ What we didn't choose:
 Key requirements: Complex relationships, 40+ join queries, ACID guarantees.
 ```
 
-### Step 4: Structure According to Template
+### Step 3: Preserve Source Structure
 
-Organize extracted decisions following the context template structure:
+Organize extracted decisions following the source file's structure:
 
-- Use template section headings exactly
-- Follow template section order
-- Apply template formatting conventions
-- Include all template-specified sections (even if brief)
+- Preserve section headings from source file
+- Maintain section hierarchy (##, ###, etc.)
+- Keep section order from source
+- Include all major sections (even if brief after extraction)
 
-### Step 5: Add Source Reference Header
+### Step 4: Add Source Reference Header
 
 Prepend header to context file output:
 
@@ -150,7 +138,7 @@ Prepend header to context file output:
 
 Replace `[Document Name]` and `XX-name.md` with actual source file name.
 
-### Step 6: Validate Token Reduction
+### Step 5: Validate Token Reduction
 
 Calculate size reduction:
 
@@ -164,14 +152,14 @@ If reduction is:
 - **60-70%**: Perfect target range
 - **> 70%**: Verify no critical decisions were removed
 
-### Step 7: Write Context File
+### Step 6: Write Context File
 
 Use the Write tool to write the context file to the specified output path.
 
 **Verify**:
 - File path is correct (`.ctx.md` extension)
 - Header references source file correctly
-- All template sections are present
+- All major sections from source are present
 - No rationale or alternatives remain
 - Token reduction target achieved
 
@@ -179,8 +167,8 @@ Use the Write tool to write the context file to the specified output path.
 
 The generated context file must:
 
-1. Start with source reference header (see Step 5)
-2. Follow context template structure exactly
+1. Start with source reference header (see Step 4)
+2. Preserve section structure from source file
 3. Contain decisions/configs/constraints only
 4. Use concise language (no verbose explanations)
 5. Maintain specific values and terminology from source
@@ -200,7 +188,6 @@ Session commands will invoke this agent using the Task tool:
    - Subagent: distill-context
    - Prompt: Generate context file for [session name]
      - Source file: product-guidelines/XX-name.md
-     - Context template: templates/XX-name-template.ctx.md
      - Output file: product-guidelines/XX-name.ctx.md
 ```
 
@@ -212,13 +199,12 @@ Use Task tool with subagent_type "general-purpose" and prompt:
 "Invoke the context distillation agent to create token-optimized context file.
 
 Source file: product-guidelines/01-product-strategy.md
-Context template: templates/01-product-strategy-template.ctx.md
 Output file: product-guidelines/01-product-strategy.ctx.md
 
 Follow the distillation agent specification in .claude/agents/distill-context.md to:
 1. Extract decisions, configs, and constraints only
 2. Remove rationale, alternatives, and validation content
-3. Structure according to context template
+3. Preserve section structure from source file
 4. Achieve 60-70% token reduction
 5. Add source reference header
 6. Write to output file path"
@@ -231,7 +217,7 @@ A high-quality context file:
 - [ ] Achieves 60-70% token reduction
 - [ ] Contains all critical decisions from source
 - [ ] Contains zero rationale or "why we chose" explanations
-- [ ] Follows context template structure exactly
+- [ ] Preserves section structure from source file
 - [ ] Uses specific values and terminology (not generic)
 - [ ] Includes source reference header
 - [ ] Is independently understandable
@@ -244,7 +230,7 @@ A high-quality context file:
 3. **Over-explaining**: "This decision impacts..." → Just state decision
 4. **Keeping validation**: "Ensure this section..." → Remove checklists
 5. **Preserving examples**: Long example code/data → Keep only if it IS the decision
-6. **Missing structure**: Not following template section order → Always match template
+6. **Missing structure**: Not preserving source section hierarchy → Maintain source structure
 7. **Under-extracting**: Removing critical decision values → Keep all decision data
 8. **Inconsistent terminology**: Using different terms than source → Match source exactly
 
@@ -288,7 +274,7 @@ Report back to the calling command:
 Context file created: product-guidelines/XX-name.ctx.md
 Token reduction: [X]% (from [source_lines] to [context_lines] lines)
 Verification: All critical decisions preserved, rationale removed
-Structure: Follows templates/XX-name-template.ctx.md exactly
+Structure: Preserves section hierarchy from source file
 ```
 
 This confirms successful distillation and provides metrics for quality validation.

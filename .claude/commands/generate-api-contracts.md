@@ -422,7 +422,6 @@ Write `product-guidelines/08b-api-contracts.md` with:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/08b-api-contracts.md
-- Context template: templates/08b-api-contracts-template.ctx.md
 - Output file: product-guidelines/08b-api-contracts.ctx.md
 ```
 

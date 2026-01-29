@@ -477,7 +477,6 @@ After writing the full API design, invoke the distillation sub-agent:
 Task tool with:
 - subagent_type: distill-context
 - Source file: product-guidelines/08-api-design.md
-- Context template: templates/08-api-design-template.ctx.md
 - Output file: product-guidelines/08-api-design.ctx.md
 ```
 
