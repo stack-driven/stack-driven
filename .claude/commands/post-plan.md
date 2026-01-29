@@ -51,21 +51,21 @@ Extract:
 Based on issue type, load these files from `product-guidelines/`:
 
 **Always read (if they exist):**
-- `00-user-journey.md` - Understand which journey step this serves
-- `02-tech-stack.md` - Technology choices and patterns (no .ctx version - always read full)
-- `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions (context version for token efficiency)
+- `00-user-journey.ctx.md` - Understand which journey step this serves
+- `02-tech-stack.ctx.md` - Technology choices and patterns
+- `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions
 
 **Conditionally read based on issue labels/content:**
 
 | Issue Type | Guidelines to Load |
 |------------|-------------------|
 | UI/Frontend | `06-design-system.md` (no .ctx version) |
-| API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.md` (no .ctx version) |
-| Database | `07-database-schema.ctx.md` (context version for token efficiency) |
-| New Feature | `00-user-journey.md`, `03b-metrics.md` |
-| Bug Fix | Relevant technical specs only |
-| Testing | `09-test-strategy.ctx.md` (context version for token efficiency) |
-| Infrastructure | `04-architecture.md` (no .ctx version), `13-deployment-plan.md` |
+| API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.ctx.md` |
+| Database | `07-database-schema.ctx.md` |
+| New Feature | `00-user-journey.ctx.md`, `03b-metrics.ctx.md` |
+| Bug Fix | Relevant .ctx.md technical specs only |
+| Testing | `09-test-strategy.ctx.md` |
+| Infrastructure | `04-architecture.ctx.md`, `13-deployment-plan.ctx.md` |
 
 **Use Glob to find available guidelines:**
 ```bash
