@@ -45,36 +45,36 @@ After 11 sessions, users have:
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy-essentials.md
+Read: product-guidelines/01-product-strategy.ctx.md
 Read: product-guidelines/02-tech-stack.md
 
 # Check if constraints exist (Session 2a is optional)
-If product-guidelines/02a-constraints-essentials.md exists:
-  Read: product-guidelines/02a-constraints-essentials.md
+If product-guidelines/02a-constraints.ctx.md exists:
+  Read: product-guidelines/02a-constraints.ctx.md
 
-Read: product-guidelines/02b-coding-standards-essentials.md
+Read: product-guidelines/02b-coding-standards.ctx.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
-If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
+If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy.ctx.md
 
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md
-Read: product-guidelines/08b-api-contracts-essentials.md
-Read: product-guidelines/09-test-strategy-essentials.md
-Read: product-guidelines/09b-application-architecture-essentials.md
+Read: product-guidelines/07-database-schema.ctx.md
+Read: product-guidelines/08b-api-contracts.ctx.md
+Read: product-guidelines/09-test-strategy.ctx.md
+Read: product-guidelines/09b-application-architecture.ctx.md
 Read: product-guidelines/10-backlog/BACKLOG.md
 ```
 
-**Context Optimization**: We read essentials versions for significant context reduction:
-- `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
-- `02a-constraints-essentials.md` (if exists, ~70% smaller) - Contains critical technical, organizational, and compliance constraints with trade-off decisions
-- `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
-- `02c-ai-integration-strategy-essentials.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
-- `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
-- `08b-api-contracts-essentials.md` (Session 8b, ~80% smaller) - Contains endpoint list organized by journey step for controller/route generation
-- `09-test-strategy-essentials.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
-- `09b-application-architecture-essentials.md` (~60% smaller) - Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy for code skeleton generation
+**Context Optimization**: We read .ctx.md files for significant context reduction:
+- `01-product-strategy.ctx.md` (~65% smaller) - Contains vision, positioning, goals, principles, and roadmap themes
+- `02a-constraints.ctx.md` (if exists, ~70% smaller) - Contains critical technical, organizational, and compliance constraints with trade-off decisions
+- `02b-coding-standards.ctx.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions essential for project structure
+- `02c-ai-integration-strategy.ctx.md` (if exists, ~60% smaller) - Contains AI SDK configuration, model selection, and implementation patterns needed for scaffold
+- `07-database-schema.ctx.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for scaffold generation
+- `08b-api-contracts.ctx.md` (Session 8b, ~80% smaller) - Contains endpoint list organized by journey step for controller/route generation
+- `09-test-strategy.ctx.md` (~66% smaller) - Contains coverage targets, test types, and quality gates
+- `09b-application-architecture.ctx.md` (~60% smaller) - Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy for code skeleton generation
 
 **Extract**:
 - **Project name** (from journey)
@@ -712,7 +712,7 @@ npm-debug.log*
 
 **IMPORTANT**: This step generates actual code files in the **repository root** (not `product-guidelines/`). These are working code files that developers can immediately run and implement.
 
-**Prerequisites**: Check if `product-guidelines/09b-application-architecture-essentials.md` exists. If it doesn't, skip this step gracefully and proceed with config-only scaffold (backward compatible with projects that haven't run Session 9b).
+**Prerequisites**: Check if `product-guidelines/09b-application-architecture.ctx.md` exists. If it doesn't, skip this step gracefully and proceed with config-only scaffold (backward compatible with projects that haven't run Session 9b).
 
 **Philosophy**: This is a **GENERATIVE** process, not template-based. Generate code that follows best practices for the SPECIFIC tech stack chosen in Session 3, adhering to coding standards from Session 3b. Do NOT use generic templates - analyze the stack and generate appropriate code.
 
@@ -722,8 +722,8 @@ npm-debug.log*
 
 1. **Load Cascade Context**:
    - Read `02-tech-stack.md` - Understand language, framework, ORM, testing tools
-   - Read `02b-coding-standards-essentials.md` - Understand file structure, naming conventions, patterns
-   - Read `09b-application-architecture-essentials.md` - Extract services, repositories, controllers, adapters
+   - Read `02b-coding-standards.ctx.md` - Understand file structure, naming conventions, patterns
+   - Read `09b-application-architecture.ctx.md` - Extract services, repositories, controllers, adapters
 
 2. **Analyze Tech Stack** and determine:
    - **Backend language**: TypeScript, Python, Go, Java, C#, Ruby, PHP, Rust, etc.

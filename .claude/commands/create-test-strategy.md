@@ -45,13 +45,13 @@ Create comprehensive testing strategy including:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md (from Session 7)
-Read: product-guidelines/08b-api-contracts-essentials.md (from Session 8b)
+Read: product-guidelines/07-database-schema.ctx.md (from Session 7)
+Read: product-guidelines/08b-api-contracts.ctx.md (from Session 8b)
 ```
 
-**Context Optimization**: We read essentials versions for significant context reduction:
-- `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for test planning
-- `08b-api-contracts-essentials.md` (~79% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
+**Context Optimization**: We read .ctx.md files for significant context reduction:
+- `07-database-schema.ctx.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for test planning
+- `08b-api-contracts.ctx.md` (~79% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
 
 **Optional inputs (if available):**
 

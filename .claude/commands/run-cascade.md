@@ -33,19 +33,19 @@ ls -la product-guidelines/
 
 Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
-- `01-product-strategy.md` + `01-product-strategy-essentials.md` → Session 2 complete
-- `02a-constraints.md` + `02a-constraints-essentials.md` → Session 2a complete
+- `01-product-strategy.md` + `01-product-strategy.ctx.md` → Session 2 complete
+- `02a-constraints.md` + `02a-constraints.ctx.md` → Session 2a complete
 - `02-tech-stack.md` → Session 3 complete
-- `02b-coding-standards.md` + `02b-coding-standards-essentials.md` → Session 3b complete
-- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` → Session 3c complete (optional)
+- `02b-coding-standards.md` + `02b-coding-standards.ctx.md` → Session 3b complete
+- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy.ctx.md` → Session 3c complete (optional)
 - `03a-mission.md` + `03b-metrics.md` + `03c-monetization.md` + `04-architecture.md` → Session 4 complete
 - `05-brand-strategy.md` → Session 5 complete
 - `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
-- `08-api-design.md` + `08-api-design-essentials.md` → Session 8 complete
-- `08b-api-contracts.md` + `08b-api-contracts-essentials.md` → Session 8b complete
+- `08-api-design.md` + `08-api-design.ctx.md` → Session 8 complete
+- `08b-api-contracts.md` + `08b-api-contracts.ctx.md` → Session 8b complete
 - `09-test-strategy.md` → Session 9 complete
-- `09b-application-architecture.md` + `09b-application-architecture-essentials.md` → Session 9b complete
+- `09b-application-architecture.md` + `09b-application-architecture.ctx.md` → Session 9b complete
 - `10-backlog/` directory → Session 10 complete
 - `12-project-scaffold.md` → Session 12 complete
 - `13-deployment-plan.md` → Session 13 complete
@@ -327,7 +327,7 @@ User: yes
 Inputs: Reading:
 - product-guidelines/00-user-journey.md
 - product-guidelines/01-product-strategy.md
-- product-guidelines/01-product-strategy-essentials.md
+- product-guidelines/01-product-strategy.ctx.md
 - product-guidelines/02-tech-stack.md
 
 Outputs: Will create:

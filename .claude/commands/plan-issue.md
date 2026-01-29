@@ -49,7 +49,7 @@ Based on issue type, load these files from `product-guidelines/`:
 **Always read:**
 - `00-user-journey.md` - Understand which journey step this serves
 - `02-tech-stack.md` - Technology choices and patterns
-- `02b-coding-standards-essentials.md` - Framework-specific patterns, file organization, naming conventions
+- `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions
 
 **Conditionally read based on issue labels/content:**
 
@@ -120,7 +120,7 @@ Create a detailed plan using this structure:
 - Backend: {Language, framework, patterns}
 - Database: {Type, specific patterns}
 
-**Coding Standards:** {Reference patterns from 02b-coding-standards-essentials.md}
+**Coding Standards:** {Reference patterns from 02b-coding-standards.ctx.md}
 - File organization: {Directory structure, module patterns}
 - Naming conventions: {Component, function, variable naming}
 - Framework patterns: {Hooks, state management, error handling}
@@ -256,7 +256,7 @@ db/migrations/001_add_feature.sql
 
 - Journey Step: product-guidelines/00-user-journey.md #{step-number}
 - Tech Stack: product-guidelines/02-tech-stack.md
-- Coding Standards: product-guidelines/02b-coding-standards-essentials.md
+- Coding Standards: product-guidelines/02b-coding-standards.ctx.md
 - {Other relevant guideline references}
 
 ---

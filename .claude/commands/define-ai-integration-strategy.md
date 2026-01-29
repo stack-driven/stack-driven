@@ -171,7 +171,7 @@ Also add a brief note referencing Session 3c:
 This ensures that:
 1. Later sessions (4, 7, 8, 9b, 10, 12) have AI provider context in tech stack
 2. Tech stack file remains the "single source of truth" for stack summary
-3. Session 3c essentials file provides detailed implementation guidance
+3. Session 3c context file provides detailed implementation guidance
 
 ### Step 7: Validate Output
 

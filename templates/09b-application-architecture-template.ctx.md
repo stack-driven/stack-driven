@@ -1,8 +1,8 @@
-# Application Architecture Essentials (For Backlog Generation)
+# Application Architecture Context (For Backlog Generation)
 
 **Purpose:** Condensed application architecture for Session 10 backlog generation
 **Full Version:** See `09b-application-architecture.md` for complete details
-**File location:** `product-guidelines/09b-application-architecture-essentials.md`
+**File location:** `product-guidelines/09b-application-architecture.ctx.md`
 
 ---
 

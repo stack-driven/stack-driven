@@ -589,4 +589,4 @@ After this session:
 
 **Files Created**:
 - `product-guidelines/09b-application-architecture.md` (this file)
-- `product-guidelines/09b-application-architecture-essentials.md` (condensed for Session 10)
+- `product-guidelines/09b-application-architecture.ctx.md` (condensed for Session 10)

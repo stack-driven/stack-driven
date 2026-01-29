@@ -22,19 +22,19 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 | Command | Session | Time | Output File(s) |
 |---------|---------|------|----------------|
 | `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
-| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy-essentials.md` |
-| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints-essentials.md` |
+| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy.ctx.md` |
+| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints.ctx.md` |
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
-| `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards-essentials.md` |
-| `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md`, `02c-ai-integration-strategy-essentials.md` |
+| `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards.ctx.md` |
+| `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md`, `02c-ai-integration-strategy.ctx.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
-| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema-essentials.md` |
-| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design-essentials.md` |
-| `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts-essentials.md` |
-| `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy-essentials.md` |
-| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md`, `09b-application-architecture-essentials.md` |
+| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema.ctx.md` |
+| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design.ctx.md` |
+| `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts.ctx.md` |
+| `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy.ctx.md` |
+| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md`, `09b-application-architecture.ctx.md` |
 | `/generate-backlog` | 10 | 60-90 min | `10-backlog/*.md` (30-50 issues) |
 | `/create-gh-issues` | 11 | 10-15 min | GitHub issues |
 | `/scaffold-project` | 12 | 30-45 min | `12-project-scaffold.md`, `12-project-scaffold/*` |
@@ -140,7 +140,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/01-product-strategy.md` (comprehensive)
-- `product-guidelines/01-product-strategy-essentials.md` (for AI reading)
+- `product-guidelines/01-product-strategy.ctx.md` (for AI reading)
 
 **What it does:**
 - Analyzes your target market size
@@ -180,7 +180,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/02a-constraints.md` (comprehensive documentation)
-- `product-guidelines/02a-constraints-essentials.md` (for AI reading)
+- `product-guidelines/02a-constraints.ctx.md` (for AI reading)
 
 **What it does:**
 - Documents real-world limitations that affect technical decisions
@@ -270,7 +270,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/02b-coding-standards.md` (comprehensive)
-- `product-guidelines/02b-coding-standards-essentials.md` (for AI reading)
+- `product-guidelines/02b-coding-standards.ctx.md` (for AI reading)
 
 **How it works:**
 - Analyzes chosen tech stack from Session 3
@@ -317,7 +317,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/02c-ai-integration-strategy.md` (comprehensive strategy)
-- `product-guidelines/02c-ai-integration-strategy-essentials.md` (for AI agents)
+- `product-guidelines/02c-ai-integration-strategy.ctx.md` (for AI agents)
 
 **How it works:**
 - Analyzes journey for AI requirements (latency, quality, volume)
@@ -490,7 +490,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/07-database-schema.md` (documentation)
-- `product-guidelines/07-database-schema-essentials.md` (for AI reading)
+- `product-guidelines/07-database-schema.ctx.md` (for AI reading)
 
 **What it generates:**
 - Complete schema design
@@ -530,7 +530,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `08-api-design.md` - Complete API architecture decisions
-- `08-api-design-essentials.md` - Condensed version for backlog generation (Session 10)
+- `08-api-design.ctx.md` - Condensed version for backlog generation (Session 10)
 
 **Next step:** Run `/generate-api-contracts`
 
@@ -564,7 +564,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/08b-api-contracts.md` (documentation)
-- `product-guidelines/08b-api-contracts-essentials.md` (for scaffold generation - Session 12)
+- `product-guidelines/08b-api-contracts.ctx.md` (for scaffold generation - Session 12)
 
 **What it generates:**
 - Complete OpenAPI spec
@@ -609,7 +609,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 
 **Outputs:**
 - `product-guidelines/09-test-strategy.md` (documentation)
-- `product-guidelines/09-test-strategy-essentials.md` (for AI reading)
+- `product-guidelines/09-test-strategy.ctx.md` (for AI reading)
 
 **What it defines:**
 - What to test (and what not to test)

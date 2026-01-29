@@ -52,18 +52,18 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
   ↓ (AI reads journey + strategy, documents constraints)
 
 Session 2a: /document-constraints     → product-guidelines/02a-constraints.md
-                                        product-guidelines/02a-constraints-essentials.md
+                                        product-guidelines/02a-constraints.ctx.md
   ↓ (AI reads journey + strategy + constraints, chooses tech)
 
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, defines coding standards)
 
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
-                                       product-guidelines/02b-coding-standards-essentials.md
+                                       product-guidelines/02b-coding-standards.ctx.md
   ↓ (AI reads all previous + standards, defines AI strategy if AI in stack)
 
 Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md
-                                              product-guidelines/02c-ai-integration-strategy-essentials.md
+                                              product-guidelines/02c-ai-integration-strategy.ctx.md
   ↓ (AI reads all previous + AI strategy, derives tactics)
 
 Session 4: /generate-strategy          → product-guidelines/03a-mission.md
@@ -82,18 +82,18 @@ Session 7: /design-database-schema     → product-guidelines/07-database-schema
   ↓ (AI reads schema, designs high-level API architecture)
 
 Session 8: /generate-api-design        → product-guidelines/08-api-design.md
-                                         product-guidelines/08-api-design-essentials.md
+                                         product-guidelines/08-api-design.ctx.md
   ↓ (AI reads API design, generates detailed contracts)
 
 Session 8b: /generate-api-contracts    → product-guidelines/08b-api-contracts.md
-                                         product-guidelines/08b-api-contracts-essentials.md
+                                         product-guidelines/08b-api-contracts.ctx.md
   ↓ (AI reads contracts, defines testing strategy)
 
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
   ↓ (AI reads tech stack, architecture, schemas, and APIs to model application)
 
 Session 9b: /model-application         → product-guidelines/09b-application-architecture.md
-                                        product-guidelines/09b-application-architecture-essentials.md
+                                        product-guidelines/09b-application-architecture.ctx.md
   ↓ (AI reads everything including architecture, generates backlog)
 
 Session 10: /generate-backlog          → product-guidelines/10-backlog/
@@ -178,12 +178,12 @@ Your production-ready system is ready with database schema, API contracts, testi
 product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
-├── 01-product-strategy-essentials.md (Session 2)
+├── 01-product-strategy.ctx.md (Session 2)
 ├── 02a-constraints.md (Session 2a)
-├── 02a-constraints-essentials.md (Session 2a)
+├── 02a-constraints.ctx.md (Session 2a)
 ├── 02-tech-stack.md (Session 3)
 ├── 02b-coding-standards.md (Session 3b)
-├── 02b-coding-standards-essentials.md (Session 3b)
+├── 02b-coding-standards.ctx.md (Session 3b)
 ├── 03a-mission.md (Session 4)
 ├── 03b-metrics.md (Session 4)
 ├── 03c-monetization.md (Session 4)
@@ -192,9 +192,9 @@ product-guidelines/
 ├── 06-design-system.md (Session 6)
 ├── 07-database-schema.md (Session 7)
 ├── 08-api-design.md (Session 8)
-├── 08-api-design-essentials.md (Session 8)
+├── 08-api-design.ctx.md (Session 8)
 ├── 08b-api-contracts.md (Session 8b)
-├── 08b-api-contracts-essentials.md (Session 8b)
+├── 08b-api-contracts.ctx.md (Session 8b)
 ├── 09-test-strategy.md (Session 9)
 ├── 10-backlog/ (Session 10)
 ├── 12-project-scaffold/ (Session 12 - actual code files)

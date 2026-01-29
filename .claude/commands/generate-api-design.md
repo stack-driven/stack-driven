@@ -42,10 +42,10 @@ Make high-level API architectural decisions:
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md (from previous session)
+Read: product-guidelines/07-database-schema.ctx.md (from previous session)
 ```
 
-**Context Optimization**: We read the essentials version of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API design without column details, indexes, and migrations.
+**Context Optimization**: We read the context file of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API design without column details, indexes, and migrations.
 
 **Extract from Journey**:
 - What user actions require API endpoints?
@@ -622,7 +622,7 @@ If you can't trace a decision back to a journey step, tech stack choice, or arch
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
 - Architecture: `product-guidelines/04-architecture.md`
-- Database schema: `product-guidelines/07-database-schema-essentials.md` (from previous session)
+- Database schema: `product-guidelines/07-database-schema.ctx.md` (from previous session)
 - Serialization guide: `reference-material/serialization-guide.md` (decision tree lines 939-1071)
 
 ---

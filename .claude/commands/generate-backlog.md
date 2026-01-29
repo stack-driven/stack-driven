@@ -16,40 +16,40 @@ You're a technical product manager creating a systematic backlog from all cascad
 
 ```
 Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy-essentials.md
+Read: product-guidelines/01-product-strategy.ctx.md
 Read: product-guidelines/02-tech-stack.md
 
 # Check if constraints exist (Session 2a is optional)
-If product-guidelines/02a-constraints-essentials.md exists:
-  Read: product-guidelines/02a-constraints-essentials.md
+If product-guidelines/02a-constraints.ctx.md exists:
+  Read: product-guidelines/02a-constraints.ctx.md
 
-Read: product-guidelines/02b-coding-standards-essentials.md
+Read: product-guidelines/02b-coding-standards.ctx.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
-If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
+If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy.ctx.md
 
 Read: product-guidelines/03a-mission.md
 Read: product-guidelines/03b-metrics.md
 Read: product-guidelines/03c-monetization.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md
-Read: product-guidelines/08-api-design-essentials.md
-Read: product-guidelines/08b-api-contracts-essentials.md
-Read: product-guidelines/09-test-strategy-essentials.md
-Read: product-guidelines/09b-application-architecture-essentials.md
+Read: product-guidelines/07-database-schema.ctx.md
+Read: product-guidelines/08-api-design.ctx.md
+Read: product-guidelines/08b-api-contracts.ctx.md
+Read: product-guidelines/09-test-strategy.ctx.md
+Read: product-guidelines/09b-application-architecture.ctx.md
 ```
 
-**Context Optimization**: We read essentials files for significant context reduction:
-- `01-product-strategy-essentials.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
-- `02a-constraints-essentials.md` (if exists) - 70% reduction: Contains critical technical, organizational, and compliance constraints with trade-off decisions—without detailed constraint explanations and validation checklists.
-- `02b-coding-standards-essentials.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
-- `02c-ai-integration-strategy-essentials.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
-- `07-database-schema-essentials.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
-- `08-api-design-essentials.md` (Session 8) - Condensed: Contains API paradigm (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth method, rate limiting, pagination approach, and error format—without decision trees, journey analysis, and alternatives.
-- `08b-api-contracts-essentials.md` (Session 8b) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
-- `09-test-strategy-essentials.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
-- `09b-application-architecture-essentials.md` (not `09b-application-architecture.md`) - ~60% reduction: Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy—without business rules, implementation details, design decisions, and architecture rationale.
+**Context Optimization**: We read .ctx.md files for significant context reduction:
+- `01-product-strategy.ctx.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
+- `02a-constraints.ctx.md` (if exists) - 70% reduction: Contains critical technical, organizational, and compliance constraints with trade-off decisions—without detailed constraint explanations and validation checklists.
+- `02b-coding-standards.ctx.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
+- `02c-ai-integration-strategy.ctx.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
+- `07-database-schema.ctx.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
+- `08-api-design.ctx.md` (Session 8) - Condensed: Contains API paradigm (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth method, rate limiting, pagination approach, and error format—without decision trees, journey analysis, and alternatives.
+- `08b-api-contracts.ctx.md` (Session 8b) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
+- `09-test-strategy.ctx.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
+- `09b-application-architecture.ctx.md` (not `09b-application-architecture.md`) - ~60% reduction: Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy—without business rules, implementation details, design decisions, and architecture rationale.
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 

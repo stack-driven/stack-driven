@@ -644,4 +644,4 @@ Before considering this session complete:
 After completing this file:
 1. Run `/generate-api-contracts` (Session 8b) to create technical implementation
 2. Session 8b will read this file to implement paradigm and serialization decisions
-3. Session 10 (backlog) will read `08-api-design-essentials.md` for API-driven stories
+3. Session 10 (backlog) will read `08-api-design.ctx.md` for API-driven stories

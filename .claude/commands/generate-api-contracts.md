@@ -62,10 +62,10 @@ Read: product-guidelines/08-api-design.md (from previous session - Session 8)
 Read: product-guidelines/00-user-journey.md
 Read: product-guidelines/02-tech-stack.md
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md
+Read: product-guidelines/07-database-schema.ctx.md
 ```
 
-**Context Optimization**: We read the essentials version of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations.
+**Context Optimization**: We read the context file of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations.
 
 **Optional inputs (if available):**
 
@@ -630,7 +630,7 @@ If you find the API design decisions don't work for a specific endpoint, note it
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
 - Architecture: `product-guidelines/04-architecture.md`
-- Database schema: `product-guidelines/07-database-schema-essentials.md`
+- Database schema: `product-guidelines/07-database-schema.ctx.md`
 
 ---
 
