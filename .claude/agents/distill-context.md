@@ -250,11 +250,11 @@ A high-quality context file:
 
 ## Example Session Types
 
-### Product Strategy (Session 1)
+### Product Strategy (Session 2)
 - **Keep**: Vision statement, positioning, strategic goals (names + metrics), product principles, roadmap themes, priority framework
 - **Remove**: Market analysis details, competitive landscape elaboration, TAM/SAM/SOM calculations, risk discussions
 
-### Tech Stack (Session 2)
+### Tech Stack (Session 3)
 - **Keep**: Technology choices, version numbers, rationale summarized in 1 line per choice
 - **Remove**: Evaluation process, alternatives considered, detailed tradeoff analysis
 
