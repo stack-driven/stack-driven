@@ -580,7 +580,7 @@ Before completing this session, verify:
 - [ ] "What We DIDN'T Choose" section complete (3+ paradigm + 3+ format alternatives)
 - [ ] Each alternative has "Reconsider if" conditions
 - [ ] Scale-forward strategy explains evolution path
-- [ ] Essentials file created and condensed (not full analysis)
+- [ ] Context file created and condensed (not full analysis)
 
 **Context Version (for backlog generation):**
 - [ ] Context file created at `08-api-design.ctx.md`
