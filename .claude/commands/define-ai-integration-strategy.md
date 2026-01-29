@@ -179,11 +179,11 @@ Flag any concerns prominently in the output.
 ### Step 8: Set Next Steps
 
 Inform the user:
-- ✅ Generated `product-guidelines/02c-ai-integration-strategy.md`
-- ✅ Generated `product-guidelines/02c-ai-integration-strategy-essentials.md`
-- ✅ Updated `product-guidelines/02-tech-stack.md` with AI provider selection
-- 📍 This strategy will inform Sessions 4, 7, 8, 9b, 10, 12, 13, and 14
-- 👉 Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture
+- [✓] Generated `product-guidelines/02c-ai-integration-strategy.md`
+- [✓] Generated `product-guidelines/02c-ai-integration-strategy-essentials.md`
+- [✓] Updated `product-guidelines/02-tech-stack.md` with AI provider selection
+- Note: This strategy will inform Sessions 4, 7, 8, 9b, 10, 12, 13, and 14
+- -> Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture
 
 ## Quality Standards
 
@@ -235,3 +235,6 @@ Suggest: Streaming, caching, or adjust requirements.
 ```
 
 Remember: You're not explaining AI in general. You're analyzing THEIR specific product and recommending the optimal AI strategy for THEIR journey, constraints, and goals.
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

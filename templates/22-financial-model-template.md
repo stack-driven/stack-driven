@@ -143,7 +143,7 @@ Ratio:   [X.X]:1
 ```
 
 **Assessment**:
-- ✅ **[Excellent / Healthy / Concerning / Unsustainable]**
+- [✓] **[Excellent / Healthy / Concerning / Unsustainable]**
 
 **Industry Benchmark Comparison**:
 ```
@@ -174,7 +174,7 @@ Payback = $[XXX] / ($[XXX] × [XX]%) = [X.X] months
 ```
 
 **Assessment**:
-- ✅ **[Excellent / Good / Concerning / Problematic]**
+- [✓] **[Excellent / Good / Concerning / Problematic]**
 
 **Benchmark**:
 ```
@@ -572,7 +572,7 @@ ELSE IF Series A (>$1M ARR, 3x YoY growth)
 - **Funding needed**: $[X.X]M (vs. $[XXX]k realistic)
 
 **Can we survive this scenario?**
-- [✅ / ⚠️ / ❌] [Assessment: e.g., "Yes with additional $XXXk bridge funding"]
+- [[✓] / (Warning) / [x]] [Assessment: e.g., "Yes with additional $XXXk bridge funding"]
 
 **What would trigger this scenario?**
 1. [Trigger 1 - e.g., "Market education takes longer than expected"]
@@ -862,9 +862,9 @@ IF conversion is 13% (30% higher):
 ## Model Validation & Updates
 
 **This model should be updated**:
-- ✅ Monthly: Update actuals vs. projections
-- ✅ Quarterly: Revise assumptions based on learnings
-- ✅ Annually: Rebuild model with actual data
+- [✓] Monthly: Update actuals vs. projections
+- [✓] Quarterly: Revise assumptions based on learnings
+- [✓] Annually: Rebuild model with actual data
 
 **Tracking against model**:
 

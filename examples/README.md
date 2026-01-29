@@ -53,13 +53,13 @@ We plan to add contrasting examples to show how different journeys yield differe
 
 ## How to Use These Examples
 
-### ✅ Do:
+### [✓] Do:
 - Study how journey requirements drove technology choices
 - Reference structure and organization patterns
 - See how each cascade session builds on previous outputs
 - Understand trade-off reasoning
 
-### ❌ Don't:
+### [x] Don't:
 - Copy-paste without understanding your own journey
 - Assume your product needs the same stack
 - Skip the cascade and just use this as a template

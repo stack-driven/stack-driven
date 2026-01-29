@@ -13,9 +13,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ## Dependency Legend
 
 ```
-📄 Full file
-📋 Essentials file (condensed version)
-🔧 Template file
+[FULL] Full file
+[ESS] Essentials file (condensed version)
+[TMPL] Template file
 ```
 
 ---
@@ -26,8 +26,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Outputs:** `00-user-journey.md`
 
 **Reads:**
-- 🔧 `/templates/00-user-journey-template.md`
-- 🔧 `/templates/00-user-journey-interview-template.md`
+- [TMPL] `/templates/00-user-journey-template.md`
+- [TMPL] `/templates/00-user-journey-interview-template.md`
 
 **Dependencies:** None (first session)
 
@@ -40,8 +40,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-└─ 🔧 /templates/01-product-strategy-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+└─ [TMPL] /templates/01-product-strategy-template.md
 ```
 
 **Dependencies:** Session 1
@@ -60,10 +60,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 🔧 /templates/02a-constraints-template.md
-└─ 🔧 /templates/02a-constraints-essentials-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [TMPL] /templates/02a-constraints-template.md
+└─ [TMPL] /templates/02a-constraints-essentials-template.md
 ```
 
 **Dependencies:** Sessions 1, 2
@@ -81,11 +81,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📋 product-guidelines/02a-constraints.md (if exists)
-├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
-└─ 🔧 /templates/02-tech-stack-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [ESS] product-guidelines/02a-constraints.md (if exists)
+├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
+└─ [TMPL] /templates/02-tech-stack-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists)
@@ -101,11 +101,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/03a-mission.md
-└─ 🔧 /templates/02b-coding-standards-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/03a-mission.md
+└─ [TMPL] /templates/02b-coding-standards-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 3, 4 (03a-mission.md from generate-strategy)
@@ -125,11 +125,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 🔧 /templates/02c-ai-integration-strategy-template.md
-└─ 🔧 /templates/02c-ai-integration-strategy-essentials-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [TMPL] /templates/02c-ai-integration-strategy-template.md
+└─ [TMPL] /templates/02c-ai-integration-strategy-essentials-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 3
@@ -158,13 +158,13 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📋 product-guidelines/01-product-strategy-essentials.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
-├─ 📋 product-guidelines/02b-coding-standards-essentials.md
-├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-└─ 🔧 /templates/03a-mission-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
+├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+└─ [TMPL] /templates/03a-mission-template.md
     /templates/03b-metrics-template.md
     /templates/03c-monetization-template.md
     /templates/04-architecture-template.md
@@ -181,11 +181,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03a-mission.md
-├─ 📄 product-guidelines/03b-metrics.md (optional)
-└─ 🔧 /templates/05-brand-strategy-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/03a-mission.md
+├─ [FULL] product-guidelines/03b-metrics.md (optional)
+└─ [TMPL] /templates/05-brand-strategy-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 4
@@ -199,10 +199,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📋 product-guidelines/01-product-strategy-essentials.md
-├─ 📄 product-guidelines/05-brand-strategy.md
-└─ 🔧 /templates/06-design-system-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [FULL] product-guidelines/05-brand-strategy.md
+└─ [TMPL] /templates/06-design-system-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 5
@@ -218,10 +218,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-architecture.md
-└─ 🔧 /templates/07-database-schema-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/04-architecture.md
+└─ [TMPL] /templates/07-database-schema-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4
@@ -245,12 +245,12 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 🔧 /templates/08-api-design-template.md
-└─ 📚 /reference-material/serialization-guide.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [TMPL] /templates/08-api-design-template.md
+└─ [REF] /reference-material/serialization-guide.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7
@@ -270,12 +270,12 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/08-api-design.md
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-└─ 🔧 /templates/08b-api-contracts-template.md
+├─ [FULL] product-guidelines/08-api-design.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+└─ [TMPL] /templates/08b-api-contracts-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7, 8
@@ -297,12 +297,12 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 📋 product-guidelines/08b-api-contracts-essentials.md
-└─ 🔧 /templates/09-test-strategy-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [ESS] product-guidelines/08b-api-contracts-essentials.md
+└─ [TMPL] /templates/09-test-strategy-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7, 8b
@@ -322,13 +322,13 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📋 product-guidelines/02b-coding-standards-essentials.md
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 📋 product-guidelines/08-api-contracts-essentials.md
-└─ 🔧 /templates/09b-application-architecture-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [ESS] product-guidelines/08-api-contracts-essentials.md
+└─ [TMPL] /templates/09b-application-architecture-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 3b, 4, 7, 8
@@ -348,21 +348,21 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📋 product-guidelines/01-product-strategy-essentials.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
-├─ 📋 product-guidelines/02b-coding-standards-essentials.md
-├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-├─ 📄 product-guidelines/03a-mission.md
-├─ 📄 product-guidelines/03b-metrics.md
-├─ 📄 product-guidelines/03c-monetization.md
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 📋 product-guidelines/08-api-contracts-essentials.md
-├─ 📋 product-guidelines/09-test-strategy-essentials.md
-├─ 📋 product-guidelines/09b-application-architecture-essentials.md
-└─ 🔧 /templates/issue-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
+├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+├─ [FULL] product-guidelines/03a-mission.md
+├─ [FULL] product-guidelines/03b-metrics.md
+├─ [FULL] product-guidelines/03c-monetization.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [ESS] product-guidelines/08-api-contracts-essentials.md
+├─ [ESS] product-guidelines/09-test-strategy-essentials.md
+├─ [ESS] product-guidelines/09b-application-architecture-essentials.md
+└─ [TMPL] /templates/issue-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b
@@ -388,8 +388,8 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-└─ 📄 product-guidelines/10-backlog/BACKLOG.md
-   📄 product-guidelines/10-backlog/*.md (individual stories)
+└─ [FULL] product-guidelines/10-backlog/BACKLOG.md
+   [FULL] product-guidelines/10-backlog/*.md (individual stories)
 ```
 
 **Dependencies:** Session 10
@@ -405,19 +405,19 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📋 product-guidelines/01-product-strategy-essentials.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📋 product-guidelines/02a-constraints-essentials.md (if exists)
-├─ 📋 product-guidelines/02b-coding-standards-essentials.md
-├─ 📋 product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📋 product-guidelines/07-database-schema-essentials.md
-├─ 📋 product-guidelines/08-api-contracts-essentials.md
-├─ 📋 product-guidelines/09-test-strategy-essentials.md
-├─ 📋 product-guidelines/09b-application-architecture-essentials.md
-├─ 📄 product-guidelines/10-backlog/BACKLOG.md
-└─ 🔧 /templates/12-project-scaffold-template.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
+├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [ESS] product-guidelines/08-api-contracts-essentials.md
+├─ [ESS] product-guidelines/09-test-strategy-essentials.md
+├─ [ESS] product-guidelines/09b-application-architecture-essentials.md
+├─ [FULL] product-guidelines/10-backlog/BACKLOG.md
+└─ [TMPL] /templates/12-project-scaffold-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b, 10
@@ -443,9 +443,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/04-architecture.md
-└─ 🔧 /templates/13-deployment-plan-template.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/04-architecture.md
+└─ [TMPL] /templates/13-deployment-plan-template.md
 ```
 
 **Dependencies:** Sessions 3, 4
@@ -462,10 +462,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 
 **Reads:**
 ```
-├─ 📄 product-guidelines/04-architecture.md
-├─ 📄 product-guidelines/03b-metrics.md
-├─ 📄 product-guidelines/13-deployment-plan.md (optional)
-└─ 🔧 /templates/14-observability-strategy-template.md
+├─ [FULL] product-guidelines/04-architecture.md
+├─ [FULL] product-guidelines/03b-metrics.md
+├─ [FULL] product-guidelines/13-deployment-plan.md (optional)
+└─ [TMPL] /templates/14-observability-strategy-template.md
 ```
 
 **Dependencies:** Session 4, optionally Session 13
@@ -479,10 +479,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/discover-naming`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03a-mission.md
-└─ 📄 product-guidelines/05-brand-strategy.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/03a-mission.md
+└─ [FULL] product-guidelines/05-brand-strategy.md
 ```
 
 **When to run:** After Session 5 (brand-strategy)
@@ -492,10 +492,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/define-messaging`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03a-mission.md
-└─ 📄 product-guidelines/05-brand-strategy.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/03a-mission.md
+└─ [FULL] product-guidelines/05-brand-strategy.md
 ```
 
 **When to run:** After Session 5 (brand-strategy)
@@ -505,9 +505,9 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/design-brand-identity`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/05-brand-strategy.md
-└─ 📄 product-guidelines/06-design-system.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/05-brand-strategy.md
+└─ [FULL] product-guidelines/06-design-system.md
 ```
 
 **When to run:** After Session 6 (design-system)
@@ -517,10 +517,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/design-user-experience`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/05-brand-strategy.md
-└─ 📄 product-guidelines/06-design-system.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/05-brand-strategy.md
+└─ [FULL] product-guidelines/06-design-system.md
 ```
 
 **When to run:** After Session 6 (design-system)
@@ -530,10 +530,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/setup-analytics`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📄 product-guidelines/03b-metrics.md
-└─ 📄 product-guidelines/06-design-system.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [FULL] product-guidelines/03b-metrics.md
+└─ [FULL] product-guidelines/06-design-system.md
 ```
 
 **When to run:** After Session 6 (design-system)
@@ -543,11 +543,11 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/design-growth-strategy`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03a-mission.md
-├─ 📄 product-guidelines/03b-metrics.md
-└─ 📄 product-guidelines/03c-monetization.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/03a-mission.md
+├─ [FULL] product-guidelines/03b-metrics.md
+└─ [FULL] product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -557,10 +557,10 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/create-financial-model`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/01-product-strategy.md
-├─ 📄 product-guidelines/03b-metrics.md
-└─ 📄 product-guidelines/03c-monetization.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/01-product-strategy.md
+├─ [FULL] product-guidelines/03b-metrics.md
+└─ [FULL] product-guidelines/03c-monetization.md
 ```
 
 **When to run:** After Session 4 (generate-strategy)
@@ -570,9 +570,9 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 ### `/create-content-guidelines`
 **Reads:**
 ```
-├─ 📄 product-guidelines/00-user-journey.md
-├─ 📄 product-guidelines/05-brand-strategy.md
-└─ 📄 product-guidelines/06-design-system.md
+├─ [FULL] product-guidelines/00-user-journey.md
+├─ [FULL] product-guidelines/05-brand-strategy.md
+└─ [FULL] product-guidelines/06-design-system.md
 ```
 
 **When to run:** After Session 6 (design-system)
@@ -594,10 +594,10 @@ ALL files in product-guidelines/
 ### `/implement-issue [issue-number]`
 **Reads (conditionally):**
 ```
-├─ 📄 product-guidelines/02-tech-stack.md (ALWAYS)
-├─ 📄 product-guidelines/06-design-system.md (if UI work)
-├─ 📄 product-guidelines/07-database-schema.md (if database work)
-└─ 📄 product-guidelines/08-api-contracts.md (if API work)
+├─ [FULL] product-guidelines/02-tech-stack.md (ALWAYS)
+├─ [FULL] product-guidelines/06-design-system.md (if UI work)
+├─ [FULL] product-guidelines/07-database-schema.md (if database work)
+└─ [FULL] product-guidelines/08-api-contracts.md (if API work)
 ```
 
 **Purpose:** Implement GitHub issue following approved plan. Loads relevant guardrails based on work type.
@@ -612,10 +612,10 @@ ALL files in product-guidelines/
 ### `/plan-issue [issue-number]`
 **Reads (same as implement-issue):**
 ```
-├─ 📄 product-guidelines/02-tech-stack.md (ALWAYS)
-├─ 📄 product-guidelines/06-design-system.md (if UI work)
-├─ 📄 product-guidelines/07-database-schema.md (if database work)
-└─ 📄 product-guidelines/08-api-contracts.md (if API work)
+├─ [FULL] product-guidelines/02-tech-stack.md (ALWAYS)
+├─ [FULL] product-guidelines/06-design-system.md (if UI work)
+├─ [FULL] product-guidelines/07-database-schema.md (if database work)
+└─ [FULL] product-guidelines/08-api-contracts.md (if API work)
 ```
 
 **Purpose:** Create detailed implementation plan for GitHub issue.
@@ -625,8 +625,8 @@ ALL files in product-guidelines/
 ### `/review-code`
 **Reads:**
 ```
-├─ 📄 product-guidelines/02-tech-stack.md
-├─ 📋 product-guidelines/02b-coding-standards-essentials.md
+├─ [FULL] product-guidelines/02-tech-stack.md
+├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
 └─ Changed files in current git diff
 ```
 
@@ -668,19 +668,19 @@ ALL files in product-guidelines/
 
 ### If you modify `00-user-journey.md`:
 **Direct impact:**
-- ✅ Session 2 (product-strategy)
-- ✅ Session 3 (tech-stack)
-- ✅ Session 3b (coding-standards)
-- ✅ Session 4 (generate-strategy)
-- ✅ Session 5 (brand-strategy)
-- ✅ Session 6 (create-design)
-- ✅ Session 7 (database-schema)
-- ✅ Session 8 (api-design)
-- ✅ Session 8b (api-contracts)
-- ✅ Session 9 (test-strategy)
-- ✅ Session 9b (model-application)
-- ✅ Session 10 (backlog)
-- ✅ Session 12 (scaffold)
+- (✓) Session 2 (product-strategy)
+- (✓) Session 3 (tech-stack)
+- (✓) Session 3b (coding-standards)
+- (✓) Session 4 (generate-strategy)
+- (✓) Session 5 (brand-strategy)
+- (✓) Session 6 (create-design)
+- (✓) Session 7 (database-schema)
+- (✓) Session 8 (api-design)
+- (✓) Session 8b (api-contracts)
+- (✓) Session 9 (test-strategy)
+- (✓) Session 9b (model-application)
+- (✓) Session 10 (backlog)
+- (✓) Session 12 (scaffold)
 
 **Cascade impact:** Essentially everything (journey is foundation)
 
@@ -690,16 +690,16 @@ ALL files in product-guidelines/
 
 ### If you modify `02-tech-stack.md`:
 **Direct impact:**
-- ✅ Session 3b (coding-standards) - needs framework choices
-- ✅ Session 4 (generate-strategy) - architecture depends on tech
-- ✅ Session 7 (database-schema) - ORM/migration tool choice
-- ✅ Session 8 (api-design) - API paradigm selection
-- ✅ Session 8b (api-contracts) - API framework patterns
-- ✅ Session 9 (test-strategy) - testing frameworks
-- ✅ Session 9b (model-application) - framework-specific patterns
-- ✅ Session 10 (backlog) - technical approach in stories
-- ✅ Session 12 (scaffold) - languages/frameworks to scaffold
-- ✅ Session 13 (deployment) - what to deploy
+- (✓) Session 3b (coding-standards) - needs framework choices
+- (✓) Session 4 (generate-strategy) - architecture depends on tech
+- (✓) Session 7 (database-schema) - ORM/migration tool choice
+- (✓) Session 8 (api-design) - API paradigm selection
+- (✓) Session 8b (api-contracts) - API framework patterns
+- (✓) Session 9 (test-strategy) - testing frameworks
+- (✓) Session 9b (model-application) - framework-specific patterns
+- (✓) Session 10 (backlog) - technical approach in stories
+- (✓) Session 12 (scaffold) - languages/frameworks to scaffold
+- (✓) Session 13 (deployment) - what to deploy
 
 **Cascade impact:** Moderate-to-high (affects technical implementation)
 
@@ -709,12 +709,12 @@ ALL files in product-guidelines/
 
 ### If you modify `07-database-schema.md`:
 **Direct impact:**
-- ✅ Session 8 (api-design) - API paradigm may change based on data model
-- ✅ Session 8b (api-contracts) - depends on database structure
-- ✅ Session 9 (test-strategy) - database testing patterns
-- ✅ Session 9b (model-application) - entity/repository modeling
-- ✅ Session 10 (backlog) - data model references
-- ✅ Session 12 (scaffold) - entity classes, migrations
+- (✓) Session 8 (api-design) - API paradigm may change based on data model
+- (✓) Session 8b (api-contracts) - depends on database structure
+- (✓) Session 9 (test-strategy) - database testing patterns
+- (✓) Session 9b (model-application) - entity/repository modeling
+- (✓) Session 10 (backlog) - data model references
+- (✓) Session 12 (scaffold) - entity classes, migrations
 
 **Cascade impact:** Moderate (affects data layer and above)
 
@@ -724,8 +724,8 @@ ALL files in product-guidelines/
 
 ### If you modify `05-brand-strategy.md`:
 **Direct impact:**
-- ✅ Session 6 (create-design) - brand personality → design decisions
-- ✅ Post-cascade: discover-naming, define-messaging, design-brand-identity, design-user-experience
+- (✓) Session 6 (create-design) - brand personality → design decisions
+- (✓) Post-cascade: discover-naming, define-messaging, design-brand-identity, design-user-experience
 
 **Cascade impact:** Low (NOT read by Sessions 10-14)
 
@@ -735,8 +735,8 @@ ALL files in product-guidelines/
 
 ### If you modify `09b-application-architecture.md`:
 **Direct impact:**
-- ✅ Session 10 (backlog) - service/method implementation stories
-- ✅ Session 12 (scaffold) - code skeleton generation
+- (✓) Session 10 (backlog) - service/method implementation stories
+- (✓) Session 12 (scaffold) - code skeleton generation
 
 **Cascade impact:** Low (affects story granularity and code structure)
 
@@ -765,7 +765,7 @@ When adding a new session or modifying an existing one:
 
 4. **Update this document:**
    - [ ] Add session to appropriate section
-   - [ ] List all inputs with 📄/📋 notation
+   - [ ] List all inputs with [FULL]/[ESS] notation
    - [ ] Document why essentials vs full
    - [ ] Add to impact analysis section
 

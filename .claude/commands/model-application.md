@@ -134,11 +134,11 @@ For each journey step or major domain entity, ask:
 - Each service = thin wrapper around repository (anti-pattern if no business logic)
 
 **Anti-Pattern: Generic "Manager" or "Helper" Services** (Avoid):
-- ❌ DataManager (what data? what management operations?)
-- ❌ DocumentHelper (what help? too vague)
-- ❌ ProcessingManager (what processing? which entities?)
-- ✅ DocumentService (handles document lifecycle - clear responsibility)
-- ✅ AssessmentService (handles compliance assessment workflow - specific)
+- [x] DataManager (what data? what management operations?)
+- [x] DocumentHelper (what help? too vague)
+- [x] ProcessingManager (what processing? which entities?)
+- [✓] DocumentService (handles document lifecycle - clear responsibility)
+- [✓] AssessmentService (handles compliance assessment workflow - specific)
 
 **For each service, define**:
 - **Responsibility**: What business capability does this service provide?
@@ -779,7 +779,7 @@ Before completing, verify:
 
 **Next Steps**:
 ```
-✅ Session 9b complete! Application architecture modeled.
+[✓] Session 9b complete! Application architecture modeled.
 
 Your architecture bridges the gap between specifications and implementation:
 - Services: [Count] services mapped to journey steps
@@ -812,3 +812,7 @@ Or check progress: /cascade-status
 ---
 
 **Now, read previous outputs and model the application architecture that implements your user journey!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

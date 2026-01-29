@@ -162,20 +162,20 @@ Generate the files following the template structure, ensuring:
 ## Validation Criteria
 
 Before finalizing, verify:
-- ✅ Patterns are framework-specific, not generic
-- ✅ Every major decision includes journey traceability
-- ✅ Code examples compile/run without modification
-- ✅ Directory structure maps to actual journey steps
-- ✅ Cross-language naming is consistently mapped
-- ✅ AI guidelines are specific enough to ensure consistency
-- ✅ "What We DIDN'T Choose" includes at least 3 alternatives
+- [✓] Patterns are framework-specific, not generic
+- [✓] Every major decision includes journey traceability
+- [✓] Code examples compile/run without modification
+- [✓] Directory structure maps to actual journey steps
+- [✓] Cross-language naming is consistently mapped
+- [✓] AI guidelines are specific enough to ensure consistency
+- [✓] "What We DIDN'T Choose" includes at least 3 alternatives
 
 ## What to Tell the User
 
 After generating the files, inform the user:
 
 ```
-✅ Session 3b Complete: Coding Standards & Patterns Defined
+[✓] Session 3b Complete: Coding Standards & Patterns Defined
 
 Generated framework-specific coding standards for your tech stack:
 - Frontend: [Framework] with [patterns chosen]
@@ -287,3 +287,6 @@ class DocumentService:
 ```
 
 Remember: These patterns must be adapted based on the ACTUAL tech stack chosen in Session 3, not copied verbatim.
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

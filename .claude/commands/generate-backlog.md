@@ -196,11 +196,11 @@ Use `/templates/issue-template.md` for EVERY story.
 ## After Generation
 
 ```
-✅ Session 10 complete! Production backlog generated.
+[✓] Session 10 complete! Production backlog generated.
 
 Your Backlog:
-📦 [X] epics covering full user journey
-📋 [Y] user stories (prioritized with RICE)
+  [X] epics covering full user journey
+  [Y] user stories (prioritized with RICE)
    - [A] P0 stories (critical for MVP)
    - [B] P1 stories (important, post-MVP)
    - [C] P2 stories (nice-to-have)
@@ -233,3 +233,7 @@ Or check progress: /cascade-status
 ---
 
 **Now, synthesize all cascade outputs into a complete, prioritized backlog!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

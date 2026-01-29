@@ -29,16 +29,16 @@
 - Step 1-2: Fast, responsive upload/config UX
 
 **Why Next.js**:
-✅ SSR for shareable reports (compliance officers share links with leadership)
-✅ File-based routing (simple, fast development)
-✅ API routes for backend proxy (avoid CORS complexity)
-✅ Vercel deployment (zero-config, fast)
-✅ React ecosystem (rich component libraries for document viewers)
+[✓] SSR for shareable reports (compliance officers share links with leadership)
+[✓] File-based routing (simple, fast development)
+[✓] API routes for backend proxy (avoid CORS complexity)
+[✓] Vercel deployment (zero-config, fast)
+[✓] React ecosystem (rich component libraries for document viewers)
 
 **Alternatives Considered**:
-- ❌ SvelteKit: Smaller ecosystem, team less familiar
-- ❌ Vanilla SPA: No SSR for shareable reports
-- ✅ Next.js: Best fit for requirements
+- [x] SvelteKit: Smaller ecosystem, team less familiar
+- [x] Vanilla SPA: No SSR for shareable reports
+- [✓] Next.js: Best fit for requirements
 
 ### Backend: FastAPI (Python)
 
@@ -48,16 +48,16 @@
 - Step 3: Async processing of long-running assessments
 
 **Why FastAPI**:
-✅ Python ecosystem for document processing (PyPDF2, pdfplumber, python-docx)
-✅ Anthropic Python SDK (official, well-maintained)
-✅ Async by default (handles concurrent assessments efficiently)
-✅ Auto-generated OpenAPI docs (useful for enterprise API customers)
-✅ Type hints = automatic validation (reduce bugs)
+[✓] Python ecosystem for document processing (PyPDF2, pdfplumber, python-docx)
+[✓] Anthropic Python SDK (official, well-maintained)
+[✓] Async by default (handles concurrent assessments efficiently)
+[✓] Auto-generated OpenAPI docs (useful for enterprise API customers)
+[✓] Type hints = automatic validation (reduce bugs)
 
 **Alternatives Considered**:
-- ❌ Node/Express: Weaker document processing libraries
-- ❌ Django: Too heavy, REST framework overhead
-- ✅ FastAPI: Perfect for AI + document processing
+- [x] Node/Express: Weaker document processing libraries
+- [x] Django: Too heavy, REST framework overhead
+- [✓] FastAPI: Perfect for AI + document processing
 
 ### Database: PostgreSQL
 
@@ -68,16 +68,16 @@
 - Business need: User data, billing, teams
 
 **Why PostgreSQL**:
-✅ JSONB for flexible assessment results (structure evolves)
-✅ Full-text search for document content
-✅ ACID compliance (critical for compliance use case)
-✅ Excellent at joins (users, teams, assessments, frameworks)
-✅ Proven at scale (billions of rows)
+[✓] JSONB for flexible assessment results (structure evolves)
+[✓] Full-text search for document content
+[✓] ACID compliance (critical for compliance use case)
+[✓] Excellent at joins (users, teams, assessments, frameworks)
+[✓] Proven at scale (billions of rows)
 
 **Alternatives Considered**:
-- ❌ MongoDB: Weak relational integrity, overkill for our schema
-- ❌ DynamoDB: Serverless not needed, harder local dev
-- ✅ PostgreSQL: Best balance of features and reliability
+- [x] MongoDB: Weak relational integrity, overkill for our schema
+- [x] DynamoDB: Serverless not needed, harder local dev
+- [✓] PostgreSQL: Best balance of features and reliability
 
 ### Cache: Redis
 
@@ -87,10 +87,10 @@
 - Business need: Session storage, background jobs
 
 **Why Redis**:
-✅ Sub-millisecond latency (framework lookups feel instant)
-✅ Built-in pub/sub (real-time progress updates for Step 3)
-✅ Job queue (BullMQ for background processing)
-✅ Rate limiting primitives (protect API)
+[✓] Sub-millisecond latency (framework lookups feel instant)
+[✓] Built-in pub/sub (real-time progress updates for Step 3)
+[✓] Job queue (BullMQ for background processing)
+[✓] Rate limiting primitives (protect API)
 
 ### Storage: AWS S3
 
@@ -100,15 +100,15 @@
 - Business need: Audit retention (7+ years for compliance)
 
 **Why S3**:
-✅ Presigned URLs (users upload directly, no backend bottleneck)
-✅ Unlimited scalability
-✅ 99.999999999% durability (regulatory requirement)
-✅ Lifecycle policies (archive old documents to Glacier)
-✅ Industry standard (customers trust it)
+[✓] Presigned URLs (users upload directly, no backend bottleneck)
+[✓] Unlimited scalability
+[✓] 99.999999999% durability (regulatory requirement)
+[✓] Lifecycle policies (archive old documents to Glacier)
+[✓] Industry standard (customers trust it)
 
 **Alternatives Considered**:
-- ❌ Database storage: Files too large, expensive
-- ✅ S3: Purpose-built for this
+- [x] Database storage: Files too large, expensive
+- [✓] S3: Purpose-built for this
 
 ### AI: Claude Sonnet 4
 
@@ -118,16 +118,16 @@
 - Step 4: Structured output (findings by framework)
 
 **Why Claude**:
-✅ Best reasoning capabilities (compliance requires nuance)
-✅ 200K token context window (fits large documents)
-✅ Strong instruction following (structured output format)
-✅ Citations (can reference specific document sections)
-✅ Reasonable cost ($3/M tokens)
+[✓] Best reasoning capabilities (compliance requires nuance)
+[✓] 200K token context window (fits large documents)
+[✓] Strong instruction following (structured output format)
+[✓] Citations (can reference specific document sections)
+[✓] Reasonable cost ($3/M tokens)
 
 **Alternatives Considered**:
-- ❌ GPT-4: Good reasoning but higher cost, less consistent structured output
-- ❌ GPT-3.5: Too weak for compliance reasoning
-- ✅ Claude Sonnet: Best balance of capability, cost, reliability
+- [x] GPT-4: Good reasoning but higher cost, less consistent structured output
+- [x] GPT-3.5: Too weak for compliance reasoning
+- [✓] Claude Sonnet: Best balance of capability, cost, reliability
 
 ### Auth: Clerk
 
@@ -137,35 +137,35 @@
 - Enterprise need: SSO (for Enterprise tier)
 
 **Why Clerk**:
-✅ Beautiful, pre-built UI (fast implementation)
-✅ Social login + magic links (quick signup)
-✅ Organization/team features (built-in)
-✅ SSO ready (for Enterprise tier)
-✅ Generous free tier (10K MAU)
+[✓] Beautiful, pre-built UI (fast implementation)
+[✓] Social login + magic links (quick signup)
+[✓] Organization/team features (built-in)
+[✓] SSO ready (for Enterprise tier)
+[✓] Generous free tier (10K MAU)
 
 **Alternatives Considered**:
-- ❌ Build our own: Not our core value
-- ❌ Auth0: More complex, less modern UX
-- ✅ Clerk: Best DX for React/Next.js
+- [x] Build our own: Not our core value
+- [x] Auth0: More complex, less modern UX
+- [✓] Clerk: Best DX for React/Next.js
 
 ### Hosting: Vercel + Railway
 
 **Frontend (Vercel)**:
-✅ Next.js native (zero config)
-✅ Global CDN (fast everywhere)
-✅ Automatic HTTPS + previews
-✅ Generous free tier
+[✓] Next.js native (zero config)
+[✓] Global CDN (fast everywhere)
+[✓] Automatic HTTPS + previews
+[✓] Generous free tier
 
 **Backend (Railway)**:
-✅ Git push to deploy
-✅ Built-in PostgreSQL + Redis
-✅ Fair pricing ($20/month includes database)
-✅ Easy scaling (when needed)
+[✓] Git push to deploy
+[✓] Built-in PostgreSQL + Redis
+[✓] Fair pricing ($20/month includes database)
+[✓] Easy scaling (when needed)
 
 **Alternatives Considered**:
-- ❌ AWS: Too complex for MVP, over-engineering
-- ❌ Heroku: Expensive, less modern
-- ✅ Railway: Best balance of simplicity and power
+- [x] AWS: Too complex for MVP, over-engineering
+- [x] Heroku: Expensive, less modern
+- [✓] Railway: Best balance of simplicity and power
 
 ---
 
@@ -204,12 +204,12 @@
 
 For each technology choice, we asked:
 
-1. **Does this serve a user journey step?** ✅ (All choices map to journey)
-2. **Can we use boring/proven technology?** ✅ (No exotic tech)
-3. **Do we have expertise?** ✅ (Team knows Python + React)
-4. **What's operational burden?** ✅ (Managed services, simple deploy)
-5. **Generous free tier?** ✅ (MVP costs <$200/month)
-6. **Scales to 1M users?** ✅ (All tech proven at scale)
+1. **Does this serve a user journey step?** [✓] (All choices map to journey)
+2. **Can we use boring/proven technology?** [✓] (No exotic tech)
+3. **Do we have expertise?** [✓] (Team knows Python + React)
+4. **What's operational burden?** [✓] (Managed services, simple deploy)
+5. **Generous free tier?** [✓] (MVP costs <$200/month)
+6. **Scales to 1M users?** [✓] (All tech proven at scale)
 
 ---
 

@@ -1099,9 +1099,9 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 **Example output:**
 ```
 Core Cascade Progress:
-✅ Session 1: /refine-journey (complete)
-✅ Session 2: /create-product-strategy (complete)
-⏹️ Session 3: /choose-tech-stack (not started)
+[COMPLETE] Session 1: /refine-journey (complete)
+[COMPLETE] Session 2: /create-product-strategy (complete)
+[NOT STARTED] Session 3: /choose-tech-stack (not started)
 
 Next step: Run /choose-tech-stack
 ```

@@ -364,9 +364,9 @@ Before ending the interview, confirm you have:
 ## Interview Tips
 
 ### Push for Specificity
-- ❌ "Businesses need this" → ✅ "Which businesses? What size? What industry?"
-- ❌ "It's inefficient" → ✅ "How long does it take? What's the cost?"
-- ❌ "Users want speed" → ✅ "How fast? Current state vs. desired state?"
+- [x] "Businesses need this" → [✓] "Which businesses? What size? What industry?"
+- [x] "It's inefficient" → [✓] "How long does it take? What's the cost?"
+- [x] "Users want speed" → [✓] "How fast? Current state vs. desired state?"
 
 ### Quantify Everything
 - Time: "2-4 hours → 3 minutes" (not "much faster")

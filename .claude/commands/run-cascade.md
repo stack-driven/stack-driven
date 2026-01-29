@@ -150,16 +150,16 @@ For each session you're about to run:
 1. **Announce the session:**
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀 Executing Session X: [Session Name]
+ Executing Session X: [Session Name]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📥 Reading cascade inputs:
+Inputs: Reading cascade inputs:
 - [List files this session reads]
 
-📤 Will create:
+Outputs: Will create:
 - [List files this session creates]
 
-⏱️ Estimated time: [X] minutes
+Time: Estimated time: [X] minutes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -169,13 +169,13 @@ For each session you're about to run:
 
 3. **After session completes, show progress:**
 ```
-✅ Session X Complete!
+[✓] Session X Complete!
 
 Created:
 - [List new files]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 Overall Progress: X of 14 core sessions complete
+ Overall Progress: X of 14 core sessions complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -202,14 +202,14 @@ Continue to next session? (yes/no/status)
 
 **If user says "stop" or "pause":**
 ```
-⏸️ Cascade paused after Session X
+[PAUSED] Cascade paused after Session X
 
 You can resume anytime by running /run-cascade again.
 It will pick up right where you left off.
 
 Current status:
-✅ Sessions 1-X complete
-❌ Sessions [X+1]-14 remaining
+[✓] Sessions 1-X complete
+[x] Sessions [X+1]-14 remaining
 
 To see full status: /cascade-status
 To continue: /run-cascade
@@ -217,7 +217,7 @@ To continue: /run-cascade
 
 **If session encounters an error:**
 ```
-⚠️ Session X encountered an issue
+(Warning) Session X encountered an issue
 
 Error: [Describe what happened]
 
@@ -229,7 +229,7 @@ Options:
 
 **If user has skipped sessions (missing files):**
 ```
-⚠️ Warning: Cascade order broken
+(Warning) Warning: Cascade order broken
 
 Expected files from previous sessions are missing:
 - [List missing files]
@@ -300,13 +300,13 @@ Here's what a typical run looks like:
 Checking cascade progress...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 Current Progress
+ Current Progress
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Session 1: User Journey (00-user-journey.md)
-✅ Session 2: Product Strategy (01-product-strategy.md, 01-essentials)
-✅ Session 3: Tech Stack (02-tech-stack.md)
-❌ Session 4: Tactical Foundation (not started)
-❌ Sessions 7-14: Pending
+[✓] Session 1: User Journey (00-user-journey.md)
+[✓] Session 2: Product Strategy (01-product-strategy.md, 01-essentials)
+[✓] Session 3: Tech Stack (02-tech-stack.md)
+[x] Session 4: Tactical Foundation (not started)
+[x] Sessions 7-14: Pending
 
 Progress: ███░░░░░░░░░░░ 21% (3/14 sessions)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -321,22 +321,22 @@ User: yes
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀 Executing Session 4: Generate Strategy
+ Executing Session 4: Generate Strategy
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📥 Reading:
+Inputs: Reading:
 - product-guidelines/00-user-journey.md
 - product-guidelines/01-product-strategy.md
 - product-guidelines/01-product-strategy-essentials.md
 - product-guidelines/02-tech-stack.md
 
-📤 Will create:
+Outputs: Will create:
 - product-guidelines/03a-mission.md
 - product-guidelines/03b-metrics.md
 - product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
 
-⏱️ Estimated time: 15-20 minutes
+Time: Estimated time: 15-20 minutes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [Execute /generate-strategy command]
@@ -344,7 +344,7 @@ User: yes
 [... Session runs interactively ...]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Session 4 Complete!
+[✓] Session 4 Complete!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Created:
@@ -353,15 +353,15 @@ Created:
 - product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
 
-📊 Progress: ████░░░░░░░░░░ 29% (4/14 sessions)
+ Progress: ████░░░░░░░░░░ 29% (4/14 sessions)
 
-🎉 Major Milestone: Tactical Foundation Complete!
+ Major Milestone: Tactical Foundation Complete!
 
 You now have:
-✅ User journey validated
-✅ Market strategy defined
-✅ Tech stack chosen
-✅ Mission, metrics, monetization, and architecture established
+[✓] User journey validated
+[✓] Market strategy defined
+[✓] Tech stack chosen
+[✓] Mission, metrics, monetization, and architecture established
 
 Next: Session 5 - Create Brand Strategy
 Continue? (yes/no)
@@ -406,3 +406,7 @@ Keep checking filesystem between sessions to track progress
 Always give user control - they can stop anytime
 
 Now, check the current progress and begin automatic cascade execution!
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

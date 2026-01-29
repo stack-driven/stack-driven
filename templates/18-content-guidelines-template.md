@@ -22,14 +22,14 @@ This comprehensive content style guide ensures consistency across all written co
 ### Voice in Practice
 
 **We sound like**:
-- ✅ [Example 1]
-- ✅ [Example 2]
-- ✅ [Example 3]
+- [✓] [Example 1]
+- [✓] [Example 2]
+- [✓] [Example 3]
 
 **We don't sound like**:
-- ❌ [Example 1]
-- ❌ [Example 2]
-- ❌ [Example 3]
+- [x] [Example 1]
+- [x] [Example 2]
+- [x] [Example 3]
 
 ### Tone Variations
 
@@ -59,16 +59,16 @@ This comprehensive content style guide ensures consistency across all written co
 ### Capitalization
 
 **Headlines and titles**: [Title Case / Sentence case]
-- ✅ Good: [Example]
-- ❌ Bad: [Example]
+- [✓] Good: [Example]
+- [x] Bad: [Example]
 
 **Buttons**: [Title Case / Sentence case / lowercase]
-- ✅ Good: [Example]
-- ❌ Bad: [Example]
+- [✓] Good: [Example]
+- [x] Bad: [Example]
 
 **Product features**: [Title Case / Sentence case]
-- ✅ Good: [Example]
-- ❌ Bad: [Example]
+- [✓] Good: [Example]
+- [x] Bad: [Example]
 
 **Company name**: [Rules for your brand name]
 
@@ -77,7 +77,7 @@ This comprehensive content style guide ensures consistency across all written co
 ### Punctuation
 
 **Serial comma**: [Yes / No]
-- ✅ "Red, white, and blue" / "Red, white and blue"
+- [✓] "Red, white, and blue" / "Red, white and blue"
 
 **Contractions**: [Use / Don't use / Use sparingly]
 - [Examples of when appropriate]
@@ -107,8 +107,8 @@ This comprehensive content style guide ensures consistency across all written co
 - Measurements: [5MB or 5 MB]
 
 **Examples**:
-- ✅ [Correct example]
-- ❌ [Incorrect example]
+- [✓] [Correct example]
+- [x] [Incorrect example]
 
 ### Dates and Times
 
@@ -158,16 +158,16 @@ This comprehensive content style guide ensures consistency across all written co
 ### Buttons
 
 **Primary action buttons**: [Verb-led / Noun-led]
-- ✅ Good: [Example - "Save changes" or "Save"]
-- ❌ Bad: [Example - "Submit" or "Click here"]
+- [✓] Good: [Example - "Save changes" or "Save"]
+- [x] Bad: [Example - "Submit" or "Click here"]
 
 **Secondary action buttons**: [Pattern]
-- ✅ Good: [Example]
-- ❌ Bad: [Example]
+- [✓] Good: [Example]
+- [x] Bad: [Example]
 
 **Destructive actions**: [Pattern]
-- ✅ Good: [Example - "Delete permanently"]
-- ❌ Bad: [Example - "OK"]
+- [✓] Good: [Example - "Delete permanently"]
+- [x] Bad: [Example - "OK"]
 
 **Common buttons**:
 - Save: [Your preferred text]
@@ -190,8 +190,8 @@ This comprehensive content style guide ensures consistency across all written co
 - Example: [Phone number (optional)]
 
 **Placeholder text**: [Instructions / Example / None]
-- ✅ Good: [Example - "Enter your email address"]
-- ❌ Bad: [Example - "Email"]
+- [✓] Good: [Example - "Enter your email address"]
+- [x] Bad: [Example - "Email"]
 
 **Helper text**: [Placement and style]
 - Example: [Below field, gray text]
@@ -202,10 +202,10 @@ This comprehensive content style guide ensures consistency across all written co
 - Template: "[What went wrong] [What to do about it]"
 
 **Examples**:
-- ✅ "Email address is invalid. Please check for typos."
-- ✅ "Password must be at least 8 characters. Please try again."
-- ❌ "Error 400: Bad Request"
-- ❌ "Invalid input"
+- [✓] "Email address is invalid. Please check for typos."
+- [✓] "Password must be at least 8 characters. Please try again."
+- [x] "Error 400: Bad Request"
+- [x] "Invalid input"
 
 **Common errors**:
 - **Email invalid**: [Your message]
@@ -220,11 +220,11 @@ This comprehensive content style guide ensures consistency across all written co
 **Structure**: [What happened + What's next (if applicable)]
 
 **Examples**:
-- ✅ "Changes saved successfully."
-- ✅ "Welcome to [Product]! Let's get started."
-- ✅ "Email sent to [email address]."
-- ❌ "Success!"
-- ❌ "Done"
+- [✓] "Changes saved successfully."
+- [✓] "Welcome to [Product]! Let's get started."
+- [✓] "Email sent to [email address]."
+- [x] "Success!"
+- [x] "Done"
 
 **Common success messages**:
 - **Account created**: [Your message]
@@ -238,10 +238,10 @@ This comprehensive content style guide ensures consistency across all written co
 **Structure**: [Explanation + Action]
 
 **Examples**:
-- ✅ "No projects yet. Create your first project to get started."
-- ✅ "Your inbox is empty. Nice work!"
-- ❌ "No results found."
-- ❌ "Empty"
+- [✓] "No projects yet. Create your first project to get started."
+- [✓] "Your inbox is empty. Nice work!"
+- [x] "No results found."
+- [x] "Empty"
 
 **Common empty states**:
 - **No search results**: [Your message]
@@ -280,8 +280,8 @@ This comprehensive content style guide ensures consistency across all written co
 **Subject lines**:
 - [Character limit: e.g., "< 50 characters"]
 - [Style: e.g., "Clear, specific, actionable"]
-- ✅ Good: [Example]
-- ❌ Bad: [Example]
+- [✓] Good: [Example]
+- [x] Bad: [Example]
 
 **Email greeting**:
 - Default: [e.g., "Hi [Name],"]
@@ -314,8 +314,8 @@ This comprehensive content style guide ensures consistency across all written co
 ### In-App Notifications
 
 **Toast notifications**: [Length and style]
-- ✅ Good: [Example - "Settings saved"]
-- ❌ Bad: [Example - "Your settings have been successfully saved to the database"]
+- [✓] Good: [Example - "Settings saved"]
+- [x] Bad: [Example - "Your settings have been successfully saved to the database"]
 
 **Push notifications**: [Length and style]
 - Example: [Brief, actionable, < 120 characters]
@@ -327,16 +327,16 @@ This comprehensive content style guide ensures consistency across all written co
 ### Alt Text for Images
 
 **Structure**: [Describe what's happening + context if needed]
-- ✅ Good: "Chart showing revenue growth from $10K to $50K over 6 months"
-- ❌ Bad: "Chart"
+- [✓] Good: "Chart showing revenue growth from $10K to $50K over 6 months"
+- [x] Bad: "Chart"
 
 **Decorative images**: [Use alt="" or describe purpose]
 
 ### Link Text
 
 **Rule**: [Descriptive / Not "click here"]
-- ✅ Good: "Read our privacy policy"
-- ❌ Bad: "Click here to read our privacy policy"
+- [✓] Good: "Read our privacy policy"
+- [x] Bad: "Click here to read our privacy policy"
 
 ### ARIA Labels
 
@@ -356,16 +356,16 @@ This comprehensive content style guide ensures consistency across all written co
 ### Translation-Friendly Writing
 
 **Do**:
-- ✅ Use complete sentences
-- ✅ Avoid slang and idioms
-- ✅ Be explicit (not implicit)
-- ✅ Use consistent terminology
+- [✓] Use complete sentences
+- [✓] Avoid slang and idioms
+- [✓] Be explicit (not implicit)
+- [✓] Use consistent terminology
 
 **Don't**:
-- ❌ Use culturally-specific references
-- ❌ Concatenate strings programmatically
-- ❌ Use text in images (unless translatable)
-- ❌ Assume left-to-right reading
+- [x] Use culturally-specific references
+- [x] Concatenate strings programmatically
+- [x] Use text in images (unless translatable)
+- [x] Assume left-to-right reading
 
 ### Cultural Considerations
 

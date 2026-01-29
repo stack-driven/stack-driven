@@ -175,14 +175,14 @@ This document defines the brand messaging framework that guides all customer com
 **How we sound**: [3-5 adjectives describing your voice]
 
 **What we do**:
-- ✅ [We do this]
-- ✅ [We do this]
-- ✅ [We do this]
+- [✓] [We do this]
+- [✓] [We do this]
+- [✓] [We do this]
 
 **What we don't do**:
-- ❌ [We don't do this]
-- ❌ [We don't do this]
-- ❌ [We don't do this]
+- [x] [We don't do this]
+- [x] [We don't do this]
+- [x] [We don't do this]
 
 ### Tone Variations
 *How voice adapts to context*
@@ -258,7 +258,7 @@ This document defines the brand messaging framework that guides all customer com
 
 ## Messaging Do's and Don'ts
 
-### Do's ✅
+### Do's [✓]
 
 - **[Do 1]**: [Why this works]
 - **[Do 2]**: [Why this works]
@@ -266,7 +266,7 @@ This document defines the brand messaging framework that guides all customer com
 - **[Do 4]**: [Why this works]
 - **[Do 5]**: [Why this works]
 
-### Don'ts ❌
+### Don'ts [x]
 
 - **[Don't 1]**: [Why to avoid]
 - **[Don't 2]**: [Why to avoid]

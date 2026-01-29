@@ -18,7 +18,7 @@
 3. [Attribute 3]: [Why, based on user context]
 
 **NOT**:
-- ❌ [Anti-attribute]: [Why this doesn't fit journey]
+- [x] [Anti-attribute]: [Why this doesn't fit journey]
 
 ---
 
@@ -94,8 +94,8 @@
 | [Step 3: Review] | [Single column, card grid] | [md consistent rhythm] | [Scannable results display] |
 
 **Validation Criteria**:
-- ✅ Excellent: Spacing scale traces to specific journey steps; layout patterns directly support user tasks; breakpoints based on actual user device data
-- ⚠️ Needs Work: Generic spacing values without journey justification; layout patterns that could apply to any product; arbitrary breakpoints
+- [✓] Excellent: Spacing scale traces to specific journey steps; layout patterns directly support user tasks; breakpoints based on actual user device data
+- (Warning) Needs Work: Generic spacing values without journey justification; layout patterns that could apply to any product; arbitrary breakpoints
 
 ---
 
@@ -127,8 +127,8 @@
 **Accessibility**: All icons include aria-label or accompanying visible text
 
 **Validation Criteria**:
-- ✅ Excellent: Icon style aligns with brand personality; sizes mapped to specific journey uses; clear guidelines for icon+text vs icon-only
-- ⚠️ Needs Work: Generic icon choices; inconsistent sizing; missing accessibility guidance
+- [✓] Excellent: Icon style aligns with brand personality; sizes mapped to specific journey uses; clear guidelines for icon+text vs icon-only
+- (Warning) Needs Work: Generic icon choices; inconsistent sizing; missing accessibility guidance
 
 ---
 
@@ -146,9 +146,9 @@
 - All color combinations validated: [Yes - using WebAIM Contrast Checker / Stark]
 
 **Examples** (from color system):
-- Primary text on background: [#1a1a1a on #ffffff = 16.2:1] ✅
-- Link color on background: [#0066cc on #ffffff = 8.4:1] ✅
-- Success indicator: [#059669 on #ffffff = 4.6:1] ✅
+- Primary text on background: [#1a1a1a on #ffffff = 16.2:1] [✓]
+- Link color on background: [#0066cc on #ffffff = 8.4:1] [✓]
+- Success indicator: [#059669 on #ffffff = 4.6:1] [✓]
 
 ### Focus Indicators
 
@@ -185,8 +185,8 @@
 **Journey Context**: [Keyboard shortcuts map to high-frequency journey actions for power users]
 
 **Validation Criteria**:
-- ✅ Excellent: All color combinations tested and documented; focus indicators visible on all backgrounds; ARIA patterns mapped to journey components; keyboard shortcuts for critical journey steps
-- ⚠️ Needs Work: Untested contrast ratios; missing focus styles; generic ARIA without journey context; no keyboard shortcuts for frequent actions
+- [✓] Excellent: All color combinations tested and documented; focus indicators visible on all backgrounds; ARIA patterns mapped to journey components; keyboard shortcuts for critical journey steps
+- (Warning) Needs Work: Untested contrast ratios; missing focus styles; generic ARIA without journey context; no keyboard shortcuts for frequent actions
 
 ---
 
@@ -239,8 +239,8 @@
 **Journey Context**: [Micro-interactions provide confidence at each journey decision point]
 
 **Validation Criteria**:
-- ✅ Excellent: Motion durations appropriate for interaction type; loading states match journey wait times; micro-interactions mapped to journey actions; clear philosophy guiding motion choices
-- ⚠️ Needs Work: Arbitrary durations; generic loading spinners; missing success states for journey milestones
+- [✓] Excellent: Motion durations appropriate for interaction type; loading states match journey wait times; micro-interactions mapped to journey actions; clear philosophy guiding motion choices
+- (Warning) Needs Work: Arbitrary durations; generic loading spinners; missing success states for journey milestones
 
 ---
 
@@ -261,8 +261,8 @@
 **Rationale**: [How depth hierarchy guides user - e.g., "Progressive elevation draws attention to interactive elements; Level 3 shadows for modal workflows ensure focus on critical journey decisions"]
 
 **Validation Criteria**:
-- ✅ Excellent: Shadow levels tied to interaction hierarchy; elevation supports journey flow; clear philosophy about when NOT to use shadows
-- ⚠️ Needs Work: Arbitrary shadow values; overuse of elevation; missing rationale for depth hierarchy
+- [✓] Excellent: Shadow levels tied to interaction hierarchy; elevation supports journey flow; clear philosophy about when NOT to use shadows
+- (Warning) Needs Work: Arbitrary shadow values; overuse of elevation; missing rationale for depth hierarchy
 
 ---
 

@@ -28,13 +28,13 @@
 - Step Y: [Specific requirement from journey]
 
 **Why [Framework]**:
-✅ [Reason 1 tied to journey requirement]
-✅ [Reason 2 tied to journey requirement]
-✅ [Reason 3 tied to journey requirement]
+[✓] [Reason 1 tied to journey requirement]
+[✓] [Reason 2 tied to journey requirement]
+[✓] [Reason 3 tied to journey requirement]
 
 **Alternatives Considered**:
-- ❌ [Alternative]: [Why not chosen]
-- ✅ [Chosen]: [Why this is best fit]
+- [x] [Alternative]: [Why not chosen]
+- [✓] [Chosen]: [Why this is best fit]
 
 ### Backend: [Framework]
 
@@ -43,12 +43,12 @@
 - Step Y: [Specific requirement from journey]
 
 **Why [Framework]**:
-✅ [Reason 1 tied to journey requirement]
-✅ [Reason 2 tied to journey requirement]
+[✓] [Reason 1 tied to journey requirement]
+[✓] [Reason 2 tied to journey requirement]
 
 **Alternatives Considered**:
-- ❌ [Alternative]: [Why not chosen]
-- ✅ [Chosen]: [Why this is best fit]
+- [x] [Alternative]: [Why not chosen]
+- [✓] [Chosen]: [Why this is best fit]
 
 ### Database: [Database]
 
@@ -57,8 +57,8 @@
 - [Scale requirements]
 
 **Why [Database]**:
-✅ [Reason 1 tied to journey requirement]
-✅ [Reason 2 tied to journey requirement]
+[✓] [Reason 1 tied to journey requirement]
+[✓] [Reason 2 tied to journey requirement]
 
 ---
 

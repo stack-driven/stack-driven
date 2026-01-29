@@ -334,18 +334,18 @@ Maintainers will organize and version changes during release.
 ## Support for Old Versions
 
 **v2.x (current):**
-- ✅ Actively maintained
-- ✅ Bug fixes and improvements
-- ✅ New features
+- (✓) Actively maintained
+- (✓) Bug fixes and improvements
+- (✓) New features
 
 **v1.x (legacy):**
-- ⚠️ Security fixes only
-- ⚠️ No new features
-- ⚠️ Migrate to v2.0 recommended
+- (Warning) Security fixes only
+- (Warning) No new features
+- (Warning) Migrate to v2.0 recommended
 
 **v0.x (deprecated):**
-- ❌ No longer supported
-- ❌ Migrate to v2.0 required
+- (x) No longer supported
+- (x) Migrate to v2.0 required
 
 ---
 

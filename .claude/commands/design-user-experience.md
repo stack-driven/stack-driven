@@ -180,3 +180,7 @@ Ready to create your design system with /create-design?
 ---
 
 **Remember**: This is OPTIONAL. Many teams discover UX through building. Use this if you want structured UX planning before implementation.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

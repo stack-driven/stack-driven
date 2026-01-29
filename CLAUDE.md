@@ -126,7 +126,7 @@ Each command follows this pattern:
 ### Meta Commands
 
 **`/cascade-status`** - Check progress and get next step
-- Lists all sessions with ✅ (complete) or ❌ (not started)
+- Lists all sessions with [COMPLETE] or [NOT STARTED]
 - Shows which files exist in `product-guidelines/`
 - Recommends exactly which command to run next
 - Explains inputs, outputs, and estimated time

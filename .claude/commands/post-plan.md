@@ -290,7 +290,7 @@ glab issue update $1 --label "plan-ready"
 Output to user:
 
 ```markdown
-✅ Implementation plan posted to issue #$1
+[✓] Implementation plan posted to issue #$1
 
 **Plan includes:**
 - Journey traceability to {step}
@@ -358,3 +358,7 @@ This is a **semi-automated workflow**:
 **Contrast with `/post-plan-and-implement`:**
 - That command triggers immediate implementation (full automation)
 - This command requires human approval (semi-automation)
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

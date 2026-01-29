@@ -192,14 +192,14 @@ Before writing files:
 
 Show summary:
 ```
-✅ Session 2a complete! Constraints documented.
+[✓] Session 2a complete! Constraints documented.
 
 Your Constraints:
-🛠️  Technical: [Key technical constraints]
-👥 Team: [Team size, expertise]
-💰 Budget: [Monthly infrastructure limit]
-⏰ Timeline: [Hard deadline if any]
-📋 Compliance: [Regulatory requirements]
+  Technical: [Key technical constraints]
+  Team: [Team size, expertise]
+  Budget: [Monthly infrastructure limit]
+  Timeline: [Hard deadline if any]
+  Compliance: [Regulatory requirements]
 
 Key Trade-offs:
 - [Journey requirement] → [Constraint] → [Compromise]
@@ -232,3 +232,6 @@ Or check progress: /cascade-status
 - Essentials Template: `/templates/02a-constraints-essentials-template.md`
 - Journey file: `product-guidelines/00-user-journey.md`
 - Strategy file: `product-guidelines/01-product-strategy.md`
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

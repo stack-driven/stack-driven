@@ -83,12 +83,12 @@ Example: "Our visual identity balances professional credibility with approachabl
 ## Recommended Logo: [Concept X]
 
 **Why this concept**:
-- ✅ Best expresses [brand personality] through [specific design elements]
-- ✅ Most appealing to [journey audience] because [reasoning]
-- ✅ Versatile across all touchpoints (digital, print, small, large)
-- ✅ Distinctive from competitors in [industry/category]
-- ✅ Timeless design that won't feel dated quickly
-- ✅ Scalable from favicon (16px) to billboard (massive)
+- [✓] Best expresses [brand personality] through [specific design elements]
+- [✓] Most appealing to [journey audience] because [reasoning]
+- [✓] Versatile across all touchpoints (digital, print, small, large)
+- [✓] Distinctive from competitors in [industry/category]
+- [✓] Timeless design that won't feel dated quickly
+- [✓] Scalable from favicon (16px) to billboard (massive)
 
 **Journey-Brand Alignment**:
 - Communicates [journey value] visually through [design elements]
@@ -137,7 +137,7 @@ Example: "Our visual identity balances professional credibility with approachabl
 - [Description - standalone icon without text]
 - Use: Favicon, app icon, social media profile picture (when name is in username)
 - Works at: [Minimum size where icon alone is recognizable]
-- ⚠️ Only use when brand has strong recognition OR when name appears nearby
+- (Warning) Only use when brand has strong recognition OR when name appears nearby
 
 **Simplified Version**:
 - [Description - reduced detail version for very small applications]
@@ -211,8 +211,8 @@ Example: "Our visual identity balances professional credibility with approachabl
 - [List approved combinations with use cases]
 
 **Avoid**:
-- ❌ [Color] + [Color]: [Reason - e.g., poor contrast, clashing]
-- ❌ Using more than 3 colors in single composition
+- [x] [Color] + [Color]: [Reason - e.g., poor contrast, clashing]
+- [x] Using more than 3 colors in single composition
 
 ---
 
@@ -301,12 +301,12 @@ Example: "Our visual identity balances professional credibility with approachabl
 - **Color treatment**: [Vibrant, desaturated, color graded to match brand palette]
 
 **Do**:
-- ✅ [Specific guideline - e.g., "Feature diverse, real people in authentic work environments"]
-- ✅ [Specific guideline]
+- [✓] [Specific guideline - e.g., "Feature diverse, real people in authentic work environments"]
+- [✓] [Specific guideline]
 
 **Don't**:
-- ❌ [Specific guideline - e.g., "Avoid cheesy stock photos with forced smiles"]
-- ❌ [Specific guideline]
+- [x] [Specific guideline - e.g., "Avoid cheesy stock photos with forced smiles"]
+- [x] [Specific guideline]
 
 ### Illustration Style (if applicable)
 
@@ -336,19 +336,19 @@ Example: "Our visual identity balances professional credibility with approachabl
 ### Approved Backgrounds
 
 **Logo works well on**:
-- ✅ White or light backgrounds ([Specific color codes])
-- ✅ [Primary brand color] when using reversed logo
-- ✅ Photography with sufficient contrast ([Specify requirements])
-- ✅ Subtle patterns that don't compete with logo
+- [✓] White or light backgrounds ([Specific color codes])
+- [✓] [Primary brand color] when using reversed logo
+- [✓] Photography with sufficient contrast ([Specify requirements])
+- [✓] Subtle patterns that don't compete with logo
 
 **Avoid**:
-- ❌ Busy backgrounds where logo gets lost
-- ❌ Colors that reduce contrast below [ratio]
-- ❌ Gradients that interfere with logo readability
+- [x] Busy backgrounds where logo gets lost
+- [x] Colors that reduce contrast below [ratio]
+- [x] Gradients that interfere with logo readability
 
 ### Incorrect Logo Usage
 
-**❌ DON'T**:
+**[x] DON'T**:
 1. **Stretch or distort** - Always maintain aspect ratio
 2. **Change colors** - Only use approved color versions
 3. **Add effects** - No shadows, glows, bevels, or gradients (unless specified)

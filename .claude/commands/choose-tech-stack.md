@@ -291,7 +291,7 @@ Once you've created the file:
 
 1. **Show a summary**:
    ```
-   ✅ Tech stack chosen!
+   [✓] Tech stack chosen!
 
    Your stack optimized for [key journey requirement]:
    - Frontend: [Choice] (for [journey reason])
@@ -309,7 +309,7 @@ Once you've created the file:
 
    **If AI Integration is Required:**
    ```
-   ✅ Session 3 complete!
+   [✓] Session 3 complete!
 
    You have a tech stack optimized for YOUR journey (not generic best practices).
 
@@ -326,7 +326,7 @@ Once you've created the file:
 
    **If AI Integration is NOT Required:**
    ```
-   ✅ Session 3 complete!
+   [✓] Session 3 complete!
 
    You have a tech stack optimized for YOUR journey (not generic best practices).
 
@@ -357,3 +357,7 @@ Once you've created the file:
 **Now, read the user journey and product strategy, then recommend an optimal tech stack!**
 
 Read `product-guidelines/00-user-journey.md` and `product-guidelines/01-product-strategy.md`, analyze requirements, and generate `product-guidelines/02-tech-stack.md`.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

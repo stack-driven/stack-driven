@@ -8,12 +8,12 @@
 
 <!-- Check all that apply -->
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 📝 Documentation update
-- [ ] 🎨 Example addition
-- [ ] 🔧 Refactoring (no functional changes)
-- [ ] ⚠️ Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Documentation update
+- [ ] Example addition
+- [ ] Refactoring (no functional changes)
+- [ ] (Warning) Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
 ## Changes Made
 
@@ -159,4 +159,4 @@ Relates to #
 
 ---
 
-**Thank you for contributing to Stack-Driven!** 🚀
+**Thank you for contributing to Stack-Driven!** 

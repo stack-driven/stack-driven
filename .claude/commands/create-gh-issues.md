@@ -23,7 +23,7 @@ Read: product-guidelines/10-backlog/issues/*.md (all issue files)
 
 **Before creating anything**, show the user:
 ```
-📋 Ready to create GitHub issues
+Ready to create GitHub issues
 
 I found [X] issues in product-guidelines/10-backlog/issues/:
 
@@ -87,7 +87,7 @@ After creating issues, if dependencies are clear:
 
 Show URLs of created issues:
 ```
-✅ GitHub issues created!
+[✓] GitHub issues created!
 
 Epics:
 - EPIC-01: https://github.com/[org]/[repo]/issues/1
@@ -106,7 +106,7 @@ https://github.com/[org]/[repo]/issues
 ## After Generation
 
 ```
-✅ Session 8 complete! GitHub issues created.
+[✓] Session 8 complete! GitHub issues created.
 
 Your issues are now on GitHub, ready for development!
 
@@ -116,11 +116,11 @@ Next, you can optionally generate a working development environment with:
 Or start building immediately with your prioritized backlog!
 
 What's next?
-1. 🚀 Run /scaffold-project to generate working dev environment (Session 9)
-2. 💻 Or start building! Your backlog is prioritized (P0 stories first)
-3. 📊 Track metrics: Implement metrics from product-guidelines/03b-metrics.md
-4. 🔄 Iterate: Run /refine-journey if your understanding evolves
-5. 💰 Validate pricing: Test monetization from product-guidelines/03c-monetization.md
+1.  Run /scaffold-project to generate working dev environment (Session 9)
+2.  Or start building! Your backlog is prioritized (P0 stories first)
+3.  Track metrics: Implement metrics from product-guidelines/03b-metrics.md
+4.  Iterate: Run /refine-journey if your understanding evolves
+5.  Validate pricing: Test monetization from product-guidelines/03c-monetization.md
 
 Check cascade anytime: /cascade-status
 ```
@@ -136,7 +136,7 @@ Check cascade anytime: /cascade-status
 
 If `gh` CLI not available or fails:
 ```
-❌ GitHub CLI not available
+[x] GitHub CLI not available
 
 Option 1: Install gh CLI
 brew install gh (macOS)
@@ -153,3 +153,7 @@ I can convert backlog to CSV for bulk import via GitHub UI.
 ---
 
 **Now, read the backlog and push to GitHub (after user confirmation)!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

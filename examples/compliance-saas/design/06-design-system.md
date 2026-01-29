@@ -26,9 +26,9 @@
 5. **Accessible**: WCAG AA minimum (many enterprise customers require it)
 
 **NOT**:
-- ❌ Playful (wrong for compliance context)
-- ❌ Minimalist to extreme (need information density)
-- ❌ Cutting-edge/experimental (need stability)
+- [x] Playful (wrong for compliance context)
+- [x] Minimalist to extreme (need information density)
+- [x] Cutting-edge/experimental (need stability)
 
 ---
 
@@ -136,7 +136,7 @@ text-3xl: 30px (hero headings - rare)
 **Design**:
 ```
 ┌─────────────────────────────────────┐
-│  ⬆️                                 │
+│  ^                                 │
 │  Drag PDF or click to upload       │
 │  Max 50 MB • PDF, DOCX             │
 └─────────────────────────────────────┘
@@ -202,7 +202,7 @@ Estimated time: 25 seconds
 │ SOC 2 Type II Assessment                │
 │ ○ 3 Critical  ○ 5 Warning  ○ 12 Pass    │
 ├─────────────────────────────────────────┤
-│ ⚠️ CRITICAL: Data encryption at rest   │
+│ (Warning) CRITICAL: Data encryption at rest   │
 │ Section 4.2.1, Page 18                  │
 │                                         │
 │ "...data stored in plain text..."      │
@@ -212,7 +212,7 @@ Estimated time: 25 seconds
 │                                         │
 │ [Mark as Resolved] [Add Note]           │
 ├─────────────────────────────────────────┤
-│ ⚠️ WARNING: Access log retention...    │
+│ (Warning) WARNING: Access log retention...    │
 │ ...                                     │
 └─────────────────────────────────────────┘
 ```
@@ -294,20 +294,20 @@ border-red-500 focus:ring-red-500 focus:border-red-500
 
 **First Time Use**:
 ```
-📄 No assessments yet
+No assessments yet
 Upload your first document to get started
 [Upload Document]
 ```
 
 **No Results**:
 ```
-🔍 No findings in this category
+No findings in this category
 All checks passed!
 ```
 
 **Error State**:
 ```
-⚠️ Assessment failed
+(Warning) Assessment failed
 We couldn't process this document.
 [Try Again] [Contact Support]
 ```

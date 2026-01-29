@@ -327,3 +327,7 @@ CLAUDE.md is Claude's guide to understanding your codebase. Keep it:
 - Concise (no unnecessary detail)
 
 **Goal:** Future Claude sessions have correct context to provide better assistance.
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

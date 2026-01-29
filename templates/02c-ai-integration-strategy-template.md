@@ -37,9 +37,9 @@
 [Explain why this pattern fits the journey requirements. Reference specific journey steps.]
 
 **Alternatives Considered**:
-- ❌ [Pattern not chosen]: [Why it doesn't fit]
-- ❌ [Pattern not chosen]: [Why it doesn't fit]
-- ✅ [Chosen pattern]: [Why this is the best fit]
+- [x] [Pattern not chosen]: [Why it doesn't fit]
+- [x] [Pattern not chosen]: [Why it doesn't fit]
+- [✓] [Chosen pattern]: [Why this is the best fit]
 
 **Architecture Implications**:
 [What this means for system design - vector DB needed? Streaming? Background jobs?]
@@ -65,7 +65,7 @@
 | **Total (before caching)** | | | **$[Amount]** |
 | **Total (with 65% cache hit)** | | | **$[Amount]** |
 
-**Budget Validation**: [✅ Fits within $X budget / ⚠️ Exceeds by Y% - mitigation plan]
+**Budget Validation**: [[✓] Fits within $X budget / (Warning) Exceeds by Y% - mitigation plan]
 
 ---
 
@@ -310,12 +310,12 @@
 - Configuration: [Zero retention, data residency]
 
 **Requirements Met**:
-- ✅ [Agreement signed]
-- ✅ [Zero retention configured]
-- ✅ [Encryption in transit/rest]
-- ✅ [Access controls]
-- ✅ [Audit logging]
-- ✅ [Data residency if required]
+- [✓] [Agreement signed]
+- [✓] [Zero retention configured]
+- [✓] [Encryption in transit/rest]
+- [✓] [Access controls]
+- [✓] [Audit logging]
+- [✓] [Data residency if required]
 
 **Timeline**: [Days for API setup vs months for self-hosting]
 **Cost**: [Same as standard API vs $200K+/year self-hosting]

@@ -245,7 +245,7 @@ CREATE INDEX idx_usage_team_month ON usage_events(team_id, date_trunc('month', c
 - Result storage: <1 second (PostgreSQL JSONB insert)
 - Frontend render: <500ms (optimized React components)
 
-**Current P95**: 78 seconds (beating target ✅)
+**Current P95**: 78 seconds (beating target [✓])
 
 ### Caching Strategy
 

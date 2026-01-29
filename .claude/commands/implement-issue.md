@@ -61,7 +61,7 @@ The `/plan-issue` command already analyzed and included ALL relevant product-gui
 
 STOP immediately and output:
 ```
-❌ No approved plan found for issue #$1
+[x] No approved plan found for issue #$1
 
 This issue needs a plan before implementation.
 
@@ -100,14 +100,14 @@ For each step in the plan:
 
 **Surgical Precision Rules:**
 
-- ✅ Only touch files listed in plan
-- ✅ Make minimal changes
-- ✅ Follow plan's technical approach exactly
-- ✅ Use plan's context (don't seek additional context)
-- ❌ Don't refactor outside scope
-- ❌ Don't add "improvements" not in plan
-- ❌ Don't deviate from steps
-- ❌ Don't read product-guidelines (context is in plan)
+- [✓] Only touch files listed in plan
+- [✓] Make minimal changes
+- [✓] Follow plan's technical approach exactly
+- [✓] Use plan's context (don't seek additional context)
+- [x] Don't refactor outside scope
+- [x] Don't add "improvements" not in plan
+- [x] Don't deviate from steps
+- [x] Don't read product-guidelines (context is in plan)
 
 **If ANY step fails:**
 - STOP immediately
@@ -142,9 +142,9 @@ npm run type-check  # or tsc --noEmit, or mypy
 Check each success criterion from the plan. Provide evidence:
 
 ```markdown
-✅ Criterion 1: {evidence - test output, screenshot, API response}
-✅ Criterion 2: {evidence}
-❌ Criterion 3: {failure reason}
+[✓] Criterion 1: {evidence - test output, screenshot, API response}
+[✓] Criterion 2: {evidence}
+[x] Criterion 3: {failure reason}
 ```
 
 **If any criterion fails, implementation is incomplete.**
@@ -158,7 +158,7 @@ git commit -m "feat: {concise description} (closes #$1)
 
 {detailed explanation if needed}
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+ Generated with [Claude Code](https://claude.com/claude-code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
@@ -172,7 +172,7 @@ git commit -m "feat: {concise description} (closes #$1)
 
 {detailed explanation}
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+ Generated with [Claude Code](https://claude.com/claude-code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
@@ -196,10 +196,10 @@ Implements #$1 following approved plan.
 - {Change 3}
 
 ## Testing
-- ✅ All tests passing ({X} tests)
-- ✅ Linting passing
-- ✅ Type checking passing
-- ✅ Coverage: {Y}%
+- [✓] All tests passing ({X} tests)
+- [✓] Linting passing
+- [✓] Type checking passing
+- [✓] Coverage: {Y}%
 
 ## Success Criteria
 {Copy success criteria from plan with evidence}
@@ -209,7 +209,7 @@ Implements #$1 following approved plan.
 
 Closes #$1
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+ Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
@@ -228,15 +228,15 @@ Implements #$1 following approved plan.
 - {Change 2}
 
 ## Testing
-- ✅ All tests passing
-- ✅ Linting passing
+- [✓] All tests passing
+- [✓] Linting passing
 
 ## Success Criteria
 {Success criteria with evidence}
 
 Closes #$1
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+ Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
@@ -248,7 +248,7 @@ EOF
 Output a summary:
 
 ```markdown
-## ✅ Issue #$1 Implemented
+## [✓] Issue #$1 Implemented
 
 **Branch:** {branch-name}
 **PR/MR:** {url}
@@ -299,14 +299,14 @@ Output a summary:
 
 ## Anti-Patterns to AVOID
 
-❌ **Deviating from plan** - Stick to approved plan exactly
-❌ **Adding "improvements"** - Only implement what's in plan
-❌ **Skipping tests** - All tests must pass
-❌ **Reading product-guidelines** - Context is already in plan
-❌ **Generic implementation** - Be specific per plan
-❌ **Adding backwards compatibility** - Follow plan's approach
-❌ **Committing failing code** - Tests must pass first
-❌ **Ignoring success criteria** - Verify all criteria met
+[x] **Deviating from plan** - Stick to approved plan exactly
+[x] **Adding "improvements"** - Only implement what's in plan
+[x] **Skipping tests** - All tests must pass
+[x] **Reading product-guidelines** - Context is already in plan
+[x] **Generic implementation** - Be specific per plan
+[x] **Adding backwards compatibility** - Follow plan's approach
+[x] **Committing failing code** - Tests must pass first
+[x] **Ignoring success criteria** - Verify all criteria met
 
 ## Remember
 
@@ -318,3 +318,7 @@ Output a summary:
 - Stick to the plan
 
 **Trust the plan. Execute precisely. Ship confidently.**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

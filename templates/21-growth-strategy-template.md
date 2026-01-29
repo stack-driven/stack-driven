@@ -133,7 +133,7 @@ Alternative models considered:
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Channel Not Chosen 1]
+#### [x] [Channel Not Chosen 1]
 
 **Why not**: [Journey-based reasoning: audience mismatch, wrong intent, cost inefficiency, unsustainable]
 
@@ -145,7 +145,7 @@ Alternative models considered:
 
 ---
 
-#### ❌ [Channel Not Chosen 2]
+#### [x] [Channel Not Chosen 2]
 
 **Why not**: [Reasoning]
 
@@ -155,7 +155,7 @@ Alternative models considered:
 
 ---
 
-#### ❌ [Channel Not Chosen 3]
+#### [x] [Channel Not Chosen 3]
 
 **Why not**: [Reasoning]
 
@@ -216,7 +216,7 @@ Alternative models considered:
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Loop Not Chosen 1]
+#### [x] [Loop Not Chosen 1]
 
 **Why not**: [Journey doesn't support this loop because...]
 
@@ -224,7 +224,7 @@ Alternative models considered:
 
 **Example**:
 ```
-❌ Referral Program ($50 credit for referring)
+[x] Referral Program ($50 credit for referring)
 Why not: Journey value is trust-based (compliance), not discount-driven.
 Financial incentives misalign with brand values. Users refer organically
 through advocacy, not incentives.
@@ -235,7 +235,7 @@ test non-financial incentives (exclusive features, recognition).
 
 ---
 
-#### ❌ [Loop Not Chosen 2]
+#### [x] [Loop Not Chosen 2]
 
 **Why not**: [Reasoning]
 
@@ -326,11 +326,11 @@ Activation (Aha Moment)
 4. → [User lands in product, ready for journey Step 1]
 
 **Friction Reduction**:
-- ❌ No email verification (verify later)
-- ❌ No credit card required (freemium model)
-- ❌ No lengthy forms (3 fields max)
-- ✅ Social login (Google, GitHub)
-- ✅ Sample data pre-loaded (try immediately)
+- [x] No email verification (verify later)
+- [x] No credit card required (freemium model)
+- [x] No lengthy forms (3 fields max)
+- [✓] Social login (Google, GitHub)
+- [✓] Sample data pre-loaded (try immediately)
 
 **Metrics**:
 - Landing page → Signup started: [X]%
@@ -425,7 +425,7 @@ Option 2: Jump to Value (For simple products)
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Activation Approach Not Chosen]
+#### [x] [Activation Approach Not Chosen]
 
 **Why not**: [Journey/user mismatch reasoning]
 
@@ -433,7 +433,7 @@ Option 2: Jump to Value (For simple products)
 
 **Example**:
 ```
-❌ Mandatory 10-Minute Onboarding Video
+[x] Mandatory 10-Minute Onboarding Video
 Why not: Journey aha moment is experiential (try it yourself), not
 educational (watch video). Users drop off during forced videos. Better
 to jump to value, offer video as optional help.
@@ -570,7 +570,7 @@ Tactics:
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Retention Tactic Not Chosen]
+#### [x] [Retention Tactic Not Chosen]
 
 **Why not**: [Journey/behavior mismatch]
 
@@ -578,7 +578,7 @@ Tactics:
 
 **Example**:
 ```
-❌ Daily Email Reminders
+[x] Daily Email Reminders
 Why not: Journey cadence is monthly (quarterly audits), not daily. Daily
 emails would annoy users and train them to ignore emails. Better: calendar
 integration + timely reminders before audit deadlines.
@@ -698,7 +698,7 @@ monitoring vs. quarterly audits). Would need new product features first.
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Monetization Approach Not Chosen]
+#### [x] [Monetization Approach Not Chosen]
 
 **Why not**: [Journey value misalignment]
 
@@ -706,7 +706,7 @@ monitoring vs. quarterly audits). Would need new product features first.
 
 **Example**:
 ```
-❌ Flat Unlimited Pricing ($299/month, unlimited usage)
+[x] Flat Unlimited Pricing ($299/month, unlimited usage)
 Why not: Journey value scales with usage (more assessments = more time
 saved). Flat pricing creates adverse selection—high-usage users over-
 consume, low-usage users churn. Usage-based aligns value with cost.
@@ -777,7 +777,7 @@ Currently, variance is 10x (200-2,000 assessments/month).
 
 ### What We DIDN'T Choose (And Why)
 
-#### ❌ [Experiment Not Prioritized 1]
+#### [x] [Experiment Not Prioritized 1]
 
 **ICE Score**: [X.X] (Low)
 
@@ -787,7 +787,7 @@ Currently, variance is 10x (200-2,000 assessments/month).
 
 **Example**:
 ```
-❌ Redesign Entire Landing Page (ICE: 4.3)
+[x] Redesign Entire Landing Page (ICE: 4.3)
 Why not: Current landing page converts at 12% (above benchmark).
 Redesign is high effort (6 weeks design + dev) with uncertain impact
 (could hurt conversion). Better to A/B test incremental changes (headline,
@@ -800,7 +800,7 @@ different needs).
 
 ---
 
-#### ❌ [Experiment Not Prioritized 2]
+#### [x] [Experiment Not Prioritized 2]
 
 **Why not**: [Reasoning]
 

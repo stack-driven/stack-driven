@@ -35,27 +35,27 @@ We help compliance officers approve regulatory documents 10x faster by transform
 "Does this feature help compliance officers assess documents faster through AI-powered analysis?"
 
 **Examples**:
-- ✅ Batch assessment of multiple documents → YES (faster)
-- ✅ Custom framework creation → YES (broader applicability)
-- ❌ General document management → NO (doesn't serve core mission)
-- ❌ Team chat feature → NO (distraction from core value)
+- [✓] Batch assessment of multiple documents → YES (faster)
+- [✓] Custom framework creation → YES (broader applicability)
+- [x] General document management → NO (doesn't serve core mission)
+- [x] Team chat feature → NO (distraction from core value)
 
 ### Partnership Decision Test
 "Does this partnership serve compliance officers or improve assessment speed/accuracy?"
 
 **Examples**:
-- ✅ Integration with contract management systems → YES (serves users)
-- ✅ Partnership with regulatory consultancy → YES (improves frameworks)
-- ❌ Generic productivity tool integration → NO (doesn't serve mission)
+- [✓] Integration with contract management systems → YES (serves users)
+- [✓] Partnership with regulatory consultancy → YES (improves frameworks)
+- [x] Generic productivity tool integration → NO (doesn't serve mission)
 
 ### Hiring Decision Test
 "Does this role directly contribute to faster, better compliance assessments?"
 
 **Examples**:
-- ✅ AI/ML engineer (improves assessment quality) → Critical
-- ✅ Regulatory expert (improves frameworks) → Critical
-- ✅ Backend engineer (improves speed/reliability) → Critical
-- ❌ Growth marketer (doesn't improve product) → Defer until PMF
+- [✓] AI/ML engineer (improves assessment quality) → Critical
+- [✓] Regulatory expert (improves frameworks) → Critical
+- [✓] Backend engineer (improves speed/reliability) → Critical
+- [x] Growth marketer (doesn't improve product) → Defer until PMF
 
 ---
 

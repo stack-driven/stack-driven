@@ -618,3 +618,7 @@ If you can't trace a decision back to a journey step, tech stack choice, or arch
 ---
 
 **Now, read previous outputs and make API design decisions that serve your users' journey!**
+
+## Output Format
+
+IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
