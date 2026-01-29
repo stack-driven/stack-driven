@@ -42,11 +42,10 @@ Analyze for:
 - **Tech infrastructure**: Backend language, database, hosting constraints
 - **Compliance needs**: Healthcare? Finance? EU data?
 
-### Step 2: Read the Templates
+### Step 2: Read the Template
 
-Read both templates to understand output structure:
-1. `/templates/02c-ai-integration-strategy-template.md` - Full strategy template
-2. `/templates/02c-ai-integration-strategy-template.ctx.md` - Context template
+Read the template to understand output structure:
+- `/templates/02c-ai-integration-strategy-template.md` - Strategy template
 
 ### Step 3: Apply AI Decision Frameworks
 

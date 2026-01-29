@@ -62,8 +62,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
-├─ [TMPL] /templates/02a-constraints-template.md
-└─ [TMPL] /templates/02a-constraints-template.ctx.md
+└─ [TMPL] /templates/02a-constraints-template.md
 ```
 
 **Dependencies:** Sessions 1, 2
@@ -128,8 +127,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [TMPL] /templates/02c-ai-integration-strategy-template.md
-└─ [TMPL] /templates/02c-ai-integration-strategy-template.ctx.md
+└─ [TMPL] /templates/02c-ai-integration-strategy-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 3

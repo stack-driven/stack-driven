@@ -54,14 +54,13 @@ Use the Read tool to read `product-guidelines/00-user-journey.md`.
 - Value delivered (differentiation opportunity)
 - Economic value (time/money saved, ROI)
 
-### Step 2: Read Template Structures
+### Step 2: Read Template Structure
 
 ```bash
 Read templates/01-product-strategy-template.md
-Read templates/01-product-strategy-template.ctx.md
 ```
 
-The full template is comprehensive; the context template shows what to extract for backlog generation.
+The template defines the output structure and quality criteria for the product strategy.
 
 ### Step 3: Interview the User
 

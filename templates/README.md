@@ -119,26 +119,31 @@ Create an context file when **ALL THREE** conditions are met:
 - Not read by Sessions 10 or 12
 - Template already small (1.7KB) - condensing wouldn't save tokens
 
-### How to Create Context Files
+### How Context Files Are Generated
 
-Context templates define condensed structure:
-- `01-product-strategy-template.ctx.md`
-- `02b-coding-standards-template.ctx.md`
-- `07-database-schema-template.ctx.md`
-- `08-api-contracts-template.ctx.md`
-- `09-test-strategy-template.ctx.md`
-- `09b-application-architecture-template.ctx.md`
+Context files (`.ctx.md`) are **automatically generated** from source files (`.md`) using the **distillation sub-agent** (`.claude/agents/distill-context.md`).
 
-Commands generate both files in the same session:
-```markdown
-## Steps to Execute
+**The process:**
+1. Session command generates full source file: `XX-name.md`
+2. Session command invokes distillation agent:
+   ```markdown
+   Task tool with:
+   - subagent_type: distill-context
+   - Source file: product-guidelines/XX-name.md
+   - Output file: product-guidelines/XX-name.ctx.md
+   ```
+3. Distillation agent reads source and applies universal extraction rules
+4. Agent generates context file with 60-70% token reduction
 
-1. Read previous cascade outputs
-2. Generate full specification
-3. Write `XX-name.md`
-4. Create condensed version for downstream sessions
-5. Write `XX-name.ctx.md`
-```
+**What the agent extracts:**
+- ✅ Decisions, configurations, constraints, rules
+- ✅ Specific values, thresholds, settings
+- ✅ Architecture components, database entities, API endpoints
+- ❌ Rationale and explanations removed
+- ❌ Alternatives and "what we didn't choose" removed
+- ❌ Validation checklists and quality criteria removed
+
+**No context templates needed!** The agent preserves the source file's section structure automatically.
 
 ---
 
@@ -156,10 +161,6 @@ Examples:
 
 **Interview templates:**
 - `00-user-journey-interview-template.md` (used during Session 1 progressive interrogation)
-
-**Context templates:**
-- `[session-number]-[output-name]-template.ctx.md`
-- Example: `01-product-strategy-template.ctx.md`
 
 **Backlog story template:**
 - `backlog-issue-template.md` (used by Session 10 for each user story)

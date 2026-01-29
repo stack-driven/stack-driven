@@ -236,7 +236,6 @@ Or check progress: /cascade-status
 ## Reference Files
 
 - Template: `/templates/02a-constraints-template.md`
-- Context Template: `/templates/02a-constraints-template.ctx.md`
 - Journey file: `product-guidelines/00-user-journey.md`
 - Strategy file: `product-guidelines/01-product-strategy.md`
 ## Output Format

@@ -215,6 +215,14 @@ Some sessions create TWO files:
 2. **Large/detailed content** - The full file contains extensive schemas, specifications, or detailed examples
 3. **Token efficiency matters** - Condensing provides meaningful performance improvement for cascade operations
 
+**How context files are generated:**
+Context files are automatically created using the **distillation sub-agent** (`.claude/agents/distill-context.md`):
+1. Session command generates full source file (`.md`)
+2. Command invokes distillation agent with source and output paths
+3. Agent applies universal extraction rules (keep decisions/configs, remove rationale/alternatives)
+4. Agent preserves source file structure, achieves 60-70% token reduction
+5. No context templates needed - agent intelligently extracts from any source file
+
 Sessions 5 and 6 don't have context files because they're only read by optional post-cascade commands (not core cascade Sessions 10 or 12). Those commands need the full context (brand personality, design system components). Additionally, Session 6's template is already compact (1.7KB).
 
 In contrast, sessions 02c, 08, 08b, 09, and 09b DO have context files because they're read by core cascade sessions:

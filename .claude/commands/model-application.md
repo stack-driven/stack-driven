@@ -811,8 +811,7 @@ Or check progress: /cascade-status
 
 ## Reference
 
-- Template (full): `/templates/09b-application-architecture-template.md`
-- Template (context): `/templates/09b-application-architecture-template.ctx.md`
+- Template: `/templates/09b-application-architecture-template.md`
 - Example: `/examples/compliance-saas/09b-application-architecture.md`
 
 ---

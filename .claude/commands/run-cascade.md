@@ -303,7 +303,7 @@ Checking cascade progress...
  Current Progress
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [✓] Session 1: User Journey (00-user-journey.md)
-[✓] Session 2: Product Strategy (01-product-strategy.md, 01-essentials)
+[✓] Session 2: Product Strategy (01-product-strategy.md, 01-product-strategy.ctx.md)
 [✓] Session 3: Tech Stack (02-tech-stack.md)
 [x] Session 4: Tactical Foundation (not started)
 [x] Sessions 7-14: Pending
@@ -371,14 +371,14 @@ Continue? (yes/no)
 
 **Core cascade order:**
 1. `/refine-journey` → 00-user-journey.md
-2. `/create-product-strategy` → 01, 01-essentials
+2. `/create-product-strategy` → 01-product-strategy.md, 01-product-strategy.ctx.md
 3. `/choose-tech-stack` → 02
 4. `/generate-strategy` → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
 7. `/design-database-schema` → 07-database-schema
-8. `/generate-api-design` → 08-api-design, 08-api-design-essentials
-8b. `/generate-api-contracts` → 08b-api-contracts, 08b-api-contracts-essentials
+8. `/generate-api-design` → 08-api-design.md, 08-api-design.ctx.md
+8b. `/generate-api-contracts` → 08b-api-contracts.md, 08b-api-contracts.ctx.md
 9. `/create-test-strategy` → 09-test-strategy
 10. `/generate-backlog` → 10-backlog/
 11. `/create-gh-issues` → GitHub
