@@ -42,16 +42,19 @@ Create comprehensive testing strategy including:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md (from Session 7)
-Read: product-guidelines/08b-api-contracts-essentials.md (from Session 8b)
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
 ```
 
-**Context Optimization**: We read essentials versions for significant context reduction:
-- `07-database-schema-essentials.md` (~56% smaller) - Contains table list, ERD, relationships sufficient for test planning
-- `08b-api-contracts-essentials.md` (~79% smaller) - Contains endpoint list organized by journey step, sufficient for test coverage planning
+**Context Optimization**: We read .ctx.md files for significant context reduction:
+- `00-user-journey.ctx.md` - Journey steps and critical paths
+- `07-database-schema.ctx.md` (~56% smaller) - Table list, ERD, relationships sufficient for test planning
+- `08-api-design.ctx.md` - API paradigm and auth decisions
+- `08b-api-contracts.ctx.md` (~79% smaller) - Endpoint list organized by journey step, sufficient for test coverage planning
 
 **Optional inputs (if available):**
 
@@ -1202,8 +1205,18 @@ This command generates:
 - Setup instructions (Python/TypeScript)
 - "What We DIDN'T Choose" analysis (8+ alternatives)
 
-**2. Essentials Documentation** (`product-guidelines/09-test-strategy-essentials.md`):
-- **Purpose**: Condensed version for Session 10 (backlog generation) - 66% smaller
+**2. Context Documentation** (`product-guidelines/09-test-strategy.ctx.md`):
+
+After writing the full test strategy, invoke the distillation sub-agent:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/09-test-strategy.md
+- Output file: product-guidelines/09-test-strategy.ctx.md
+```
+
+The distillation agent will create a condensed version for Session 10 (backlog generation) - 66% smaller:
 - Coverage targets (for story estimation)
 - Test types required (unit, integration, E2E)
 - Testing tools (from tech stack)
@@ -1262,7 +1275,7 @@ Before completing this session, verify:
 
 **Documentation:**
 - [ ] Full test strategy file (`09-test-strategy.md`) complete with all details
-- [ ] Essentials file (`09-test-strategy-essentials.md`) generated for backlog use
+- [ ] Context file (`09-test-strategy.ctx.md`) generated for backlog use
 - [ ] "What We DIDN'T Choose" section complete (4+ alternatives) in full file
 - [ ] Testing workflows documented (TDD, regression)
 - [ ] Setup instructions clear and complete

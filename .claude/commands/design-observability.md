@@ -29,25 +29,35 @@ Create a comprehensive observability strategy following the instructions below.
    Read templates/14-observability-strategy-template.md
    ```
 
-2. **Check for architecture from Session 4** (recommended):
+2. **Read previous cascade outputs** for context:
    ```bash
-   Read product-guidelines/04-architecture.md
+   Read product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
+   Read product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
+   Read product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
+
+   # Check if constraints exist (Session 2a is optional)
+   If product-guidelines/02a-constraints.ctx.md exists:
+     Read product-guidelines/02a-constraints.ctx.md (context version for token efficiency)
+
+   Read product-guidelines/02b-coding-standards.ctx.md (context version for token efficiency)
+
+   # Check if AI integration strategy exists (Session 3c is optional)
+   If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
+     Read product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
+
+   Read product-guidelines/03b-metrics.md (no .ctx version)
+   Read product-guidelines/04-architecture.md (no .ctx version, always read full file)
+   Read product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
+   Read product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
+   Read product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)
+   Read product-guidelines/09b-application-architecture.ctx.md (context version for token efficiency)
+   Read product-guidelines/13-deployment-plan.md (no .ctx version)
    ```
    - Understand system components to monitor
-
-3. **Check for metrics from Session 4** (recommended):
-   ```bash
-   Read product-guidelines/03b-metrics.md
-   ```
    - Business metrics inform technical monitoring
-
-4. **Check for deployment plan** (recommended):
-   ```bash
-   Read product-guidelines/13-deployment-plan.md
-   ```
    - Monitoring integrates with deployment
 
-5. **Interview the user** with observability questions:
+3. **Interview the user** with observability questions:
    - **Current state**: What monitoring do you have? What's missing?
    - **Golden signals**: Latency, traffic, errors, saturation - what to track?
    - **Logging strategy**: What to log? Structured logs? Retention?
@@ -59,7 +69,7 @@ Create a comprehensive observability strategy following the instructions below.
    - **Incident response**: Runbooks, on-call rotation, post-mortems?
    - **Tools**: Datadog? Grafana? CloudWatch? Prometheus? OpenTelemetry?
 
-6. **Develop observability strategy**:
+4. **Develop observability strategy**:
    - Observability principles (what and why)
    - Golden signals for each service
    - Logging strategy (structured logs, retention, search)
@@ -74,7 +84,7 @@ Create a comprehensive observability strategy following the instructions below.
    - Tool recommendations
    - Cost estimates
 
-7. **Write the output**:
+5. **Write the output**:
    ```bash
    Write product-guidelines/14-observability-strategy.md
    ```

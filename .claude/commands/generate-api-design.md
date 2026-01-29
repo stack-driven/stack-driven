@@ -39,13 +39,13 @@ Make high-level API architectural decisions:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
 Read: product-guidelines/04-architecture.md
-Read: product-guidelines/07-database-schema-essentials.md (from previous session)
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 ```
 
-**Context Optimization**: We read the essentials version of database schema for significant context reduction (~56% smaller). It contains table list, ERD, relationships, and data access patterns—sufficient for API design without column details, indexes, and migrations.
+**Context Optimization**: We read .ctx.md files for significant context reduction. The database schema context file (~56% smaller) contains table list, ERD, relationships, and data access patterns—sufficient for API design without column details, indexes, and migrations.
 
 **Extract from Journey**:
 - What user actions require API endpoints?
@@ -454,7 +454,7 @@ Server Errors:
 
 ---
 
-### Step 7: Document Design Decisions and Create Essentials
+### Step 7: Document Design Decisions and Create Context Version
 
 Use template at `templates/08-api-design-template.md` for complete structure.
 
@@ -469,9 +469,18 @@ Write `product-guidelines/08-api-design.md` with:
 - **Scale-Forward Strategy**: How decisions evolve as product grows
 - **"What We DIDN'T Choose"**: At least 3 paradigm alternatives + 3 serialization alternatives with reasoning
 
-**Create Essentials Version** at `product-guidelines/08-api-design-essentials.md`:
+**Create Context Version** at `product-guidelines/08-api-design.ctx.md`:
 
-Use template at `templates/08-api-design-essentials-template.md` to create condensed version (50-100 lines) for Session 10 (backlog generation):
+After writing the full API design, invoke the distillation sub-agent:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/08-api-design.md
+- Output file: product-guidelines/08-api-design.ctx.md
+```
+
+The distillation agent will create a condensed version (50-100 lines) for Session 10 (backlog generation):
 
 **What to include**:
 - Paradigm choice (1 line)
@@ -531,7 +540,7 @@ Include at least 3 API paradigm alternatives and 3 serialization format alternat
 ## Output Files
 
 1. **`product-guidelines/08-api-design.md`**: Full documentation (paradigm, serialization, auth, rate limiting, pagination, errors, scale-forward, alternatives)
-2. **`product-guidelines/08-api-design-essentials.md`**: Condensed version for Session 10 (backlog generation) - decisions only (~50-100 lines)
+2. **`product-guidelines/08-api-design.ctx.md`**: Condensed version for Session 10 (backlog generation) - decisions only (~50-100 lines)
 
 ---
 
@@ -571,10 +580,10 @@ Before completing this session, verify:
 - [ ] "What We DIDN'T Choose" section complete (3+ paradigm + 3+ format alternatives)
 - [ ] Each alternative has "Reconsider if" conditions
 - [ ] Scale-forward strategy explains evolution path
-- [ ] Essentials file created and condensed (not full analysis)
+- [ ] Context file created and condensed (not full analysis)
 
-**Essentials Version (for backlog generation):**
-- [ ] Essentials file created at `08-api-design-essentials.md`
+**Context Version (for backlog generation):**
+- [ ] Context file created at `08-api-design.ctx.md`
 - [ ] File is 50-100 lines (not bloated with analysis)
 - [ ] Includes all decisions with brief reasoning
 - [ ] References full file for complete analysis
@@ -612,7 +621,7 @@ If you can't trace a decision back to a journey step, tech stack choice, or arch
 - Journey: `product-guidelines/00-user-journey.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
 - Architecture: `product-guidelines/04-architecture.md`
-- Database schema: `product-guidelines/07-database-schema-essentials.md` (from previous session)
+- Database schema: `product-guidelines/07-database-schema.ctx.md` (from previous session)
 - Serialization guide: `reference-material/serialization-guide.md` (decision tree lines 939-1071)
 
 ---

@@ -10,7 +10,7 @@ This is **Session 3** of the cascade. You'll analyze the user's journey and prod
 
 You are a thoughtful tech architect. Your job is to:
 
-1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.md`) and product strategy (`product-guidelines/01-product-strategy.md`)
+1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.ctx.md`) and product strategy (`product-guidelines/01-product-strategy.ctx.md`)
 2. **Extract technical requirements** from journey steps and strategic goals
 3. **Apply decision logic** (not prescriptions!)
 4. **Recommend optimal tech stack** with clear journey-based reasoning
@@ -31,10 +31,10 @@ You are a thoughtful tech architect. Your job is to:
 
 ### Step 1: Read User Journey, Product Strategy, and Constraints
 
-Use the Read tool to read:
-- `product-guidelines/00-user-journey.md`
-- `product-guidelines/01-product-strategy.md`
-- `product-guidelines/02a-constraints.md` (if it exists)
+Use the Read tool to read (context versions for token efficiency):
+- `product-guidelines/00-user-journey.ctx.md`
+- `product-guidelines/01-product-strategy.ctx.md`
+- `product-guidelines/02a-constraints.ctx.md` (if it exists)
 
 **Extract from Journey**:
 - Core user flow (Steps 1-5)
@@ -356,7 +356,7 @@ Once you've created the file:
 
 **Now, read the user journey and product strategy, then recommend an optimal tech stack!**
 
-Read `product-guidelines/00-user-journey.md` and `product-guidelines/01-product-strategy.md`, analyze requirements, and generate `product-guidelines/02-tech-stack.md`.
+Read `product-guidelines/00-user-journey.ctx.md` and `product-guidelines/01-product-strategy.ctx.md`, analyze requirements, and generate `product-guidelines/02-tech-stack.md`.
 
 ## Output Format
 

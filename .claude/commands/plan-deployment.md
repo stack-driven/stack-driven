@@ -29,20 +29,34 @@ Create a comprehensive deployment strategy following the instructions below.
    Read templates/13-deployment-plan-template.md
    ```
 
-2. **Check for architecture from Session 4** (recommended):
+2. **Read previous cascade outputs** for context:
    ```bash
-   Read product-guidelines/04-architecture.md
+   Read product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
+   Read product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
+   Read product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
+
+   # Check if constraints exist (Session 2a is optional)
+   If product-guidelines/02a-constraints.ctx.md exists:
+     Read product-guidelines/02a-constraints.ctx.md (context version for token efficiency)
+
+   Read product-guidelines/02b-coding-standards.ctx.md (context version for token efficiency)
+
+   # Check if AI integration strategy exists (Session 3c is optional)
+   If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
+     Read product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
+
+   Read product-guidelines/04-architecture.md (no .ctx version, always read full file)
+   Read product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
+   Read product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
+   Read product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)
+   Read product-guidelines/09b-application-architecture.ctx.md (context version for token efficiency)
    ```
    - Understand system components and dependencies
    - Identify deployment requirements
-
-3. **Check for tech stack from Session 3** (recommended):
-   ```bash
-   Read product-guidelines/02-tech-stack.md
-   ```
    - Know what needs to be deployed (frontend, backend, database, etc.)
+   - Understand architecture decisions and constraints
 
-4. **Interview the user** with deployment questions:
+3. **Interview the user** with deployment questions:
    - **Current state**: How do you deploy now? What's painful?
    - **Environments**: How many? (dev, staging, prod? More?)
    - **CI/CD**: What needs to happen on every commit? Tests? Linting? Build?
@@ -54,7 +68,7 @@ Create a comprehensive deployment strategy following the instructions below.
    - **Monitoring**: How to know if deployment succeeded?
    - **Runbooks**: What could go wrong? How to fix?
 
-5. **Develop deployment plan**:
+4. **Develop deployment plan**:
    - Environment strategy (dev, staging, prod + ephemeral)
    - CI/CD pipeline (detailed workflow for each repo/service)
    - Deployment patterns (rolling, canary, feature flags)
@@ -67,7 +81,7 @@ Create a comprehensive deployment strategy following the instructions below.
    - Security considerations
    - Cost optimization
 
-6. **Write the output**:
+5. **Write the output**:
    ```bash
    Write product-guidelines/13-deployment-plan.md
    ```

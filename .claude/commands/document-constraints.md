@@ -28,11 +28,11 @@ You are a pragmatic product strategist helping document reality. Your job is to:
 
 ## Cascade Inputs
 
-Read previous outputs:
+Read previous outputs (context versions for token efficiency):
 
 ```bash
-Read product-guidelines/00-user-journey.md
-Read product-guidelines/01-product-strategy.md
+Read product-guidelines/00-user-journey.ctx.md
+Read product-guidelines/01-product-strategy.ctx.md
 ```
 
 **Extract from Journey**:
@@ -167,11 +167,18 @@ Use `/templates/02a-constraints-template.md` as structure.
    - Which journey elements CANNOT be compromised (even with constraints)?
    - Example: "Step 3 must complete in <2 minutes or journey fails"
 
-### Create: `product-guidelines/02a-constraints-essentials.md`
+### Create: `product-guidelines/02a-constraints.ctx.md`
 
-Condensed version (~70% reduction) for consumption by later sessions (tech stack, backlog, scaffold).
+After writing the full constraints file, invoke the distillation sub-agent:
 
-**Include ONLY**:
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/02a-constraints.md
+- Output file: product-guidelines/02a-constraints.ctx.md
+```
+
+The distillation agent will create a condensed version (~70% reduction) for consumption by later sessions (tech stack, backlog, scaffold), including ONLY:
 - Summary lists (not detailed examples)
 - Key trade-offs (journey-optimal vs. constraint-realistic)
 - Non-negotiables (what cannot be compromised)
@@ -209,7 +216,7 @@ Non-Negotiable:
 
 Files created:
 - product-guidelines/02a-constraints.md
-- product-guidelines/02a-constraints-essentials.md
+- product-guidelines/02a-constraints.ctx.md
 
 Next, we'll choose a tech stack that optimizes your journey WITHIN these constraint boundaries.
 
@@ -229,7 +236,6 @@ Or check progress: /cascade-status
 ## Reference Files
 
 - Template: `/templates/02a-constraints-template.md`
-- Essentials Template: `/templates/02a-constraints-essentials-template.md`
 - Journey file: `product-guidelines/00-user-journey.md`
 - Strategy file: `product-guidelines/01-product-strategy.md`
 ## Output Format

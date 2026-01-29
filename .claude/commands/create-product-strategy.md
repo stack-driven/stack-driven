@@ -10,7 +10,7 @@ This is **Session 2** of the cascade. You'll create a comprehensive product stra
 
 You are a product strategist creating market-validated strategy. Your job is to:
 
-1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.md`)
+1. **Read and analyze** the user journey (`product-guidelines/00-user-journey.ctx.md`)
 2. **Validate market opportunity** through TAM/SAM/SOM analysis
 3. **Analyze competitive landscape** and identify differentiation
 4. **Define product vision** and positioning
@@ -31,9 +31,9 @@ You are a product strategist creating market-validated strategy. Your job is to:
 
 This command READS previous outputs to ground product strategy in reality:
 
-1. **Read the user journey**:
+1. **Read the user journey** (context version for token efficiency):
    ```bash
-   Read product-guidelines/00-user-journey.md
+   Read product-guidelines/00-user-journey.ctx.md
    ```
    - Who is the target audience? (market segment to size)
    - What problem are they solving? (market need validation)
@@ -45,7 +45,7 @@ Your product strategy validates and extends the journey with market context.
 
 ### Step 1: Read User Journey
 
-Use the Read tool to read `product-guidelines/00-user-journey.md`.
+Use the Read tool to read `product-guidelines/00-user-journey.ctx.md`.
 
 **Extract**:
 - Core user flow (Steps 1-5)
@@ -54,14 +54,13 @@ Use the Read tool to read `product-guidelines/00-user-journey.md`.
 - Value delivered (differentiation opportunity)
 - Economic value (time/money saved, ROI)
 
-### Step 2: Read Template Structures
+### Step 2: Read Template Structure
 
 ```bash
 Read templates/01-product-strategy-template.md
-Read templates/01-product-strategy-essentials-template.md
 ```
 
-The full template is comprehensive; the essentials template shows what to extract for backlog generation.
+The template defines the output structure and quality criteria for the product strategy.
 
 ### Step 3: Interview the User
 
@@ -106,13 +105,16 @@ First, write the comprehensive product strategy:
 Write product-guidelines/01-product-strategy.md
 ```
 
-Then, create the essentials version for backlog generation:
+Then, invoke the distillation sub-agent to create the context file:
 
 ```bash
-Read templates/01-product-strategy-essentials-template.md
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/01-product-strategy.md
+- Output file: product-guidelines/01-product-strategy.ctx.md
 ```
 
-Extract ONLY the information needed for backlog generation:
+The distillation agent will extract ONLY the information needed for backlog generation:
 - Vision statement (1 sentence)
 - Positioning statement (brief)
 - Strategic goals (names + metrics only, no elaboration)
@@ -121,14 +123,10 @@ Extract ONLY the information needed for backlog generation:
 - Key feature categories (for backlog organization)
 - Priority framework (for story prioritization)
 
-```bash
-Write product-guidelines/01-product-strategy-essentials.md
-```
-
 ## Output Locations
 
 1. `product-guidelines/01-product-strategy.md` - Full strategy (for stakeholders, investors, strategic alignment)
-2. `product-guidelines/01-product-strategy-essentials.md` - Essentials for backlog generation (optimized for Session 10)
+2. `product-guidelines/01-product-strategy.ctx.md` - Context file for backlog generation (optimized for Session 10)
 
 This validates:
 - User journey (with market sizing and competitive analysis)
@@ -192,7 +190,7 @@ You: Excellent. I've created two versions of your product strategy:
 - 6 roadmap themes (major initiatives)
 - Risk register (journey/market assumptions)
 
-**Essentials for Backlog** (product-guidelines/01-product-strategy-essentials.md):
+**Context File for Backlog** (product-guidelines/01-product-strategy.ctx.md):
 - Condensed version with only what Session 10 needs
 - 65% smaller, optimized for context efficiency
 - Used by /generate-backlog command

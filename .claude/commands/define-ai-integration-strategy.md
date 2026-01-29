@@ -16,10 +16,10 @@ You are an expert AI systems architect with deep knowledge of LLMs, RAG architec
 
 ## Prerequisites
 
-Before starting, ensure you have:
-- Session 00: User Journey (`product-guidelines/00-user-journey.md`)
-- Session 01: Product Strategy (`product-guidelines/01-product-strategy.md`)
-- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`)
+Before starting, ensure you have (context versions for token efficiency):
+- Session 00: User Journey (`product-guidelines/00-user-journey.ctx.md`)
+- Session 01: Product Strategy (`product-guidelines/01-product-strategy.ctx.md`)
+- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`) - no .ctx version, always read full file
 
 **IMPORTANT**: This session requires that AI Integration is marked as "Required" in `02-tech-stack.md`. Check the tech stack file first:
 - If "AI Integration: Required" → Proceed with this session
@@ -30,10 +30,10 @@ Before starting, ensure you have:
 
 ### Step 1: Load and Analyze Previous Sessions
 
-Read the following files in order:
-1. `product-guidelines/00-user-journey.md` - Extract AI touchpoints and requirements
-2. `product-guidelines/01-product-strategy.md` - Extract scale, budget, and risk context
-3. `product-guidelines/02-tech-stack.md` - Extract chosen AI provider and infrastructure
+Read the following files in order (context versions for token efficiency):
+1. `product-guidelines/00-user-journey.ctx.md` - Extract AI touchpoints and requirements
+2. `product-guidelines/01-product-strategy.ctx.md` - Extract scale, budget, and risk context
+3. `product-guidelines/02-tech-stack.md` - Extract chosen AI provider and infrastructure (no .ctx version)
 
 Analyze for:
 - **Journey AI touchpoints**: Which steps use AI? What tasks? What latency needs?
@@ -42,11 +42,10 @@ Analyze for:
 - **Tech infrastructure**: Backend language, database, hosting constraints
 - **Compliance needs**: Healthcare? Finance? EU data?
 
-### Step 2: Read the Templates
+### Step 2: Read the Template
 
-Read both templates to understand output structure:
-1. `/templates/02c-ai-integration-strategy-template.md` - Full strategy template
-2. `/templates/02c-ai-integration-strategy-essentials-template.md` - Essentials template
+Read the template to understand output structure:
+- `/templates/02c-ai-integration-strategy-template.md` - Strategy template
 
 ### Step 3: Apply AI Decision Frameworks
 
@@ -116,11 +115,18 @@ Every recommendation must:
 - Be realistic about constraints
 - Distinguish MVP from future optimizations
 
-### Step 5: Generate Essentials Version
+### Step 5: Generate Context Version
 
-Write to `product-guidelines/02c-ai-integration-strategy-essentials.md`:
+After writing the full strategy, invoke the distillation sub-agent:
 
-Distill to actionable decisions only (no rationale):
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/02c-ai-integration-strategy.md
+- Output file: product-guidelines/02c-ai-integration-strategy.ctx.md
+```
+
+The distillation agent will create a condensed version with actionable decisions only (no rationale):
 - Implementation pattern
 - Model selection table
 - System prompt templates
@@ -163,7 +169,7 @@ Also add a brief note referencing Session 3c:
 This ensures that:
 1. Later sessions (4, 7, 8, 9b, 10, 12) have AI provider context in tech stack
 2. Tech stack file remains the "single source of truth" for stack summary
-3. Session 3c essentials file provides detailed implementation guidance
+3. Session 3c context file provides detailed implementation guidance
 
 ### Step 7: Validate Output
 
@@ -180,7 +186,7 @@ Flag any concerns prominently in the output.
 
 Inform the user:
 - [✓] Generated `product-guidelines/02c-ai-integration-strategy.md`
-- [✓] Generated `product-guidelines/02c-ai-integration-strategy-essentials.md`
+- [✓] Generated `product-guidelines/02c-ai-integration-strategy.ctx.md`
 - [✓] Updated `product-guidelines/02-tech-stack.md` with AI provider selection
 - Note: This strategy will inform Sessions 4, 7, 8, 9b, 10, 12, 13, and 14
 - -> Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture

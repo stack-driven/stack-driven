@@ -10,7 +10,7 @@ This is **Session 4** of the cascade. You'll synthesize the user journey, produc
 
 You are a product strategist deriving tactical decisions from previous cascade outputs. Your job is to:
 
-1. **Read** journey (`product-guidelines/00-user-journey.md`), product strategy (`product-guidelines/01-product-strategy.md`), and tech stack (`product-guidelines/02-tech-stack.md`)
+1. **Read** journey (`product-guidelines/00-user-journey.ctx.md`), product strategy (`product-guidelines/01-product-strategy.ctx.md`), and tech stack (`product-guidelines/02-tech-stack.md`)
 2. **Derive mission** from the journey's aha moment (usually Step 3)
 3. **Define North Star metric** that measures mission fulfillment
 4. **Design monetization** aligned with value delivery
@@ -30,26 +30,26 @@ You are a product strategist deriving tactical decisions from previous cascade o
 ### Step 1: Read Previous Outputs
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/01-product-strategy-essentials.md
+Read: product-guidelines/00-user-journey.ctx.md
+Read: product-guidelines/01-product-strategy.ctx.md
 Read: product-guidelines/02-tech-stack.md
 
 # Check if constraints exist (Session 2a is optional)
-If product-guidelines/02a-constraints-essentials.md exists:
-  Read: product-guidelines/02a-constraints-essentials.md
+If product-guidelines/02a-constraints.ctx.md exists:
+  Read: product-guidelines/02a-constraints.ctx.md
 
-Read: product-guidelines/02b-coding-standards-essentials.md
+Read: product-guidelines/02b-coding-standards.ctx.md
 
 # Check if AI integration strategy exists (Session 3c is optional)
-If product-guidelines/02c-ai-integration-strategy-essentials.md exists:
-  Read: product-guidelines/02c-ai-integration-strategy-essentials.md
+If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
+  Read: product-guidelines/02c-ai-integration-strategy.ctx.md
 ```
 
-**Context Optimization**: We read the essentials versions for optimal context reduction:
-- `01-product-strategy-essentials.md` (~65% smaller) - Contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
-- `02a-constraints-essentials.md` (~70% smaller, if exists) - Contains technical, organizational, and compliance constraints—provides boundaries for architecture decisions.
-- `02b-coding-standards-essentials.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions—provides context for architecture decisions without detailed implementation examples.
-- `02c-ai-integration-strategy-essentials.md` (~60% smaller, if exists) - Contains AI implementation patterns, model choices, and cost projections—provides critical AI architecture decisions without detailed compliance documentation.
+**Context Optimization**: We read the .ctx.md files for optimal context reduction:
+- `01-product-strategy.ctx.md` (~65% smaller) - Contains vision, positioning, strategic goals, and product principles—sufficient for generating mission, metrics, monetization, and architecture without detailed market analysis.
+- `02a-constraints.ctx.md` (~70% smaller, if exists) - Contains technical, organizational, and compliance constraints—provides boundaries for architecture decisions.
+- `02b-coding-standards.ctx.md` (~70% smaller) - Contains framework-specific patterns, file organization, and naming conventions—provides context for architecture decisions without detailed implementation examples.
+- `02c-ai-integration-strategy.ctx.md` (~60% smaller, if exists) - Contains AI implementation patterns, model choices, and cost projections—provides critical AI architecture decisions without detailed compliance documentation.
 
 **Extract from Journey**:
 - Step 3 (aha moment) - where primary value is delivered

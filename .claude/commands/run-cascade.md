@@ -33,19 +33,19 @@ ls -la product-guidelines/
 
 Identify which sessions are complete based on these files:
 - `00-user-journey.md` → Session 1 complete
-- `01-product-strategy.md` + `01-product-strategy-essentials.md` → Session 2 complete
-- `02a-constraints.md` + `02a-constraints-essentials.md` → Session 2a complete
+- `01-product-strategy.md` + `01-product-strategy.ctx.md` → Session 2 complete
+- `02a-constraints.md` + `02a-constraints.ctx.md` → Session 2a complete
 - `02-tech-stack.md` → Session 3 complete
-- `02b-coding-standards.md` + `02b-coding-standards-essentials.md` → Session 3b complete
-- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy-essentials.md` → Session 3c complete (optional)
+- `02b-coding-standards.md` + `02b-coding-standards.ctx.md` → Session 3b complete
+- `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy.ctx.md` → Session 3c complete (optional)
 - `03a-mission.md` + `03b-metrics.md` + `03c-monetization.md` + `04-architecture.md` → Session 4 complete
 - `05-brand-strategy.md` → Session 5 complete
 - `06-design-system.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
-- `08-api-design.md` + `08-api-design-essentials.md` → Session 8 complete
-- `08b-api-contracts.md` + `08b-api-contracts-essentials.md` → Session 8b complete
+- `08-api-design.md` + `08-api-design.ctx.md` → Session 8 complete
+- `08b-api-contracts.md` + `08b-api-contracts.ctx.md` → Session 8b complete
 - `09-test-strategy.md` → Session 9 complete
-- `09b-application-architecture.md` + `09b-application-architecture-essentials.md` → Session 9b complete
+- `09b-application-architecture.md` + `09b-application-architecture.ctx.md` → Session 9b complete
 - `10-backlog/` directory → Session 10 complete
 - `12-project-scaffold.md` → Session 12 complete
 - `13-deployment-plan.md` → Session 13 complete
@@ -63,11 +63,11 @@ Use this decision logic to determine what to execute:
 - Run Session 2: `/create-product-strategy`
 - Then ask user if they want to continue
 
-**If 00-01 exist (both full and essentials) but not 02a:**
+**If 00-01 exist (both full and context files) but not 02a:**
 - Run Session 2a: `/document-constraints`
 - Then ask user if they want to continue
 
-**If 00-02a exist (both full and essentials):**
+**If 00-02a exist (both full and context files):**
 - Run Session 3: `/choose-tech-stack`
 - Then ask user if they want to continue
 
@@ -75,7 +75,7 @@ Use this decision logic to determine what to execute:
 - Run Session 3b: `/define-coding-standards`
 - Then ask user if they want to continue
 
-**If 00-02b exist (both full and essentials):**
+**If 00-02b exist (both full and context files):**
 - Check if `02-tech-stack.md` contains "AI Integration: Required"
 - If yes: Run Session 3c: `/define-ai-integration-strategy`
 - If "AI Integration: Not Required": Run Session 4: `/generate-strategy`
@@ -106,11 +106,11 @@ Use this decision logic to determine what to execute:
 - Run Session 8: `/generate-api-design`
 - Then ask user if they want to continue
 
-**If 00-08 api design exist (both full and essentials):**
+**If 00-08 api design exist (both full and context files):**
 - Run Session 8b: `/generate-api-contracts`
 - Then ask user if they want to continue
 
-**If 00-08b api contracts exist (both full and essentials):**
+**If 00-08b api contracts exist (both full and context files):**
 - Run Session 9: `/create-test-strategy`
 - Then ask user if they want to continue
 
@@ -118,7 +118,7 @@ Use this decision logic to determine what to execute:
 - Run Session 9b: `/model-application`
 - Then ask user if they want to continue
 
-**If 00-09b exist (both full and essentials):**
+**If 00-09b exist (both full and context files):**
 - Run Session 10: `/generate-backlog`
 - Then ask user if they want to continue
 
@@ -303,7 +303,7 @@ Checking cascade progress...
  Current Progress
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [✓] Session 1: User Journey (00-user-journey.md)
-[✓] Session 2: Product Strategy (01-product-strategy.md, 01-essentials)
+[✓] Session 2: Product Strategy (01-product-strategy.md, 01-product-strategy.ctx.md)
 [✓] Session 3: Tech Stack (02-tech-stack.md)
 [x] Session 4: Tactical Foundation (not started)
 [x] Sessions 7-14: Pending
@@ -327,7 +327,7 @@ User: yes
 Inputs: Reading:
 - product-guidelines/00-user-journey.md
 - product-guidelines/01-product-strategy.md
-- product-guidelines/01-product-strategy-essentials.md
+- product-guidelines/01-product-strategy.ctx.md
 - product-guidelines/02-tech-stack.md
 
 Outputs: Will create:
@@ -371,14 +371,14 @@ Continue? (yes/no)
 
 **Core cascade order:**
 1. `/refine-journey` → 00-user-journey.md
-2. `/create-product-strategy` → 01, 01-essentials
+2. `/create-product-strategy` → 01-product-strategy.md, 01-product-strategy.ctx.md
 3. `/choose-tech-stack` → 02
 4. `/generate-strategy` → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
 7. `/design-database-schema` → 07-database-schema
-8. `/generate-api-design` → 08-api-design, 08-api-design-essentials
-8b. `/generate-api-contracts` → 08b-api-contracts, 08b-api-contracts-essentials
+8. `/generate-api-design` → 08-api-design.md, 08-api-design.ctx.md
+8b. `/generate-api-contracts` → 08b-api-contracts.md, 08b-api-contracts.ctx.md
 9. `/create-test-strategy` → 09-test-strategy
 10. `/generate-backlog` → 10-backlog/
 11. `/create-gh-issues` → GitHub

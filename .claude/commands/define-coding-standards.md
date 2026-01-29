@@ -16,21 +16,19 @@ You are an expert software architect with deep knowledge of framework-specific p
 
 ## Prerequisites
 
-Before starting, ensure you have:
-- Session 00: User Journey (`product-guidelines/00-user-journey.md`)
-- Session 01: Product Strategy (`product-guidelines/01-product-strategy.md`)
-- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`)
-- Session 03: Mission (`product-guidelines/03a-mission.md`)
+Before starting, ensure you have (context versions for token efficiency):
+- Session 00: User Journey (`product-guidelines/00-user-journey.ctx.md`)
+- Session 01: Product Strategy (`product-guidelines/01-product-strategy.ctx.md`)
+- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`) - no .ctx version, always read full file
 
 ## Steps to Execute
 
 ### Step 1: Load and Analyze Previous Sessions
 
-Read the following files in order:
-1. `product-guidelines/00-user-journey.md` - Understand the journey steps and value delivery
-2. `product-guidelines/01-product-strategy.md` - Understand the product context
-3. `product-guidelines/02-tech-stack.md` - Extract the chosen frameworks and languages
-4. `product-guidelines/03a-mission.md` - Understand the product vision
+Read the following files in order (context versions for token efficiency):
+1. `product-guidelines/00-user-journey.ctx.md` - Understand the journey steps and value delivery
+2. `product-guidelines/01-product-strategy.ctx.md` - Understand the product context
+3. `product-guidelines/02-tech-stack.md` - Extract the chosen frameworks and languages (no .ctx version)
 
 Extract key information:
 - Frontend framework(s) chosen
@@ -137,14 +135,23 @@ Always tie the reasoning back to the specific journey requirements.
 
 ### Step 9: Generate Output Files
 
-Create two files:
+First, create the full version:
 
 1. **Full Version**: `product-guidelines/02b-coding-standards.md`
    - Complete documentation with all examples
    - Detailed explanations and rationale
    - Full code samples
 
-2. **Essentials Version**: `product-guidelines/02b-coding-standards-essentials.md`
+Then, invoke the distillation sub-agent to create the context file:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/02b-coding-standards.md
+- Output file: product-guidelines/02b-coding-standards.ctx.md
+```
+
+2. **Context Version**: `product-guidelines/02b-coding-standards.ctx.md`
    - Condensed version for AI consumption
    - Key patterns and rules only
    - Critical examples only
@@ -190,7 +197,7 @@ Key decisions made:
 
 Files created:
 - 02b-coding-standards.md (full documentation)
-- 02b-coding-standards-essentials.md (condensed for AI consumption)
+- 02b-coding-standards.ctx.md (condensed for AI consumption)
 
 These standards will ensure consistency across all implementation sessions and provide AI agents with concrete patterns to follow.
 

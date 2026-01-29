@@ -37,9 +37,14 @@ Create a comprehensive database schema design including:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/01-product-strategy.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
+Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
+Read: product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/04-architecture.md
+Read: product-guidelines/05-brand-strategy.md  # (no .ctx version, always read full file)
 ```
 
 **Optional inputs (if available):**
@@ -858,8 +863,18 @@ This command generates:
 - Testing strategy
 - "What We DIDN'T Choose" alternatives (3+ options)
 
-**2. Essentials Documentation** (`product-guidelines/07-database-schema-essentials.md`):
-- **Purpose**: Condensed version for Session 10 (backlog generation) - 56% smaller
+**2. Context Documentation** (`product-guidelines/07-database-schema.ctx.md`):
+
+After writing the full schema, invoke the distillation sub-agent:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/07-database-schema.md
+- Output file: product-guidelines/07-database-schema.ctx.md
+```
+
+The distillation agent will create a condensed version for Session 10 (backlog generation) - 56% smaller:
 - Database technology choices (DB, ORM, ID strategy, multi-tenancy)
 - Table list with journey mapping
 - Entity relationship diagram
@@ -919,7 +934,7 @@ Before completing this session, verify:
 
 **Documentation:**
 - [ ] Full schema file (`07-database-schema.md`) complete with all details
-- [ ] Essentials file (`07-database-schema-essentials.md`) generated for backlog use
+- [ ] Context file (`07-database-schema.ctx.md`) generated for backlog use
 - [ ] "What We DIDN'T Choose" section complete (3+ alternatives) in full file
 - [ ] Each table has purpose explanation
 - [ ] Design decisions reference journey

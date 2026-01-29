@@ -22,14 +22,14 @@ You are helping the user navigate the Stack-Driven framework - core cascade (Ses
 ```
 Session 1: /refine-journey             → product-guidelines/00-user-journey.md
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md
-                                         product-guidelines/01-product-strategy-essentials.md
+                                         product-guidelines/01-product-strategy.ctx.md
 Session 2a: /document-constraints     → product-guidelines/02a-constraints.md
-                                         product-guidelines/02a-constraints-essentials.md
+                                         product-guidelines/02a-constraints.ctx.md
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
-                                        product-guidelines/02b-coding-standards-essentials.md
+                                        product-guidelines/02b-coding-standards.ctx.md
 Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md (optional)
-                                              product-guidelines/02c-ai-integration-strategy-essentials.md
+                                              product-guidelines/02c-ai-integration-strategy.ctx.md
 Session 4: /generate-strategy          → product-guidelines/03a-mission.md
                                          product-guidelines/03b-metrics.md
                                          product-guidelines/03c-monetization.md
@@ -38,12 +38,12 @@ Session 5: /create-brand-strategy      → product-guidelines/05-brand-strategy.
 Session 6: /create-design              → product-guidelines/06-design-system.md
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
 Session 8: /generate-api-design        → product-guidelines/08-api-design.md
-                                         product-guidelines/08-api-design-essentials.md
+                                         product-guidelines/08-api-design.ctx.md
 Session 8b: /generate-api-contracts    → product-guidelines/08b-api-contracts.md
-                                         product-guidelines/08b-api-contracts-essentials.md
+                                         product-guidelines/08b-api-contracts.ctx.md
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
 Session 9b: /model-application         → product-guidelines/09b-application-architecture.md
-                                         product-guidelines/09b-application-architecture-essentials.md
+                                         product-guidelines/09b-application-architecture.ctx.md
 Session 10: /generate-backlog          → product-guidelines/10-backlog/
 Session 11: /create-gh-issues          → GitHub issues
 Session 12: /scaffold-project          → product-guidelines/12-project-scaffold.md
@@ -106,7 +106,7 @@ ls -la /home/user/stack-driven/product-guidelines/
 ```
 
 Look for:
-- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy-essentials.md`, `02a-constraints.md`, `02a-constraints-essentials.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards-essentials.md`, `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-design.md`, `08-api-design-essentials.md`, `08b-api-contracts.md`, `08b-api-contracts-essentials.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
+- **Core cascade**: `00-user-journey.md`, `01-product-strategy.md`, `01-product-strategy.ctx.md`, `02a-constraints.md`, `02a-constraints.ctx.md`, `02-tech-stack.md`, `02b-coding-standards.md`, `02b-coding-standards.ctx.md`, `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`, `05-brand-strategy.md`, `06-design-system.md`, `07-database-schema.md`, `08-api-design.md`, `08-api-design.ctx.md`, `08b-api-contracts.md`, `08b-api-contracts.ctx.md`, `09-test-strategy.md`, `10-backlog/`, `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md`
 - **Post-core extensions (optional)**: `15-brand-naming.md`, `16-brand-messaging.md`, `17-brand-identity.md`, `18-content-guidelines.md`, `19-user-experience.md`, `20-analytics-plan.md`, `21-growth-strategy.md`, `22-financial-model.md`
 
 ### Step 2: Display Complete Progress
@@ -122,12 +122,12 @@ CORE CASCADE (Required - Always Start Here)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [✓] 00-user-journey.md            (Session 1 ✓)
 [✓] 01-product-strategy.md        (Session 2 ✓)
-[✓] 01-product-strategy-essentials.md (Session 2 ✓)
+[✓] 01-product-strategy.ctx.md (Session 2 ✓)
 [x] 02a-constraints.md            (Session 2a - Not started)
-[x] 02a-constraints-essentials.md (Session 2a - Not started)
+[x] 02a-constraints.ctx.md (Session 2a - Not started)
 [✓] 02-tech-stack.md              (Session 3 ✓)
 [x] 02b-coding-standards.md       (Session 3b - Not started)
-[x] 02b-coding-standards-essentials.md (Session 3b - Not started)
+[x] 02b-coding-standards.ctx.md (Session 3b - Not started)
 [x] 03a-mission.md                (Session 4 - Not started)
 [x] 03b-metrics.md                (Session 4 - Not started)
 [x] 03c-monetization.md           (Session 4 - Not started)
@@ -136,9 +136,9 @@ CORE CASCADE (Required - Always Start Here)
 [x] 06-design-system.md           (Session 6 - Not started)
 [x] 07-database-schema.md         (Session 7 - Not started)
 [x] 08-api-design.md              (Session 8 - Not started)
-[x] 08-api-design-essentials.md   (Session 8 - Not started)
+[x] 08-api-design.ctx.md   (Session 8 - Not started)
 [x] 08b-api-contracts.md          (Session 8b - Not started)
-[x] 08b-api-contracts-essentials.md (Session 8b - Not started)
+[x] 08b-api-contracts.ctx.md (Session 8b - Not started)
 [x] 09-test-strategy.md           (Session 9 - Not started)
 [x] 09b-application-architecture.md (Session 9b - Not started)
 [x] 10-backlog/                   (Session 10 - Not started)
@@ -258,7 +258,7 @@ For the next recommended session, display:
 Inputs: Reads (cascade inputs):
 - product-guidelines/00-user-journey.md (your validated user journey)
 - product-guidelines/01-product-strategy.md (market validation and strategic goals)
-- product-guidelines/01-product-strategy-essentials.md (condensed for backlog generation)
+- product-guidelines/01-product-strategy.ctx.md (condensed for backlog generation)
 - product-guidelines/02-tech-stack.md (your chosen tech stack)
 
 Outputs: Will create:
@@ -319,7 +319,7 @@ Here's an example of what you should output:
 Your Cascade Progress:
 [✓] 00-user-journey.md        (Session 1 complete)
 [x] 01-product-strategy.md    (Not started)
-[x] 01-product-strategy-essentials.md (Not started)
+[x] 01-product-strategy.ctx.md (Not started)
 [x] 02-tech-stack.md          (Not started)
 [x] 03a-mission.md            (Not started)
 [x] 03b-metrics.md            (Not started)
@@ -329,9 +329,9 @@ Your Cascade Progress:
 [x] 06-design-system.md       (Not started)
 [x] 07-database-schema.md     (Not started)
 [x] 08-api-design.md          (Not started)
-[x] 08-api-design-essentials.md (Not started)
+[x] 08-api-design.ctx.md (Not started)
 [x] 08b-api-contracts.md      (Not started)
-[x] 08b-api-contracts-essentials.md (Not started)
+[x] 08b-api-contracts.ctx.md (Not started)
 [x] 09-test-strategy.md       (Not started)
 [x] 10-backlog/               (Not started)
 [x] 12-project-scaffold.md    (Not started)
@@ -351,7 +351,7 @@ Inputs: Inputs needed:
 
 Outputs: Will create:
 - product-guidelines/01-product-strategy.md (market validation, competitive analysis, strategic goals)
-- product-guidelines/01-product-strategy-essentials.md (condensed version for backlog generation)
+- product-guidelines/01-product-strategy.ctx.md (condensed version for backlog generation)
 
 Time: Estimated time: 20-30 minutes
 

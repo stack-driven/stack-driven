@@ -30,7 +30,7 @@ Create comprehensive application architecture including:
 This enables:
 - **Session 10** to generate specific, implementation-ready user stories ("Implement DocumentService.uploadDocument()")
 - **Session 12** to generate actual code skeletons with method signatures and dependency injection
-  - Session 12 reads the essentials file from this session
+  - Session 12 reads the context file from this session
   - Generates service classes, repository interfaces, controller handlers, test stubs
   - Places generated code in repository root (not product-guidelines/)
   - Includes TODO comments referencing Session 10 backlog stories
@@ -45,15 +45,15 @@ This enables:
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.md (for journey steps and user actions)
-Read: product-guidelines/02-tech-stack.md (for framework choices, patterns)
-Read: product-guidelines/02b-coding-standards-essentials.md (for framework-specific patterns)
-Read: product-guidelines/04-architecture.md (for high-level architectural patterns)
-Read: product-guidelines/07-database-schema-essentials.md (for entities and relationships)
-Read: product-guidelines/08b-api-contracts-essentials.md (for endpoints and operations)
+Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/04-architecture.md
+Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
 ```
 
-**Context Optimization**: We read essentials versions of coding standards, database schema, and API contracts for significant context reduction while maintaining necessary information for architecture modeling.
+**Context Optimization**: We read .ctx.md files for journey, coding standards, database schema, and API contracts for significant context reduction (~60-80% smaller) while maintaining necessary information for architecture modeling.
 
 **Extract from Journey**:
 - What are the main journey steps that need code implementation?
@@ -603,11 +603,8 @@ Return 201 with Document (includes signed URL)
 
 Use templates:
 - `templates/09b-application-architecture-template.md` for full version
-- `templates/09b-application-architecture-essentials-template.md` for condensed version
 
-Write to:
-- `product-guidelines/09b-application-architecture.md` (full documentation)
-- `product-guidelines/09b-application-architecture-essentials.md` (~60% smaller, for Session 10 consumption)
+First, write the full version to `product-guidelines/09b-application-architecture.md`:
 
 **Full version includes**:
 - Journey mapping (services to journey steps)
@@ -619,7 +616,16 @@ Write to:
 - Architecture decisions (what/why/alternatives)
 - Dependency graph (visual and textual)
 
-**Essentials version includes** (for backlog generation):
+Then, invoke the distillation sub-agent to create the context file:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/09b-application-architecture.md
+- Output file: product-guidelines/09b-application-architecture.ctx.md
+```
+
+**Context version includes** (for backlog generation, ~60% smaller):
 - Service list with method signatures only
 - Repository list with key methods
 - Controller endpoint mappings
@@ -732,7 +738,7 @@ Write to:
    - Component architecture with props/state
    - Detailed architecture decisions with alternatives
 
-2. **`product-guidelines/09b-application-architecture-essentials.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
+2. **`product-guidelines/09b-application-architecture.ctx.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
    - Service list with method signatures
    - Repository list with key methods
    - Controller endpoint mappings
@@ -771,7 +777,7 @@ Before completing, verify:
 - [ ] "What We DIDN'T Choose" section has 3+ alternatives with reasoning
 - [ ] Each service has clear responsibility statement
 - [ ] Dependency injection approach is documented
-- [ ] Essentials file is ~60% size of full file
+- [ ] Context file is ~60% size of full file
 
 ---
 
@@ -793,7 +799,7 @@ This architecture enables:
 
 Files created:
 - product-guidelines/09b-application-architecture.md
-- product-guidelines/09b-application-architecture-essentials.md
+- product-guidelines/09b-application-architecture.ctx.md
 
 Next, we'll generate your product backlog.
 
@@ -805,8 +811,7 @@ Or check progress: /cascade-status
 
 ## Reference
 
-- Template (full): `/templates/09b-application-architecture-template.md`
-- Template (essentials): `/templates/09b-application-architecture-essentials-template.md`
+- Template: `/templates/09b-application-architecture-template.md`
 - Example: `/examples/compliance-saas/09b-application-architecture.md`
 
 ---

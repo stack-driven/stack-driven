@@ -52,18 +52,18 @@ Session 2: /create-product-strategy     → product-guidelines/01-product-strate
   ↓ (AI reads journey + strategy, documents constraints)
 
 Session 2a: /document-constraints     → product-guidelines/02a-constraints.md
-                                        product-guidelines/02a-constraints-essentials.md
+                                        product-guidelines/02a-constraints.ctx.md
   ↓ (AI reads journey + strategy + constraints, chooses tech)
 
 Session 3: /choose-tech-stack          → product-guidelines/02-tech-stack.md
   ↓ (AI reads journey + strategy + tech, defines coding standards)
 
 Session 3b: /define-coding-standards  → product-guidelines/02b-coding-standards.md
-                                       product-guidelines/02b-coding-standards-essentials.md
+                                       product-guidelines/02b-coding-standards.ctx.md
   ↓ (AI reads all previous + standards, defines AI strategy if AI in stack)
 
 Session 3c: /define-ai-integration-strategy → product-guidelines/02c-ai-integration-strategy.md
-                                              product-guidelines/02c-ai-integration-strategy-essentials.md
+                                              product-guidelines/02c-ai-integration-strategy.ctx.md
   ↓ (AI reads all previous + AI strategy, derives tactics)
 
 Session 4: /generate-strategy          → product-guidelines/03a-mission.md
@@ -82,18 +82,18 @@ Session 7: /design-database-schema     → product-guidelines/07-database-schema
   ↓ (AI reads schema, designs high-level API architecture)
 
 Session 8: /generate-api-design        → product-guidelines/08-api-design.md
-                                         product-guidelines/08-api-design-essentials.md
+                                         product-guidelines/08-api-design.ctx.md
   ↓ (AI reads API design, generates detailed contracts)
 
 Session 8b: /generate-api-contracts    → product-guidelines/08b-api-contracts.md
-                                         product-guidelines/08b-api-contracts-essentials.md
+                                         product-guidelines/08b-api-contracts.ctx.md
   ↓ (AI reads contracts, defines testing strategy)
 
 Session 9: /create-test-strategy       → product-guidelines/09-test-strategy.md
   ↓ (AI reads tech stack, architecture, schemas, and APIs to model application)
 
 Session 9b: /model-application         → product-guidelines/09b-application-architecture.md
-                                        product-guidelines/09b-application-architecture-essentials.md
+                                        product-guidelines/09b-application-architecture.ctx.md
   ↓ (AI reads everything including architecture, generates backlog)
 
 Session 10: /generate-backlog          → product-guidelines/10-backlog/
@@ -178,12 +178,12 @@ Your production-ready system is ready with database schema, API contracts, testi
 product-guidelines/
 ├── 00-user-journey.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
-├── 01-product-strategy-essentials.md (Session 2)
+├── 01-product-strategy.ctx.md (Session 2)
 ├── 02a-constraints.md (Session 2a)
-├── 02a-constraints-essentials.md (Session 2a)
+├── 02a-constraints.ctx.md (Session 2a)
 ├── 02-tech-stack.md (Session 3)
 ├── 02b-coding-standards.md (Session 3b)
-├── 02b-coding-standards-essentials.md (Session 3b)
+├── 02b-coding-standards.ctx.md (Session 3b)
 ├── 03a-mission.md (Session 4)
 ├── 03b-metrics.md (Session 4)
 ├── 03c-monetization.md (Session 4)
@@ -192,9 +192,9 @@ product-guidelines/
 ├── 06-design-system.md (Session 6)
 ├── 07-database-schema.md (Session 7)
 ├── 08-api-design.md (Session 8)
-├── 08-api-design-essentials.md (Session 8)
+├── 08-api-design.ctx.md (Session 8)
 ├── 08b-api-contracts.md (Session 8b)
-├── 08b-api-contracts-essentials.md (Session 8b)
+├── 08b-api-contracts.ctx.md (Session 8b)
 ├── 09-test-strategy.md (Session 9)
 ├── 10-backlog/ (Session 10)
 ├── 12-project-scaffold/ (Session 12 - actual code files)
@@ -236,6 +236,85 @@ Used by slash commands to generate your outputs. You don't edit these directly.
 ### `/foundation/` & `/stack/` - Framework Guides
 
 High-level frameworks explaining concepts. NOT prescriptive. Use as reference.
+
+---
+
+## Context Files (.ctx.md) - AI-Optimized Cascade Inputs
+
+Many sessions generate **two versions** of output files:
+
+1. **Source file (.md)** - Complete documentation for humans
+   - Full specifications with rationale
+   - "What We DIDN'T Choose" sections explaining alternatives
+   - Detailed examples and explanations
+   - Used for stakeholder communication and understanding "why"
+
+2. **Context file (.ctx.md)** - Condensed version for AI consumption
+   - 60-80% token reduction
+   - Keeps decisions, configurations, and technical specs
+   - Removes rationale, alternatives considered, and detailed explanations
+   - Optimized for cascade sessions that need facts, not reasoning
+
+### Which Sessions Create Context Files?
+
+**Sessions WITH .ctx.md files** (read by core cascade):
+- `00-user-journey.ctx.md` (~70% reduction) - Journey steps and value delivery
+- `01-product-strategy.ctx.md` (~65% reduction) - Vision, goals, positioning
+- `02a-constraints.ctx.md` (~70% reduction) - Technical, organizational constraints
+- `02b-coding-standards.ctx.md` (~70% reduction) - Framework patterns, file organization
+- `02c-ai-integration-strategy.ctx.md` (~70% reduction) - AI implementation patterns, model choices
+- `07-database-schema.ctx.md` (~56% reduction) - Table names, relationships (not field details)
+- `08-api-design.ctx.md` - API paradigm, serialization, auth method
+- `08b-api-contracts.ctx.md` (~80% reduction) - Endpoint lists (not full schemas)
+- `09-test-strategy.ctx.md` (~66% reduction) - Coverage targets, testing tools
+- `09b-application-architecture.ctx.md` (~60% reduction) - Service/repository method signatures
+
+**Sessions WITHOUT .ctx.md files:**
+- `02-tech-stack.md` - Core tech decisions, always read in full
+- `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md` - Already concise
+- `04-architecture.md` - Architecture principles, always read in full
+- `05-brand-strategy.md`, `06-design-system.md` - Only read by optional post-cascade extensions
+- `10-backlog/` stories - User stories don't need condensed versions
+- `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md` - Final outputs
+
+### How Context Files Work
+
+Context files are automatically generated by the **distillation sub-agent** at the end of each session:
+
+```
+Session completes → Writes full .md file → Invokes distillation agent → Generates .ctx.md file
+```
+
+The agent applies universal extraction rules:
+- **Keep:** Decisions, configurations, technical specifications, method signatures
+- **Remove:** Rationale, alternatives considered, detailed explanations, examples
+
+### Token Savings Impact
+
+**Session 10 (/generate-backlog)** - The critical session:
+- **Before:** Reads full .md files (~40K tokens)
+- **After:** Reads .ctx.md files (~15K tokens)
+- **Reduction:** 62% token savings = faster execution + lower costs
+
+**Session 12 (/scaffold-project)**:
+- **Before:** ~35K tokens
+- **After:** ~12K tokens
+- **Reduction:** 65% token savings
+
+### When to Read Which Version?
+
+**Read .ctx.md (Token Optimization):**
+- Cascade sessions building on previous decisions (Sessions 2-14)
+- Dev commands loading technical specs (/plan-issue, /implement-issue)
+- Need decisions only, not "why" (configuration, not explanation)
+
+**Read full .md (Comprehensive Context):**
+- User asks to review or explain decisions
+- Validation/quality checks (/validate-outputs needs rationale)
+- Understanding "why" for plan challenges or design reviews
+- Files without .ctx versions (tech-stack, architecture, brand, design)
+
+**See CLAUDE.md** for complete decision matrix showing exactly which file version each session reads.
 
 ---
 

@@ -48,20 +48,20 @@ Based on issue type, load these files from `product-guidelines/`:
 
 **Always read:**
 - `00-user-journey.md` - Understand which journey step this serves
-- `02-tech-stack.md` - Technology choices and patterns
-- `02b-coding-standards-essentials.md` - Framework-specific patterns, file organization, naming conventions
+- `02-tech-stack.md` - Technology choices and patterns (no .ctx version - always read full)
+- `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions (context version for token efficiency)
 
 **Conditionally read based on issue labels/content:**
 
 | Issue Type | Guidelines to Load |
 |------------|-------------------|
-| UI/Frontend | `06-design-system.md` |
-| API/Backend | `08-api-design.md`, `08b-api-contracts.md`, `04-architecture.md` |
-| Database | `07-database-schema.md` |
+| UI/Frontend | `06-design-system.md` (no .ctx version) |
+| API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.md` (no .ctx version) |
+| Database | `07-database-schema.ctx.md` (context version for token efficiency) |
 | New Feature | `00-user-journey.md`, `03b-metrics.md` |
 | Bug Fix | Relevant technical specs only |
-| Testing | `09-test-strategy.md` |
-| Infrastructure | `04-architecture.md`, `13-deployment-plan.md` |
+| Testing | `09-test-strategy.ctx.md` (context version for token efficiency) |
+| Infrastructure | `04-architecture.md` (no .ctx version), `13-deployment-plan.md` |
 
 **Smart detection:**
 - Search issue body for keywords: "API", "database", "UI", "frontend", "backend"
@@ -120,7 +120,7 @@ Create a detailed plan using this structure:
 - Backend: {Language, framework, patterns}
 - Database: {Type, specific patterns}
 
-**Coding Standards:** {Reference patterns from 02b-coding-standards-essentials.md}
+**Coding Standards:** {Reference patterns from 02b-coding-standards.ctx.md}
 - File organization: {Directory structure, module patterns}
 - Naming conventions: {Component, function, variable naming}
 - Framework patterns: {Hooks, state management, error handling}
@@ -129,10 +129,10 @@ Create a detailed plan using this structure:
 {Reference components, colors, typography from 06-design-system.md}
 
 **API Contract Reference:** {If API work}
-{Reference API paradigm/serialization from 08-api-design.md, endpoints/schemas from 08b-api-contracts.md}
+{Reference API paradigm/serialization from 08-api-design.ctx.md, endpoints/schemas from 08b-api-contracts.ctx.md}
 
 **Database Schema Reference:** {If database work}
-{Reference tables, relationships from 07-database-schema.md}
+{Reference tables, relationships from 07-database-schema.ctx.md}
 
 ## Technical Approach
 
@@ -256,7 +256,7 @@ db/migrations/001_add_feature.sql
 
 - Journey Step: product-guidelines/00-user-journey.md #{step-number}
 - Tech Stack: product-guidelines/02-tech-stack.md
-- Coding Standards: product-guidelines/02b-coding-standards-essentials.md
+- Coding Standards: product-guidelines/02b-coding-standards.ctx.md
 - {Other relevant guideline references}
 
 ---

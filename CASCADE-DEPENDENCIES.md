@@ -6,7 +6,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 - Spot missing dependencies when adding features
 - Understand the impact radius of changes to outputs
 - Debug cascade failures by tracing data flow
-- Verify essentials file usage for token optimization
+- Verify context file usage for token optimization
 
 ---
 
@@ -14,7 +14,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ```
 [FULL] Full file
-[ESS] Essentials file (condensed version)
+[CTX] Context file (condensed version)
 [TMPL] Template file
 ```
 
@@ -36,7 +36,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ### Session 2: `/create-product-strategy`
 **Outputs:**
 - `01-product-strategy.md`
-- `01-product-strategy-essentials.md`
+- `01-product-strategy.ctx.md`
 
 **Reads:**
 ```
@@ -46,7 +46,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Session 1
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 4 (generate-strategy)
 - Session 10 (generate-backlog)
 - Session 12 (scaffold-project)
@@ -56,19 +56,18 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ### Session 2a: `/document-constraints`
 **Outputs:**
 - `02a-constraints.md`
-- `02a-constraints-essentials.md`
+- `02a-constraints.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
-├─ [TMPL] /templates/02a-constraints-template.md
-└─ [TMPL] /templates/02a-constraints-essentials-template.md
+└─ [TMPL] /templates/02a-constraints-template.md
 ```
 
 **Dependencies:** Sessions 1, 2
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 3 (choose-tech-stack)
 - Session 4 (generate-strategy)
 - Session 10 (generate-backlog)
@@ -83,21 +82,21 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
-├─ [ESS] product-guidelines/02a-constraints.md (if exists)
-├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
+├─ [CTX] product-guidelines/02a-constraints.md (if exists)
+├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
 └─ [TMPL] /templates/02-tech-stack-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists)
 
-**Why read full 01 not essentials?** Tech stack needs detailed market analysis, competitive positioning, and roadmap themes from full strategy to derive optimal technical choices.
+**Why read full 01 not context file?** Tech stack needs detailed market analysis, competitive positioning, and roadmap themes from full strategy to derive optimal technical choices.
 
 ---
 
 ### Session 3b: `/define-coding-standards`
 **Outputs:**
 - `02b-coding-standards.md`
-- `02b-coding-standards-essentials.md`
+- `02b-coding-standards.ctx.md`
 
 **Reads:**
 ```
@@ -110,7 +109,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Sessions 1, 2, 3, 4 (03a-mission.md from generate-strategy)
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 4 (generate-strategy)
 - Session 9b (model-application)
 - Session 10 (generate-backlog)
@@ -121,22 +120,21 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ### Session 3c: `/define-ai-integration-strategy` (Optional)
 **Outputs:**
 - `02c-ai-integration-strategy.md`
-- `02c-ai-integration-strategy-essentials.md`
+- `02c-ai-integration-strategy.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [TMPL] /templates/02c-ai-integration-strategy-template.md
-└─ [TMPL] /templates/02c-ai-integration-strategy-essentials-template.md
+└─ [TMPL] /templates/02c-ai-integration-strategy-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 3
 
 **Condition:** Only runs if AI provider is present in tech stack
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 4 (generate-strategy)
 - Session 7 (database-schema) - for vector DB if RAG
 - Session 8 (api-design) - for API paradigm decisions
@@ -159,11 +157,11 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
-├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [CTX] product-guidelines/01-product-strategy.ctx.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
-├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
-├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
+├─ [CTX] product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
 └─ [TMPL] /templates/03a-mission-template.md
     /templates/03b-metrics-template.md
     /templates/03c-monetization-template.md
@@ -172,7 +170,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (optional)
 
-**Why essentials for 01 and 02b?** Session 4 needs vision, positioning, goals, and principles (in essentials) but not detailed market analysis. Similarly needs coding patterns but not detailed implementation examples.
+**Why context file for 01 and 02b?** Session 4 needs vision, positioning, goals, and principles (in context file) but not detailed market analysis. Similarly needs coding patterns but not detailed implementation examples.
 
 ---
 
@@ -190,7 +188,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Sessions 1, 2, 4
 
-**No essentials file created.** Session 5 is only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity) which need full brand personality and positioning. Session 10 and 12 don't read brand strategy.
+**No context file created.** Session 5 is only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity) which need full brand personality and positioning. Session 10 and 12 don't read brand strategy.
 
 ---
 
@@ -200,21 +198,21 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
-├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [CTX] product-guidelines/01-product-strategy.ctx.md
 ├─ [FULL] product-guidelines/05-brand-strategy.md
 └─ [TMPL] /templates/06-design-system-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 5
 
-**No essentials file created.** Session 6 is only read by post-cascade extensions and dev-time commands (design-user-experience, implement-issue), which need full component specifications and design tokens. Session 10 and 12 don't read design system. Template already small (1.7KB).
+**No context file created.** Session 6 is only read by post-cascade extensions and dev-time commands (design-user-experience, implement-issue), which need full component specifications and design tokens. Session 10 and 12 don't read design system. Template already small (1.7KB).
 
 ---
 
 ### Session 7: `/design-database-schema`
 **Outputs:**
 - `07-database-schema.md`
-- `07-database-schema-essentials.md`
+- `07-database-schema.ctx.md`
 
 **Reads:**
 ```
@@ -226,7 +224,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Sessions 1, 3, 4
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 8 (generate-api-design)
 - Session 8b (generate-api-contracts)
 - Session 9 (create-test-strategy)
@@ -234,39 +232,39 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 - Session 10 (generate-backlog)
 - Session 12 (scaffold-project)
 
-**Why essentials?** 56% reduction. Contains table list, ERD, relationships—sufficient for API design and architecture without column details, indexes, migrations.
+**Why context file?** 56% reduction. Contains table list, ERD, relationships—sufficient for API design and architecture without column details, indexes, migrations.
 
 ---
 
 ### Session 8: `/generate-api-design`
 **Outputs:**
 - `08-api-design.md`
-- `08-api-design-essentials.md`
+- `08-api-design.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
 ├─ [TMPL] /templates/08-api-design-template.md
 └─ [REF] /reference-material/serialization-guide.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 8b (generate-api-contracts) - reads API paradigm decisions
 - Session 10 (generate-backlog) - reads API paradigm and serialization for API-driven stories
 
-**Why essentials?** 79% reduction. Contains API paradigm decision (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth approach, rate limiting strategy—sufficient for backlog generation without detailed analysis sections.
+**Why context file?** 79% reduction. Contains API paradigm decision (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth approach, rate limiting strategy—sufficient for backlog generation without detailed analysis sections.
 
 ---
 
 ### Session 8b: `/generate-api-contracts`
 **Outputs:**
 - `08b-api-contracts.md`
-- `08b-api-contracts-essentials.md`
+- `08b-api-contracts.ctx.md`
 
 **Reads:**
 ```
@@ -274,72 +272,72 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
 └─ [TMPL] /templates/08b-api-contracts-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7, 8
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 9 (create-test-strategy)
 - Session 9b (model-application)
 - Session 10 (generate-backlog)
 - Session 12 (scaffold-project)
 
-**Why essentials?** 79% reduction. Contains endpoint list organized by journey step—sufficient for test strategy, backlog, and scaffold generation without full request/response schemas, validation rules, error codes.
+**Why context file?** 79% reduction. Contains endpoint list organized by journey step—sufficient for test strategy, backlog, and scaffold generation without full request/response schemas, validation rules, error codes.
 
 ---
 
 ### Session 9: `/create-test-strategy`
 **Outputs:**
 - `09-test-strategy.md`
-- `09-test-strategy-essentials.md`
+- `09-test-strategy.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
-├─ [ESS] product-guidelines/08b-api-contracts-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 └─ [TMPL] /templates/09-test-strategy-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 4, 7, 8b
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 10 (generate-backlog)
 - Session 12 (scaffold-project)
 
-**Why essentials?** 66% reduction. Contains coverage targets, test types, quality gates—sufficient for backlog and scaffold without detailed test patterns and examples.
+**Why context file?** 66% reduction. Contains coverage targets, test types, quality gates—sufficient for backlog and scaffold without detailed test patterns and examples.
 
 ---
 
 ### Session 9b: `/model-application`
 **Outputs:**
 - `09b-application-architecture.md`
-- `09b-application-architecture-essentials.md`
+- `09b-application-architecture.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
-├─ [ESS] product-guidelines/08-api-contracts-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
+├─ [CTX] product-guidelines/08-api-contracts.ctx.md
 └─ [TMPL] /templates/09b-application-architecture-template.md
 ```
 
 **Dependencies:** Sessions 1, 3, 3b, 4, 7, 8
 
-**Downstream consumers of essentials:**
+**Downstream consumers of context files:**
 - Session 10 (generate-backlog) - needs method signatures for implementation stories
 - Session 12 (scaffold-project) - needs class structure for code skeleton generation
 
-**Why essentials for inputs?** Architecture doesn't need full schemas/contracts—just table list, relationships, endpoint list. Needs essentials of coding standards for framework patterns without detailed examples.
+**Why context file for inputs?** Architecture doesn't need full schemas/contracts—just table list, relationships, endpoint list. Needs context file of coding standards for framework patterns without detailed examples.
 
-**Why essentials for output?** 60% reduction. Contains service list with method signatures, repository methods, controller endpoint mappings—sufficient for backlog story generation and scaffold code skeletons without detailed architecture decision records and pattern explanations.
+**Why context file for output?** 60% reduction. Contains service list with method signatures, repository methods, controller endpoint mappings—sufficient for backlog story generation and scaffold code skeletons without detailed architecture decision records and pattern explanations.
 
 ---
 
@@ -349,19 +347,19 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
-├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [CTX] product-guidelines/01-product-strategy.ctx.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
-├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
-├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
+├─ [CTX] product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
 ├─ [FULL] product-guidelines/03a-mission.md
 ├─ [FULL] product-guidelines/03b-metrics.md
 ├─ [FULL] product-guidelines/03c-monetization.md
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
-├─ [ESS] product-guidelines/08-api-contracts-essentials.md
-├─ [ESS] product-guidelines/09-test-strategy-essentials.md
-├─ [ESS] product-guidelines/09b-application-architecture-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
+├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/09-test-strategy.ctx.md
+├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
 └─ [TMPL] /templates/issue-template.md
 ```
 
@@ -369,15 +367,15 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Why all these files?** Backlog is the convergence point where all previous decisions materialize into user stories:
 - 00 (journey) → Epic structure, story prioritization
-- 01-product-strategy-essentials → Vision, goals for story context
+- 01-product-strategy.ctx → Vision, goals for story context
 - 02 (tech-stack) → Technical implementation approach in stories
-- 02b-coding-standards-essentials → File organization, naming for implementation tasks
+- 02b-coding-standards.ctx → File organization, naming for implementation tasks
 - 03 (mission) → Product context in story descriptions
 - 04 (metrics/monetization/architecture) → Success criteria, tracking, technical constraints
-- 07-database-schema-essentials → Data model references in stories
-- 08b-api-contracts-essentials → Endpoint implementation stories
-- 09-test-strategy-essentials → Testing acceptance criteria
-- 09b-application-architecture-essentials → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
+- 07-database-schema.ctx → Data model references in stories
+- 08b-api-contracts.ctx → Endpoint implementation stories
+- 09-test-strategy.ctx → Testing acceptance criteria
+- 09b-application-architecture.ctx → Service/method implementation stories ("Implement DocumentService.uploadDocument()")
 
 **Note:** Sessions 5 (brand-strategy) and 6 (design-system) NOT read. Backlog focuses on technical implementation user stories. Design/brand context comes from journey and product strategy.
 
@@ -406,32 +404,32 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
-├─ [ESS] product-guidelines/01-product-strategy-essentials.md
+├─ [CTX] product-guidelines/01-product-strategy.ctx.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [ESS] product-guidelines/02a-constraints-essentials.md (if exists)
-├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
-├─ [ESS] product-guidelines/02c-ai-integration-strategy-essentials.md (if exists)
+├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
+├─ [CTX] product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
 ├─ [FULL] product-guidelines/04-architecture.md
-├─ [ESS] product-guidelines/07-database-schema-essentials.md
-├─ [ESS] product-guidelines/08-api-contracts-essentials.md
-├─ [ESS] product-guidelines/09-test-strategy-essentials.md
-├─ [ESS] product-guidelines/09b-application-architecture-essentials.md
+├─ [CTX] product-guidelines/07-database-schema.ctx.md
+├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/09-test-strategy.ctx.md
+├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
 ├─ [FULL] product-guidelines/10-backlog/BACKLOG.md
 └─ [TMPL] /templates/12-project-scaffold-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b, 10
 
-**Why all these essentials files?** Scaffold GENERATES actual code:
+**Why all these context files?** Scaffold GENERATES actual code:
 - 00 (journey) → Project name, domain concepts
-- 01-product-strategy-essentials → Vision for code comments
+- 01-product-strategy.ctx → Vision for code comments
 - 02 (tech-stack) → Languages, frameworks, tools to scaffold
-- 02b-coding-standards-essentials → Directory structure, file organization, naming conventions
+- 02b-coding-standards.ctx → Directory structure, file organization, naming conventions
 - 04 (architecture) → Monorepo/multi-repo, service structure
-- 07-database-schema-essentials → Entity classes, repository interfaces
-- 08b-api-contracts-essentials → Controller/handler method stubs
-- 09-test-strategy-essentials → Test file structure, coverage setup
-- 09b-application-architecture-essentials → Service classes with method signatures, dependency injection
+- 07-database-schema.ctx → Entity classes, repository interfaces
+- 08b-api-contracts.ctx → Controller/handler method stubs
+- 09-test-strategy.ctx → Test file structure, coverage setup
+- 09b-application-architecture.ctx → Service classes with method signatures, dependency injection
 - 10 (backlog) → TODO comments linking to user stories
 
 **Important:** Scaffold uses framework-specific best practices (e.g., Next.js App Router patterns), NOT generic templates. Code placed in repository root, not product-guidelines/.
@@ -602,10 +600,10 @@ ALL files in product-guidelines/
 
 **Purpose:** Implement GitHub issue following approved plan. Loads relevant guardrails based on work type.
 
-**Why full files, not essentials?** Implementation needs:
+**Why full files, not context files?** Implementation needs:
 - Full schema with indexes, constraints, migrations (not just table list)
 - Full API contracts with validation rules, error codes (not just endpoint list)
-- Full design tokens and component specs (no essentials file exists)
+- Full design tokens and component specs (no context file exists)
 
 ---
 
@@ -626,7 +624,7 @@ ALL files in product-guidelines/
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [ESS] product-guidelines/02b-coding-standards-essentials.md
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
 └─ Changed files in current git diff
 ```
 
@@ -634,23 +632,23 @@ ALL files in product-guidelines/
 
 ---
 
-## Essentials Files: Token Optimization Strategy
+## Context Files: Token Optimization Strategy
 
-**Files WITH essentials versions:**
-- `01-product-strategy-essentials.md` (65% reduction)
-- `02b-coding-standards-essentials.md` (70% reduction)
-- `07-database-schema-essentials.md` (56% reduction)
-- `08-api-contracts-essentials.md` (80% reduction)
-- `09-test-strategy-essentials.md` (66% reduction)
-- `09b-application-architecture-essentials.md` (60% reduction)
+**Files WITH context files:**
+- `01-product-strategy.ctx.md` (65% reduction)
+- `02b-coding-standards.ctx.md` (70% reduction)
+- `07-database-schema.ctx.md` (56% reduction)
+- `08-api-contracts.ctx.md` (80% reduction)
+- `09-test-strategy.ctx.md` (66% reduction)
+- `09b-application-architecture.ctx.md` (60% reduction)
 
-**Files WITHOUT essentials versions:**
+**Files WITHOUT context files:**
 - `05-brand-strategy.md` - Only read by post-cascade extensions needing full context
 - `06-design-system.md` - Only read by post-cascade/dev-time needing full component specs, template already small (1.7KB)
 
-**When to use essentials vs full:**
+**When to use context files vs full:**
 
-**Use essentials when:**
+**Use context files when:**
 - Session 10 (backlog) or Session 12 (scaffold) reads it
 - File is large with detailed specs/examples
 - High-level structure sufficient (table list, endpoint list, service signatures)
@@ -750,37 +748,37 @@ When adding a new session or modifying an existing one:
 
 1. **Identify inputs:**
    - [ ] Which previous outputs does this session need?
-   - [ ] Do I need full files or essentials versions?
+   - [ ] Do I need full files or context files?
    - [ ] What template(s) provide output structure?
 
-2. **Verify essentials usage:**
-   - [ ] If reading 01, 02b, 07, 08, 09, 09b → use essentials if available
+2. **Verify context file usage:**
+   - [ ] If reading 01, 02b, 07, 08, 09, 09b → use context files if available
    - [ ] Exception: Session 3 reads full 01 (needs market analysis)
    - [ ] Exception: Dev commands read full files (need implementation details)
 
 3. **Document downstream impact:**
    - [ ] Which sessions read MY output?
-   - [ ] Do I need to create an essentials version?
+   - [ ] Do I need to create a context file?
    - [ ] Which sections are critical for downstream consumers?
 
 4. **Update this document:**
    - [ ] Add session to appropriate section
-   - [ ] List all inputs with [FULL]/[ESS] notation
-   - [ ] Document why essentials vs full
+   - [ ] List all inputs with [FULL]/[CTX] notation
+   - [ ] Document why context files vs full
    - [ ] Add to impact analysis section
 
 5. **Test cascade flow:**
    - [ ] Does session generate journey-specific output?
    - [ ] Can downstream sessions consume my output?
-   - [ ] Are token counts reasonable with essentials files?
+   - [ ] Are token counts reasonable with context files?
 
 ---
 
 ## Token Budget Reference
 
-Essentials files target **30-80% reduction** from full versions:
+Context files target **30-80% reduction** from full versions:
 
-| File | Full Size | Essentials Size | Reduction | Primary Consumers |
+| File | Full Size | Context Size | Reduction | Primary Consumers |
 |------|-----------|----------------|-----------|-------------------|
 | 01-product-strategy | ~12KB | ~4KB | 65% | Sessions 4, 10, 12 |
 | 02b-coding-standards | ~15KB | ~4.5KB | 70% | Sessions 4, 9b, 10, 12 |
@@ -798,16 +796,16 @@ Essentials files target **30-80% reduction** from full versions:
 
 ```
 1  → refine-journey           00-user-journey.md
-2  → create-product-strategy  01-product-strategy.md + essentials
+2  → create-product-strategy  01-product-strategy.md + context
 3  → choose-tech-stack        02-tech-stack.md
-3b → define-coding-standards  02b-coding-standards.md + essentials
+3b → define-coding-standards  02b-coding-standards.md + context
 4  → generate-strategy        03a-mission, 03b-metrics/monetization/architecture
 5  → create-brand-strategy    05-brand-strategy.md
 6  → create-design            06-design-system.md
-7  → design-database-schema   07-database-schema.md + essentials
-8  → generate-api-contracts   08-api-contracts.md + essentials
-9  → create-test-strategy     09-test-strategy.md + essentials
-9b → model-application        09b-application-architecture.md + essentials
+7  → design-database-schema   07-database-schema.md + context
+8  → generate-api-contracts   08-api-contracts.md + context
+9  → create-test-strategy     09-test-strategy.md + context
+9b → model-application        09b-application-architecture.md + context
 10 → generate-backlog         10-backlog/
 11 → create-gh-issues         (GitHub issues)
 12 → scaffold-project         12-project-scaffold.md + code files

@@ -77,68 +77,73 @@ All are created in a single session but stored as separate documents for modular
 
 ---
 
-## The Essentials File Pattern
+## The Context File Pattern
 
-### What Are Essentials Files?
+### What Are Context Files?
 
 Some sessions create TWO files:
 1. **Full version** (`XX-name.md`) - Complete detailed specification
-2. **Essentials version** (`XX-name-essentials.md`) - Condensed for downstream consumption
+2. **Context file** (`XX-name.ctx.md`) - Condensed for downstream consumption
 
-### When to Create Essentials Files
+### When to Create Context Files
 
-Create an essentials file when **ALL THREE** conditions are met:
+Create an context file when **ALL THREE** conditions are met:
 
 1. **Read by core cascade Sessions 10 (backlog) and/or 12 (scaffold)**
 2. **Full file is large** (>5KB) with extensive schemas, specs, or examples
 3. **Token reduction matters** - Downstream sessions don't need every detail
 
-### Sessions WITH Essentials Files
+### Sessions WITH Context Files
 
-| Session | Full File | Essentials | Reduction | Why? |
+| Session | Full File | Context | Reduction | Why? |
 |---------|-----------|------------|-----------|------|
-| 01 | `01-product-strategy.md` | `01-product-strategy-essentials.md` | 65% | Backlog needs strategic context, not full competitive analysis |
-| 02b | `02b-coding-standards.md` | `02b-coding-standards-essentials.md` | 70% | Backlog/scaffold need key standards, not every linting rule |
-| 07 | `07-database-schema.md` | `07-database-schema-essentials.md` | 56% | API contracts need table relationships, not full migration SQL |
-| 08 | `08-api-contracts.md` | `08-api-contracts-essentials.md` | 80% | Backlog needs endpoint list, not full OpenAPI specs |
-| 09 | `09-test-strategy.md` | `09-test-strategy-essentials.md` | 66% | Scaffold needs test approach, not detailed test case examples |
-| 09b | `09b-application-architecture.md` | `09b-application-architecture-essentials.md` | 60% | Scaffold needs layer structure, not every class/function |
+| 01 | `01-product-strategy.md` | `01-product-strategy.ctx.md` | 65% | Backlog needs strategic context, not full competitive analysis |
+| 02b | `02b-coding-standards.md` | `02b-coding-standards.ctx.md` | 70% | Backlog/scaffold need key standards, not every linting rule |
+| 07 | `07-database-schema.md` | `07-database-schema.ctx.md` | 56% | API contracts need table relationships, not full migration SQL |
+| 08 | `08-api-contracts.md` | `08-api-contracts.ctx.md` | 80% | Backlog needs endpoint list, not full OpenAPI specs |
+| 09 | `09-test-strategy.md` | `09-test-strategy.ctx.md` | 66% | Scaffold needs test approach, not detailed test case examples |
+| 09b | `09b-application-architecture.md` | `09b-application-architecture.ctx.md` | 60% | Scaffold needs layer structure, not every class/function |
 
-### Sessions WITHOUT Essentials Files
+### Sessions WITHOUT Context Files
 
 **Session 05 (Brand Strategy):**
-- No essentials file
+- No context file
 - Reason: Only read by **post-cascade extensions** (discover-naming, define-messaging, design-brand-identity)
 - Those commands need full brand personality, not condensed version
 - Not read by Sessions 10 or 12
 
 **Session 06 (Design System):**
-- No essentials file
+- No context file
 - Reason: Only read by **post-cascade extensions** and **dev-time commands** (plan-issue, implement-issue)
 - UI implementation needs complete component specs, color tokens, spacing system
 - Not read by Sessions 10 or 12
 - Template already small (1.7KB) - condensing wouldn't save tokens
 
-### How to Create Essentials Files
+### How Context Files Are Generated
 
-Essentials templates define condensed structure:
-- `01-product-strategy-essentials-template.md`
-- `02b-coding-standards-essentials-template.md`
-- `07-database-schema-essentials-template.md`
-- `08-api-contracts-essentials-template.md`
-- `09-test-strategy-essentials-template.md`
-- `09b-application-architecture-essentials-template.md`
+Context files (`.ctx.md`) are **automatically generated** from source files (`.md`) using the **distillation sub-agent** (`.claude/agents/distill-context.md`).
 
-Commands generate both files in the same session:
-```markdown
-## Steps to Execute
+**The process:**
+1. Session command generates full source file: `XX-name.md`
+2. Session command invokes distillation agent:
+   ```markdown
+   Task tool with:
+   - subagent_type: distill-context
+   - Source file: product-guidelines/XX-name.md
+   - Output file: product-guidelines/XX-name.ctx.md
+   ```
+3. Distillation agent reads source and applies universal extraction rules
+4. Agent generates context file with 60-70% token reduction
 
-1. Read previous cascade outputs
-2. Generate full specification
-3. Write `XX-name.md`
-4. Create condensed version for downstream sessions
-5. Write `XX-name-essentials.md`
-```
+**What the agent extracts:**
+- ✅ Decisions, configurations, constraints, rules
+- ✅ Specific values, thresholds, settings
+- ✅ Architecture components, database entities, API endpoints
+- ❌ Rationale and explanations removed
+- ❌ Alternatives and "what we didn't choose" removed
+- ❌ Validation checklists and quality criteria removed
+
+**No context templates needed!** The agent preserves the source file's section structure automatically.
 
 ---
 
@@ -156,10 +161,6 @@ Examples:
 
 **Interview templates:**
 - `00-user-journey-interview-template.md` (used during Session 1 progressive interrogation)
-
-**Essentials templates:**
-- `[session-number]-[output-name]-essentials-template.md`
-- Example: `01-product-strategy-essentials-template.md`
 
 **Backlog story template:**
 - `backlog-issue-template.md` (used by Session 10 for each user story)
@@ -201,10 +202,10 @@ A: Session 10 generates many files (30-50 stories), not one document. Uses `back
 **Q: Why doesn't Session 12 have a template?**
 A: Session 12 generates actual code files (package.json, docker-compose.yml) specific to chosen tech stack. Can't template code for unknown technologies.
 
-**Q: When should I create an essentials file?**
+**Q: When should I create an context file?**
 A: Only when the session is read by Sessions 10/12 AND the full file is large enough that token reduction matters.
 
-**Q: Why don't Sessions 5 and 6 have essentials files?**
+**Q: Why don't Sessions 5 and 6 have context files?**
 A: They're only read by post-cascade extensions that need full context, not by Sessions 10/12.
 
 **Q: Can I add a new template?**
