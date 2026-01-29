@@ -1202,8 +1202,19 @@ This command generates:
 - Setup instructions (Python/TypeScript)
 - "What We DIDN'T Choose" analysis (8+ alternatives)
 
-**2. Essentials Documentation** (`product-guidelines/09-test-strategy-essentials.md`):
-- **Purpose**: Condensed version for Session 10 (backlog generation) - 66% smaller
+**2. Context Documentation** (`product-guidelines/09-test-strategy.ctx.md`):
+
+After writing the full test strategy, invoke the distillation sub-agent:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/09-test-strategy.md
+- Context template: templates/09-test-strategy-template.ctx.md
+- Output file: product-guidelines/09-test-strategy.ctx.md
+```
+
+The distillation agent will create a condensed version for Session 10 (backlog generation) - 66% smaller:
 - Coverage targets (for story estimation)
 - Test types required (unit, integration, E2E)
 - Testing tools (from tech stack)
@@ -1262,7 +1273,7 @@ Before completing this session, verify:
 
 **Documentation:**
 - [ ] Full test strategy file (`09-test-strategy.md`) complete with all details
-- [ ] Essentials file (`09-test-strategy-essentials.md`) generated for backlog use
+- [ ] Context file (`09-test-strategy.ctx.md`) generated for backlog use
 - [ ] "What We DIDN'T Choose" section complete (4+ alternatives) in full file
 - [ ] Testing workflows documented (TDD, regression)
 - [ ] Setup instructions clear and complete

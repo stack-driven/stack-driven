@@ -137,14 +137,24 @@ Always tie the reasoning back to the specific journey requirements.
 
 ### Step 9: Generate Output Files
 
-Create two files:
+First, create the full version:
 
 1. **Full Version**: `product-guidelines/02b-coding-standards.md`
    - Complete documentation with all examples
    - Detailed explanations and rationale
    - Full code samples
 
-2. **Essentials Version**: `product-guidelines/02b-coding-standards-essentials.md`
+Then, invoke the distillation sub-agent to create the context file:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/02b-coding-standards.md
+- Context template: templates/02b-coding-standards-template.ctx.md
+- Output file: product-guidelines/02b-coding-standards.ctx.md
+```
+
+2. **Context Version**: `product-guidelines/02b-coding-standards.ctx.md`
    - Condensed version for AI consumption
    - Key patterns and rules only
    - Critical examples only
@@ -190,7 +200,7 @@ Key decisions made:
 
 Files created:
 - 02b-coding-standards.md (full documentation)
-- 02b-coding-standards-essentials.md (condensed for AI consumption)
+- 02b-coding-standards.ctx.md (condensed for AI consumption)
 
 These standards will ensure consistency across all implementation sessions and provide AI agents with concrete patterns to follow.
 

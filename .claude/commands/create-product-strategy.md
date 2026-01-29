@@ -58,10 +58,10 @@ Use the Read tool to read `product-guidelines/00-user-journey.md`.
 
 ```bash
 Read templates/01-product-strategy-template.md
-Read templates/01-product-strategy-essentials-template.md
+Read templates/01-product-strategy-template.ctx.md
 ```
 
-The full template is comprehensive; the essentials template shows what to extract for backlog generation.
+The full template is comprehensive; the context template shows what to extract for backlog generation.
 
 ### Step 3: Interview the User
 
@@ -106,13 +106,17 @@ First, write the comprehensive product strategy:
 Write product-guidelines/01-product-strategy.md
 ```
 
-Then, create the essentials version for backlog generation:
+Then, invoke the distillation sub-agent to create the context file:
 
 ```bash
-Read templates/01-product-strategy-essentials-template.md
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/01-product-strategy.md
+- Context template: templates/01-product-strategy-template.ctx.md
+- Output file: product-guidelines/01-product-strategy.ctx.md
 ```
 
-Extract ONLY the information needed for backlog generation:
+The distillation agent will extract ONLY the information needed for backlog generation:
 - Vision statement (1 sentence)
 - Positioning statement (brief)
 - Strategic goals (names + metrics only, no elaboration)
@@ -121,14 +125,10 @@ Extract ONLY the information needed for backlog generation:
 - Key feature categories (for backlog organization)
 - Priority framework (for story prioritization)
 
-```bash
-Write product-guidelines/01-product-strategy-essentials.md
-```
-
 ## Output Locations
 
 1. `product-guidelines/01-product-strategy.md` - Full strategy (for stakeholders, investors, strategic alignment)
-2. `product-guidelines/01-product-strategy-essentials.md` - Essentials for backlog generation (optimized for Session 10)
+2. `product-guidelines/01-product-strategy.ctx.md` - Context file for backlog generation (optimized for Session 10)
 
 This validates:
 - User journey (with market sizing and competitive analysis)
@@ -192,7 +192,7 @@ You: Excellent. I've created two versions of your product strategy:
 - 6 roadmap themes (major initiatives)
 - Risk register (journey/market assumptions)
 
-**Essentials for Backlog** (product-guidelines/01-product-strategy-essentials.md):
+**Context File for Backlog** (product-guidelines/01-product-strategy.ctx.md):
 - Condensed version with only what Session 10 needs
 - 65% smaller, optimized for context efficiency
 - Used by /generate-backlog command

@@ -46,7 +46,7 @@ Analyze for:
 
 Read both templates to understand output structure:
 1. `/templates/02c-ai-integration-strategy-template.md` - Full strategy template
-2. `/templates/02c-ai-integration-strategy-essentials-template.md` - Essentials template
+2. `/templates/02c-ai-integration-strategy-template.ctx.md` - Context template
 
 ### Step 3: Apply AI Decision Frameworks
 
@@ -116,11 +116,19 @@ Every recommendation must:
 - Be realistic about constraints
 - Distinguish MVP from future optimizations
 
-### Step 5: Generate Essentials Version
+### Step 5: Generate Context Version
 
-Write to `product-guidelines/02c-ai-integration-strategy-essentials.md`:
+After writing the full strategy, invoke the distillation sub-agent:
 
-Distill to actionable decisions only (no rationale):
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/02c-ai-integration-strategy.md
+- Context template: templates/02c-ai-integration-strategy-template.ctx.md
+- Output file: product-guidelines/02c-ai-integration-strategy.ctx.md
+```
+
+The distillation agent will create a condensed version with actionable decisions only (no rationale):
 - Implementation pattern
 - Model selection table
 - System prompt templates
@@ -180,7 +188,7 @@ Flag any concerns prominently in the output.
 
 Inform the user:
 - [✓] Generated `product-guidelines/02c-ai-integration-strategy.md`
-- [✓] Generated `product-guidelines/02c-ai-integration-strategy-essentials.md`
+- [✓] Generated `product-guidelines/02c-ai-integration-strategy.ctx.md`
 - [✓] Updated `product-guidelines/02-tech-stack.md` with AI provider selection
 - Note: This strategy will inform Sessions 4, 7, 8, 9b, 10, 12, 13, and 14
 - -> Next: Run `/generate-strategy` to define mission, metrics, monetization, and architecture

@@ -603,11 +603,8 @@ Return 201 with Document (includes signed URL)
 
 Use templates:
 - `templates/09b-application-architecture-template.md` for full version
-- `templates/09b-application-architecture-essentials-template.md` for condensed version
 
-Write to:
-- `product-guidelines/09b-application-architecture.md` (full documentation)
-- `product-guidelines/09b-application-architecture-essentials.md` (~60% smaller, for Session 10 consumption)
+First, write the full version to `product-guidelines/09b-application-architecture.md`:
 
 **Full version includes**:
 - Journey mapping (services to journey steps)
@@ -619,7 +616,17 @@ Write to:
 - Architecture decisions (what/why/alternatives)
 - Dependency graph (visual and textual)
 
-**Essentials version includes** (for backlog generation):
+Then, invoke the distillation sub-agent to create the context file:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/09b-application-architecture.md
+- Context template: templates/09b-application-architecture-template.ctx.md
+- Output file: product-guidelines/09b-application-architecture.ctx.md
+```
+
+**Context version includes** (for backlog generation, ~60% smaller):
 - Service list with method signatures only
 - Repository list with key methods
 - Controller endpoint mappings
@@ -732,7 +739,7 @@ Write to:
    - Component architecture with props/state
    - Detailed architecture decisions with alternatives
 
-2. **`product-guidelines/09b-application-architecture-essentials.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
+2. **`product-guidelines/09b-application-architecture.ctx.md`**: Condensed for backlog (200-300 lines, ~60% reduction)
    - Service list with method signatures
    - Repository list with key methods
    - Controller endpoint mappings
@@ -793,7 +800,7 @@ This architecture enables:
 
 Files created:
 - product-guidelines/09b-application-architecture.md
-- product-guidelines/09b-application-architecture-essentials.md
+- product-guidelines/09b-application-architecture.ctx.md
 
 Next, we'll generate your product backlog.
 
@@ -806,7 +813,7 @@ Or check progress: /cascade-status
 ## Reference
 
 - Template (full): `/templates/09b-application-architecture-template.md`
-- Template (essentials): `/templates/09b-application-architecture-essentials-template.md`
+- Template (context): `/templates/09b-application-architecture-template.ctx.md`
 - Example: `/examples/compliance-saas/09b-application-architecture.md`
 
 ---

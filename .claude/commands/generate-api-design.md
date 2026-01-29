@@ -469,9 +469,19 @@ Write `product-guidelines/08-api-design.md` with:
 - **Scale-Forward Strategy**: How decisions evolve as product grows
 - **"What We DIDN'T Choose"**: At least 3 paradigm alternatives + 3 serialization alternatives with reasoning
 
-**Create Essentials Version** at `product-guidelines/08-api-design-essentials.md`:
+**Create Context Version** at `product-guidelines/08-api-design.ctx.md`:
 
-Use template at `templates/08-api-design-essentials-template.md` to create condensed version (50-100 lines) for Session 10 (backlog generation):
+After writing the full API design, invoke the distillation sub-agent:
+
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/08-api-design.md
+- Context template: templates/08-api-design-template.ctx.md
+- Output file: product-guidelines/08-api-design.ctx.md
+```
+
+The distillation agent will create a condensed version (50-100 lines) for Session 10 (backlog generation):
 
 **What to include**:
 - Paradigm choice (1 line)
@@ -531,7 +541,7 @@ Include at least 3 API paradigm alternatives and 3 serialization format alternat
 ## Output Files
 
 1. **`product-guidelines/08-api-design.md`**: Full documentation (paradigm, serialization, auth, rate limiting, pagination, errors, scale-forward, alternatives)
-2. **`product-guidelines/08-api-design-essentials.md`**: Condensed version for Session 10 (backlog generation) - decisions only (~50-100 lines)
+2. **`product-guidelines/08-api-design.ctx.md`**: Condensed version for Session 10 (backlog generation) - decisions only (~50-100 lines)
 
 ---
 
@@ -573,8 +583,8 @@ Before completing this session, verify:
 - [ ] Scale-forward strategy explains evolution path
 - [ ] Essentials file created and condensed (not full analysis)
 
-**Essentials Version (for backlog generation):**
-- [ ] Essentials file created at `08-api-design-essentials.md`
+**Context Version (for backlog generation):**
+- [ ] Context file created at `08-api-design.ctx.md`
 - [ ] File is 50-100 lines (not bloated with analysis)
 - [ ] Includes all decisions with brief reasoning
 - [ ] References full file for complete analysis

@@ -414,11 +414,19 @@ Write `product-guidelines/08b-api-contracts.md` with:
 
 ---
 
-### Step 10: Create Essentials Version for Scaffold Generation
+### Step 10: Create Context Version for Scaffold Generation
 
-**IMPORTANT**: Create a condensed essentials version optimized for Session 12 (scaffold generation).
+**IMPORTANT**: After writing the full contracts file, invoke the distillation sub-agent:
 
-Use template at `templates/08b-api-contracts-essentials-template.md` to create `product-guidelines/08b-api-contracts-essentials.md` with:
+```bash
+Task tool with:
+- subagent_type: distill-context
+- Source file: product-guidelines/08b-api-contracts.md
+- Context template: templates/08b-api-contracts-template.ctx.md
+- Output file: product-guidelines/08b-api-contracts.ctx.md
+```
+
+The distillation agent will create a condensed version optimized for Session 12 (scaffold generation).
 
 **What to include** (target: 100-150 lines):
 - API configuration (reference to 08-api-design.md for decisions)
@@ -529,7 +537,7 @@ If you discover that the chosen paradigm doesn't fit specific endpoints during i
 ## Output Files
 
 1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, examples, testing)
-2. **`product-guidelines/08b-api-contracts-essentials.md`**: Condensed version for Session 12 (scaffold generation) - endpoint lists only (~150 lines)
+2. **`product-guidelines/08b-api-contracts.ctx.md`**: Condensed version for Session 12 (scaffold generation) - endpoint lists only (~150 lines)
 3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST/GraphQL): Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
 4. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
 5. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
@@ -580,8 +588,8 @@ Before completing this session, verify:
 - [ ] Setup instructions clear
 - [ ] Link to `08-api-design.md` for high-level decisions
 
-**Essentials Version (for scaffold generation):**
-- [ ] Essentials file created at `08b-api-contracts-essentials.md`
+**Context Version (for scaffold generation):**
+- [ ] Context file created at `08b-api-contracts.ctx.md`
 - [ ] All endpoints listed with journey step mapping
 - [ ] File is 100-200 lines (not bloated with schemas)
 - [ ] Includes API config references to `08-api-design.md`
@@ -593,8 +601,8 @@ Before completing this session, verify:
 
 **Next steps**:
 - Run `/create-test-strategy` (Session 9) to define testing approach
-- Session 10 (`/generate-backlog`) will use `08-api-design-essentials.md` for API-driven stories
-- Session 12 (`/scaffold-project`) will use `08b-api-contracts-essentials.md` to generate endpoint stubs
+- Session 10 (`/generate-backlog`) will use `08-api-design.ctx.md` for API-driven stories
+- Session 12 (`/scaffold-project`) will use `08b-api-contracts.ctx.md` to generate endpoint stubs
 
 **Use contracts for**:
 - Backend implementation (controllers, routes, handlers)
