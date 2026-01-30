@@ -926,6 +926,14 @@ Create comprehensive documentation explaining:
 
 ---
 
+## Generating the Output
+
+Use `/templates/07-database-schema-template.md`.
+
+This template will guide you through creating comprehensive database schema documentation that traces every decision back to the user journey.
+
+---
+
 ### Step 9: Validate Schema Design
 
 **Quality Checklist:**

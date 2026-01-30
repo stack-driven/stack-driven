@@ -887,6 +887,12 @@ Create comprehensive documentation including:
 - Performance and security testing
 - "What We DIDN'T Choose" section
 
+---
+
+## Generating the Output
+
+Use `/templates/09-test-strategy-template.md`.
+
 **Template structure:**
 
 ```markdown
