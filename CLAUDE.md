@@ -176,11 +176,12 @@ Each command is a **generative session**, not a template filler:
 ### 2. Progressive Interrogation (Session 1)
 
 Session 1 uses **structured interview framework** (`/templates/00-user-journey-interview-template.md`):
-- 16 progressive questions in 4 phases
+- 21 progressive questions in 4 phases (including Phase 1b: Behavioral Profile)
 - One question at a time, adaptive based on answers
 - Extracts human need, not solution idea
+- Captures behavioral characteristics (tech proficiency, device preference, learning style, communication preferences, onboarding expectations) that drive technical decisions in Sessions 3, 6, 8, 12, 19
 - Quantifies value ratio (e.g., "4 hours → 60 seconds = 240x faster")
-- Validates completeness before generating output
+- Validates completeness (including behavioral profile) before generating output
 
 ### 3. Journey Traceability
 
@@ -482,7 +483,7 @@ Commands read templates to know output structure:
 
 ```
 Session 1 (journey) → Generates .md + .ctx.md
-  ↓
+  ↓ CAPTURES: user journey + behavioral profile (tech proficiency, device, learning style, communication, onboarding, trust)
 Session 2 (product-strategy) [reads: 00.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 2a (constraints) [reads: 00.ctx.md, 01.ctx.md] → Generates .md + .ctx.md

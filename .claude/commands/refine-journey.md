@@ -31,10 +31,10 @@ The journey is about understanding:
 **NEW**: For a comprehensive, systematic interview framework, reference `/templates/00-user-journey-interview-template.md`.
 
 This structured template provides:
-- 16 progressive questions organized in 4 phases
+- 21 progressive questions organized in 4 phases (including Phase 1b: Behavioral Profile)
 - Specific follow-up prompts for each question
 - Examples of good vs. bad answers
-- Validation checklist to ensure completeness
+- Validation checklist including behavioral profile completeness
 - Detailed guidance on quantifying value and calculating value ratios
 
 You can use it as your complete interview guide, or adapt the questions below for a more conversational approach.
@@ -86,13 +86,25 @@ Based on their answers, map the core user flow:
 ### Phase 3: Validate & Clarify
 
 Before generating the output, confirm you have:
+
+**User & Problem:**
 - [ ] Specific user persona (not "everyone")
 - [ ] Clear pain points (not generic)
 - [ ] Core user flow (3-5 steps from problem to value)
 - [ ] Measurable success criteria
 - [ ] Time-to-value target
 
+**Behavioral Profile (CRITICAL - drives Sessions 3, 6, 8, 12, 19):**
+- [ ] **Tech proficiency level** (novice / intermediate / expert / developer-level)
+- [ ] **Primary device** (mobile-dominant / desktop-dominant / mixed usage)
+- [ ] **Learning style** (exploratory / instructional / reference)
+- [ ] **Communication preference** (real-time / fast / moderate / async)
+- [ ] **Onboarding expectation** (self-discover / hybrid / fully guided)
+- [ ] **Trust signals needed** (social proof / trial / specs / certifications)
+
 **If anything is missing**, ask clarifying questions.
+
+**Why behavioral profile matters**: These characteristics drive tech stack decisions (Session 3), design system choices (Session 6), API design (Session 8), scaffold patterns (Session 12), and UX approach (Session 19). Without them, later sessions make generic assumptions instead of journey-specific recommendations.
 
 ## Generating the Output
 
@@ -107,23 +119,32 @@ Once you have complete information, use the template at `/templates/00-user-jour
    - Success criteria
    - Willingness to pay (with ROI justification)
 
-2. Primary Job-to-Be-Done
+2. User Behavioral Profile (NEW)
+   - Tech proficiency & digital comfort
+   - Device & usage context
+   - Communication & notification preferences
+   - Onboarding & support expectations
+   - Trust signals & decision criteria
+   - Behavioral archetype summary
+   - How this affects product decisions
+
+3. Primary Job-to-Be-Done
    - "When I [situation], I want to [motivation], so I can [outcome]"
 
-3. Core User Flow (Happy Path)
+4. Core User Flow (Happy Path)
    - Step 1: Entry point
    - Step 2: Configuration/setup
    - Step 3: **Value realization (AHA MOMENT)** ← Critical!
    - Step 4-5: Additional steps as needed
    - Each step: User action, system response, emotions, value, friction, metrics
 
-4. Value Definition
+5. Value Definition
    - Functional value (quantified: time saved, money saved, risk reduced)
    - Emotional value (how they feel)
    - Economic value (ROI calculation)
    - **Value Ratio**: User gets 10x+ what they pay
 
-5. Journey Metrics
+6. Journey Metrics
    - Awareness → Consideration
    - Consideration → Activation
    - Activation → Adoption
