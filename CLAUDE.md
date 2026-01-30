@@ -85,7 +85,7 @@ Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md +
 Session 4: /generate-strategy           → 03a-mission.md + .ctx.md, 03b-metrics.md + .ctx.md, 03c-monetization.md + .ctx.md, 04-architecture.md + .ctx.md
 Session 5: /create-brand-strategy       → 05-brand-strategy.md + .ctx.md
 Session 6: /create-design               → 06-design-system.md + .ctx.md
-Session 7: /design-database-schema      → 07-database-schema.md + .ctx.md
+Session 7: /design-database-schema      → 07-database-schema.md + .ctx.md (paradigm-agnostic: relational/document/graph/time-series/key-value)
 Session 8: /generate-api-design         → 08-api-design.md + .ctx.md
 Session 8b: /generate-api-contracts     → 08b-api-contracts.md + .ctx.md
 Session 9: /create-test-strategy        → 09-test-strategy.md + .ctx.md

@@ -22,6 +22,12 @@ This schema supports the following journey steps:
 
 ---
 
+## Schema Design
+
+**IMPORTANT**: The structure of this section depends on the database paradigm chosen in Session 3 (tech stack). Use the appropriate format based on the database type:
+
+### [IF Relational Database (PostgreSQL, MySQL, etc.)]
+
 ## Entity Relationship Diagram
 
 ```
@@ -45,8 +51,6 @@ Example:
 - **[Entity 1]**: [Purpose - what it represents in user journey]
 - **[Entity 2]**: [Purpose]
 - **[Entity 3]**: [Purpose]
-
----
 
 ## Table Definitions
 
@@ -88,6 +92,234 @@ Example:
 ### [Table Name 2]
 
 [Repeat structure above for each table]
+
+---
+
+### [IF Document Database (MongoDB, Firestore)]
+
+## Collection Design
+
+### [Collection Name 1] (e.g., users)
+
+**Purpose**: [Why this collection exists - connection to user journey]
+
+**Journey Context**: Used in [Journey Step X] when [user action]
+
+**Document Structure**:
+```json
+{
+  "_id": "ObjectId",
+  "field1": "type",
+  "field2": 123,
+  "nested": {
+    "field": "value"
+  },
+  "array": ["item1", "item2"],
+  "created_at": "ISODate"
+}
+```
+
+**Relationship Strategy**:
+- **Embedded Documents**: [What data is embedded - reasoning: frequently accessed together]
+- **References**: [What data is referenced - reasoning: large/shared data]
+
+**Indexes**:
+- `{ field1: 1 }`: Single field index for [query pattern]
+- `{ field1: 1, field2: -1 }`: Compound index for [query pattern]
+- `{ "nested.field": 1 }`: Nested field index for [query pattern]
+
+**Sharding Key**: [field] - Reasoning: [why this provides good data distribution]
+
+**Validation Schema** (if using schema validation):
+```json
+{
+  "$jsonSchema": {
+    "required": ["field1", "field2"],
+    "properties": {
+      "field1": { "bsonType": "string" },
+      "field2": { "bsonType": "int" }
+    }
+  }
+}
+```
+
+**Design Decisions**:
+- **Embedded vs Referenced**: [Decision + reasoning based on query patterns]
+- **Denormalization**: [What data is duplicated + why (read performance vs consistency trade-off)]
+
+### [Collection Name 2]
+
+[Repeat structure for each collection]
+
+---
+
+### [IF Graph Database (Neo4j)]
+
+## Node Types
+
+### [Node Label 1] (e.g., User)
+
+**Purpose**: [Why this node exists - connection to user journey]
+
+**Properties**:
+| Property | Type | Constraints | Purpose |
+|----------|------|-------------|---------|
+| id | UUID | UNIQUE, NOT NULL | Unique identifier |
+| name | String | NOT NULL | [purpose] |
+| created_at | DateTime | NOT NULL | [purpose] |
+
+**Indexes**:
+- Index on `id` (unique constraint)
+- Index on `[property]` for [query pattern]
+
+**Journey Context**: Used in [Journey Step X] when [user action]
+
+### [Node Label 2]
+
+[Repeat for each node type]
+
+## Relationship Types
+
+### [:RELATIONSHIP_TYPE_1] (e.g., :BELONGS_TO)
+
+**From**: [SourceNode]
+**To**: [TargetNode]
+
+**Purpose**: [What this relationship represents in journey]
+
+**Properties** (if any):
+| Property | Type | Purpose |
+|----------|------|---------|
+| since | DateTime | When relationship created |
+| strength | Float | [domain-specific meaning] |
+
+**Cardinality**: [One-to-Many / Many-to-Many / One-to-One]
+
+**Journey Context**: [How this relationship serves user journey]
+
+**Query Patterns**:
+```cypher
+// Common query using this relationship
+MATCH (a:[SourceNode])-[:RELATIONSHIP_TYPE_1]->(b:[TargetNode])
+WHERE a.property = $value
+RETURN b
+```
+
+### [:RELATIONSHIP_TYPE_2]
+
+[Repeat for each relationship type]
+
+---
+
+### [IF Time-Series Database (InfluxDB, TimescaleDB, Prometheus)]
+
+## Measurement Design
+
+### [Measurement Name 1] (e.g., api_requests)
+
+**Purpose**: [Why this measurement exists - connection to user journey or operations]
+
+**Tags** (indexed dimensions for grouping/filtering):
+| Tag | Type | Cardinality | Purpose |
+|-----|------|-------------|---------|
+| endpoint | String | ~50 | API endpoint path |
+| method | String | 5 | HTTP method (GET, POST, etc.) |
+| status_code | String | ~20 | HTTP status code |
+
+**Fields** (metric values):
+| Field | Type | Purpose |
+|-------|------|---------|
+| response_time_ms | Float | Request duration in milliseconds |
+| bytes_sent | Integer | Response size |
+
+**Retention Policy**: [How long to keep data]
+- Raw data: [duration] (e.g., 7 days)
+- Aggregated data: [duration] (e.g., 90 days at 1-hour resolution)
+
+**Continuous Aggregates** (if TimescaleDB):
+```sql
+CREATE MATERIALIZED VIEW [view_name]
+WITH (timescaledb.continuous) AS
+SELECT
+  time_bucket('1 hour', time) AS hour,
+  tag1,
+  AVG(field1) AS avg_field1,
+  MAX(field2) AS max_field2
+FROM [measurement]
+GROUP BY hour, tag1
+```
+
+**Journey Context**: Used to [monitoring/analytics purpose serving journey]
+
+**Query Patterns**:
+```
+// InfluxDB Flux
+from(bucket: "bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) => r._measurement == "measurement")
+  |> aggregateWindow(every: 5m, fn: mean)
+```
+
+### [Measurement Name 2]
+
+[Repeat for each measurement]
+
+---
+
+### [IF Key-Value Store (Redis)]
+
+## Key Patterns
+
+### [Pattern Name 1] (e.g., user:session)
+
+**Pattern**: `user:session:{user_id}`
+
+**Value Type**: Hash
+
+**Purpose**: [Why this cached data exists - connection to user journey]
+
+**Structure**:
+```
+HSET user:session:123 {
+  "session_id": "abc...",
+  "expires_at": "2025-01-30T12:00:00Z",
+  "user_id": "123",
+  "permissions": "[...]"
+}
+```
+
+**TTL**: [Duration] (e.g., 24 hours)
+- **Reasoning**: [Why this expiration - based on session duration from architecture]
+
+**Access Patterns**:
+- SET on login: `HSET user:session:{id} ...`
+- GET on each request: `HGET user:session:{id} session_id`
+- DELETE on logout: `DEL user:session:{id}`
+
+**Journey Context**: Serves [Journey Step X] by caching [data] to avoid [expensive operation]
+
+### [Pattern Name 2] (e.g., rate:limit)
+
+**Pattern**: `rate:limit:{endpoint}:{user_id}`
+
+**Value Type**: String (counter)
+
+**Purpose**: Rate limiting API requests per user
+
+**Operations**:
+```
+INCR rate:limit:api:upload:123
+EXPIRE rate:limit:api:upload:123 3600
+GET rate:limit:api:upload:123  // Check if > threshold
+```
+
+**TTL**: 1 hour (sliding window)
+
+**Journey Context**: Protects [Journey Step X] from abuse
+
+### [Pattern Name 3]
+
+[Repeat for each pattern]
 
 ---
 
