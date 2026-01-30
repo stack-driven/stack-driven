@@ -49,7 +49,7 @@ gh repo view
 ```
 
 **You now have:**
-- All 27 slash commands in `/.claude/commands/`
+- All 34 slash commands in `/.claude/commands/`
 - All templates in `/templates/`
 - Examples in `/examples/` (reference only)
 - Clean `/product-guidelines/` directory (gitignored)

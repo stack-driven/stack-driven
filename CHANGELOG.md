@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Comprehensive usage documentation (issue #62)
-  - COMMAND-REFERENCE.md - Complete reference for all 25 commands
+  - COMMAND-REFERENCE.md - Complete reference for all 34 commands
   - TROUBLESHOOTING.md - Common errors and solutions
   - FAQ.md - Comprehensive frequently asked questions
   - CONTRIBUTING.md - Contribution guidelines

@@ -179,7 +179,7 @@ Session 1 uses **structured interview framework** (`/templates/00-user-journey-i
 - 21 progressive questions in 4 phases (including Phase 1b: Behavioral Profile)
 - One question at a time, adaptive based on answers
 - Extracts human need, not solution idea
-- Captures behavioral characteristics (tech proficiency, device preference, learning style, communication preferences, onboarding expectations) that drive technical decisions in Sessions 3, 6, 8, 12, 19
+- Captures behavioral characteristics (tech proficiency, device preference, learning style, communication preferences, onboarding expectations) that drive technical decisions in Sessions 3, 6, 8, 12
 - Quantifies value ratio (e.g., "4 hours → 60 seconds = 240x faster")
 - Validates completeness (including behavioral profile) before generating output
 

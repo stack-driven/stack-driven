@@ -94,7 +94,7 @@ Before generating the output, confirm you have:
 - [ ] Measurable success criteria
 - [ ] Time-to-value target
 
-**Behavioral Profile (CRITICAL - drives Sessions 3, 6, 8, 12, 19):**
+**Behavioral Profile (CRITICAL - drives Sessions 3, 6, 8, 12):**
 - [ ] **Tech proficiency level** (novice / intermediate / expert / developer-level)
 - [ ] **Primary device** (mobile-dominant / desktop-dominant / mixed usage)
 - [ ] **Learning style** (exploratory / instructional / reference)
