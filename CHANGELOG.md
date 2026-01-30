@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - GLOSSARY.md - Framework terminology definitions
   - QUICK-REFERENCE.md - One-page cheat sheet
   - .github/ templates for issues and pull requests
+- Database paradigm support enhancement (issue #107)
+  - Session 3 decision tree expanded with 3 new branches: time-series databases (InfluxDB, TimescaleDB, Prometheus), full-text search (Elasticsearch, Meilisearch, Typesense), vector search (Pinecone, Weaviate, pgvector)
+  - Session 7 now paradigm-agnostic: supports relational, document, graph, time-series, and key-value database designs
+  - Session 7 template includes paradigm-specific sections for each database type with tailored guidance
+  - MongoDB example added at `examples/content-platform-mongodb/` demonstrating journey-driven non-relational paradigm selection
+  - All changes are additive - backward compatibility maintained for existing PostgreSQL workflows
+
+### Fixed
+- Session 7 file references now correctly use `02-tech-stack.ctx.md` for token efficiency (PR #122)
 
 ---
 

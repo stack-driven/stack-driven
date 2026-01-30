@@ -4,7 +4,7 @@ description: Session 7 - Design complete database schema with migrations
 
 # Design Database Schema (Session 7)
 
-You are helping the user create a comprehensive database schema including entity relationship diagrams, detailed table definitions, indexes, constraints, and actual migration files. This happens after defining architecture and brand strategy, but BEFORE generating the backlog, so that backlog items can be informed by the technical data model.
+You are helping the user create a comprehensive database schema design based on their chosen database paradigm. This may include entity relationship diagrams (relational), collection structures (document), node/relationship definitions (graph), measurements (time-series), or key patterns (key-value), depending on the tech stack choice. This happens after defining architecture and brand strategy, but BEFORE generating the backlog, so that backlog items can be informed by the technical data model.
 
 ## When to Use This
 
@@ -21,11 +21,11 @@ You are helping the user create a comprehensive database schema including entity
 ## Your Task
 
 Create a comprehensive database schema design including:
-- Entity relationship diagram (ERD)
-- Detailed table definitions with all columns, types, constraints
-- Indexes optimized for query patterns
-- Relationships and foreign keys
-- Actual migration files in your chosen ORM/migration tool
+- **For Relational Databases (PostgreSQL, MySQL)**: Entity relationship diagrams (ERD), table definitions with columns/types/constraints, indexes, foreign keys, migration files
+- **For Document Databases (MongoDB, Firestore)**: Collection design with document structure, embedded vs referenced relationships, compound indexes, sharding strategy
+- **For Graph Databases (Neo4j)**: Node types, relationship types, properties, graph patterns, indexes
+- **For Time-Series Databases (InfluxDB, TimescaleDB)**: Measurement design, tags, fields, retention policies, continuous aggregates
+- **For Key-Value Stores (Redis)**: Key patterns, value types, TTL strategies, data structures
 - Data modeling decisions with journey-based reasoning
 
 ---
@@ -39,7 +39,7 @@ Create a comprehensive database schema design including:
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/01-product-strategy.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)

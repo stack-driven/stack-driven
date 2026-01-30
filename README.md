@@ -80,6 +80,7 @@ Session 6: /create-design               → product-guidelines/06-design-system.
 
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
   ↓ (AI reads schema, designs high-level API architecture)
+  (paradigm-agnostic: relational/document/graph/time-series/key-value)
 
 Session 8: /generate-api-design        → product-guidelines/08-api-design.md
                                          product-guidelines/08-api-design.ctx.md
@@ -152,7 +153,7 @@ After each session, I'll tell you exactly what to run next:
 - `/choose-tech-stack` - Analyzes your journey and strategy, recommends optimal tech
 - `/define-coding-standards` - Defines framework-specific coding patterns and conventions
 - `/generate-strategy` - Derives mission, metrics, monetization, architecture
-- `/design-database-schema` - Designs complete database schema with ERD and migrations
+- `/design-database-schema` - Designs complete database schema (paradigm-agnostic: relational/document/graph/time-series/key-value)
 - `/generate-api-contracts` - Generates OpenAPI specs and endpoint definitions
 - `/create-test-strategy` - Defines comprehensive testing strategy (unit, integration, E2E)
 - `/generate-backlog` - Generates 30-50 prioritized user stories informed by technical specs
@@ -189,7 +190,7 @@ Stack-Driven commands fall into two distinct phases:
 - `/generate-strategy` - Session 4: Derive mission, metrics, monetization, architecture from journey
 - `/create-brand-strategy` - Session 5: Brand positioning, personality, voice guidelines
 - `/create-design` - Session 6: Design system with components for specific user flows
-- `/design-database-schema` - Session 7: Complete database schema with ERD and migrations
+- `/design-database-schema` - Session 7: Database schema design (paradigm-agnostic: relational/document/graph/time-series/key-value)
 - `/generate-api-design` - Session 8: High-level API architectural decisions
 - `/generate-api-contracts` - Session 8b: Detailed OpenAPI specs and endpoint definitions
 - `/create-test-strategy` - Session 9: Comprehensive testing strategy (unit, integration, E2E)
@@ -276,25 +277,39 @@ Implementation commands read `.ctx.md` versions for token efficiency:
 ```
 product-guidelines/
 ├── 00-user-journey.md (Session 1)
+├── 00-user-journey.ctx.md (Session 1)
 ├── 01-product-strategy.md (Session 2)
 ├── 01-product-strategy.ctx.md (Session 2)
 ├── 02a-constraints.md (Session 2a)
 ├── 02a-constraints.ctx.md (Session 2a)
 ├── 02-tech-stack.md (Session 3)
+├── 02-tech-stack.ctx.md (Session 3)
 ├── 02b-coding-standards.md (Session 3b)
 ├── 02b-coding-standards.ctx.md (Session 3b)
+├── 02c-ai-integration-strategy.md (Session 3c - optional)
+├── 02c-ai-integration-strategy.ctx.md (Session 3c - optional)
 ├── 03a-mission.md (Session 4)
+├── 03a-mission.ctx.md (Session 4)
 ├── 03b-metrics.md (Session 4)
+├── 03b-metrics.ctx.md (Session 4)
 ├── 03c-monetization.md (Session 4)
+├── 03c-monetization.ctx.md (Session 4)
 ├── 04-architecture.md (Session 4)
+├── 04-architecture.ctx.md (Session 4)
 ├── 05-brand-strategy.md (Session 5)
+├── 05-brand-strategy.ctx.md (Session 5)
 ├── 06-design-system.md (Session 6)
+├── 06-design-system.ctx.md (Session 6)
 ├── 07-database-schema.md (Session 7)
+├── 07-database-schema.ctx.md (Session 7)
 ├── 08-api-design.md (Session 8)
 ├── 08-api-design.ctx.md (Session 8)
 ├── 08b-api-contracts.md (Session 8b)
 ├── 08b-api-contracts.ctx.md (Session 8b)
 ├── 09-test-strategy.md (Session 9)
+├── 09-test-strategy.ctx.md (Session 9)
+├── 09b-application-architecture.md (Session 9b)
+├── 09b-application-architecture.ctx.md (Session 9b)
 ├── 10-backlog/ (Session 10)
 ├── 12-project-scaffold/ (Session 12 - actual code files)
 │   ├── 12-project-scaffold.md (decisions documentation)

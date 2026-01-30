@@ -177,6 +177,15 @@ Is it key-value or cache-heavy?
 
 Need graph queries?
   Yes → PostgreSQL with extensions or Neo4j
+
+Is data primarily time-series (metrics, logs, events)?
+  Yes → InfluxDB, TimescaleDB, or Prometheus
+
+Need full-text search across large content?
+  Yes → Elasticsearch, Meilisearch, or Typesense
+
+Need vector similarity search (AI embeddings, recommendations)?
+  Yes → Pinecone, Weaviate, or PostgreSQL with pgvector
 ```
 
 **AI Requirement Detection:**
