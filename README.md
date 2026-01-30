@@ -270,6 +270,20 @@ Implementation commands read `.ctx.md` versions for token efficiency:
 
 ---
 
+## Additional Resources
+
+### Reference Materials
+
+Educational guides in `/reference-material/`:
+- **API Security Blueprint** (`api-security-blueprint.md`) - Comprehensive guide to API security fundamentals (CIA triad, STRIDE threat modeling, threat modeling process, security mechanisms)
+- **Serialization Guide** (`serialization-guide.md`) - Complete guide to data serialization formats and decision framework
+- **AI Integration Best Practices** (`ai-integration-best-practices.md`) - AI integration patterns and strategies
+- **AI Debugging Framework** (`ai-debugging-framework.md`) - Debugging strategies for AI-integrated systems
+
+These guides provide foundational knowledge referenced by cascade sessions but are standalone educational resources that can be consulted at any time.
+
+---
+
 ## Repository Structure
 
 ### `/product-guidelines/` - YOUR Generated Strategy
