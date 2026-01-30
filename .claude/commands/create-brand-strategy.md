@@ -180,7 +180,12 @@ Your brand expresses the value from your user journey:
 
 File created: product-guidelines/05-brand-strategy.md
 
-Next, we'll create a design system that brings your brand to life.
+This strategic brand foundation can be extended with tactical implementations:
+- /discover-naming - Generate brand name candidates (20-30 options with trademark research)
+- /define-messaging - Create copy templates and voice guidelines
+- /design-brand-identity - Design logo and visual identity system
+
+Next in the core cascade, we'll create a design system that brings your brand to life.
 
 When ready, run: /create-design
 Or check progress: /cascade-status

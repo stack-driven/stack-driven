@@ -208,12 +208,59 @@ If the answer to any question is "no," reconsider the decision.
 
 ---
 
+## Extension Options
+
+This brand strategy provides the strategic foundation. Consider these optional extensions for tactical implementation:
+
+### Naming Development
+**Command**: `/discover-naming`
+
+Generate 20-30 brand name candidates with trademark research, domain availability checks, and journey-aligned recommendations.
+
+**When to use**: If you don't have a brand name yet, or want to explore alternatives.
+
+### Messaging Framework
+**Command**: `/define-messaging`
+
+Create actual copy templates, taglines, voice guidelines, and channel-specific messaging that executes this brand strategy.
+
+**When to use**: When translating strategic brand into actual words for website, product UI, marketing, and customer support.
+
+### Visual Identity
+**Command**: `/design-brand-identity`
+
+Design comprehensive visual identity system (logo concepts, color palettes, typography, iconography) that expresses this brand personality.
+
+**When to use**: When you need visual assets and design guidelines to implement this brand strategy.
+
+---
+
+## Relationship to Other Brand Documents
+
+**This Document (05-brand-strategy.md)**: Strategic brand foundation
+- Brand purpose, values, personality, promise
+- Strategic positioning and differentiation
+- High-level visual direction
+- Foundation that all brand decisions reference
+
+**See Also**:
+- `15-brand-naming.md` - Tactical name generation (if generated via `/discover-naming`)
+- `16-brand-messaging.md` - Tactical copy templates and voice execution (if generated via `/define-messaging`)
+- `17-brand-identity.md` - Tactical visual identity system (if generated via `/design-brand-identity`)
+
+**When to Use This Document**:
+- **Session 6 (design-system)**: Reference brand values and visual direction
+- **Session 10 (backlog)**: Ensure user stories reflect brand tone
+- **Session 12 (scaffold)**: Include brand values in README, ensure code comments match brand voice
+- **Implementation**: Validate all features align with brand promise and personality
+
+---
+
 ## Next Steps
 
-- [ ] Run `/discover-naming` to generate brand names that express journey value
-- [ ] Run `/define-messaging` to create messaging framework aligned with journey
-- [ ] Share with team for feedback and alignment
-- [ ] Use as input for visual identity design
+- [ ] Share with team for feedback and strategic alignment
+- [ ] Run extension commands as needed (naming, messaging, visual identity)
+- [ ] Use as foundation for Session 6 (design system)
 - [ ] Reference during product development to stay brand-consistent
 
 ---

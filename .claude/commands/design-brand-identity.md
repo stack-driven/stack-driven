@@ -65,28 +65,35 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 ### Steps to Execute
 
-1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
+1. **FIRST: Validate dependency exists**:
+   ```bash
+   # Check that product-guidelines/05-brand-strategy.md exists
+   # If not, inform user to run /create-brand-strategy first
+   ```
+
+2. **Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
-   Read product-guidelines/05-brand-strategy.md
+   Read product-guidelines/05-brand-strategy.md  # (REQUIRED - identity expresses brand personality)
    Read product-guidelines/06-design-system.md  # If exists
    Read product-guidelines/15-brand-naming.md   # If exists
    ```
 
-2. **Read the template structure**:
+3. **Read the template structure**:
    ```bash
    Read /templates/17-brand-identity-template.md
    ```
 
-3. **Analyze brand personality for visual expression**:
+4. **Analyze brand personality from 05-brand-strategy.md for visual expression**:
 
    From brand strategy, identify:
-   - **Personality traits**: Professional? Playful? Trustworthy? Innovative?
-   - **Core values**: What must the visual identity communicate?
-   - **Target audience**: Who needs to connect with this brand?
-   - **Differentiation**: How to stand apart visually in the market?
+   - **Personality traits from 05**: Professional? Playful? Trustworthy? Innovative?
+   - **Core values from 05**: What must the visual identity communicate?
+   - **Visual direction from 05**: Color preferences, mood, aesthetic guidance
+   - **Target audience from 00**: Who needs to connect with this brand?
+   - **Differentiation from 05**: How to stand apart visually in the market?
 
-4. **Logo Design Decision Tree**:
+5. **Logo Design Decision Tree**:
 
    **Logo Type Selection**:
    ```
@@ -124,10 +131,10 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    - **Technical + Efficient** → Lettermark or geometric abstract symbol
    - **Innovative + Disruptive** → Abstract symbol or unexpected pictorial mark
 
-5. **Interview the user** with journey-informed questions:
+6. **Interview the user** with journey-informed questions:
 
    **Visual Direction**:
-   - "Your brand personality is [traits from brand strategy]. Should your logo be minimalist/complex, geometric/organic, modern/classic?"
+   - "Your brand personality from 05-brand-strategy.md is [traits]. Should your logo be minimalist/complex, geometric/organic, modern/classic to express this personality?"
 
    **Color Strategy**:
    - "Your brand values [values]. What emotions should the colors evoke? Should we follow industry conventions (trust = blue in finance) or disrupt them?"
@@ -141,11 +148,11 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    **Differentiation**:
    - "I've analyzed your competitors from the product strategy. They use [common patterns]. Should we follow conventions for category recognition, or differentiate boldly?"
 
-6. **Generate 3-5 logo concepts**:
+7. **Generate 3-5 logo concepts**:
 
    For each concept, provide:
    - **Visual description**: Detailed description of the logo design
-   - **Rationale**: How it expresses brand personality and journey value
+   - **Rationale**: How it expresses brand personality FROM 05-brand-strategy.md and journey value
    - **Logo type**: Wordmark, lettermark, combination, etc.
    - **Color application**: How brand colors are used
    - **Typography**: Font choice and why it fits
@@ -158,7 +165,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    - Concept C: Bold/distinctive (maximum differentiation)
    - Concepts D-E: Variations exploring different visual metaphors
 
-7. **What We DIDN'T Choose (And Why)**:
+8. **What We DIDN'T Choose (And Why)**:
 
    Document design decisions:
 
@@ -177,7 +184,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    - "Didn't use bright colors because audience is [demographic] in [industry] expecting [tone]"
    - "Chose [color] over [color] because it better expresses [brand value from strategy]"
 
-8. **Create comprehensive brand identity system**:
+9. **Create comprehensive brand identity system**:
 
    **Primary Logo**:
    - Full color version
@@ -217,7 +224,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    - Accessibility: color contrast requirements
    - File formats: SVG (web), PNG (transparency), JPG, PDF (print)
 
-9. **Brand Applications** (examples of identity in use):
+10. **Brand Applications** (examples of identity in use):
 
    Show how the identity appears across touchpoints:
    - **Digital**: Website header, mobile app icon, social media avatars
@@ -230,16 +237,17 @@ Create a comprehensive brand identity system including logo concepts, visual ass
    - Which color palette elements appear
    - How it reinforces brand personality
 
-10. **Journey-Brand Alignment Check**:
+11. **Journey-Brand Alignment Check**:
 
-    Validate that visual identity serves the user journey:
+    Validate that visual identity serves the user journey AND expresses brand strategy:
     - Does the logo communicate [journey value] visually?
-    - Does the aesthetic fit [target audience] expectations?
-    - Does the personality expressed match [brand strategy]?
+    - Does the aesthetic fit [target audience from 00] expectations?
+    - Does the personality expressed match [brand strategy from 05] exactly?
+    - Do visual choices trace to specific [brand values from 05]?
     - Can users recognize and remember this identity?
     - Does it differentiate from competitors solving [journey problem]?
 
-11. **Write the output**:
+12. **Write the output**:
     ```bash
     Write product-guidelines/17-brand-identity.md
     ```

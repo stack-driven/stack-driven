@@ -10,20 +10,26 @@
 
 ### Purpose
 
-This visual identity system expresses [brand personality from brand strategy] to [target audience from user journey] through design. Every visual element communicates [core brand value] and supports [journey value delivered].
+This visual identity system VISUALLY EXPRESSES the brand personality defined in `05-brand-strategy.md`. Every visual element translates brand strategy into tangible design.
 
-### Brand Personality (from Brand Strategy)
+### Reads From
 
-- **Personality Traits**: [e.g., Professional, Trustworthy, Innovative, Approachable]
-- **Core Values**: [e.g., Transparency, Speed, Expertise, Simplicity]
-- **Visual Direction**: [e.g., Modern, Clean, Bold, Warm]
-- **Target Audience**: [from user journey - who they are, what they value]
+**Dependencies**: This visual identity REQUIRES `product-guidelines/05-brand-strategy.md` to exist first.
+
+**Brand personality foundation** (from `product-guidelines/05-brand-strategy.md`):
+- **Personality Traits**: [e.g., Professional, Trustworthy, Innovative, Approachable from 05]
+- **Core Values**: [e.g., Transparency, Speed, Expertise, Simplicity from 05]
+- **Visual Direction**: [e.g., Modern, Clean, Bold, Warm from 05]
+- **Brand purpose**: [Why you exist - informs visual metaphors]
+
+**Target audience** (from `product-guidelines/00-user-journey.md`):
+- [Who they are, what they value, what appeals to them]
 
 ### Design Philosophy
 
-[1-2 sentences explaining the overall approach to the visual identity, grounded in brand strategy]
+[1-2 sentences explaining how visual identity translates brand personality from 05-brand-strategy.md into design]
 
-Example: "Our visual identity balances professional credibility with approachable warmth. Every design choice reinforces trust while making complex compliance accessible to busy teams."
+Example: "Our visual identity translates [brand personality from 05] into design. The [specific design choice] expresses [specific brand value from 05], while [another design element] reinforces [brand promise from 05]."
 
 ---
 
@@ -531,6 +537,33 @@ Example: "Our visual identity balances professional credibility with approachabl
 
 ---
 
+## Relationship to Other Brand Documents
+
+**This Document (17-brand-identity.md)**: Tactical visual identity system
+- Logo concepts and recommendations
+- Color palette with hex codes
+- Typography system and scale
+- Visual elements (patterns, icons, photography)
+- Usage guidelines and applications
+
+**Reads From**:
+- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED dependency)
+- `00-user-journey.md` - Target audience and emotional context
+
+**See Also**:
+- `15-brand-naming.md` - Name selection (generated separately via `/discover-naming`)
+- `16-brand-messaging.md` - Copy templates and voice (generated separately via `/define-messaging`)
+- `06-design-system.md` - Component-level design system (Session 6, reads from this document)
+
+**When to Use This Document**:
+- **Session 6 (design-system)**: Reference typography, colors, iconography for component design
+- **Website/app design**: Apply logo, colors, typography to all interfaces
+- **Marketing materials**: Use for business cards, presentations, social media
+- **Brand guidelines**: Share with designers, contractors, partners
+- **Legal/trademark**: Use logo specifications for trademark registration
+
+---
+
 ## Next Steps
 
 1. **If choosing this identity**:
@@ -541,7 +574,7 @@ Example: "Our visual identity balances professional credibility with approachabl
 
 2. **If working with designer**:
    - [ ] Use this document as creative brief
-   - [ ] Provide access to brand strategy (product-guidelines/07-brand-strategy.md)
+   - [ ] Provide access to brand strategy (product-guidelines/05-brand-strategy.md)
    - [ ] Request logo files in all formats specified above
    - [ ] Review designer work against these guidelines
 
