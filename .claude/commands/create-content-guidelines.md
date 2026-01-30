@@ -30,7 +30,7 @@ Create a detailed content style guide following the instructions below.
 
 1. **Read the template structure**:
    ```bash
-   Read templates/18-content-guidelines-template.md
+   Read /templates/18-content-guidelines-template.md
    ```
 
 2. **Check for messaging inputs** (recommended):

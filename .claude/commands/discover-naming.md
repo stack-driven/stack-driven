@@ -65,7 +65,7 @@ Generate brand name candidates that express the value from the user journey thro
 
 2. **Read the template structure**:
    ```bash
-   Read templates/15-brand-naming-template.md
+   Read /templates/15-brand-naming-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:

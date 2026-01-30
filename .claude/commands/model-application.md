@@ -602,7 +602,7 @@ Return 201 with Document (includes signed URL)
 ### Step 9: Generate Output Files
 
 Use templates:
-- `templates/09b-application-architecture-template.md` for full version
+- `/templates/09b-application-architecture-template.md` for full version
 
 First, write the full version to `product-guidelines/09b-application-architecture.md`:
 

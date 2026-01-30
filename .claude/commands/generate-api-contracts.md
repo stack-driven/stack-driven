@@ -473,7 +473,7 @@ paths:
 ### Step 8: Generate API Specification
 
 **For REST/GraphQL** (JSON serialization):
-Create complete OpenAPI 3.0 specification. Use template at `templates/08b-api-contracts-template.md` for detailed structure.
+Create complete OpenAPI 3.0 specification. Use template at `/templates/08b-api-contracts-template.md` for detailed structure.
 
 **For gRPC** (Protobuf serialization):
 Create Protocol Buffer `.proto` files with service definitions, message types, and RPC methods.

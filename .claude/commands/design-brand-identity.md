@@ -75,7 +75,7 @@ Create a comprehensive brand identity system including logo concepts, visual ass
 
 2. **Read the template structure**:
    ```bash
-   Read templates/17-brand-identity-template.md
+   Read /templates/17-brand-identity-template.md
    ```
 
 3. **Analyze brand personality for visual expression**:

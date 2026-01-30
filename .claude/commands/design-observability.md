@@ -26,7 +26,7 @@ Create a comprehensive observability strategy following the instructions below.
 
 1. **Read the template structure**:
    ```bash
-   Read templates/14-observability-strategy-template.md
+   Read /templates/14-observability-strategy-template.md
    ```
 
 2. **Read previous cascade outputs** for context:

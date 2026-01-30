@@ -104,7 +104,7 @@ Use the Read tool to read all cascade inputs listed above.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/21-growth-strategy-template.md
+Read /templates/21-growth-strategy-template.md
 ```
 
 ### Step 3: Analyze Growth Model

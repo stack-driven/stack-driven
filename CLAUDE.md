@@ -67,6 +67,12 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 - Reference material, not prescriptive guides
 - Provides context for the philosophy behind the framework
 
+**`/reference-material/`** - Educational guides and reference documentation
+- Standalone educational resources not tied to specific cascade sessions
+- Referenced by commands but not generated as cascade outputs
+- Examples: API security fundamentals, serialization guide, AI best practices
+- These guides provide foundational knowledge that can be consulted at any time
+
 ---
 
 ## How Commands Work
