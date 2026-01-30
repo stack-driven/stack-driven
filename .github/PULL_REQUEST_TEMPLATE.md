@@ -82,7 +82,6 @@ Relates to #
 - [ ] Updated COMMAND-REFERENCE.md (if command changes)
 - [ ] Updated FAQ.md (if adding common questions)
 - [ ] Updated TROUBLESHOOTING.md (if fixing bugs)
-- [ ] Updated CHANGELOG.md (added to [Unreleased] section)
 - [ ] Updated examples (if cascade logic changed)
 - [ ] No documentation changes needed
 
@@ -135,7 +134,6 @@ Relates to #
 
 **Documentation:**
 - [ ] I have made corresponding changes to the documentation
-- [ ] I have updated the CHANGELOG.md
 - [ ] My changes are reflected in relevant examples
 
 **Philosophy:**
@@ -155,7 +153,6 @@ Relates to #
 - [ ] Tests pass (if applicable)
 - [ ] Examples updated (if applicable)
 - [ ] No breaking changes (or migration path provided)
-- [ ] CHANGELOG.md updated
 
 ---
 
