@@ -28,9 +28,18 @@ You will receive two paths as parameters:
 
 Extract only these elements from the source file:
 
-- **Decision statements**: Final choices made (e.g., "PostgreSQL for relational data")
+**Core Decisions (CRITICAL - Never Remove)**:
+- **All architectural decisions and rationale**: System design choices, patterns, principles
+- **All user journey steps**: Complete journey flow with value quantification (e.g., "4 hours → 60 seconds = 240x faster")
+- **All tech stack choices**: Technology selections with justifications (condensed to 1-2 lines each)
+- **All design system specifications**: Components, tokens, patterns (names + key properties only)
+- **All constraints and requirements**: Business, technical, organizational, compliance constraints
+- **All database schema decisions**: Table names, relationships, key indexes, constraints
+- **All API specifications**: Endpoints, methods, key parameters (condensed format)
+
+**Supporting Information (Keep Condensed)**:
+- **Decision statements**: Final choices made (e.g., "PostgreSQL for relational data + JSONB flexibility")
 - **Configuration values**: Specific settings, thresholds, limits (e.g., "Max file size: 10MB")
-- **Constraints**: Hard requirements and boundaries (e.g., "GDPR compliance required")
 - **Rules**: Policies and standards (e.g., "All API responses must include error codes")
 - **Vision statements**: Concise aspirational outcomes (e.g., 1-sentence vision)
 - **Positioning statements**: Brief who/what/how/why statements
@@ -40,9 +49,6 @@ Extract only these elements from the source file:
 - **Success metrics**: Metric names + target values
 - **Priority frameworks**: Priority levels + brief criteria
 - **Key feature categories**: Category names + 1-sentence descriptions
-- **Architecture components**: Service names + responsibilities (no implementation details)
-- **Database entities**: Table names + key relationships (no field details unless critical)
-- **API endpoints**: Endpoint paths + purpose (no full request/response schemas)
 
 ### REMOVE (Exclude from Context)
 
@@ -138,7 +144,7 @@ Prepend header to context file output:
 
 Replace `[Document Name]` and `XX-name.md` with actual source file name.
 
-### Step 5: Validate Token Reduction
+### Step 5: Validate Token Reduction & Critical Preservation
 
 Calculate size reduction:
 
@@ -150,7 +156,17 @@ Calculate size reduction:
 If reduction is:
 - **< 60%**: Too verbose, remove more rationale and examples
 - **60-70%**: Perfect target range
-- **> 70%**: Verify no critical decisions were removed
+- **> 70%**: **CRITICAL CHECK** - Verify no decisions were removed
+
+**Quality Assurance Checklist** (verify before writing):
+- [ ] All H2/H3 section headers preserved from source
+- [ ] All decision tables/lists preserved (condensed format OK)
+- [ ] All technical specifications preserved (architecture, schema, APIs)
+- [ ] All user journey steps preserved with value quantification
+- [ ] All tech stack choices preserved with 1-line justifications
+- [ ] All constraints and requirements preserved
+- [ ] No prose removed that contains decision information
+- [ ] Only rationale, alternatives, validation content removed
 
 ### Step 6: Write Context File
 

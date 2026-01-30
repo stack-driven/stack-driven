@@ -275,6 +275,88 @@ Or check progress: /cascade-status
 
 **Now, read the journey, product strategy, and tech stack, then generate all 4 tactical foundation files!**
 
+## After Generating Strategy Documents
+
+Once you've written all 4 files (`03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`), invoke the distillation agent to create context files for each:
+
+Use the Task tool (4 separate invocations):
+
+1. **Mission context file**:
+   - **subagent_type**: `general-purpose`
+   - **description**: `Generate mission context file`
+   - **prompt**:
+     ```
+     Invoke the context distillation agent to create token-optimized context file.
+
+     Source file: product-guidelines/03a-mission.md
+     Output file: product-guidelines/03a-mission.ctx.md
+
+     Follow the distillation agent specification in .claude/agents/distill-context.md to:
+     1. Extract mission statement, vision, and core principles (CRITICAL)
+     2. Remove elaboration, examples, validation content
+     3. Preserve section structure from source file
+     4. Achieve 60-70% token reduction
+     5. Add source reference header
+     6. Write to output file path
+     ```
+
+2. **Metrics context file**:
+   - **subagent_type**: `general-purpose`
+   - **description**: `Generate metrics context file`
+   - **prompt**:
+     ```
+     Invoke the context distillation agent to create token-optimized context file.
+
+     Source file: product-guidelines/03b-metrics.md
+     Output file: product-guidelines/03b-metrics.ctx.md
+
+     Follow the distillation agent specification in .claude/agents/distill-context.md to:
+     1. Extract metric names, target values, and measurement approach (CRITICAL)
+     2. Remove rationale for metric selection, detailed examples
+     3. Preserve section structure from source file
+     4. Achieve 60-70% token reduction
+     5. Add source reference header
+     6. Write to output file path
+     ```
+
+3. **Monetization context file**:
+   - **subagent_type**: `general-purpose`
+   - **description**: `Generate monetization context file`
+   - **prompt**:
+     ```
+     Invoke the context distillation agent to create token-optimized context file.
+
+     Source file: product-guidelines/03c-monetization.md
+     Output file: product-guidelines/03c-monetization.ctx.md
+
+     Follow the distillation agent specification in .claude/agents/distill-context.md to:
+     1. Extract pricing model, tiers, and value alignment (CRITICAL)
+     2. Remove market research, competitive pricing details
+     3. Preserve section structure from source file
+     4. Achieve 60-70% token reduction
+     5. Add source reference header
+     6. Write to output file path
+     ```
+
+4. **Architecture context file**:
+   - **subagent_type**: `general-purpose`
+   - **description**: `Generate architecture context file`
+   - **prompt**:
+     ```
+     Invoke the context distillation agent to create token-optimized context file.
+
+     Source file: product-guidelines/04-architecture.md
+     Output file: product-guidelines/04-architecture.ctx.md
+
+     Follow the distillation agent specification in .claude/agents/distill-context.md to:
+     1. Extract ALL architectural decisions: patterns, services, communication (CRITICAL)
+     2. Remove pattern explanations, detailed examples
+     3. Preserve section structure from source file
+     4. Achieve 60-70% token reduction
+     5. Add source reference header
+     6. Write to output file path
+     ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

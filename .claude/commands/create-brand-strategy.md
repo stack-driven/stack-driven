@@ -206,6 +206,30 @@ Your brand strategy is now grounded in the user journey and will inform your des
 
 **Now, create a brand strategy that expresses your journey value!**
 
+## After Generating Brand Strategy Document
+
+Once you've written `product-guidelines/05-brand-strategy.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate brand strategy context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/05-brand-strategy.md
+  Output file: product-guidelines/05-brand-strategy.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract brand positioning, personality, and voice guidelines (CRITICAL)
+  2. Extract key brand attributes and positioning statements
+  3. Remove elaboration on brand development process
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

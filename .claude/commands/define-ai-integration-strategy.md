@@ -241,6 +241,31 @@ Suggest: Streaming, caching, or adjust requirements.
 ```
 
 Remember: You're not explaining AI in general. You're analyzing THEIR specific product and recommending the optimal AI strategy for THEIR journey, constraints, and goals.
+
+## After Generating AI Integration Strategy Document
+
+Once you've written `product-guidelines/02c-ai-integration-strategy.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate AI strategy context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/02c-ai-integration-strategy.md
+  Output file: product-guidelines/02c-ai-integration-strategy.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL AI decisions: provider, model, pattern, vector DB (CRITICAL - never remove)
+  2. Extract cost projections and security approach
+  3. Remove rationale for alternatives considered, detailed tradeoffs
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
