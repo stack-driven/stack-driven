@@ -548,6 +548,30 @@ Or check progress: /cascade-status
 
 **Now, create a design system optimized for this specific journey!**
 
+## After Generating Design System Document
+
+Once you've written `product-guidelines/06-design-system.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate design system context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/06-design-system.md
+  Output file: product-guidelines/06-design-system.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL design specifications: colors, typography, components, tokens (CRITICAL)
+  2. Extract component states and accessibility standards
+  3. Remove design philosophy elaboration, pattern explanations
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

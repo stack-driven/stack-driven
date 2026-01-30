@@ -228,6 +228,30 @@ Once you've created the file:
 
 **Now, start the conversation!** Ask your first question to understand the user's problem and who experiences it.
 
+## After Generating Journey Document
+
+Once you've written `product-guidelines/00-user-journey.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate journey context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/00-user-journey.md
+  Output file: product-guidelines/00-user-journey.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL user journey steps with value quantification (CRITICAL - never remove)
+  2. Extract key personas, problems, and aha moments
+  3. Remove interview process details, question scaffolding
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

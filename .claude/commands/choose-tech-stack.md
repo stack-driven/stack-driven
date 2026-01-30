@@ -358,6 +358,31 @@ Once you've created the file:
 
 Read `product-guidelines/00-user-journey.ctx.md` and `product-guidelines/01-product-strategy.ctx.md`, analyze requirements, and generate `product-guidelines/02-tech-stack.md`.
 
+## After Generating Tech Stack Document
+
+Once you've written `product-guidelines/02-tech-stack.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate tech stack context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/02-tech-stack.md
+  Output file: product-guidelines/02-tech-stack.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL tech stack choices with 1-2 line justifications (CRITICAL - never remove)
+  2. Extract AI integration decision (Required/Not Required)
+  3. Extract estimated costs
+  4. Remove alternatives considered, detailed tradeoff analysis
+  5. Preserve section structure from source file
+  6. Achieve 60-70% token reduction
+  7. Add source reference header
+  8. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

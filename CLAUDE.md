@@ -79,20 +79,20 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 The cascade order is **sacred** - user journey comes first, everything flows from it:
 
 ```
-Session 1: /refine-journey              → 00-user-journey.md
-Session 2: /create-product-strategy     → 01-product-strategy.md, 01-product-strategy.ctx.md
-Session 2a: /document-constraints       → 02a-constraints.md, 02a-constraints.ctx.md
-Session 3: /choose-tech-stack           → 02-tech-stack.md
-Session 3b: /define-coding-standards   → 02b-coding-standards.md, 02b-coding-standards.ctx.md
-Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md, 02c-ai-integration-strategy.ctx.md
-Session 4: /generate-strategy           → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
-Session 5: /create-brand-strategy       → 05-brand-strategy.md
-Session 6: /create-design               → 06-design-system.md
-Session 7: /design-database-schema      → 07-database-schema.md
-Session 8: /generate-api-design         → 08-api-design.md, 08-api-design.ctx.md
-Session 8b: /generate-api-contracts     → 08b-api-contracts.md, 08b-api-contracts.ctx.md
-Session 9: /create-test-strategy        → 09-test-strategy.md
-Session 9b: /model-application          → 09b-application-architecture.md, 09b-application-architecture.ctx.md
+Session 1: /refine-journey              → 00-user-journey.md + .ctx.md
+Session 2: /create-product-strategy     → 01-product-strategy.md + .ctx.md
+Session 2a: /document-constraints       → 02a-constraints.md + .ctx.md
+Session 3: /choose-tech-stack           → 02-tech-stack.md + .ctx.md
+Session 3b: /define-coding-standards   → 02b-coding-standards.md + .ctx.md
+Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md + .ctx.md
+Session 4: /generate-strategy           → 03a-mission.md + .ctx.md, 03b-metrics.md + .ctx.md, 03c-monetization.md + .ctx.md, 04-architecture.md + .ctx.md
+Session 5: /create-brand-strategy       → 05-brand-strategy.md + .ctx.md
+Session 6: /create-design               → 06-design-system.md + .ctx.md
+Session 7: /design-database-schema      → 07-database-schema.md + .ctx.md
+Session 8: /generate-api-design         → 08-api-design.md + .ctx.md
+Session 8b: /generate-api-contracts     → 08b-api-contracts.md + .ctx.md
+Session 9: /create-test-strategy        → 09-test-strategy.md + .ctx.md
+Session 9b: /model-application          → 09b-application-architecture.md + .ctx.md
 Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories)
 Session 11: /create-gh-issues           → Push to GitHub
 Session 12: /scaffold-project           → 12-project-scaffold.md + code files + code skeletons
@@ -191,105 +191,99 @@ Every decision must trace back to user journey:
 
 ### 4. Context Files Pattern
 
-Some sessions create TWO files:
-- Full version: Complete detailed specification
-- Context file: Condensed for consumption by later sessions
+**UNIVERSAL RULE: ALL sessions 1-9b create TWO files:**
+- **Full version (.md)**: Complete detailed specification for humans
+- **Context file (.ctx.md)**: Condensed for AI consumption by later sessions
 
-**Sessions WITH context files:**
+**ALL sessions 1-9b have context files:**
+- `00-user-journey.md` + `00-user-journey.ctx.md` (70% reduction)
 - `01-product-strategy.md` + `01-product-strategy.ctx.md` (65% reduction)
+- `02-tech-stack.md` + `02-tech-stack.ctx.md` (65% reduction)
 - `02a-constraints.md` + `02a-constraints.ctx.md` (70% reduction)
 - `02b-coding-standards.md` + `02b-coding-standards.ctx.md` (70% reduction)
 - `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy.ctx.md` (70% reduction)
+- `03a-mission.md` + `03a-mission.ctx.md` (65% reduction)
+- `03b-metrics.md` + `03b-metrics.ctx.md` (65% reduction)
+- `03c-monetization.md` + `03c-monetization.ctx.md` (65% reduction)
+- `04-architecture.md` + `04-architecture.ctx.md` (60% reduction)
+- `05-brand-strategy.md` + `05-brand-strategy.ctx.md` (65% reduction)
+- `06-design-system.md` + `06-design-system.ctx.md` (60% reduction)
 - `07-database-schema.md` + `07-database-schema.ctx.md` (56% reduction)
-- `08-api-design.md` + `08-api-design.ctx.md` (Session 8 - high-level API decisions for backlog)
-- `08b-api-contracts.md` + `08b-api-contracts.ctx.md` (Session 8b - technical specs for scaffold)
+- `08-api-design.md` + `08-api-design.ctx.md` (65% reduction)
+- `08b-api-contracts.md` + `08b-api-contracts.ctx.md` (80% reduction)
 - `09-test-strategy.md` + `09-test-strategy.ctx.md` (66% reduction)
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)
 
-**Sessions WITHOUT context files:**
-- `05-brand-strategy.md` - Only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity)
-- `06-design-system.md` - Only read by post-cascade extensions and dev-time commands (plan-issue, implement-issue)
+**NO context files for final outputs (sessions 10-14):**
+- `10-backlog/` - User stories are already concise
+- `12-project-scaffold.md` - Final scaffold documentation
+- `13-deployment-plan.md` - Final deployment plan
+- `14-observability-strategy.md` - Final observability strategy
 
-**Why this distinction?** Context files exist ONLY when ALL three criteria are met:
-1. **Read by core cascade** - The session is consumed by core cascade Sessions 10 (backlog) and/or 12 (scaffold)
-2. **Large/detailed content** - The full file contains extensive schemas, specifications, or detailed examples
-3. **Token efficiency matters** - Condensing provides meaningful performance improvement for cascade operations
+**Why this universal approach?**
+1. **Consistency** - No complex decision matrix needed
+2. **Future-proof** - If a new session needs file X, .ctx.md already exists
+3. **Token efficiency everywhere** - Any command loading guidelines gets optimized context
+4. **Simpler mental model** - "Full .md for humans, .ctx.md for AI" applies universally
 
 **How context files are generated:**
 Context files are automatically created using the **distillation sub-agent** (`.claude/agents/distill-context.md`):
 1. Session command generates full source file (`.md`)
 2. Command invokes distillation agent with source and output paths
-3. Agent applies universal extraction rules (keep decisions/configs, remove rationale/alternatives)
+3. Agent applies universal extraction rules with **critical preservation**:
+   - **KEEP:** ALL architectural decisions, user journey steps, tech choices, design specs, constraints, database schemas, API specifications
+   - **REMOVE:** Rationale (keep 1-2 line summaries), alternatives considered, detailed examples, validation checklists
 4. Agent preserves source file structure, achieves 60-70% token reduction
-5. No context templates needed - agent intelligently extracts from any source file
+5. Agent validates ALL critical decisions preserved before writing
 
-Sessions 5 and 6 don't have context files because they're only read by optional post-cascade commands (not core cascade Sessions 10 or 12). Those commands need the full context (brand personality, design system components). Additionally, Session 6's template is already compact (1.7KB).
+### 5. Simplified Decision Matrix: When to Read .ctx.md vs .md
 
-In contrast, sessions 02c, 08, 08b, 09, and 09b DO have context files because they're read by core cascade sessions:
-- Session 8 context → Session 10 (backlog) reads API paradigm/serialization decisions
-- Session 8b context → Session 12 (scaffold) reads endpoint lists for code generation
-- Session 10 reads all .ctx.md files; Session 9b reads 02b-coding-standards.ctx.md; Session 12 reads 09b-application-architecture.ctx.md
-Token reduction significantly improves performance.
+**UNIVERSAL RULE: Sessions ALWAYS read .ctx.md when available (all sessions 1-9b have .ctx.md files).**
 
-### 5. Decision Matrix: When to Read .ctx.md vs .md
+**Read .ctx.md (Default for ALL Cascade Sessions):**
 
-This matrix documents which file version each session should read for optimal token efficiency while maintaining quality.
+ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
+- **Token efficiency** - 60-70% reduction per file, cumulative savings across cascade
+- **Decisions only** - No rationale, alternatives, or explanations needed
+- **Consistency** - Simple rule: if .ctx.md exists, read it
+- **Performance** - Faster execution, lower costs, better context window usage
 
-**Always Read .ctx.md (Token Optimization):**
+**Session-by-Session Matrix (Simplified):**
 
-Use context files when:
-- Building on previous decisions (need decisions only, not rationale)
-- Loading context for code generation (need configs, not explanations)
-- Cascade execution reading multiple previous sessions (cumulative token savings)
-- Implementation/planning commands needing technical specs
-
-**Always Read Full .md (Comprehensive Context):**
-
-Use source files when:
-- User explicitly asks to review full document
-- Validation/quality checks needing to verify rationale (/validate-outputs)
-- Need to understand "why" for plan challenges or design reviews
-- Files that don't have .ctx versions (tech-stack, architecture, mission, metrics, monetization, brand-strategy, design-system)
-
-**Session-by-Session Matrix:**
-
-| Session | Reads From | Uses .ctx.md? | Rationale |
-|---------|-----------|---------------|-----------|
-| 2 | 00 | .ctx.md | Needs journey steps, not interview process |
-| 2a | 00, 01 | .ctx.md | Needs journey + vision, not market analysis |
-| 3 | 00, 01, 02a | .ctx.md | Needs journey + constraints, not rationale |
-| 3b | 00, 01, 02 | .ctx.md for 00-01; full for 02 | Tech stack has no .ctx version |
-| 3c | 00, 01, 02 | .ctx.md for 00-01; full for 02 | Tech stack decisions needed |
-| 4 | 00-02c | .ctx.md where exists; full for 02 | Needs all previous decisions |
-| 5 | 00-04 | .ctx.md for 00-02c; full for 02, 03a-04 | Strategic foundation |
-| 6 | 00-05 | .ctx.md for 00-02c; full for others | Journey + brand strategy |
-| 7 | 00-06 | .ctx.md for 00-02c; full for others | Journey + design decisions |
-| 8 | 00, 02, 04, 07 | .ctx.md for 00, 07; full for 02, 04 | Schema names, not field details |
-| 8b | 00, 02, 04, 07, 08 | .ctx.md for 00, 07, 08; full for 02, 04 | API decisions, not alternatives |
-| 9 | 00-08b | .ctx.md for 00, 07, 08, 08b; full for 02, 04 | All technical decisions |
-| 9b | 00, 02, 02b, 04, 07, 08b | .ctx.md for 00, 02b, 07, 08b; full for 02, 04 | Schemas + contracts for modeling |
-| 10 | 00-09b + all .ctx | .ctx.md for ALL eligible files | **CRITICAL** - massive token savings |
-| 11 | 10-backlog | Full .md | Backlog stories (no .ctx version) |
-| 12 | 00-11 | .ctx.md for 00, 01, 02a, 02b, 02c, 07, 08b, 09, 09b; full for others | Specs for scaffold |
-| 13 | 00-12 | .ctx.md for all eligible; full for 02, 04, others | Architecture + scaffold specs |
-| 14 | 00-13 | .ctx.md for all eligible; full for 02, 04, 03b, 13 | Metrics + deployment specs |
+| Session | Reads From | File Versions | Note |
+|---------|-----------|--------------|------|
+| 2 | 00 | .ctx.md | Journey steps only |
+| 2a | 00, 01 | .ctx.md | Journey + vision |
+| 3 | 00, 01, 02a (if exists) | .ctx.md | Journey + constraints |
+| 3b | 00, 01, 02 | .ctx.md | Tech stack + journey |
+| 3c | 00, 01, 02 | .ctx.md | AI decisions (optional session) |
+| 4 | 00-02c (if exists) | .ctx.md | All previous decisions |
+| 5 | 00-04 | .ctx.md | Strategic foundation |
+| 6 | 00-05 | .ctx.md | Journey + brand |
+| 7 | 00-06 | .ctx.md | Journey + design |
+| 8 | 00, 02, 04, 07 | .ctx.md | API design decisions |
+| 8b | 00, 02, 04, 07, 08 | .ctx.md | API contracts |
+| 9 | 00-08b | .ctx.md | All technical specs |
+| 9b | 00, 02, 02b, 04, 07, 08b | .ctx.md | Application modeling |
+| 10 | 00-09b | .ctx.md for ALL | **CRITICAL** - Maximum token savings |
+| 11 | 10-backlog | Full .md | Stories (no .ctx) |
+| 12 | 00-11 | .ctx.md for 00-09b | Scaffold generation |
+| 13 | 00-12 | .ctx.md for 00-09b | Deployment planning |
+| 14 | 00-13 | .ctx.md for 00-09b | Observability strategy |
 
 **Dev Commands:**
 
-| Command | Reads | Uses .ctx.md? | Rationale |
-|---------|-------|---------------|-----------|
-| /plan-issue | 02 (always), conditional reads | .ctx.md for 02b, 07, 08, 08b, 09; full for 02, 06, 04 | Tech choices + specs |
-| /implement-issue | Uses plan only | N/A | Relies on plan context |
-| /post-plan-and-implement | Same as plan-issue | Same as plan-issue | Combined workflow |
+| Command | Reads | File Versions | Note |
+|---------|-------|--------------|------|
+| /plan-issue | 02, 02b, conditionally 04, 06, 07, 08, 08b, 09 | .ctx.md for all | Tech specs for planning |
+| /implement-issue | Uses plan only | N/A | Plan has all context |
+| /post-plan-and-implement | Same as plan-issue | .ctx.md for all | Combined workflow |
 
-**Files That NEVER Have .ctx Versions:**
-- `02-tech-stack.md` - Core tech decisions, always read full
-- `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md` - Already concise
-- `04-architecture.md` - Core architecture principles, always read full
-- `05-brand-strategy.md` - Only read by post-cascade extensions (need full context)
-- `06-design-system.md` - Only read by post-cascade extensions and dev commands (need full specs)
-- `10-backlog/` stories - User stories don't have condensed versions
-- `12-project-scaffold.md`, `13-deployment-plan.md`, `14-observability-strategy.md` - Final outputs
+**Exception: Read Full .md Only When:**
+- User explicitly requests full document review
+- `/validate-outputs` command (needs rationale to check quality)
+- Understanding "why" decisions were made (design reviews, challenges)
+- Manual human review and stakeholder communication
 
 ### 6. Quality Validation Framework
 
@@ -304,14 +298,14 @@ Use source files when:
 ### 7. Issue Implementation Pattern
 
 `/plan-issue` loads context and creates implementation plan:
-1. Always read `02-tech-stack.md` (full version - no .ctx)
+1. Always read `02-tech-stack.ctx.md` (tech choices)
 2. Always read `02b-coding-standards.ctx.md` (patterns, file organization)
-3. Conditionally read based on issue type:
-   - UI work → `06-design-system.md` (full - no .ctx version)
+3. Conditionally read based on issue type (all use .ctx.md):
+   - UI work → `06-design-system.ctx.md`
    - API work → `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`
    - Database work → `07-database-schema.ctx.md`
    - Testing → `09-test-strategy.ctx.md`
-   - Infrastructure → `04-architecture.md` (full - no .ctx version)
+   - Infrastructure → `04-architecture.ctx.md`
 
 `/implement-issue` follows strict workflow:
 1. Fetch approved plan from issue comments
@@ -482,7 +476,7 @@ Examples serve as reference implementations:
 3. **Journey traceability** - Every decision must reference specific user value
 4. **Specificity matters** - Generic outputs violate framework philosophy
 5. **Templates guide structure** - Read templates to understand output format
-6. **Context files** - Some sessions create condensed versions for token efficiency
+6. **Context files** - ALL sessions 1-9b create .ctx.md versions for token efficiency
 7. **product-guidelines/ is gitignored** - Each user generates their own outputs
 8. **Examples are benchmarks** - Reference quality, don't copy content
 9. **Validation is critical** - Use `/validate-outputs` to ensure quality
@@ -493,47 +487,46 @@ Examples serve as reference implementations:
 ## Quick Reference: Session Dependencies
 
 ```
-Session 1 (journey)
+Session 1 (journey) → Generates .md + .ctx.md
   ↓
-Session 2 (product-strategy) [reads: 00]
+Session 2 (product-strategy) [reads: 00.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 2a (constraints) [reads: 00, 01]
+Session 2a (constraints) [reads: 00.ctx.md, 01.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 3 (tech-stack) [reads: 00, 01, 02a (if exists)]
+Session 3 (tech-stack) [reads: 00.ctx.md, 01.ctx.md, 02a.ctx.md (if exists)] → Generates .md + .ctx.md
   ↓ ONLY detects if AI required, does NOT choose provider
-Session 3b (coding-standards) [reads: 00-02]
+Session 3b (coding-standards) [reads: 00.ctx.md, 01.ctx.md, 02.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 3c (ai-integration-strategy) [reads: 00, 01, 02] (OPTIONAL - only if "AI Integration: Required")
-  ↓ Makes ALL AI decisions and UPDATES 02-tech-stack.md with provider
-Session 4 (generate-strategy) [reads: 00-02a (if exists), 02b, 02c (if exists)]
+Session 3c (ai-integration-strategy) [reads: 00.ctx.md, 01.ctx.md, 02.ctx.md] → Generates .md + .ctx.md
+  ↓ OPTIONAL - only if "AI Integration: Required"; Makes ALL AI decisions and UPDATES 02-tech-stack.md
+Session 4 (generate-strategy) [reads: 00-02c.ctx.md (all .ctx versions)] → Generates .md + .ctx.md for each (4 files)
   ↓
-Session 5 (brand-strategy) [reads: 00-04]
+Session 5 (brand-strategy) [reads: 00-04.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 6 (design) [reads: 00-05]
+Session 6 (design) [reads: 00-05.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 7 (database-schema) [reads: 00-06]
+Session 7 (database-schema) [reads: 00-06.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 8 (api-design) [reads: 00, 02, 04, 07-database-schema.ctx.md]
+Session 8 (api-design) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 8b (api-contracts) [reads: 08-api-design, 00, 02, 04, 07-database-schema.ctx.md]
+Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 08.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 9 (test-strategy) [reads: 00-08b]
+Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 9b (application-architecture) [reads: 00, 02, 02b-coding-standards.ctx.md*, 04, 07-database-schema.ctx.md*, 08b-api-contracts.ctx.md*]
-  * Context files used to reduce token usage (architecture doesn't need full schemas/contracts)
+Session 9b (application-architecture) [reads: 00.ctx.md, 02.ctx.md, 02b.ctx.md, 04.ctx.md, 07.ctx.md, 08b.ctx.md] → Generates .md + .ctx.md
   ↓
-Session 10 (backlog) [reads: 00-09b including 02b + all .ctx.md files including 08-api-design.ctx.md*]
-  * Reads API design decisions (paradigm, serialization) for API-driven stories
+Session 10 (backlog) [reads: ALL .ctx.md files from 00-09b] → Generates backlog stories (no .ctx.md)
   ↓
-Session 11 (create-gh-issues) [reads: 10-backlog/]
+Session 11 (create-gh-issues) [reads: 10-backlog/] → Pushes to GitHub
   ↓
-Session 12 (scaffold) [reads: 00-11 including 02b, 09b-application-architecture.ctx.md, 08b-api-contracts.ctx.md*]
-  * Reads endpoint lists for controller/route generation
+Session 12 (scaffold) [reads: ALL .ctx.md files from 00-09b] → Generates scaffold (no .ctx.md)
   ↓
-Session 13 (deployment) [reads: 00-12]
+Session 13 (deployment) [reads: ALL .ctx.md files from 00-09b] → Generates plan (no .ctx.md)
   ↓
-Session 14 (observability) [reads: 00-13]
+Session 14 (observability) [reads: ALL .ctx.md files from 00-09b] → Generates strategy (no .ctx.md)
 ```
+
+**Key Pattern:** Sessions ALWAYS read .ctx.md versions when available. Context files provide 60-70% token reduction, cumulative savings across cascade.
 
 Post-cascade extensions read from core cascade outputs but are optional and can run in any order after their prerequisites.
 

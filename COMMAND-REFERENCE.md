@@ -27,7 +27,7 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 | `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
 | `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards.ctx.md` |
 | `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md`, `02c-ai-integration-strategy.ctx.md` |
-| `/generate-strategy` | 4 | 45-60 min | `03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md` |
+| `/generate-strategy` | 4 | 45-60 min | `03a-mission.md` + `.ctx.md`, `03b-metrics.md` + `.ctx.md`, `03c-monetization.md` + `.ctx.md`, `04-architecture.md` + `.ctx.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
 | `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema.ctx.md` |
@@ -112,9 +112,6 @@ Commands that generate context files (visible in Output File(s) column above):
 
 **No .ctx.md versions for:**
 - `02-tech-stack.md` - Always read in full (core tech decisions)
-- `04-architecture.md` - Always read in full (architecture principles)
-- `05-brand-strategy.md`, `06-design-system.md` - Only read by optional post-cascade commands
-- Session 3a outputs (mission, metrics, monetization) - Already concise
 - Sessions 11-14 - Final outputs not consumed by later sessions
 
 **See README.md and CLAUDE.md** for complete details on context files and when each version is used.
@@ -405,10 +402,10 @@ Commands that generate context files (visible in Output File(s) column above):
 - `product-guidelines/02-tech-stack.md` - Technology choices
 
 **Outputs:**
-- `product-guidelines/03a-mission.md`
-- `product-guidelines/03b-metrics.md`
-- `product-guidelines/03c-monetization.md`
-- `product-guidelines/04-architecture.md`
+- `product-guidelines/03a-mission.ctx.md`
+- `product-guidelines/03b-metrics.ctx.md`
+- `product-guidelines/03c-monetization.ctx.md`
+- `product-guidelines/04-architecture.ctx.md`
 
 **What it derives:**
 - **Mission:** Promise to deliver value at specific journey step
@@ -449,8 +446,8 @@ Commands that generate context files (visible in Output File(s) column above):
 
 **Inputs (what it reads):**
 - `product-guidelines/00-user-journey.md` - User and value
-- `product-guidelines/03a-mission.md` - Mission and promise
-- `product-guidelines/03b-metrics.md` - Success measures
+- `product-guidelines/03a-mission.ctx.md` - Mission and promise
+- `product-guidelines/03b-metrics.ctx.md` - Success measures
 
 **Outputs:**
 - `product-guidelines/05-brand-strategy.md`
@@ -530,7 +527,7 @@ Commands that generate context files (visible in Output File(s) column above):
 **Inputs (what it reads):**
 - `product-guidelines/00-user-journey.md` - Data needs from journey
 - `product-guidelines/02-tech-stack.md` - Database choice
-- `product-guidelines/04-architecture.md` - Data patterns
+- `product-guidelines/04-architecture.ctx.md` - Data patterns
 
 **Outputs:**
 - `product-guidelines/07-database-schema.md` (documentation)
@@ -772,7 +769,7 @@ Commands that generate context files (visible in Output File(s) column above):
 
 **Inputs (what it reads):**
 - `product-guidelines/02-tech-stack.md` - Technologies to scaffold
-- `product-guidelines/04-architecture.md` - Structure and patterns
+- `product-guidelines/04-architecture.ctx.md` - Structure and patterns
 - `product-guidelines/07-database-schema.md` - Database setup
 - `product-guidelines/10-backlog/` - What features to support
 
@@ -821,8 +818,8 @@ Commands that generate context files (visible in Output File(s) column above):
 
 **Inputs (what it reads):**
 - `product-guidelines/02-tech-stack.md` - Hosting platform
-- `product-guidelines/04-architecture.md` - Deployment patterns
-- `product-guidelines/03b-metrics.md` - Success metrics
+- `product-guidelines/04-architecture.ctx.md` - Deployment patterns
+- `product-guidelines/03b-metrics.ctx.md` - Success metrics
 
 **Outputs:**
 - `product-guidelines/13-deployment-plan.md`
@@ -861,7 +858,7 @@ Commands that generate context files (visible in Output File(s) column above):
 
 **Inputs (what it reads):**
 - `product-guidelines/00-user-journey.md` - Critical paths to monitor
-- `product-guidelines/03b-metrics.md` - Business metrics
+- `product-guidelines/03b-metrics.ctx.md` - Business metrics
 - `product-guidelines/13-deployment-plan.md` - Infrastructure
 
 **Outputs:**
@@ -1050,7 +1047,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 - Privacy and compliance considerations
 
 **Inputs:**
-- `product-guidelines/03b-metrics.md` - What to measure
+- `product-guidelines/03b-metrics.ctx.md` - What to measure
 - `product-guidelines/00-user-journey.md` - Critical paths
 
 **Outputs:**
@@ -1080,7 +1077,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 
 **Inputs:**
 - `product-guidelines/00-user-journey.md` - Target audience
-- `product-guidelines/03c-monetization.md` - Unit economics
+- `product-guidelines/03c-monetization.ctx.md` - Unit economics
 - `product-guidelines/01-product-strategy.md` - Market size
 
 **Outputs:**
@@ -1109,7 +1106,7 @@ These are **optional** deep-dive sessions that extend the core cascade. Run them
 - Fundraising considerations
 
 **Inputs:**
-- `product-guidelines/03c-monetization.md` - Pricing
+- `product-guidelines/03c-monetization.ctx.md` - Pricing
 - `product-guidelines/21-growth-strategy.md` - Acquisition costs
 - `product-guidelines/01-product-strategy.md` - Market size
 

@@ -48,7 +48,7 @@ This enables:
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
 Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/04-architecture.md
+Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
 ```
@@ -817,6 +817,30 @@ Or check progress: /cascade-status
 ---
 
 **Now, read previous outputs and model the application architecture that implements your user journey!**
+
+## After Generating Application Architecture Document
+
+Once you've written `product-guidelines/09b-application-architecture.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate application architecture context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/09b-application-architecture.md
+  Output file: product-guidelines/09b-application-architecture.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL service/repository/controller class structures and methods (CRITICAL)
+  2. Extract component architecture and integration adapters
+  3. Remove detailed implementation patterns, code examples, architecture rationale
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
 
 ## Output Format
 

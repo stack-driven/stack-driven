@@ -211,6 +211,30 @@ This validates your journey with market context. Everything traces back to the u
 
 **Remember**: Product strategy is now CORE (Session 2). It validates journey with market context before choosing technology. Everything connects back to the user journey.
 
+## After Generating Product Strategy Document
+
+Once you've written `product-guidelines/01-product-strategy.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate product strategy context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/01-product-strategy.md
+  Output file: product-guidelines/01-product-strategy.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract product vision, positioning, and strategic goals (CRITICAL)
+  2. Extract competitive landscape and market analysis insights
+  3. Remove detailed market research, competitive analysis prose
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

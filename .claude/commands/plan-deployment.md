@@ -45,7 +45,7 @@ Create a comprehensive deployment strategy following the instructions below.
    If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
      Read product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
 
-   Read product-guidelines/04-architecture.md (no .ctx version, always read full file)
+   Read product-guidelines/04-architecture.ctx.md (no .ctx version, always read full file)
    Read product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
    Read product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
    Read product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)
@@ -129,7 +129,7 @@ The output follows this structure:
 ```
 You: Let's plan your deployment strategy. First, let me check your tech stack and architecture...
 
-[Read product-guidelines/02-tech-stack.md and product-guidelines/04-architecture.md]
+[Read product-guidelines/02-tech-stack.md and product-guidelines/04-architecture.ctx.md]
 
 You: Got it - you have [frontend] + [backend] + [database]. How do you deploy today? What's painful?
 

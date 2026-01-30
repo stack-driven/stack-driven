@@ -29,10 +29,10 @@ Read: product-guidelines/02b-coding-standards.ctx.md
 If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
   Read: product-guidelines/02c-ai-integration-strategy.ctx.md
 
-Read: product-guidelines/03a-mission.md
-Read: product-guidelines/03b-metrics.md
-Read: product-guidelines/03c-monetization.md
-Read: product-guidelines/04-architecture.md
+Read: product-guidelines/03a-mission.ctx.md
+Read: product-guidelines/03b-metrics.ctx.md
+Read: product-guidelines/03c-monetization.ctx.md
+Read: product-guidelines/04-architecture.ctx.md
 Read: product-guidelines/07-database-schema.ctx.md
 Read: product-guidelines/08-api-design.ctx.md
 Read: product-guidelines/08b-api-contracts.ctx.md

@@ -43,8 +43,8 @@ Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full 
 Read: product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)
-Read: product-guidelines/04-architecture.md
-Read: product-guidelines/05-brand-strategy.md  # (no .ctx version, always read full file)
+Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/05-brand-strategy.ctx.md  # (context version for token efficiency)
 ```
 
 **Optional inputs (if available):**
@@ -865,23 +865,7 @@ This command generates:
 
 **2. Context Documentation** (`product-guidelines/07-database-schema.ctx.md`):
 
-After writing the full schema, invoke the distillation sub-agent:
-
-```bash
-Task tool with:
-- subagent_type: distill-context
-- Source file: product-guidelines/07-database-schema.md
-- Output file: product-guidelines/07-database-schema.ctx.md
-```
-
-The distillation agent will create a condensed version for Session 10 (backlog generation) - 56% smaller:
-- Database technology choices (DB, ORM, ID strategy, multi-tenancy)
-- Table list with journey mapping
-- Entity relationship diagram
-- Key relationships (1:N, M:N)
-- Data access patterns (for story scoping)
-- **Excludes**: Column details, indexes, migrations, scaling, alternatives
-- **Context savings**: ~900 tokens per backlog generation
+After writing the full schema, you'll invoke the distillation agent to create a condensed version. See "After Generating Database Schema Document" section below for instructions.
 
 **3. Migration Files** (`product-guidelines/07-database-schema/migrations/`):
 - Prisma schema (if TypeScript)
@@ -978,14 +962,38 @@ Don't create tables "just in case". Design schema based on:
 If you can't trace a table back to a journey step, you probably don't need it.
 
 **Reference files:**
-- Journey: `product-guidelines/00-user-journey.md`
+- Journey: `product-guidelines/00-user-journey.ctx.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/04-architecture.md`
+- Architecture: `product-guidelines/04-architecture.ctx.md`
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 
 ---
 
 **Now, read previous outputs and design a database schema that serves your users' journey!**
+
+## After Generating Database Schema Document
+
+Once you've written `product-guidelines/07-database-schema.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate database schema context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/07-database-schema.md
+  Output file: product-guidelines/07-database-schema.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL table definitions, relationships, and indexes (CRITICAL)
+  2. Extract entity relationship diagram and key design decisions
+  3. Remove detailed column explanations, migration code, query examples
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
 
 ## Output Format
 
