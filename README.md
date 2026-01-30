@@ -169,6 +169,105 @@ Your production-ready system is ready with database schema, API contracts, testi
 
 ---
 
+## Command Categories
+
+Stack-Driven commands fall into two distinct phases:
+
+### Phase 1: Cascade Commands (Product Guidelines Creation)
+
+**Purpose**: Transform user journey into complete product strategy and technical specifications.
+
+**When to use**: Before writing any implementation code. Generate `product-guidelines/` directory with strategic and technical decisions.
+
+**Core Cascade Sessions** (Sequential execution):
+- `/refine-journey` - Session 1: Define user journey through progressive interrogation
+- `/create-product-strategy` - Session 2: Market validation and competitive positioning
+- `/document-constraints` - Session 2a: Document business, technical, organizational constraints
+- `/choose-tech-stack` - Session 3: AI analyzes journey and recommends optimal tech stack
+- `/define-coding-standards` - Session 3b: Framework-specific patterns and file organization
+- `/define-ai-integration-strategy` - Session 3c: AI provider, model, and pattern choices (optional)
+- `/generate-strategy` - Session 4: Derive mission, metrics, monetization, architecture from journey
+- `/create-brand-strategy` - Session 5: Brand positioning, personality, voice guidelines
+- `/create-design` - Session 6: Design system with components for specific user flows
+- `/design-database-schema` - Session 7: Complete database schema with ERD and migrations
+- `/generate-api-design` - Session 8: High-level API architectural decisions
+- `/generate-api-contracts` - Session 8b: Detailed OpenAPI specs and endpoint definitions
+- `/create-test-strategy` - Session 9: Comprehensive testing strategy (unit, integration, E2E)
+- `/model-application` - Session 9b: Model application architecture (services, repositories, controllers)
+- `/generate-backlog` - Session 10: Generate 30-50 prioritized user stories with RICE scores
+- `/create-gh-issues` - Session 11: Push backlog to GitHub as issues
+- `/scaffold-project` - Session 12: Generate working dev environment with config files and code skeletons
+- `/plan-deployment` - Session 13: Create deployment strategy with CI/CD and environments
+- `/design-observability` - Session 14: Design monitoring, alerting, and SLO strategy
+
+**Meta Commands**:
+- `/cascade-status` - Check progress and see which session to run next
+- `/run-cascade` - Execute cascade automatically from current progress point
+- `/validate-outputs` - Quality assurance check for all product-guidelines files
+
+**Post-Cascade Extensions** (Optional deep-dives, run after completing core cascade):
+- `/design-user-experience` - Detailed UX research, flows, wireframes, interaction specs
+- `/discover-naming` - Generate and evaluate brand name candidates
+- `/design-growth-strategy` - Growth loops, acquisition channels, experiments
+- `/define-messaging` - Brand messaging framework and voice guidelines
+- `/create-content-guidelines` - Content style guide and microcopy patterns
+- `/create-design-identity` - Comprehensive brand identity (logo, visual system)
+- `/setup-analytics` - Detailed analytics implementation plan
+- `/create-financial-model` - Unit economics, revenue projections, scenario planning
+
+**Time Investment**: 8-10 hours for core cascade (Sessions 1-14)
+
+**Output**: Complete `product-guidelines/` directory with strategy, tech specs, backlog, and scaffold
+
+---
+
+### Phase 2: Development Commands (Implementation After Guidelines)
+
+**Purpose**: Implement features based on completed product guidelines.
+
+**When to use**: After completing core cascade (Sessions 1-14). You now have technical specifications to reference.
+
+**Issue Planning & Implementation**:
+- `/plan-issue [issue-number]` - Fetch GitHub issue, load relevant product-guidelines (.ctx.md files), create detailed implementation plan
+- `/implement-issue [issue-number]` - Fetch approved plan from issue comments, create branch, implement following plan, create PR
+
+**Code Review**:
+- `/review-code` - Guide code review with comprehensive framework
+
+**Documentation Maintenance**:
+- `/update-claudemd` - Automatically update CLAUDE.md based on recent code changes
+
+**GitHub Workflows** (Used by implementation commands):
+- `gh issue view [number]` - Fetch issue details
+- `gh issue comment [number]` - Post implementation plan to issue
+- `gh pr create` - Create pull request linking to issue
+- `gh pr checks` - Monitor CI/CD pipeline status
+
+**How Implementation Works**:
+1. Run `/plan-issue 42` → Claude reads issue, loads relevant `.ctx.md` files (tech-stack, coding-standards, api-contracts, database-schema), generates implementation plan
+2. Plan posted to issue as comment for approval
+3. Run `/implement-issue 42` → Claude reads approved plan, creates branch `42-issue-slug`, implements code following plan, commits with "feat: description (closes #42)", creates PR
+4. CI/CD runs tests, you merge when green
+
+**Key Difference from Phase 1**:
+- **Phase 1**: Generates strategy/specs → Creates `product-guidelines/` directory
+- **Phase 2**: Implements features → Modifies repository code files (src/, api/, etc.)
+
+**Context Files (.ctx.md)**:
+Implementation commands read `.ctx.md` versions for token efficiency:
+- `02-tech-stack.ctx.md` - Tech choices
+- `02b-coding-standards.ctx.md` - Framework patterns
+- `04-architecture.ctx.md` - System design
+- `06-design-system.ctx.md` - UI components (for frontend work)
+- `07-database-schema.ctx.md` - Database schema (for backend work)
+- `08-api-design.ctx.md` - API patterns
+- `08b-api-contracts.ctx.md` - Endpoint specs
+- `09b-application-architecture.ctx.md` - Service/repository signatures
+
+**Time Investment**: Depends on issue complexity (30 mins - 4 hours per issue)
+
+---
+
 ## Repository Structure
 
 ### `/product-guidelines/` - YOUR Generated Strategy
@@ -208,34 +307,18 @@ product-guidelines/
 └── 14-observability-strategy.md (Session 14)
 ```
 
-### `/examples/` - Reference Implementations
+### `/examples/` - Reference Implementations (Coming Soon)
 
-**Don't copy these** - they show the cascade in action with DIFFERENT journeys leading to DIFFERENT stacks.
-
-```
-examples/
-├── README.md (explains examples)
-├── compliance-saas/ (Next.js, FastAPI, PostgreSQL)
-│   ├── foundation/ (journey, mission, metrics, monetization)
-│   ├── stack/ (tech decisions, architecture)
-│   ├── design/ (design system)
-│   └── backlog/ (generated issues)
-└── [future: real-time-collaboration, etc.]
-```
-
-**Use them to**: See how journey requirements drove specific tech choices.
+**Future examples** will demonstrate how different journeys lead to different tech stacks. These will be added as the framework matures.
 
 ### `/.claude/commands/` - The Cascade Commands
 
-The slash commands that power the cascade. These prompt AI to read previous outputs and generate next steps.
+The slash commands that power the cascade (34 total). These prompt AI to read previous outputs and generate next steps.
 
 ### `/templates/` - Blank Starting Points
 
 Used by slash commands to generate your outputs. You don't edit these directly.
 
-### `/foundation/` & `/stack/` - Framework Guides
-
-High-level frameworks explaining concepts. NOT prescriptive. Use as reference.
 
 ---
 
@@ -454,42 +537,6 @@ Understand the "why" behind architectural decisions. Maintain coherence as you s
 
 ---
 
-## Example: How Cascade Adapts
-
-### Scenario 1: Compliance Document SaaS
-
-**Journey**:
-- Step 1: Upload 100-page PDF
-- Step 2: Select compliance frameworks
-- Step 3: AI assesses in 60 seconds
-- Step 4: Review shareable report (SEO matters)
-
-**Tech Stack Derived**:
-- Frontend: Next.js (SSR for shareable reports)
-- Backend: FastAPI (Python for document processing + AI)
-- Database: PostgreSQL (JSONB for flexible assessment results)
-- AI: Claude Sonnet (deep reasoning for compliance)
-
-**Why This Stack**: Journey requires document processing + AI reasoning + shareable reports → Python ecosystem + SSR
-
-### Scenario 2: Real-Time Multiplayer Game
-
-**Journey**:
-- Step 1: Join room on mobile
-- Step 2: 10 players draw simultaneously
-- Step 3: See changes <100ms
-- Step 4: Save game replay
-
-**Tech Stack Derived**:
-- Frontend: React Native (mobile-first requirement)
-- Backend: Node.js + Socket.io (real-time WebSockets)
-- Database: Redis (fast state) + PostgreSQL (history)
-- Hosting: Railway (WebSocket support)
-
-**Why This Stack**: Journey requires mobile + real-time <100ms → React Native + Node.js + WebSockets
-
-**Same framework. Different journeys. Different stacks.**
-
 ---
 
 ## Philosophy
@@ -624,17 +671,14 @@ Complete core cascade: Sessions 1-11 (6-8 hours).
 ## Contributing
 
 We welcome contributions that:
-- Add new example implementations (different journeys)
 - Improve cascade prompts and decision frameworks
 - Enhance documentation
-- Share real-world case studies
 
 **Guidelines:**
 1. Maintain the user-first philosophy
 2. Keep the generative (not prescriptive) approach
 3. Always trace decisions to user journey
 4. Provide clear reasoning for recommendations
-5. Test with diverse journey types
 
 ---
 
@@ -650,7 +694,6 @@ We welcome contributions that:
 - **Getting Help**: Start with `/cascade-status` to check your progress
 - **Issues**: Found a bug or unclear prompt? Open an issue
 - **Discussions**: Share your cascade results
-- **Examples**: Completed a cascade? Consider contributing as example
 
 ---
 

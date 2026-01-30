@@ -8,30 +8,40 @@ description: Create detailed implementation plan for GitHub issue
 
 You are a senior product engineer creating a detailed, actionable implementation plan for a GitHub issue. This plan will be used by `/implement-issue` to execute the work.
 
+## Critical Requirements
+
+This task is NOT complete until you have:
+
+1. Generated the implementation plan
+2. Saved it to `plan.md`
+3. Posted it as a comment to issue #$1
+4. Added the "planned" label to the issue
+
+Do not output a completion summary until all four steps are done. The plan must be posted to the issue - outputting it to the chat is not sufficient.
+
 ## Context
 
-**Issue Number:** $1
+- **Issue Number:** $1
+- **Repository:** Run `gh repo view --json nameWithOwner -q .nameWithOwner` to get current repo
+- **Product Guidelines:** Available in `product-guidelines/` directory (if they exist)
+- **Platform:** Detect GitHub vs GitLab by checking which CLI is available
 
-**Repository:** Run `gh repo view --json nameWithOwner -q .nameWithOwner` to get current repo
+## Formatting Rules
 
-**Product Guidelines:** Available in `product-guidelines/` directory (if they exist)
+- Do not use emojis in generated outputs
+- Use plain text for all headings and content
+- Use `[x]` style checkboxes, not emoji checkboxes
 
-## Your Task
-
-Create a comprehensive implementation plan that:
-1. Analyzes the issue requirements
-2. Loads relevant product-guidelines as context
-3. Ensures journey traceability
-4. Provides concrete technical approach
-5. Defines clear success criteria
+---
 
 ## Step 1: Fetch Issue Details
 
+Run:
 ```bash
 gh issue view $1 --json title,body,labels,comments
 ```
 
-Or for GitLab:
+For GitLab:
 ```bash
 glab issue view $1
 ```
@@ -42,11 +52,14 @@ Extract:
 - Labels (frontend, backend, database, etc.)
 - Any existing comments
 
-## Step 2: Determine Relevant Product Guidelines
+## Step 2: Load Product Guidelines
 
-Based on issue type, load these files from `product-guidelines/`:
+First, check what guidelines exist:
+```bash
+ls product-guidelines/*.md 2>/dev/null || echo "No product-guidelines directory"
+```
 
-**Always read:**
+**Always read (if they exist):**
 - `00-user-journey.ctx.md` - Understand which journey step this serves
 - `02-tech-stack.md` - Technology choices and patterns
 - `02b-coding-standards.ctx.md` - Framework-specific patterns, file organization, naming conventions
@@ -55,7 +68,7 @@ Based on issue type, load these files from `product-guidelines/`:
 
 | Issue Type | Guidelines to Load |
 |------------|-------------------|
-| UI/Frontend | `06-design-system.md` (no .ctx version) |
+| UI/Frontend | `06-design-system.md` |
 | API/Backend | `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`, `04-architecture.md` |
 | Database | `07-database-schema.ctx.md` |
 | New Feature | `00-user-journey.ctx.md`, `03b-metrics.md` |
@@ -63,18 +76,10 @@ Based on issue type, load these files from `product-guidelines/`:
 | Testing | `09-test-strategy.ctx.md` |
 | Infrastructure | `04-architecture.md`, `13-deployment-plan.md` |
 
-**Smart detection:**
+**Detection hints:**
 - Search issue body for keywords: "API", "database", "UI", "frontend", "backend"
 - Check labels: "frontend", "backend", "database", "api"
 - Read files that exist, skip missing ones
-
-**Use Glob to find available guidelines:**
-```bash
-ls product-guidelines/*.md
-```
-
-**Read relevant files:**
-Only read files that exist and are relevant to this issue.
 
 ## Step 3: Analyze Requirements
 
@@ -90,29 +95,39 @@ Only read files that exist and are relevant to this issue.
 - What are the dependencies?
 - What could go wrong?
 
-**Reference Product Guidelines:**
+**Guideline Alignment:**
 - Does this follow tech stack choices?
 - Does this match design system patterns?
 - Does this align with API contract specifications?
 - Does this follow database schema conventions?
 
-## Step 4: Generate Implementation Plan
+## Step 4: Generate and Save the Plan
 
-Create a detailed plan using this structure:
+Generate the plan content following the template below, then save it to a file.
+
+You must save the plan to `plan.md` before proceeding to Step 5:
+
+```bash
+cat > plan.md << 'PLAN_EOF'
+{your generated plan content here}
+PLAN_EOF
+```
+
+### Plan Template
 
 ```markdown
-# 🧭 Plan for #{$1}: {Issue Title}
+# Plan for #$1: {Issue Title}
 
 ## Journey Context
 
 **User Journey Step:** {Step number and description from 00-user-journey.md}
 
 **User Value:** {Specific value this delivers - be concrete}
-- Example: "Reduces compliance officer's document review time from 4 hours to 60 seconds"
+Example: "Reduces compliance officer's document review time from 4 hours to 60 seconds"
 
 **Success Metric:** {Which metric from 03b-metrics.md this impacts}
 
-## Product Context & Guidelines
+## Product Context and Guidelines
 
 **Tech Stack Alignment:**
 {Reference specific technologies from 02-tech-stack.md}
@@ -125,14 +140,11 @@ Create a detailed plan using this structure:
 - Naming conventions: {Component, function, variable naming}
 - Framework patterns: {Hooks, state management, error handling}
 
-**Design System Patterns:** {If UI work}
-{Reference components, colors, typography from 06-design-system.md}
+**Design System Patterns:** {If UI work, reference 06-design-system.md}
 
-**API Contract Reference:** {If API work}
-{Reference API paradigm/serialization from 08-api-design.ctx.md, endpoints/schemas from 08b-api-contracts.ctx.md}
+**API Contract Reference:** {If API work, reference 08-api-design.ctx.md and 08b-api-contracts.ctx.md}
 
-**Database Schema Reference:** {If database work}
-{Reference tables, relationships from 07-database-schema.ctx.md}
+**Database Schema Reference:** {If database work, reference 07-database-schema.ctx.md}
 
 ## Technical Approach
 
@@ -157,11 +169,9 @@ Create a detailed plan using this structure:
    - Key functionality: {bullet points}
 
 ### Files to Modify
-```
-src/components/Feature.tsx
-src/api/endpoints/feature.ts
-db/migrations/001_add_feature.sql
-```
+- src/components/Feature.tsx
+- src/api/endpoints/feature.ts
+- db/migrations/001_add_feature.sql
 
 ### Implementation Steps
 
@@ -228,29 +238,24 @@ db/migrations/001_add_feature.sql
 - {What is NOT included - save for future issues}
 - {What is NOT included}
 
-## Risks & Mitigations
+## Risks and Mitigations
 
-**Risk:** {Potential issue}
-**Mitigation:** {How to address it}
-
-**Risk:** {Potential issue}
-**Mitigation:** {How to address it}
+| Risk | Mitigation |
+|------|------------|
+| {Potential issue} | {How to address it} |
+| {Potential issue} | {How to address it} |
 
 ## Dependencies
 
-**Blocked By:** {Other issues that must complete first, or "None"}
-
-**Blocks:** {Issues that depend on this, or "None"}
-
-**External Dependencies:** {Third-party libraries, APIs, or "None"}
+- **Blocked By:** {Other issues that must complete first, or "None"}
+- **Blocks:** {Issues that depend on this, or "None"}
+- **External Dependencies:** {Third-party libraries, APIs, or "None"}
 
 ## Estimated Effort
 
-**Complexity:** {Low / Medium / High}
-
-**Time Estimate:** {X hours / Y days}
-
-**Confidence:** {High / Medium / Low}
+- **Complexity:** {Low / Medium / High}
+- **Time Estimate:** {X hours / Y days}
+- **Confidence:** {High / Medium / Low}
 
 ## References
 
@@ -261,123 +266,84 @@ db/migrations/001_add_feature.sql
 
 ---
 
-**Approval:** [✓] Ready for implementation via `/implement-issue $1`
+Ready for implementation via `/implement-issue $1`
 
-**Note:** This plan was generated by analyzing product guidelines. Review carefully and edit if adjustments are needed before implementation.
+Note: This plan was generated by analyzing product guidelines. Review and edit if adjustments are needed before implementation.
 ```
 
-## Step 5: Post Plan to Issue
+## Step 5: Post Plan to Issue and Add Label
 
-**GitHub:**
+After saving the plan to `plan.md`, you must post it to the issue.
+
+**For GitHub:**
 ```bash
 gh issue comment $1 --body-file plan.md
-```
-
-**GitLab:**
-```bash
-glab issue note $1 --message "$(cat plan.md)"
-```
-
-**Add "planned" label:**
-```bash
 gh issue edit $1 --add-label "planned"
 ```
 
-Or GitLab:
+**For GitLab:**
 ```bash
+glab issue note $1 --message "$(cat plan.md)"
 glab issue update $1 --label "planned"
 ```
 
-## Step 6: Confirm Completion
+Verify the comment was posted by checking the command output for success.
 
-Output to user:
+## Step 6: Completion
 
-```markdown
-[✓] Implementation plan created for issue #$1
+Only after the plan has been posted to the issue, output a brief confirmation:
 
-**Plan includes:**
-- Journey traceability to {step}
-- Technical approach with {X} components
-- {Y} implementation steps
-- {Z} success criteria
+```
+Plan created and posted to issue #$1.
 
-**Product guidelines referenced:**
-- {list of loaded guidelines}
+Guidelines referenced: {list files that were loaded}
 
-**View plan:** {issue URL}
-
-**Next steps:**
-1. Review plan on GitHub issue
-2. Edit plan if adjustments needed
-3. Run `/implement-issue $1` when ready to implement
+Next: Review the plan on the issue, then run /implement-issue $1
 ```
 
-## Quality Standards
+---
 
-Your plan must:
+## Quality Checklist
 
-**✓ Trace to journey** - Reference specific user journey step and value
-**✓ Reference guidelines** - Cite tech-stack, design-system, API contracts as applicable
-**✓ Be specific** - Name actual files, components, functions
-**✓ Be actionable** - Clear steps an engineer can follow
-**✓ Define success** - Measurable criteria, not vague goals
-**✓ Respect scope** - In/Out boundaries prevent scope creep
-**✓ Consider risks** - Identify what could go wrong
+Before posting, verify your plan:
 
-**✗ Avoid generic advice** - "Follow best practices" is not a plan
-**✗ Avoid vague steps** - "Implement feature" is not actionable
-**✗ Avoid missing context** - Always load and reference product-guidelines
-**✗ Avoid ignoring guidelines** - Plan must align with established patterns
+- [ ] Traces to a specific user journey step
+- [ ] References relevant product guidelines by filename
+- [ ] Names actual files, components, and functions
+- [ ] Provides actionable steps an engineer can follow
+- [ ] Defines measurable success criteria
+- [ ] Sets clear scope boundaries
+- [ ] Identifies risks and mitigations
 
-## Anti-Patterns to Avoid
-
-**[x] Technology mismatch:**
-Bad: Recommending Vue when tech-stack specifies React
-Good: "Using React per 02-tech-stack.md, create component..."
-
-**[x] Design system violation:**
-Bad: "Use whatever colors look good"
-Good: "Using primary-blue (#2B5FE0) from 06-design-system.md..."
-
-**[x] No journey reference:**
-Bad: "This adds a feature users want"
-Good: "This serves Journey Step 3 (document assessment), reducing review time from 4 hours to 60 seconds"
-
-**[x] Vague success criteria:**
-Bad: "Feature works well"
-Good: "Assessment completes in <2 seconds for 100-page documents"
-
-**[x] Missing breaking change analysis:**
-Bad: Silently changing API response format
-Good: "Breaking: Response format changes from X to Y. Migration: Update clients to expect new format."
+**Avoid:**
+- Generic advice like "follow best practices"
+- Vague steps like "implement feature"
+- Missing guideline references
+- Technology choices that contradict tech-stack.md
 
 ## Edge Cases
 
-**If product-guidelines don't exist:**
+**If product-guidelines directory does not exist:**
 - Note this in the plan
 - Create plan based on issue description alone
 - Recommend running `/cascade-status` to generate guidelines
 
 **If issue is poorly defined:**
-- Ask clarifying questions in issue comment
-- Request additional details before creating full plan
-- Tag issue author for input
+- Post a comment asking clarifying questions
+- Tag the issue author for input
+- Do not generate a full plan until requirements are clear
 
-**If issue conflicts with guidelines:**
+**If issue conflicts with existing guidelines:**
 - Flag the conflict explicitly in plan
 - Explain the discrepancy
 - Recommend either: (1) update guidelines, or (2) adjust issue scope
 
-## Remember
+## Anti-Patterns
 
-The plan you create will be consumed by `/implement-issue`, so:
-- Be thorough but concise
-- Include all context needed (product guidelines already loaded)
-- Make steps surgical and precise
-- Define success unambiguously
-
-**This plan is a contract** - the implementation will follow it exactly.
-
-## Output Format
-
-IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
+| Problem | Bad Example | Good Example |
+|---------|-------------|--------------|
+| Technology mismatch | Recommending Vue when tech-stack specifies React | "Using React per 02-tech-stack.md, create component..." |
+| Design system violation | "Use whatever colors look good" | "Using primary-blue (#2B5FE0) from 06-design-system.md..." |
+| No journey reference | "This adds a feature users want" | "This serves Journey Step 3, reducing review time from 4 hours to 60 seconds" |
+| Vague success criteria | "Feature works well" | "Assessment completes in <2 seconds for 100-page documents" |
+| Missing breaking change analysis | Silently changing API response format | "Breaking: Response format changes from X to Y. Migration: Update clients to expect new format." |

@@ -6,12 +6,12 @@ Complete reference for all Stack-Driven slash commands.
 
 ## Overview
 
-Stack-Driven includes **36 slash commands** organized into four categories:
+Stack-Driven includes **34 slash commands** organized into four categories:
 
 1. **Core Cascade Commands** (19) - The main framework sessions
 2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
-4. **Development Commands** (7) - Code review and implementation workflow
+4. **Development Commands** (5) - Code review and implementation workflow
 
 ---
 
@@ -71,8 +71,6 @@ Stack-Driven includes **36 slash commands** organized into four categories:
 | `/review-code` | During development | Guide comprehensive code review |
 | `/implement-issue [issue-number]` | During development | Implement GitHub issue following approved plan and create PR |
 | `/plan-issue [issue-number]` | Before implementation | Create detailed implementation plan for GitHub issue |
-| `/post-plan [issue-number]` | After planning | Post implementation plan as comment to GitHub issue |
-| `/post-plan-and-implement [issue-number]` | During development | Generate plan and auto-implement (full automation) |
 | `/update-claudemd` | After code changes | Automatically update CLAUDE.md file based on recent code changes |
 
 ---
@@ -1227,7 +1225,6 @@ Next step: Run /choose-tech-stack
 **Tips:**
 - Run after completing key milestones (Session 4, 10, 14)
 - Address critical issues before continuing cascade
-- Compare outputs to `examples/compliance-saas/` for quality benchmark
 - Use to validate before sharing with team
 
 ---

@@ -39,11 +39,11 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 ### Core Structure
 
-**`/.claude/commands/`** - The slash commands that power the framework (36 total)
+**`/.claude/commands/`** - The slash commands that power the framework (34 total)
 - Core cascade: 19 session commands (refine-journey → design-observability, including optional sessions)
 - Post-cascade extensions: 8 optional deep-dive commands (naming, UX, analytics, growth)
 - Meta commands: cascade-status, run-cascade
-- Dev commands: validate-outputs, review-code, implement-issue, plan-issue, post-plan, post-plan-and-implement, update-claudemd
+- Dev commands: validate-outputs, review-code, implement-issue, plan-issue, update-claudemd
 - Each command is a markdown file with detailed prompts for Claude
 
 **`/templates/`** - Template files used by commands to generate user outputs
@@ -58,12 +58,9 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 - Session outputs: user-journey, product-strategy, tech-stack, mission, metrics, etc.
 - Scaffold subdirectory: actual code files (package.json, docker-compose.yml, etc.)
 
-**`/examples/`** - Reference implementations showing different journeys
-- `compliance-saas/` - Document processing SaaS example (Next.js, FastAPI, PostgreSQL)
-- `b2b-saas-nextjs-postgres/` - B2B SaaS example
-- `fintech-api-go-gcp/` - Fintech API example (Go, GCP)
-- Demonstrates how different journeys lead to different tech stacks
-- DO NOT copy examples - generate specific outputs for each journey
+**`/examples/`** - Reserved for future reference implementations
+- Directory structure maintained for future examples
+- Will demonstrate how different journeys lead to different tech stacks
 
 **`/aspects/`** - High-level framework documentation (13 aspects)
 - Explains concepts like core-design, style-guide, user-journey, backlog-organization
@@ -169,7 +166,6 @@ Each command is a **generative session**, not a template filler:
 - Commands analyze user's SPECIFIC journey
 - Recommendations are derived from requirements, not prescribed
 - Same cascade, different journeys → different outputs
-- Example: Compliance SaaS gets Next.js+FastAPI (document processing + SEO), real-time game gets React Native+Node.js+WebSockets (mobile + <100ms latency)
 
 ### 2. Progressive Interrogation (Session 1)
 
@@ -424,7 +420,6 @@ Sessions must build on each other:
 **What's committed to repo:**
 - Commands (`/.claude/commands/`)
 - Templates (`/templates/`)
-- Examples (`/examples/`)
 - Documentation (`README.md`, `COMMAND-REFERENCE.md`)
 - Aspects (`/aspects/`)
 
@@ -460,13 +455,6 @@ Commands read templates to know output structure:
 5. Write to /product-guidelines/XX-name.md
 ```
 
-### Examples as Quality Benchmarks
-Examples serve as reference implementations:
-- Show journey → tech stack derivation
-- Demonstrate specificity vs genericity
-- Illustrate decision traceability
-- NOT meant to be copied
-
 ---
 
 ## Important Notes for Claude Code
@@ -478,9 +466,8 @@ Examples serve as reference implementations:
 5. **Templates guide structure** - Read templates to understand output format
 6. **Context files** - ALL sessions 1-9b create .ctx.md versions for token efficiency
 7. **product-guidelines/ is gitignored** - Each user generates their own outputs
-8. **Examples are benchmarks** - Reference quality, don't copy content
-9. **Validation is critical** - Use `/validate-outputs` to ensure quality
-10. **Philosophy over prescription** - This framework analyzes and recommends, never prescribes
+8. **Validation is critical** - Use `/validate-outputs` to ensure quality
+9. **Philosophy over prescription** - This framework analyzes and recommends, never prescribes
 
 ---
 
