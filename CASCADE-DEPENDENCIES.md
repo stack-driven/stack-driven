@@ -104,11 +104,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
 ├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [FULL] product-guidelines/03a-mission.md
 └─ [TMPL] /templates/02b-coding-standards-template.md
 ```
 
-**Dependencies:** Sessions 1, 2, 3, 4 (03a-mission.md from generate-strategy)
+**Dependencies:** Sessions 1, 2, 3
 
 **Downstream consumers of context files:**
 - Session 4 (generate-strategy)

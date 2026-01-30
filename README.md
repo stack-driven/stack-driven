@@ -213,7 +213,7 @@ Stack-Driven commands fall into two distinct phases:
 - `/design-growth-strategy` - Growth loops, acquisition channels, experiments
 - `/define-messaging` - Brand messaging framework and voice guidelines
 - `/create-content-guidelines` - Content style guide and microcopy patterns
-- `/create-design-identity` - Comprehensive brand identity (logo, visual system)
+- `/design-brand-identity` - Comprehensive brand identity (logo, visual system)
 - `/setup-analytics` - Detailed analytics implementation plan
 - `/create-financial-model` - Unit economics, revenue projections, scenario planning
 - `/create-compliance-plan` - Compliance implementation roadmap (GDPR, HIPAA, SOC2, PCI-DSS)
@@ -344,7 +344,7 @@ product-guidelines/
 
 ### `/.claude/commands/` - The Cascade Commands
 
-The slash commands that power the cascade (34 total). These prompt AI to read previous outputs and generate next steps.
+The slash commands that power the cascade (35 total). These prompt AI to read previous outputs and generate next steps.
 
 ### `/templates/` - Blank Starting Points
 
