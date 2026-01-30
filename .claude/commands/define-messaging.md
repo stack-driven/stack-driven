@@ -62,20 +62,26 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 ### Steps to Execute
 
-1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
+1. **FIRST: Validate dependency exists**:
+   ```bash
+   # Check that product-guidelines/05-brand-strategy.md exists
+   # If not, inform user to run /create-brand-strategy first
+   ```
+
+2. **Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
    Read product-guidelines/03a-mission.md
-   Read product-guidelines/05-brand-strategy.md
+   Read product-guidelines/05-brand-strategy.md  # (REQUIRED - messaging executes brand voice)
    Read product-guidelines/15-brand-naming.md  # If exists
    ```
 
-2. **Read the template structure**:
+3. **Read the template structure**:
    ```bash
    Read /templates/16-brand-messaging-template.md
    ```
 
-3. **Interview the user** with journey-informed questions:
+4. **Interview the user** with journey-informed questions:
 
    **Value Proposition (journey-based)**:
    - "Your mission is [mission]. How would you express this as a one-sentence value prop for [journey audience]?"
@@ -87,22 +93,22 @@ Create a brand messaging framework that expresses the journey value in your bran
    - "Your journey delivers value at [key moments]. What are the 3-5 core themes we should communicate about this value?"
 
    **Voice (brand-aligned)**:
-   - "Your brand personality is [from brand strategy]. How should this show up in copy? Let's define specific do's and don'ts."
+   - "Your brand personality from 05-brand-strategy.md is [traits]. How should this show up in copy? Let's translate [brand personality] into actual voice do's and don'ts."
 
-4. **Develop messaging framework** grounded in journey:
+5. **Develop messaging framework** grounded in journey AND brand strategy:
    - Value proposition = [Mission statement] for [journey audience]
    - Elevator pitch = [Journey problem] → [Journey solution] → [Journey value]
-   - Messaging pillars = Key themes from [journey moments]
-   - Voice guidelines = [Brand personality] applied to copy
-   - EVERY element traces back to journey
+   - Messaging pillars = Key themes from [journey moments] expressed in [brand voice from 05]
+   - Voice guidelines = [Brand personality from 05] translated to executable copy rules
+   - EVERY element traces back to journey AND brand strategy
 
-5. **Create sample copy** that demonstrates journey value:
-   - Homepage hero: Speaks to [journey problem], promises [journey value]
-   - About us: Tells story of WHY you solve [journey problem]
-   - Product description: Explains HOW you deliver [journey transformation]
-   - All copy in [brand voice], addressing [journey audience]
+6. **Create sample copy** that demonstrates journey value IN brand voice:
+   - Homepage hero: Speaks to [journey problem], promises [journey value], uses [brand voice from 05]
+   - About us: Tells story of WHY you solve [journey problem] in [brand personality]
+   - Product description: Explains HOW you deliver [journey transformation] with [brand tone]
+   - All copy EXECUTES [brand personality from 05], addressing [journey audience]
 
-6. **Write the output**:
+7. **Write the output**:
    ```bash
    Write product-guidelines/16-brand-messaging.md
    ```

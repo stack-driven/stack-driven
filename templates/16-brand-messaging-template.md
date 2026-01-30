@@ -6,31 +6,31 @@
 
 ## Overview
 
-This document defines the brand messaging framework that guides all customer communication - from marketing copy to product UI to customer support. All messaging expresses the value delivered through the user journey.
+This document defines the brand messaging framework that guides all customer communication - from marketing copy to product UI to customer support. This messaging framework EXECUTES the brand voice and personality defined in the brand strategy.
 
-## How This Traces to User Journey
+## Reads From
 
-**Journey audience** (from `product-guidelines/00-user-journey.md`):
-- [Who are they? What's their role/context?]
+**Dependencies**: This messaging framework REQUIRES `product-guidelines/05-brand-strategy.md` to exist first.
 
-**Journey problem** (from `product-guidelines/00-user-journey.md`):
-- [What do they struggle with? Where does friction occur?]
+**Brand voice foundation** (from `product-guidelines/05-brand-strategy.md`):
+- **Brand personality**: [Key personality traits from 05 - how you sound]
+- **Core values**: [Values that messaging must embody]
+- **Brand purpose**: [Why you exist - informs messaging themes]
+- **Brand promise**: [What customers can count on - messaging must deliver this]
 
-**Journey transformation** (from `product-guidelines/00-user-journey.md`):
-- [From what state → to what state?]
-
-**Journey value** (from `product-guidelines/00-user-journey.md`):
-- [What value gets delivered? When is the "aha moment"?]
+**Journey context** (from `product-guidelines/00-user-journey.md`):
+- **Journey audience**: [Who are they? What's their role/context?]
+- **Journey problem**: [What do they struggle with? Where does friction occur?]
+- **Journey transformation**: [From what state → to what state?]
+- **Journey value**: [What value gets delivered? When is the "aha moment"?]
 
 **Mission foundation** (from `product-guidelines/03a-mission.md`):
 - [Your mission statement]
 
-**Brand voice** (from `product-guidelines/05-brand-strategy.md`):
-- [Key personality traits - how you sound]
-
 **Messaging Goal**:
-- Communicate [journey transformation] to [journey audience] in [brand voice]
-- Every message connects back to the user journey
+- Translate [brand personality from 05] into actual executable copy templates
+- Communicate [journey transformation] to [journey audience] using [brand voice from 05]
+- Every message reinforces [brand promise from 05]
 
 ---
 
@@ -172,17 +172,20 @@ This document defines the brand messaging framework that guides all customer com
 ### Our Voice
 *Consistent personality across all communication*
 
-**How we sound**: [3-5 adjectives describing your voice]
+**Based on brand personality** (from `05-brand-strategy.md`):
+- [Reference specific personality traits from 05 - e.g., "Professional yet Approachable" translates to...]
+
+**How we sound**: [3-5 adjectives describing your voice, derived from brand personality]
 
 **What we do**:
-- [✓] [We do this]
-- [✓] [We do this]
-- [✓] [We do this]
+- [✓] [We do this - tied to brand value from 05]
+- [✓] [We do this - tied to brand value from 05]
+- [✓] [We do this - tied to brand value from 05]
 
 **What we don't do**:
-- [x] [We don't do this]
-- [x] [We don't do this]
-- [x] [We don't do this]
+- [x] [We don't do this - contradicts brand personality from 05]
+- [x] [We don't do this - contradicts brand values from 05]
+- [x] [We don't do this - contradicts brand promise from 05]
 
 ### Tone Variations
 *How voice adapts to context*
@@ -349,9 +352,37 @@ This document defines the brand messaging framework that guides all customer com
 
 ---
 
+## Relationship to Other Brand Documents
+
+**This Document (16-brand-messaging.md)**: Tactical copy templates and voice execution
+- Actual executable copy (headlines, taglines, emails)
+- Voice and tone guidelines with examples
+- Messaging pillars and proof points
+- Channel-specific messaging variations
+
+**Reads From**:
+- `05-brand-strategy.md` - Brand personality, values, purpose, promise (REQUIRED dependency)
+- `00-user-journey.md` - Journey transformation and audience context
+- `03a-mission.md` - Mission foundation
+
+**See Also**:
+- `15-brand-naming.md` - Name selection (generated separately via `/discover-naming`)
+- `17-brand-identity.md` - Visual identity system (generated separately via `/design-brand-identity`)
+- `06-design-system.md` - UI component patterns that implement this messaging
+
+**When to Use This Document**:
+- **Website copywriting**: Reference elevator pitches and sample copy
+- **Product UI**: Apply voice guidelines to button text, error messages, empty states
+- **Marketing campaigns**: Use messaging pillars and proof points
+- **Customer support**: Train team on tone variations and objection handling
+- **Session 10 (backlog)**: Ensure user story acceptance criteria match voice
+- **Session 12 (scaffold)**: Use for README copy, code comment tone, commit message style
+
+---
+
 ## Next Steps
 
-- [ ] Run `/create-content-guidelines` for detailed content style guide
+- [ ] Run `/create-content-guidelines` for detailed content style guide (if needed)
 - [ ] Share with team for feedback and alignment
 - [ ] Train customer-facing teams (sales, support, marketing)
 - [ ] Apply to website, product, marketing materials

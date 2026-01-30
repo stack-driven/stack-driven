@@ -39,9 +39,9 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 ### Core Structure
 
-**`/.claude/commands/`** - The slash commands that power the framework (34 total)
+**`/.claude/commands/`** - The slash commands that power the framework (35 total)
 - Core cascade: 19 session commands (refine-journey → design-observability, including optional sessions)
-- Post-cascade extensions: 8 optional deep-dive commands (naming, UX, analytics, growth)
+- Post-cascade extensions: 9 optional deep-dive commands (naming, UX, analytics, growth, compliance)
 - Meta commands: cascade-status, run-cascade
 - Dev commands: validate-outputs, review-code, implement-issue, plan-issue, update-claudemd
 - Each command is a markdown file with detailed prompts for Claude
@@ -567,6 +567,110 @@ Session 14 (observability) [reads: ALL .ctx.md files from 00-09b] → Generates 
 ## Post-Cascade Extensions
 
 Post-cascade extensions are **optional deep-dive commands** that run AFTER core cascade sessions (1-14) to provide specialized guidance for specific product needs. They read from core cascade outputs and are run selectively based on product requirements.
+
+### Brand Strategy Extensions
+
+**Hierarchy**: Session 5 (`/create-brand-strategy`) creates the strategic foundation. Extensions (naming, messaging, identity) provide tactical execution that READS FROM and REFERENCES the strategic foundation.
+
+#### `/discover-naming` - Brand Name Generation
+
+**When to run**: After Session 5 (`/create-brand-strategy`)
+
+**For whom**: Products that need brand name exploration with trademark research
+
+**Prerequisites**:
+- Brand strategy defined (Session 5) - REQUIRED
+- User journey defined (Session 1)
+- Mission statement (Session 4)
+
+**What it generates**: `product-guidelines/15-brand-naming.md`
+
+**Reads from**:
+- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED)
+- `00-user-journey.md` - Journey transformation for name context
+- `03a-mission.md` - Mission promise for name alignment
+
+**Outputs**:
+- 20-30 name candidates across categories (descriptive, metaphorical, abstract, compound)
+- Trademark research summary (USPTO, domain availability)
+- 10 finalists with detailed analysis
+- Top 3 recommendations with rationale
+
+**Key principle**: Names must express [journey value] through the lens of [brand personality from 05]
+
+---
+
+#### `/define-messaging` - Brand Messaging Framework
+
+**When to run**: After Session 5 (`/create-brand-strategy`)
+
+**For whom**: Products that need copy templates, voice guidelines, and messaging execution
+
+**Prerequisites**:
+- Brand strategy defined (Session 5) - REQUIRED
+- User journey defined (Session 1)
+- Mission statement (Session 4)
+
+**What it generates**: `product-guidelines/16-brand-messaging.md`
+
+**Reads from**:
+- `05-brand-strategy.md` - Brand voice, personality, values, promise (REQUIRED)
+- `00-user-journey.md` - Journey audience and transformation
+- `03a-mission.md` - Mission foundation
+
+**Outputs**:
+- Value proposition (one-sentence)
+- Elevator pitches (15-sec, 30-sec, 1-min)
+- Messaging pillars (3-5 core themes)
+- Voice and tone guidelines
+- Sample copy (homepage, emails, support, etc.)
+- Messaging do's and don'ts
+
+**Key principle**: Messaging EXECUTES [brand voice from 05] to communicate [journey value] to [journey audience]
+
+---
+
+#### `/design-brand-identity` - Visual Identity System
+
+**When to run**: After Session 5 (`/create-brand-strategy`)
+
+**For whom**: Products that need logo concepts, color palettes, typography, and visual guidelines
+
+**Prerequisites**:
+- Brand strategy defined (Session 5) - REQUIRED
+- User journey defined (Session 1)
+- Design system (Session 6) - optional but helpful
+
+**What it generates**: `product-guidelines/17-brand-identity.md`
+
+**Reads from**:
+- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED)
+- `00-user-journey.md` - Target audience and emotional context
+- `06-design-system.md` - Component-level design patterns (if exists)
+- `15-brand-naming.md` - Chosen name for logo (if exists)
+
+**Outputs**:
+- 3-5 logo concepts with rationale
+- Recommended logo with variations (horizontal, stacked, icon-only)
+- Color palette application (primary, secondary, accent, neutral)
+- Typography system (primary/secondary fonts, hierarchy)
+- Visual elements (patterns, iconography, photography style)
+- Usage guidelines (clearspace, do's/don'ts, accessibility)
+- Brand applications (digital, marketing, product examples)
+
+**Key principle**: Visual identity VISUALLY EXPRESSES [brand personality from 05] to [target audience]
+
+---
+
+**Brand Template Consolidation**:
+- **05-brand-strategy.md** - Strategic foundation (purpose, values, personality, promise)
+- **15-brand-naming.md** - Tactical name generation (reads 05)
+- **16-brand-messaging.md** - Tactical copy execution (reads 05)
+- **17-brand-identity.md** - Tactical visual execution (reads 05)
+
+Each extension REQUIRES 05-brand-strategy.md to exist first. Extensions reference brand strategy explicitly throughout. No duplicate content between 05 and 15-17.
+
+---
 
 ### `/create-compliance-plan` - Compliance Implementation Roadmap
 

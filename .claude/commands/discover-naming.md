@@ -56,19 +56,25 @@ Generate brand name candidates that express the value from the user journey thro
 
 ### Steps to Execute
 
-1. **FIRST: Read cascade inputs** (see "Cascade Inputs" section above):
+1. **FIRST: Validate dependency exists**:
+   ```bash
+   # Check that product-guidelines/05-brand-strategy.md exists
+   # If not, inform user to run /create-brand-strategy first
+   ```
+
+2. **Read cascade inputs** (see "Cascade Inputs" section above):
    ```bash
    Read product-guidelines/00-user-journey.md
    Read product-guidelines/03a-mission.md
-   Read product-guidelines/05-brand-strategy.md
+   Read product-guidelines/05-brand-strategy.md  # (REQUIRED - naming derives from brand personality)
    ```
 
-2. **Read the template structure**:
+3. **Read the template structure**:
    ```bash
    Read /templates/15-brand-naming-template.md
    ```
 
-3. **Interview the user** with journey-informed questions:
+4. **Interview the user** with journey-informed questions:
 
    **Naming Direction**:
    - "Your journey helps users [problem → solution]. Should your name be descriptive (explain what you do), metaphorical (suggest the benefit), or abstract (create new meaning)?"
@@ -85,26 +91,26 @@ Generate brand name candidates that express the value from the user journey thro
    **Trademark Concerns**:
    - "What geography and industry do we need to check trademark clearance for?"
 
-4. **Generate 20-30 name candidates** that connect to journey:
+5. **Generate 20-30 name candidates** that connect to journey:
    - Descriptive names (express what you do in the journey)
    - Metaphorical names (suggest the journey transformation)
    - Abstract names (create new meaning for journey value)
    - Compound names (combine journey keywords)
-   - All names must trace back to [journey problem/value]
+   - All names must trace back to [journey problem/value] AND express [brand personality from 05]
 
-5. **Trademark research** for top candidates:
+6. **Trademark research** for top candidates:
    - Check USPTO database (use WebSearch or guide user to check)
    - Check domain availability (guide user to check key TLDs)
    - Flag high-risk names (too similar to existing brands)
 
-6. **Narrow to 10 finalists** with:
+7. **Narrow to 10 finalists** with:
    - How each name expresses journey value
-   - How each name fits brand personality
+   - How each name fits brand personality FROM 05-brand-strategy.md
    - Trademark risk assessment
    - Domain availability
    - Pros and cons
 
-7. **Write the output**:
+8. **Write the output**:
    ```bash
    Write product-guidelines/15-brand-naming.md
    ```

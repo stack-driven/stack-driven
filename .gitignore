@@ -40,3 +40,7 @@ temp/
 
 # GitHub App credentials
 gha-creds-*.json
+
+# Review artifacts (generated during code review)
+pr-review*.md
+issue-*-evaluation.md

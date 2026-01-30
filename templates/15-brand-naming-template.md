@@ -5,9 +5,16 @@
 
 ## Overview
 
-This document captures the brand naming discovery process, including candidates, trademark research, and finalist recommendations. All names trace back to the user journey and brand strategy.
+This document captures the brand naming discovery process, including candidates, trademark research, and finalist recommendations. All names express the brand personality defined in the brand strategy.
 
-## How This Traces to User Journey
+## Reads From
+
+**Dependencies**: This naming exploration REQUIRES `product-guidelines/05-brand-strategy.md` to exist first.
+
+**Brand personality** (from `product-guidelines/05-brand-strategy.md`):
+- [Key personality traits - formal/casual, professional/playful, etc.]
+- [Core values that names should embody]
+- [Visual direction that influences naming aesthetic]
 
 **Journey problem** (from `product-guidelines/00-user-journey.md`):
 - [What problem do users struggle with?]
@@ -18,11 +25,8 @@ This document captures the brand naming discovery process, including candidates,
 **Mission promise** (from `product-guidelines/03a-mission.md`):
 - [What's your mission statement?]
 
-**Brand personality** (from `product-guidelines/05-brand-strategy.md`):
-- [Key personality traits - formal/casual, professional/playful, etc.]
-
 **Naming Goal**:
-- Names must express [journey value/transformation] through the lens of [brand personality]
+- Names must express [journey value/transformation] through the lens of [brand personality from 05-brand-strategy.md]
 
 ---
 
@@ -264,6 +268,31 @@ This document captures the brand naming discovery process, including candidates,
 
 ---
 
+## Relationship to Other Brand Documents
+
+**This Document (15-brand-naming.md)**: Tactical name generation
+- 20-30 name candidates across categories
+- Trademark research and domain availability
+- Top 3 recommendations with rationale
+- Focused purely on naming process
+
+**Reads From**:
+- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED dependency)
+- `00-user-journey.md` - Journey transformation for name context
+- `03a-mission.md` - Mission promise for name alignment
+
+**See Also**:
+- `16-brand-messaging.md` - Copy templates and voice execution (generated separately via `/define-messaging`)
+- `17-brand-identity.md` - Visual identity system (generated separately via `/design-brand-identity`)
+
+**When to Use This Document**:
+- When finalizing brand name selection
+- When registering trademarks and domains
+- Reference during Session 12 (scaffold) for package.json naming
+- Share with legal team for trademark filing
+
+---
+
 ## Next Steps
 
 - [ ] Review finalists with team/stakeholders
@@ -271,7 +300,7 @@ This document captures the brand naming discovery process, including candidates,
 - [ ] Conduct formal trademark search for top choice(s)
 - [ ] Secure domain and social handles
 - [ ] Run `/define-messaging` with chosen name
-- [ ] Begin visual identity design
+- [ ] Run `/design-brand-identity` to create visual identity
 
 ---
 
