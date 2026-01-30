@@ -474,6 +474,29 @@ Or check progress: /cascade-status
 
 **Now, synthesize all cascade outputs into a complete, prioritized backlog!**
 
+## CRITICAL CHECKPOINT
+
+Session 10 complete! You have a complete backlog ready for implementation.
+
+Before proceeding to scaffold generation, validate that your backlog priorities align with delivering user value efficiently.
+
+**REVIEW CHECKLIST:**
+- [ ] P0 stories deliver core user journey (Steps 1-3 from Session 1)
+- [ ] P1 stories support key metrics tracking (from Session 4)
+- [ ] P2+ stories are truly deferrable (won't block MVP launch)
+- [ ] No "zombie stories" with unclear value or missing journey references
+
+**What happens next:**
+Session 11 will push these stories to GitHub as issues. Session 12 will generate project scaffold with code skeletons. You'll implement stories in priority order (P0 first).
+
+**If you found issues:**
+Run `/generate-backlog` again to regenerate with fresh analysis (preserves same journey and technical context).
+
+**If everything looks good:**
+Type "continue" when ready to proceed to Session 11 (push to GitHub).
+
+---
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

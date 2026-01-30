@@ -1270,6 +1270,29 @@ Use the Task tool:
   7. Write to output file path
   ```
 
+## CRITICAL CHECKPOINT
+
+Session 7 complete! Your database schema is your product's data foundation.
+
+Before proceeding, validate that your schema correctly represents your user journey and will support all planned features efficiently.
+
+**REVIEW CHECKLIST:**
+- [ ] All entities from user journey steps are represented in schema
+- [ ] Foreign keys are defined with proper CASCADE/RESTRICT and indexed
+- [ ] No obvious N+1 query patterns (check for missing indexes on frequently queried columns)
+- [ ] Schema supports key metrics tracking (from Session 4)
+
+**What happens next:**
+Session 8 will design your API endpoints using this schema. Session 10 will generate backlog stories that implement these tables. Session 12 will scaffold migration files.
+
+**If you found issues:**
+Run `/design-database-schema` again to regenerate with fresh analysis (preserves same journey context).
+
+**If everything looks good:**
+Type "continue" when ready to proceed to Session 8 (API design).
+
+---
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

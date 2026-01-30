@@ -414,6 +414,29 @@ Use the Task tool:
   8. Write to output file path
   ```
 
+## CRITICAL CHECKPOINT
+
+Session 3 complete! Your tech stack has been chosen based on your specific journey requirements.
+
+Before proceeding, validate that your technology choices align with your journey needs and aren't driven by trends or resume-building.
+
+**REVIEW CHECKLIST:**
+- [ ] Each tech choice references specific journey requirements (not generic "best practices")
+- [ ] Stack is cohesive (technologies work well together, same ecosystem where possible)
+- [ ] MVP cost estimate is realistic (typically <$200/month for most MVPs)
+- [ ] No over-engineering (complexity matches current scale, not theoretical future scale)
+
+**What happens next:**
+Session 4 will derive your mission, metrics, and architecture principles using this tech stack. Sessions 7-12 will generate technical designs (database, API, tests, scaffold) based on these choices.
+
+**If you found issues:**
+Run `/choose-tech-stack` again to regenerate with fresh analysis (preserves same journey context).
+
+**If everything looks good:**
+Type "continue" when ready to proceed to Session 4 (tactical foundation).
+
+---
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
