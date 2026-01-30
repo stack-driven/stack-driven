@@ -436,8 +436,8 @@ paths:
       description: |
         Receives email event webhooks from SendGrid (delivered, bounced, opened, etc.).
 
-        **Security**: No signature verification (SendGrid doesn't provide).
-        **Mitigation**: Validate sending IP against SendGrid's IP ranges.
+        **Security**: ECDSA signature verification via X-Twilio-Email-Event-Webhook-Signature header.
+        **Fallback**: Validate sending IP against SendGrid's IP ranges if signature verification unavailable.
       operationId: handleSendGridWebhook
       tags: [Webhooks]
       requestBody:

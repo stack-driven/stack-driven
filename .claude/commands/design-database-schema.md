@@ -277,6 +277,14 @@ CREATE INDEX idx_integration_credentials_expires ON integration_credentials(expi
   WHERE expires_at IS NOT NULL;
 ```
 
+**Encryption Key Management Note:**
+- Credentials stored in `*_encrypted` columns MUST be encrypted at application layer before storage
+- Use environment-specific encryption keys (separate keys for dev/staging/production)
+- Recommended: Use key management service (AWS KMS, GCP KMS, HashiCorp Vault) for key storage
+- Never commit encryption keys to version control
+- Implement key rotation strategy with backward compatibility during rotation period
+- Consider using envelope encryption pattern for large-scale deployments
+
 #### webhook_events
 **Purpose**: Log incoming webhook payloads for idempotency and debugging
 **When needed**: Any integration that sends webhooks (Stripe, SendGrid, Salesforce)
