@@ -347,6 +347,165 @@ Use nested translation objects: `{ "name_i18n": { "en-US": "...", "de-DE": "..."
 
 ---
 
+## Integration Schema (if applicable)
+
+[If third-party integrations exist from Session 2a, include integration tables:]
+
+### Integration Tables
+
+#### integration_credentials
+**Purpose**: Store encrypted API keys, OAuth tokens, refresh tokens
+**When**: Any API integration exists
+
+```sql
+CREATE TABLE integration_credentials (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
+
+  -- Integration identity
+  provider VARCHAR(50) NOT NULL,
+  environment VARCHAR(20) NOT NULL DEFAULT 'production',
+
+  -- Credentials (encrypted at application layer)
+  api_key_encrypted TEXT,
+  access_token_encrypted TEXT,
+  refresh_token_encrypted TEXT,
+
+  -- Token lifecycle
+  expires_at TIMESTAMPTZ,
+  last_refreshed_at TIMESTAMPTZ,
+
+  -- Metadata
+  scopes TEXT[],
+  external_account_id TEXT,
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(team_id, provider, environment)
+);
+
+CREATE INDEX idx_integration_credentials_team ON integration_credentials(team_id);
+CREATE INDEX idx_integration_credentials_expires ON integration_credentials(expires_at)
+  WHERE expires_at IS NOT NULL;
+```
+
+#### webhook_events (if webhook integrations exist)
+**Purpose**: Log incoming webhook payloads for idempotency and debugging
+**When**: Any integration sends webhooks (Stripe, SendGrid, Salesforce)
+
+```sql
+CREATE TABLE webhook_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Event identity (for idempotency)
+  provider VARCHAR(50) NOT NULL,
+  event_id VARCHAR(255) NOT NULL,
+  event_type VARCHAR(100) NOT NULL,
+
+  -- Payload
+  payload JSONB NOT NULL,
+  signature VARCHAR(500),
+
+  -- Processing status
+  status VARCHAR(50) NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'processing', 'processed', 'failed', 'ignored')),
+  processed_at TIMESTAMPTZ,
+  error_message TEXT,
+  retry_count INTEGER DEFAULT 0,
+
+  -- Audit
+  received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(provider, event_id)
+);
+
+CREATE INDEX idx_webhook_events_provider_type ON webhook_events(provider, event_type);
+CREATE INDEX idx_webhook_events_status ON webhook_events(status)
+  WHERE status IN ('pending', 'failed');
+CREATE INDEX idx_webhook_events_received ON webhook_events(received_at DESC);
+```
+
+#### sync_jobs (if bidirectional sync required)
+**Purpose**: Track background synchronization with external systems
+**When**: Bidirectional sync integrations (CRM sync, data imports)
+
+```sql
+CREATE TABLE sync_jobs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
+
+  -- Sync identity
+  provider VARCHAR(50) NOT NULL,
+  resource_type VARCHAR(100) NOT NULL,
+  direction VARCHAR(20) NOT NULL
+    CHECK (direction IN ('import', 'export', 'bidirectional')),
+
+  -- Sync status
+  status VARCHAR(50) NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'running', 'completed', 'failed', 'cancelled')),
+
+  -- Progress tracking
+  total_records INTEGER,
+  processed_records INTEGER DEFAULT 0,
+  failed_records INTEGER DEFAULT 0,
+
+  -- Timing
+  started_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  next_sync_at TIMESTAMPTZ,
+
+  -- Results
+  summary JSONB,
+  error_message TEXT,
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_sync_jobs_team ON sync_jobs(team_id);
+CREATE INDEX idx_sync_jobs_status ON sync_jobs(status);
+CREATE INDEX idx_sync_jobs_next_sync ON sync_jobs(next_sync_at)
+  WHERE next_sync_at IS NOT NULL;
+```
+
+#### external_resource_mappings (if sync_jobs exist)
+**Purpose**: Map internal IDs to external system IDs for bidirectional sync
+**When**: Any sync integration needs ID mapping
+
+```sql
+CREATE TABLE external_resource_mappings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Internal resource
+  internal_id UUID NOT NULL,
+  internal_type VARCHAR(50) NOT NULL,
+
+  -- External resource
+  provider VARCHAR(50) NOT NULL,
+  external_id VARCHAR(255) NOT NULL,
+  external_type VARCHAR(100),
+
+  -- Metadata
+  last_synced_at TIMESTAMPTZ,
+  sync_direction VARCHAR(20),
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(provider, external_id),
+  UNIQUE(internal_type, internal_id, provider)
+);
+
+CREATE INDEX idx_external_mappings_internal ON external_resource_mappings(internal_type, internal_id);
+CREATE INDEX idx_external_mappings_provider ON external_resource_mappings(provider, external_id);
+```
+
+---
+
 ## Relationships
 
 ### One-to-Many Relationships

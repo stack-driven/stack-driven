@@ -373,6 +373,103 @@ Server Errors:
 
 ---
 
+### Webhook Endpoints (Inbound)
+
+When generating `product-guidelines/08b-api-contracts.md`, if Session 2a identifies integrations that send webhooks, include webhook endpoint specifications:
+
+**Endpoint Pattern**: `/webhooks/{provider}`
+
+**For each provider that sends webhooks, create an endpoint specification**:
+
+```yaml
+paths:
+  /webhooks/stripe:
+    post:
+      summary: Stripe webhook handler
+      description: |
+        Receives webhook events from Stripe for payment processing.
+
+        **Security**: Verifies Stripe signature using webhook secret.
+        **Idempotency**: Checks event_id before processing (webhook_events table).
+        **Processing**: Enqueues for async processing, returns 200 immediately.
+      operationId: handleStripeWebhook
+      tags: [Webhooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique event identifier (for idempotency)
+                  example: evt_1234567890
+                type:
+                  type: string
+                  description: Event type
+                  example: payment_intent.succeeded
+                data:
+                  type: object
+                  description: Event payload
+      responses:
+        '200':
+          description: Webhook received and queued for processing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+        '400':
+          description: Invalid signature or malformed payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /webhooks/sendgrid:
+    post:
+      summary: SendGrid webhook handler
+      description: |
+        Receives email event webhooks from SendGrid (delivered, bounced, opened, etc.).
+
+        **Security**: No signature verification (SendGrid doesn't provide).
+        **Mitigation**: Validate sending IP against SendGrid's IP ranges.
+      operationId: handleSendGridWebhook
+      tags: [Webhooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  event:
+                    type: string
+                    enum: [delivered, bounce, open, click]
+                  timestamp:
+                    type: integer
+      responses:
+        '200':
+          description: Webhook received
+```
+
+**Key Elements for Each Webhook Endpoint**:
+- Request body schema (provider-specific)
+- Signature verification method (if applicable)
+- Idempotency strategy (how duplicate events are handled)
+- Response format (typically 200 with `{received: true}`)
+- Error responses (400 for invalid signature, 422 for invalid payload)
+
+---
+
 ### Step 8: Generate API Specification
 
 **For REST/GraphQL** (JSON serialization):
