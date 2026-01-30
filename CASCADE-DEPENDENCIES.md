@@ -592,6 +592,38 @@ Journey, strategy, schemas not needed for infrastructure decisions.
 
 ---
 
+### `/create-compliance-plan`
+**Reads:**
+```
+├─ [FULL] product-guidelines/00-user-journey.md (required)
+├─ [FULL] product-guidelines/01-product-strategy.md (required)
+├─ [FULL] product-guidelines/02a-constraints.md (required)
+├─ [FULL] product-guidelines/07-database-schema.md (optional)
+├─ [FULL] product-guidelines/08-api-design.md (optional)
+├─ [FULL] product-guidelines/08b-api-contracts.md (optional)
+└─ [FULL] product-guidelines/10-backlog/BACKLOG.md (optional)
+```
+
+**When to run:** After Session 2a (constraints) or Session 10 (backlog)
+
+**For whom:** Compliance-heavy products (healthcare, fintech, enterprise B2B)
+
+**Why read full files (not .ctx.md)?** Compliance planning requires:
+- Complete journey geography and data collection details (00) to identify applicable regulations
+- Full market analysis and customer segment details (01) to determine certification priorities
+- Detailed constraint documentation (02a) with specific compliance requirements
+- Full database schema (07) to map data handling requirements (retention, encryption, audit logging)
+- Complete API design (08, 08b) to assess data export/deletion endpoints, security mechanisms
+- Full backlog (10) to integrate compliance stories into existing roadmap
+
+Similar to `/plan-issue` and `/validate-outputs`, compliance planning needs comprehensive context to map regulations to technical implementation at article/section-level detail.
+
+**Downstream integration:**
+- **Session 10 (generate-backlog):** Compliance plan generates Epic 04 stories that can be imported to backlog
+- **Session 14 (design-observability):** Compliance monitoring strategy (failed logins, PHI access, consent rates) informs observability metrics
+
+---
+
 ## Dev-Time Commands
 
 ### `/validate-outputs`

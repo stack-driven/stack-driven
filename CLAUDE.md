@@ -562,7 +562,70 @@ Session 14 (observability) [reads: ALL .ctx.md files from 00-09b] → Generates 
 
 **Key Pattern:** Sessions ALWAYS read .ctx.md versions when available. Context files provide 60-70% token reduction, cumulative savings across cascade.
 
-Post-cascade extensions read from core cascade outputs but are optional and can run in any order after their prerequisites.
+---
+
+## Post-Cascade Extensions
+
+Post-cascade extensions are **optional deep-dive commands** that run AFTER core cascade sessions (1-14) to provide specialized guidance for specific product needs. They read from core cascade outputs and are run selectively based on product requirements.
+
+### `/create-compliance-plan` - Compliance Implementation Roadmap
+
+**When to run**: After Session 2a (constraints) or Session 10 (backlog)
+
+**For whom**: Compliance-heavy products (healthcare, fintech, enterprise B2B)
+
+**Prerequisites**:
+- User journey defined (Session 1)
+- Product strategy validated (Session 2)
+- Constraints documented (Session 2a)
+- Ideally: Database schema (Session 7), API contracts (Session 8/8b), Backlog (Session 10)
+
+**What it generates**: `product-guidelines/23-compliance-plan.md`
+
+**Reads from**:
+- `00-user-journey.md` - Where user data is collected/processed
+- `01-product-strategy.md` - Market geography, customer segments, TAM
+- `02a-constraints.md` - Basic compliance requirements identified
+- `07-database-schema.md` - Data handling, retention, storage
+- `08-api-design.md`, `08b-api-contracts.md` - Data export, deletion, API security
+- `10-backlog/` - Integration with product backlog
+
+**Outputs**:
+- **Applicable regulations** with priorities (Required/Competitive/Aspirational)
+- **Detailed requirements** by regulation (article/section-level)
+- **Compliance-to-implementation mapping** (journey → requirement → technical implementation)
+- **Compliance backlog stories** with RICE prioritization
+- **Compliance monitoring strategy** (for Session 14 integration)
+- **Compliance roadmap** by stage (MVP → Growth → Scale)
+- **Cost estimates** (legal, engineering, ongoing certification)
+
+**Key features**:
+- Identifies applicable regulations based on journey geography, data types, customer segments (GDPR, HIPAA, SOC2, PCI-DSS, CCPA, ISO 27001)
+- Breaks down regulation requirements to implementation level (database tables, API endpoints, UI components)
+- Estimates compliance costs with 2025 market rates ($3k-$5k legal, $XX-XXk engineering, $XX-XXk ongoing)
+- Creates realistic timeline (SOC2: 6-12 months, HIPAA: 6-8 weeks technical implementation)
+- Generates compliance backlog stories for Epic 04: Compliance & Legal
+- Maps compliance requirements to cascade sessions (7=database, 8=API, 12=scaffold, 14=observability)
+- Includes legal disclaimer (educational guidance, not legal advice)
+
+**Example use cases**:
+- **Healthcare SaaS**: HIPAA compliance implementation plan with BAA templates, encryption requirements, audit logging
+- **Fintech**: PCI-DSS compliance roadmap (use Stripe to minimize scope), SOC2 for enterprise customers
+- **Enterprise B2B**: SOC2 Type II certification timeline (6-9 month pre-audit, 3-6 month observation, Month 12 certification)
+- **EU market**: GDPR compliance with consent tracking, data export API, right to erasure (soft delete)
+
+**Distinguishing from Session 2a (constraints)**:
+- **Session 2a**: Captures basic compliance needs (which regulations apply, why, priority)
+- **Post-cascade compliance plan**: Translates regulations into detailed technical implementation with costs, timelines, backlog stories
+- **When to use each**:
+  - All products: Run Session 2a to document basic compliance constraints
+  - Compliance-heavy products (>20% revenue depends on certifications): Run `/create-compliance-plan` for detailed implementation guidance
+
+**Integration with cascade**:
+- **Session 10 (backlog)**: Compliance plan generates Epic 04 stories that can be imported to backlog
+- **Session 14 (observability)**: Compliance plan monitoring strategy informs compliance metrics (failed logins, PHI access, consent opt-in rates, etc.)
+
+**No context file**: Post-cascade extensions don't create .ctx.md files (outputs are already concise or final deliverables)
 
 ---
 
