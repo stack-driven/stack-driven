@@ -31,7 +31,7 @@ Create a comprehensive analytics implementation plan following the instructions 
 
 1. **Read the template structure**:
    ```bash
-   Read templates/20-analytics-plan-template.md
+   Read /templates/20-analytics-plan-template.md
    ```
 
 2. **Check for metrics from Session 3** (required):

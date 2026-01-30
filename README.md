@@ -657,16 +657,16 @@ Yes! In Session 2 (/choose-tech-stack), you can:
 - Note constraints ("must use AWS")
 - I'll adapt recommendations to your context
 
-### "Do I have to do all 11 sessions?"
+### "Do I have to do all 14 sessions?"
 
 Sessions 1-4 are critical (journey → strategy → stack → tactics).
-Sessions 5-7 are highly valuable (brand → design → backlog).
-Session 8 is convenience (push to GitHub).
-Session 9 bridges strategy to code (scaffold dev environment).
-Sessions 10-11 are essential for production (deployment + observability).
+Sessions 5-9b are technical specifications (brand → design → database → API → testing → architecture).
+Session 10 generates the backlog (30-50 user stories).
+Session 11 is convenience (push to GitHub).
+Sessions 12-14 are essential for production (scaffold → deployment → observability).
 
 Minimum viable cascade: Sessions 1-4 (2-3 hours).
-Complete core cascade: Sessions 1-11 (6-8 hours).
+Complete core cascade: Sessions 1-14 (8-12 hours).
 
 ---
 

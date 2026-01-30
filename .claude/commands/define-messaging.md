@@ -72,7 +72,7 @@ Create a brand messaging framework that expresses the journey value in your bran
 
 2. **Read the template structure**:
    ```bash
-   Read templates/16-brand-messaging-template.md
+   Read /templates/16-brand-messaging-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:

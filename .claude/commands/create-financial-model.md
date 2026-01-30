@@ -118,7 +118,7 @@ Use the Read tool to read all cascade inputs listed above.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/22-financial-model-template.md
+Read /templates/22-financial-model-template.md
 ```
 
 ### Step 3: Calculate Unit Economics
@@ -715,7 +715,7 @@ Milestone 5: $1M ARR (Month X)
 
 The output should be saved to `product-guidelines/22-financial-model.md`:
 
-Use the template at `templates/22-financial-model-template.md` as structure.
+Use the template at `/templates/22-financial-model-template.md` as structure.
 
 **The output includes**:
 

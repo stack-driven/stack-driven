@@ -91,7 +91,7 @@ Create a comprehensive brand strategy document following the instructions below.
 
 2. **Read the template structure**:
    ```bash
-   Read templates/05-brand-strategy-template.md
+   Read /templates/05-brand-strategy-template.md
    ```
 
 3. **Interview the user** with journey-informed questions:

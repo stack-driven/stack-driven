@@ -26,7 +26,7 @@ Create a comprehensive deployment strategy following the instructions below.
 
 1. **Read the template structure**:
    ```bash
-   Read templates/13-deployment-plan-template.md
+   Read /templates/13-deployment-plan-template.md
    ```
 
 2. **Read previous cascade outputs** for context:

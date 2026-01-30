@@ -35,7 +35,7 @@ Create comprehensive UX design documentation following the instructions below.
 
 1. **Read the template structure**:
    ```bash
-   Read templates/19-user-experience-template.md
+   Read /templates/19-user-experience-template.md
    ```
 
 2. **Check for cascade inputs** (required):

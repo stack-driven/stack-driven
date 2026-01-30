@@ -564,7 +564,7 @@ Server Errors:
 
 ### Step 7: Document Design Decisions and Create Context Version
 
-Use template at `templates/08-api-design-template.md` for complete structure.
+Use template at `/templates/08-api-design-template.md` for complete structure.
 
 Write `product-guidelines/08-api-design.md` with:
 - **Overview**: API paradigm, serialization format, versioning strategy

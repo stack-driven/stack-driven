@@ -57,7 +57,7 @@ Use the Read tool to read `product-guidelines/00-user-journey.ctx.md`.
 ### Step 2: Read Template Structure
 
 ```bash
-Read templates/01-product-strategy-template.md
+Read /templates/01-product-strategy-template.md
 ```
 
 The template defines the output structure and quality criteria for the product strategy.
