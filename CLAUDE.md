@@ -132,7 +132,7 @@ When Session 2a specifies third-party integration requirements (payment processo
 4. **Session 7** generates integration-specific tables: `integration_credentials`, `integration_sync_logs`, `webhook_events` (if webhooks required)
 5. **Session 8** designs API endpoints for webhook handlers with security requirements (signature verification, idempotency)
 6. **Session 8b** generates OpenAPI webhook endpoint specs with provider-specific security details
-7. **Session 10** generates Epic 05 integration stories per provider (credential setup, API integration, webhook handler, error handling, monitoring)
+7. **Session 10** generates Epic 04 integration stories per provider (credential setup, API integration, webhook handler, error handling, monitoring)
 8. **Session 12** generates integration adapter skeletons in codebase (e.g., `StripeAdapter.ts`, `SendGridAdapter.ts`)
 
 This pattern ensures comprehensive integration planning from constraints → architecture → implementation.
