@@ -136,6 +136,12 @@ Each command follows this pattern:
 
 ### Development Commands
 
+**`/plan-issue [issue-number]`** - Create implementation plan for GitHub issue
+- Fetches issue details via `gh` CLI
+- Analyzes issue and creates comprehensive implementation plan
+- Posts plan as comment to GitHub issue for approval
+- Loads relevant product-guidelines context based on issue type
+
 **`/implement-issue [issue-number]`** - Implement GitHub issue
 - Fetches issue details via `gh` CLI
 - Reads approved plan from issue comments
@@ -271,9 +277,8 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 
 | Command | Reads | File Versions | Note |
 |---------|-------|--------------|------|
-| /plan-issue | 02, 02b, conditionally 04, 06, 07, 08, 08b, 09 | .ctx.md for all | Tech specs for planning |
+| /plan-issue | 02, 02b, conditionally 04, 06, 07, 08, 08b, 09 | .ctx.md for all | Tech specs for planning, posts plan to GitHub |
 | /implement-issue | Uses plan only | N/A | Plan has all context |
-| /post-plan-and-implement | Same as plan-issue | .ctx.md for all | Combined workflow |
 
 **Exception: Read Full .md Only When:**
 - User explicitly requests full document review
@@ -293,7 +298,7 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 
 ### 7. Issue Implementation Pattern
 
-`/plan-issue` loads context and creates implementation plan:
+`/plan-issue` loads context and creates implementation plan, then posts to GitHub:
 1. Always read `02-tech-stack.ctx.md` (tech choices)
 2. Always read `02b-coding-standards.ctx.md` (patterns, file organization)
 3. Conditionally read based on issue type (all use .ctx.md):
@@ -302,6 +307,8 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
    - Database work → `07-database-schema.ctx.md`
    - Testing → `09-test-strategy.ctx.md`
    - Infrastructure → `04-architecture.ctx.md`
+4. Generate comprehensive implementation plan
+5. Post plan as comment to GitHub issue using `gh` CLI
 
 `/implement-issue` follows strict workflow:
 1. Fetch approved plan from issue comments
