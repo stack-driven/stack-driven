@@ -1,6 +1,6 @@
 # Command Reference
 
-Complete reference for all Stack-Driven slash commands.
+Quick reference for all 34 Stack-Driven slash commands.
 
 ---
 
@@ -8,10 +8,12 @@ Complete reference for all Stack-Driven slash commands.
 
 Stack-Driven includes **34 slash commands** organized into four categories:
 
-1. **Core Cascade Commands** (19) - The main framework sessions
+1. **Core Cascade Commands** (19) - Sequential framework sessions (1-14)
 2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
 4. **Development Commands** (5) - Code review and implementation workflow
+
+**For detailed philosophy and cascade flow**, see README.md and CLAUDE.md.
 
 ---
 
@@ -21,23 +23,23 @@ Stack-Driven includes **34 slash commands** organized into four categories:
 
 | Command | Session | Time | Output File(s) |
 |---------|---------|------|----------------|
-| `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` |
-| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md`, `01-product-strategy.ctx.md` |
-| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md`, `02a-constraints.ctx.md` |
-| `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` |
-| `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md`, `02b-coding-standards.ctx.md` |
-| `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md`, `02c-ai-integration-strategy.ctx.md` |
+| `/refine-journey` | 1 | 30-45 min | `00-user-journey.md` + `.ctx.md` |
+| `/create-product-strategy` | 2 | 45-60 min | `01-product-strategy.md` + `.ctx.md` |
+| `/document-constraints` | 2a | 20-30 min | `02a-constraints.md` + `.ctx.md` |
+| `/choose-tech-stack` | 3 | 15-20 min | `02-tech-stack.md` + `.ctx.md` |
+| `/define-coding-standards` | 3b | 20-30 min | `02b-coding-standards.md` + `.ctx.md` |
+| `/define-ai-integration-strategy` | 3c | 30-40 min | `02c-ai-integration-strategy.md` + `.ctx.md` |
 | `/generate-strategy` | 4 | 45-60 min | `03a-mission.md` + `.ctx.md`, `03b-metrics.md` + `.ctx.md`, `03c-monetization.md` + `.ctx.md`, `04-architecture.md` + `.ctx.md` |
-| `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
-| `/create-design` | 6 | 30-40 min | `06-design-system.md` |
-| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema.ctx.md` (paradigm-agnostic) |
-| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design.ctx.md` |
-| `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts.ctx.md` |
-| `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy.ctx.md` |
-| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md`, `09b-application-architecture.ctx.md` |
+| `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` + `.ctx.md` |
+| `/create-design` | 6 | 30-40 min | `06-design-system.md` + `.ctx.md` |
+| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md` + `.ctx.md` (paradigm-agnostic) |
+| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md` + `.ctx.md` |
+| `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md` + `.ctx.md` |
+| `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md` + `.ctx.md` |
+| `/model-application` | 9b | 45-60 min | `09b-application-architecture.md` + `.ctx.md` |
 | `/generate-backlog` | 10 | 60-90 min | `10-backlog/*.md` (30-50 issues) |
 | `/create-gh-issues` | 11 | 10-15 min | GitHub issues |
-| `/scaffold-project` | 12 | 30-45 min | `12-project-scaffold.md`, `12-project-scaffold/*` |
+| `/scaffold-project` | 12 | 30-45 min | `12-project-scaffold.md`, code files in root |
 | `/plan-deployment` | 13 | 30-45 min | `13-deployment-plan.md` |
 | `/design-observability` | 14 | 30-45 min | `14-observability-strategy.md` |
 
@@ -69,1195 +71,164 @@ Stack-Driven includes **34 slash commands** organized into four categories:
 |---------|-------------|---------|
 | `/validate-outputs` | During/after cascade | Validate cascade outputs for quality and completeness |
 | `/review-code` | During development | Guide comprehensive code review |
-| `/implement-issue [issue-number]` | During development | Implement GitHub issue following approved plan and create PR |
 | `/plan-issue [issue-number]` | Before implementation | Create detailed implementation plan for GitHub issue |
+| `/implement-issue [issue-number]` | During development | Implement GitHub issue following approved plan and create PR |
 | `/update-claudemd` | After code changes | Automatically update CLAUDE.md file based on recent code changes |
 
 ---
 
 ## Understanding Context Files (.ctx.md)
 
-Many cascade commands generate **two output files**:
+**Universal Rule:** ALL sessions 1-9b create TWO files:
+1. **Source file (.md)** - Complete documentation for humans (full rationale, alternatives, examples)
+2. **Context file (.ctx.md)** - Condensed version for AI (60-70% token reduction, decisions only)
 
-1. **Source file (.md)** - Full documentation for humans
-   - Complete specifications with detailed rationale
-   - "What We DIDN'T Choose" sections
-   - Examples and explanations
-   - For stakeholder review and understanding "why"
+### Why Context Files Exist
 
-2. **Context file (.ctx.md)** - Condensed version for AI
-   - 60-80% smaller (token-optimized)
-   - Keeps decisions, configs, technical specs
-   - Removes rationale, alternatives, detailed examples
-   - Used by later cascade sessions
-
-### Why This Matters
-
-**Token Efficiency:** Session 10 (/generate-backlog) reads outputs from ALL previous sessions:
+**Token Efficiency:** Session 10 (`/generate-backlog`) reads outputs from ALL previous sessions:
 - Without .ctx.md: ~40K tokens (expensive, slow)
 - With .ctx.md: ~15K tokens (62% reduction)
 
-**Best of Both Worlds:**
-- Humans read full .md files to understand decisions
-- AI reads .ctx.md files to build on those decisions efficiently
-- Both versions stay in sync (auto-generated by distillation agent)
+**What Gets Removed:** Rationale, alternatives, detailed examples, validation checklists
+**What Gets Kept:** ALL architectural decisions, tech choices, design specs, schemas, API contracts
 
 ### Which Sessions Create .ctx.md Files?
 
-Commands that generate context files (visible in Output File(s) column above):
-- Sessions 1, 2, 2a, 3b, 3c: Journey, strategy, constraints, coding standards, AI integration
-- Sessions 7, 8, 8b, 9, 9b: Database schema, API design/contracts, test strategy, app architecture
+**Sessions 1-9b (ALL create .ctx.md):**
+- `00-user-journey.ctx.md` - Journey steps, value quantification
+- `01-product-strategy.ctx.md` - Vision, goals, positioning
+- `02-tech-stack.ctx.md` - Tech choices with 1-2 line justifications
+- `02a-constraints.ctx.md` - Business/technical/organizational limits
+- `02b-coding-standards.ctx.md` - Framework patterns, file organization
+- `02c-ai-integration-strategy.ctx.md` - AI provider, model, patterns (optional)
+- `03a-mission.ctx.md`, `03b-metrics.ctx.md`, `03c-monetization.ctx.md`, `04-architecture.ctx.md`
+- `05-brand-strategy.ctx.md`, `06-design-system.ctx.md`
+- `07-database-schema.ctx.md`, `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`
+- `09-test-strategy.ctx.md`, `09b-application-architecture.ctx.md`
 
-**No .ctx.md versions for:**
-- `02-tech-stack.md` - Always read in full (core tech decisions)
-- Sessions 11-14 - Final outputs not consumed by later sessions
+**No .ctx.md for final outputs (Sessions 10-14):** User stories, scaffold docs, deployment/observability plans
 
-**See README.md and CLAUDE.md** for complete details on context files and when each version is used.
+### When to Read Which Version?
 
----
+**Simple Rule:** Sessions ALWAYS read `.ctx.md` when available (Sessions 2-14).
 
-## Core Cascade Commands
+**Exception:** Only read full `.md` for validation (`/validate-outputs`), user requests to explain decisions, or manual human review.
 
-### Session 1: `/refine-journey`
-
-**Purpose:** Define your user journey through progressive interrogation
-
-**When to run:** First step - start here
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Complete user journey mapping (Steps 1-5)
-- User persona definition
-- Pain point identification
-- Value proposition
-- Journey "aha moment"
-
-**Outputs:**
-- `product-guidelines/00-user-journey.md`
-
-**What you'll be asked:**
-- Who are your users? (Be specific)
-- What problem are they struggling with?
-- What's their current journey?
-- Where's the "aha moment" (value delivery)?
-- What's the value ratio? (time saved, cost reduced, etc.)
-
-**Example:** For a compliance SaaS, you'd define:
-- User: Compliance officers at mid-size financial institutions
-- Problem: Manual document review takes 4 hours per assessment
-- Aha moment: AI assessment completed in 60 seconds
-- Value ratio: 4 hours → 60 seconds = 240x faster
-
-**Next step:** Run `/create-product-strategy`
-
-**Tips:**
-- Be specific about users ("compliance officers" not "businesses")
-- Quantify value (4 hours → 5 minutes = 48x faster)
-- Focus on problem, not solution
-- Identify the "aha moment" (usually Step 3)
+**See CLAUDE.md** for complete decision matrix showing which file version each session reads.
 
 ---
 
-### Session 2: `/create-product-strategy`
+## Core Cascade Commands (Sessions 1-14)
 
-**Purpose:** Validate journey with market analysis and competitive positioning
+### Session 1: `/refine-journey` (30-45 min)
+Define user journey through 16 progressive questions. Creates persona, pain points, aha moment (value delivery step), and quantified value ratio (e.g., "4 hours → 60 seconds = 240x faster"). Start here—everything flows from this. Outputs: `00-user-journey.md` + `.ctx.md`
 
-**When to run:** After Session 1 (journey defined)
+### Session 2: `/create-product-strategy` (45-60 min)
+Validate journey with market analysis (TAM/SAM/SOM), competitive positioning, strategic vision, and product roadmap. Reads journey file. Outputs: `01-product-strategy.md` + `.ctx.md`
 
-**Time required:** 45-60 minutes
+### Session 2a: `/document-constraints` (20-30 min)
+Document real-world constraints (technical: team skills, budget; organizational: timeline, team size; compliance: HIPAA, GDPR). Identifies journey-optimal vs. constraint-realistic trade-offs. Reads journey + strategy. Outputs: `02a-constraints.md` + `.ctx.md`
 
-**What it creates:**
-- Market sizing (TAM/SAM/SOM)
-- Competitive analysis
-- Strategic positioning
-- Vision and goals
-- Product roadmap
+### Session 3: `/choose-tech-stack` (15-20 min)
+AI analyzes journey requirements and recommends optimal tech stack (frontend, backend, database, hosting) with reasoning. Detects if AI integration required (does NOT choose AI provider—that's Session 3c). Reads journey + strategy + constraints (if exists). Outputs: `02-tech-stack.md` + `.ctx.md`
 
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - User persona, pain points
+### Session 3b: `/define-coding-standards` (20-30 min)
+Framework-specific patterns (React hooks, FastAPI services), file organization, cross-stack naming conventions (DB ↔ API ↔ frontend), testing patterns. Reads journey + strategy + tech stack. Outputs: `02b-coding-standards.md` + `.ctx.md`
 
-**Outputs:**
-- `product-guidelines/01-product-strategy.md` (comprehensive)
-- `product-guidelines/01-product-strategy.ctx.md` (for AI reading)
+### Session 3c: `/define-ai-integration-strategy` (30-40 min)
+**Optional—only if AI in tech stack.** Makes ALL AI decisions: provider (OpenAI/Anthropic/other), model selection, implementation pattern (Direct API/RAG/Function Calling/Agents), cost projections, security guardrails. Updates `02-tech-stack.md` with AI choices. Reads journey + strategy + tech stack. Outputs: `02c-ai-integration-strategy.md` + `.ctx.md`
 
-**What it does:**
-- Analyzes your target market size
-- Identifies key competitors
-- Defines competitive advantages
-- Creates strategic positioning
-- Maps product vision to journey
+### Session 4: `/generate-strategy` (45-60 min)
+Derive mission (from aha moment), North Star metric (measures mission), pricing strategy (aligned with value), architecture principles (journey-optimized). Reads journey through constraints + coding standards + AI strategy (if exists). Outputs: `03a-mission.md` + `.ctx.md`, `03b-metrics.md` + `.ctx.md`, `03c-monetization.md` + `.ctx.md`, `04-architecture.md` + `.ctx.md`
 
-**Next step:** Run `/document-constraints` (optional) or `/choose-tech-stack`
+### Session 5: `/create-brand-strategy` (30-45 min)
+Brand positioning, personality, voice guidelines aligned with user persona and journey value. Reads journey through architecture. Outputs: `05-brand-strategy.md` + `.ctx.md`
 
-**Tips:**
-- Be realistic about market size
-- Identify 3-5 key competitors
-- Focus on differentiation from journey value
-- Align vision with aha moment
+### Session 6: `/create-design` (30-40 min)
+Design system (colors, typography, components) optimized for specific user flows—not generic design system. Components map to journey steps. Reads journey through brand. Outputs: `06-design-system.md` + `.ctx.md`
 
----
+### Session 7: `/design-database-schema` (45-60 min)
+Complete database schema design. **Paradigm-agnostic:** supports relational (PostgreSQL ERD, tables, foreign keys), document (MongoDB collections, embedded vs referenced), graph (Neo4j nodes/relationships), time-series (InfluxDB measurements), key-value (Redis patterns). Includes indexes, constraints, migrations. Reads journey through design. Outputs: `07-database-schema.md` + `.ctx.md`
 
-### Session 2a: `/document-constraints`
+### Session 8: `/generate-api-design` (30-45 min)
+High-level API architecture: paradigm choice (REST/GraphQL/gRPC/WebSocket), serialization format (JSON/Protobuf), auth/authorization approach, rate limiting, pagination. Reads journey + tech stack + architecture + database schema. Outputs: `08-api-design.md` + `.ctx.md`
 
-**Purpose:** Document real-world constraints between product strategy and tech stack selection
+### Session 8b: `/generate-api-contracts` (45-60 min)
+Complete OpenAPI 3.0 specification with all endpoints, request/response schemas, authentication, error handling. Every journey step has API support. Reads API design + journey + database schema + tech stack + architecture. Outputs: `08b-api-contracts.md` + `.ctx.md`
 
-**When to run:** After Session 2 (product strategy defined), before Session 3 (optional)
+### Session 9: `/create-test-strategy` (30-45 min)
+Comprehensive testing strategy (unit, integration, E2E, performance). Focus on critical journey paths. Coverage targets (~80%), testing frameworks, CI/CD integration. Reads journey through API contracts. Outputs: `09-test-strategy.md` + `.ctx.md`
 
-**Time required:** 20-30 minutes
+### Session 9b: `/model-application` (45-60 min)
+Model application architecture layer: services, repositories, controllers based on database schema and API contracts. Defines class structures, method signatures, dependency injection patterns. Reads journey + tech stack + coding standards + architecture + database schema + API contracts. Outputs: `09b-application-architecture.md` + `.ctx.md`
 
-**What it creates:**
-- Technical constraints (team skills, existing infrastructure, required integrations)
-- Organizational constraints (budget, timeline, team size)
-- Compliance constraints (data residency, industry regulations, certifications)
-- Journey-optimal vs. constraint-realistic trade-offs
-- Non-negotiable journey elements that must be preserved
+### Session 10: `/generate-backlog` (60-90 min)
+Generate 30-50 prioritized user stories with RICE scores (Reach, Impact, Confidence, Effort), P0/P1/P2 labels, dependencies. Every story traces to journey step. **Reads ALL .ctx.md files from Sessions 1-9b** (maximum token efficiency). Outputs: `10-backlog/*.md`
 
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Journey requirements to preserve
-- `product-guidelines/01-product-strategy.md` - Strategic context and scale expectations
+### Session 11: `/create-gh-issues` (10-15 min)
+Push all backlog stories to GitHub as issues with proper labels (P0, P1, P2), milestones, project board organization. Reads backlog directory. Outputs: GitHub issues in repository
 
-**Outputs:**
-- `product-guidelines/02a-constraints.md` (comprehensive documentation)
-- `product-guidelines/02a-constraints.ctx.md` (for AI reading)
+### Session 12: `/scaffold-project` (30-45 min)
+Generate working development environment: package manager configs (package.json/pyproject.toml), Docker Compose, environment templates, CI/CD pipeline (GitHub Actions), setup docs. **Generates code skeletons** in repository root (services, repositories, controllers, tests from Session 9b). Reads ALL .ctx.md files including API contracts and application architecture. Outputs: `12-project-scaffold.md`, config files in root
 
-**What it does:**
-- Documents real-world limitations that affect technical decisions
-- Identifies where constraints force trade-offs from journey-optimal
-- Captures non-negotiable journey elements that cannot be compromised
-- Provides realistic boundaries for tech stack and architecture choices
-- Ensures subsequent sessions recommend implementable (not just ideal) solutions
+### Session 13: `/plan-deployment` (30-45 min)
+Deployment strategy: environments (dev/staging/prod), CI/CD workflow, infrastructure requirements, monitoring integration, rollback procedures, cost estimates. Reads tech stack + architecture + metrics. Outputs: `13-deployment-plan.md`
 
-**Example constraints:**
-- Technical: Team knows Python/Django (3 years experience), no Go/Rust expertise
-- Organizational: $200/month budget, 6-month timeline to MVP, solo founder
-- Compliance: HIPAA required (healthcare data), data must stay in US
-- Trade-off: Journey-optimal would be real-time WebSockets, but constraint-realistic is polling (simpler for solo founder)
-
-**Next step:** Run `/choose-tech-stack`
-
-**Tips:**
-- Be honest about team capabilities (recommend learning curve vs. productivity)
-- Document budget realistically (hosting, tools, services)
-- Identify true compliance requirements (not nice-to-haves)
-- Note which journey elements are non-negotiable vs. flexible
-- This session is optional but highly valuable for realistic recommendations
+### Session 14: `/design-observability` (30-45 min)
+Monitoring strategy (metrics, logs, traces), alerting rules, SLO/SLI definitions, incident response procedures, dashboard designs, performance budgets. Monitor journey critical paths. Reads journey + metrics + deployment plan. Outputs: `14-observability-strategy.md`
 
 ---
 
-### Session 3: `/choose-tech-stack`
+## Post-Cascade Extensions (Optional)
 
-**Purpose:** Recommend optimal tech stack based on journey requirements
+### `/discover-naming` (30-45 min)
+Generate 20-30 brand name candidates with evaluation criteria, domain availability checks, trademark considerations. Run after Session 5. Outputs: `15-brand-naming.md`
 
-**When to run:** After Session 2 (product strategy defined)
+### `/define-messaging` (30-45 min)
+Brand messaging framework: hierarchy, value propositions for different audiences, voice/tone guidelines, key messages. Run after naming or Session 5. Outputs: `16-brand-messaging.md`
 
-**Time required:** 15-20 minutes
+### `/design-brand-identity` (60-90 min)
+Comprehensive brand identity: logo concepts, color system, typography, visual language, brand guidelines. Run after messaging. Outputs: `17-brand-identity.md`
 
-**What it creates:**
-- Technology recommendations (frontend, backend, database, hosting)
-- Decision rationale for each choice
-- Alternative technologies considered
-- Team capability considerations
+### `/create-content-guidelines` (30-45 min)
+Content style guide, microcopy patterns (buttons, errors, success messages), editorial guidelines, SEO considerations. Run after messaging. Outputs: `18-content-guidelines.md`
 
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Journey requirements
-- `product-guidelines/01-product-strategy.md` - Scale expectations
+### `/design-user-experience` (60-90 min)
+Detailed UX research plan, user flows, wireframes for key screens, interaction specifications, usability testing criteria. Run after Session 4. Outputs: `19-user-experience.md`
 
-**Outputs:**
-- `product-guidelines/02-tech-stack.md`
+### `/setup-analytics` (30-45 min)
+Analytics implementation plan: tool recommendations, event tracking plan, funnel analysis setup, dashboard designs, privacy/compliance considerations. Run after Session 4. Outputs: `20-analytics-plan.md`
 
-**How it works:**
-- Analyzes journey requirements (real-time? mobile? SEO? AI?)
-- Evaluates technology options
-- Recommends best fit with reasoning
-- Explains trade-offs
+### `/design-growth-strategy` (60-90 min)
+Data-driven growth strategy: acquisition channel analysis, growth loops identification, experiment roadmap, channel-specific tactics, CAC/LTV projections. Run after Session 4. Outputs: `21-growth-strategy.md`
 
-**Example decisions:**
-- Journey needs SEO → Recommends Next.js (SSR)
-- Journey needs document processing + AI → Recommends Python/FastAPI
-- Journey needs <100ms real-time → Recommends WebSockets
-
-**Next step:** Run `/define-coding-standards`
-
-**Tips:**
-- You can specify constraints ("team knows Python")
-- Override recommendations if needed
-- Trust the analysis - it's journey-driven
-- "Boring is beautiful" - proven tech preferred
+### `/create-financial-model` (60-90 min)
+Comprehensive financial model: unit economics (CAC, LTV, payback), revenue projections (3-5 years), cost structure analysis, scenario planning, fundraising considerations. Run after Session 4. Outputs: `22-financial-model.md`
 
 ---
 
-### Session 3b: `/define-coding-standards`
-
-**Purpose:** Define framework-specific coding standards and patterns
-
-**When to run:** After Session 3 (tech stack chosen)
-
-**Time required:** 20-30 minutes
-
-**What it creates:**
-- Framework-specific patterns (state management, architecture)
-- Code organization conventions (file naming, directory structure)
-- Cross-stack naming conventions (database ↔ API ↔ frontend)
-- Testing patterns specific to chosen frameworks
-- AI implementation guidelines for consistency
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Journey requirements
-- `product-guidelines/01-product-strategy.md` - Product context
-- `product-guidelines/02-tech-stack.md` - Chosen frameworks
-
-**Outputs:**
-- `product-guidelines/02b-coding-standards.md` (comprehensive)
-- `product-guidelines/02b-coding-standards.ctx.md` (for AI reading)
-
-**How it works:**
-- Analyzes chosen tech stack from Session 3
-- Generates framework-specific patterns (not generic)
-- Maps code organization to journey steps
-- Defines concrete rules for AI implementation
-
-**Example patterns:**
-- React: Custom hooks for business logic, React Query for server state
-- Flutter: BLoC for complex flows, Provider for simple state
-- FastAPI: Service layer with dependency injection
-- Express: Controller-Service-Repository pattern
-
-**Next step:** Run `/define-ai-integration-strategy` (if AI in tech stack) or `/generate-strategy`
-
-**Tips:**
-- Every pattern includes journey rationale
-- Code examples are complete and compilable
-- Patterns ensure consistency across AI sessions
-- "What We DIDN'T Choose" documents alternatives
-
----
-
-### Session 3c: `/define-ai-integration-strategy`
-
-**Purpose:** Define comprehensive AI integration strategy with cost projections
-
-**When to run:** After Session 3b, only if AI is included in your tech stack
-
-**Time required:** 30-40 minutes
-
-**What it creates:**
-- AI feature requirements mapped to journey steps
-- Implementation pattern decision (Direct API, RAG, Function Calling, Agents)
-- Model selection and routing strategy with cost projections
-- Prompt engineering approach
-- Security guardrails and compliance approach
-- MVP vs scale implementation plan
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - AI touchpoints and requirements
-- `product-guidelines/01-product-strategy.md` - Scale, budget, compliance context
-- `product-guidelines/02-tech-stack.md` - AI provider and infrastructure
-
-**Outputs:**
-- `product-guidelines/02c-ai-integration-strategy.md` (comprehensive strategy)
-- `product-guidelines/02c-ai-integration-strategy.ctx.md` (for AI agents)
-
-**How it works:**
-- Analyzes journey for AI requirements (latency, quality, volume)
-- Calculates actual token usage and monthly costs
-- Recommends implementation patterns based on use cases
-- Provides compliance approach (APIs with BAAs/DPAs, not self-hosting)
-- Defines MVP priorities vs future optimizations
-
-**Key decisions:**
-- Model selection (GPT-4o mini vs Claude Sonnet vs others)
-- RAG architecture if document processing needed
-- Caching strategy (60-73% cost reduction typical)
-- Fallback chains for reliability
-- Rate limiting and budget controls
-
-**Next step:** Run `/generate-strategy`
-
-**Tips:**
-- Shows actual cost calculations, not estimates
-- Honest about latency limitations
-- Skip if no AI in your product
-
----
-
-### Session 4: `/generate-strategy`
-
-**Purpose:** Derive mission, metrics, monetization, and architecture from journey
-
-**When to run:** After Session 3 (tech stack chosen)
-
-**Time required:** 45-60 minutes
-
-**What it creates:**
-- Mission statement (derived from aha moment)
-- North Star metric (measures mission fulfillment)
-- Pricing strategy (aligned with value delivery)
-- Architecture principles (journey-optimized)
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Journey and value
-- `product-guidelines/02-tech-stack.md` - Technology choices
-
-**Outputs:**
-- `product-guidelines/03a-mission.ctx.md`
-- `product-guidelines/03b-metrics.ctx.md`
-- `product-guidelines/03c-monetization.ctx.md`
-- `product-guidelines/04-architecture.ctx.md`
-
-**What it derives:**
-- **Mission:** Promise to deliver value at specific journey step
-- **Metrics:** Measures of journey progress and success
-- **Monetization:** How to charge where value is delivered
-- **Architecture:** Patterns to enable journey optimization
-
-**Example (compliance SaaS):**
-- Mission: "Transform 4-hour compliance assessments into 60-second automated reports"
-- North Star: Assessments completed per month
-- Pricing: $99/assessment (value: saves $400 in labor)
-- Architecture: Event-driven for document processing pipeline
-
-**Next step:** Run `/create-brand-strategy`
-
-**Tips:**
-- Mission should reference the aha moment
-- North Star should measure mission fulfillment
-- Pricing should give 10x+ ROI
-- Architecture should serve critical journey steps
-
----
-
-### Session 5: `/create-brand-strategy`
-
-**Purpose:** Express journey value through brand positioning and personality
-
-**When to run:** After Session 4 (strategy complete)
-
-**Time required:** 30-45 min
-
-**What it creates:**
-- Brand positioning
-- Brand personality
-- Value proposition framing
-- Brand voice guidelines
-- Competitor differentiation
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - User and value
-- `product-guidelines/03a-mission.ctx.md` - Mission and promise
-- `product-guidelines/03b-metrics.ctx.md` - Success measures
-
-**Outputs:**
-- `product-guidelines/05-brand-strategy.md`
-
-**What it defines:**
-- How to communicate journey value
-- Brand personality aligned with users
-- Messaging that resonates with pain points
-- Differentiation from competitors
-
-**Next step:** Run `/create-design`
-
-**Tips:**
-- Brand should express journey value
-- Personality should match target users
-- Focus on emotional connection to aha moment
-
----
-
-### Session 6: `/create-design`
-
-**Purpose:** Create design system optimized for user journey flows
-
-**When to run:** After Session 5 (brand strategy complete)
-
-**Time required:** 30-40 minutes
-
-**What it creates:**
-- Color palette
-- Typography system
-- Component library (specific to journey flows)
-- Spacing and layout systems
-- Accessibility guidelines
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - User flows
-- `product-guidelines/05-brand-strategy.md` - Brand personality
-
-**Outputs:**
-- `product-guidelines/06-design-system.md`
-
-**What it designs:**
-- Components for YOUR specific user flows
-- Not generic design system - journey-optimized
-- Every component serves a journey step
-
-**Example (compliance SaaS):**
-- Document upload component (Step 1)
-- Progress indicator (Step 2)
-- Report viewer (Step 3)
-- Colors convey trust (blue) and success (green)
-
-**Next step:** Run `/design-database-schema`
-
-**Tips:**
-- Design serves journey, not aesthetics
-- Components should map to journey steps
-- Accessibility is required, not optional
-
----
-
-### Session 7: `/design-database-schema`
-
-**Purpose:** Design database schema based on chosen paradigm (paradigm-agnostic support)
-
-**When to run:** After Session 6 (design system complete)
-
-**Time required:** 45-60 minutes
-
-**What it creates:**
-- Complete database schema design (paradigm-specific)
-- **Relational (PostgreSQL, MySQL)**: ERD, tables, columns, foreign keys, migrations
-- **Document (MongoDB, Firestore)**: Collections, document structure, embedded vs referenced, indexes
-- **Graph (Neo4j)**: Nodes, relationships, properties, Cypher patterns
-- **Time-Series (InfluxDB, TimescaleDB)**: Measurements, tags, fields, retention policies
-- **Key-Value (Redis)**: Key patterns, value types, TTL strategies
-- Indexes and constraints appropriate to paradigm
-- Data validation rules
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.ctx.md` - Data needs from journey
-- `product-guidelines/02-tech-stack.ctx.md` - Database choice and paradigm
-- `product-guidelines/04-architecture.ctx.md` - Data patterns
-
-**Outputs:**
-- `product-guidelines/07-database-schema.md` (comprehensive documentation)
-- `product-guidelines/07-database-schema.ctx.md` (condensed for AI reading)
-
-**What it generates:**
-- Complete schema design matched to database paradigm
-- Relationships between entities (or document nesting, graph patterns, etc.)
-- Indexes optimized for paradigm and query patterns
-- Constraints for data integrity
-- Migration files in tech stack format (Prisma, SQL, MongoDB validation schemas, etc.)
-
-**Example outputs:**
-- **Relational**: ERD diagram, table definitions, SQL migration scripts
-- **Document**: Collection design, document structure examples, compound indexes
-- **Graph**: Node/relationship diagram, Cypher patterns, property indexes
-- **Time-Series**: Measurement schema, tag/field definitions, retention policies
-- **Key-Value**: Key naming patterns, data structure choices, TTL strategies
-
-**Next step:** Run `/generate-api-design`
-
-**Tips:**
-- Schema design adapts to your chosen database paradigm from Session 3
-- All paradigms support journey-driven data modeling
-- Includes "When to Reconsider" guidance for paradigm choice validation
-- Backward compatible: PostgreSQL workflows unchanged
-
----
-
-### Session 8: `/generate-api-design`
-
-**Purpose:** Design high-level API architecture (paradigm, serialization, auth, rate limiting)
-
-**When to run:** After Session 7 (database schema designed)
-
-**Time required:** 30-45 minutes
-
-**What it does:**
-- Analyzes journey requirements to recommend API paradigm (REST/GraphQL/gRPC/WebSocket)
-- Determines optimal serialization format (JSON/Protobuf/MessagePack)
-- Designs authentication and authorization approach
-- Defines rate limiting and pagination strategies
-- Creates scale-forward API strategy
-
-**Outputs:**
-- `08-api-design.md` - Complete API architecture decisions
-- `08-api-design.ctx.md` - Condensed version for backlog generation (Session 10)
-
-**Next step:** Run `/generate-api-contracts`
-
-**Tips:**
-- Every paradigm choice traces to journey requirements
-- Serialization aligned with performance needs
-- Document alternatives in "What We DIDN'T Choose"
-
----
-
-### Session 8b: `/generate-api-contracts`
-
-**Purpose:** Generate comprehensive API contracts with OpenAPI specification
-
-**When to run:** After Session 8 (API design complete)
-
-**Time required:** 45-60 minutes
-
-**What it creates:**
-- OpenAPI 3.0 specification
-- All API endpoints
-- Request/response schemas
-- Authentication requirements
-- Error handling
-
-**Inputs (what it reads):**
-- `product-guidelines/08-api-design.md` - API paradigm and architecture decisions
-- `product-guidelines/00-user-journey.md` - Journey flows
-- `product-guidelines/07-database-schema.md` - Data models
-- `product-guidelines/02-tech-stack.md` - API framework
-
-**Outputs:**
-- `product-guidelines/08b-api-contracts.md` (documentation)
-- `product-guidelines/08b-api-contracts.ctx.md` (for scaffold generation - Session 12)
-
-**What it generates:**
-- Complete OpenAPI spec
-- Endpoint definitions for each journey step
-- Authentication strategy
-- Rate limiting considerations
-- Error response standards
-
-**Example endpoints:**
-- `POST /api/documents` (upload)
-- `GET /api/documents/:id/status` (check progress)
-- `GET /api/documents/:id/report` (retrieve results)
-
-**Next step:** Run `/create-test-strategy`
-
-**Tips:**
-- Every journey step should have API support
-- Include error cases and edge cases
-- Document authentication clearly
-
----
-
-### Session 9: `/create-test-strategy`
-
-**Purpose:** Define comprehensive testing strategy (unit, integration, E2E)
-
-**When to run:** After Session 8 (API contracts defined)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Unit testing strategy
-- Integration testing approach
-- End-to-end testing plan
-- Performance testing criteria
-- Test coverage goals
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Critical paths to test
-- `product-guidelines/08-api-contracts.md` - APIs to test
-- `product-guidelines/02-tech-stack.md` - Testing frameworks
-
-**Outputs:**
-- `product-guidelines/09-test-strategy.md` (documentation)
-- `product-guidelines/09-test-strategy.ctx.md` (for AI reading)
-
-**What it defines:**
-- What to test (and what not to test)
-- Testing frameworks and tools
-- Coverage targets
-- CI/CD integration
-- Critical path testing (journey steps)
-
-**Next step:** Run `/generate-backlog`
-
-**Tips:**
-- Focus on critical journey paths
-- E2E tests should mirror user journey
-- Don't over-test (80% coverage target)
-
----
-
-### Session 10: `/generate-backlog`
-
-**Purpose:** Generate 30-50 prioritized user stories informed by all previous sessions
-
-**When to run:** After Session 9 (test strategy defined)
-
-**Time required:** 60-90 minutes
-
-**What it creates:**
-- 30-50 user stories
-- RICE prioritization (Reach, Impact, Confidence, Effort)
-- P0/P1/P2 labels
-- Dependencies mapped
-- Every story traced to journey step
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Journey to support
-- `product-guidelines/07-database-schema.md` - Data features
-- `product-guidelines/08-api-contracts.md` - API features
-- All previous sessions for context
-
-**Outputs:**
-- `product-guidelines/10-backlog/` directory
-- Individual `.md` files for each story
-- `P0-*.md`, `P1-*.md`, `P2-*.md`
-
-**What it generates:**
-- User stories: "As [user], I want [feature] so that [value]"
-- Acceptance criteria
-- Technical notes
-- Dependencies
-- RICE scores
-
-**Example stories:**
-- P0: Document upload functionality
-- P0: AI assessment engine
-- P1: User authentication
-- P2: Email notifications
-
-**Next step:** Run `/create-gh-issues`
-
-**Tips:**
-- P0 = critical for MVP (journey steps 1-3)
-- Every story should reference a journey step
-- Check dependencies to avoid blockers
-
----
-
-### Session 11: `/create-gh-issues`
-
-**Purpose:** Push all backlog issues to GitHub
-
-**When to run:** After Session 10 (backlog generated)
-
-**Time required:** 10-15 minutes
-
-**What it creates:**
-- GitHub issues for all backlog stories
-- Proper labels (P0, P1, P2)
-- Milestone assignments
-- Project board organization
-
-**Inputs (what it reads):**
-- `product-guidelines/10-backlog/*.md` - All user stories
-
-**Outputs:**
-- GitHub issues in your repository
-
-**What it does:**
-- Converts backlog files to GitHub issues
-- Applies labels and milestones
-- Sets up project board (optional)
-- Creates issue relationships
-
-**Next step:** Run `/scaffold-project`
-
-**Tips:**
-- Ensure GitHub CLI is authenticated
-- Review labels before creating
-- Can re-run if issues need updates
-
----
-
-### Session 12: `/scaffold-project`
-
-**Purpose:** Generate working development environment with actual code files
-
-**When to run:** After Session 11 (issues created)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Complete project scaffold
-- Package manager configs (package.json, pyproject.toml, etc.)
-- Docker Compose for local development
-- Environment configuration (.env.template)
-- CI/CD pipeline (GitHub Actions)
-- Setup documentation
-
-**Inputs (what it reads):**
-- `product-guidelines/02-tech-stack.md` - Technologies to scaffold
-- `product-guidelines/04-architecture.ctx.md` - Structure and patterns
-- `product-guidelines/07-database-schema.md` - Database setup
-- `product-guidelines/10-backlog/` - What features to support
-
-**Outputs:**
-- `product-guidelines/12-project-scaffold.md` (decisions documentation)
-- `product-guidelines/12-project-scaffold/` directory with:
-  - `package.json` or `pyproject.toml`
-  - `docker-compose.yml`
-  - `.env.template`
-  - `.github/workflows/ci.yml`
-  - `README.md` (setup instructions)
-  - Basic directory structure
-  - Configuration files
-
-**What it generates:**
-- Working development environment
-- All dependencies configured
-- Database setup scripts
-- CI/CD pipeline
-- One-command setup
-
-**Next step:** Run `/plan-deployment`
-
-**Tips:**
-- Copy generated files to your project
-- Run `docker-compose up` to verify
-- Follow README for setup
-- Actual runnable code, not just templates
-
----
-
-### Session 13: `/plan-deployment`
-
-**Purpose:** Create deployment strategy and CI/CD pipeline plan
-
-**When to run:** After Session 12 (project scaffolded)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Deployment strategy (environments, CI/CD, rollout)
-- Environment configuration (dev, staging, production)
-- CI/CD pipeline details
-- Infrastructure as code
-- Rollback procedures
-
-**Inputs (what it reads):**
-- `product-guidelines/02-tech-stack.md` - Hosting platform
-- `product-guidelines/04-architecture.ctx.md` - Deployment patterns
-- `product-guidelines/03b-metrics.ctx.md` - Success metrics
-
-**Outputs:**
-- `product-guidelines/13-deployment-plan.md`
-
-**What it defines:**
-- Deployment environments
-- CI/CD workflow
-- Infrastructure requirements
-- Monitoring integration
-- Rollback and recovery plans
-- Cost estimates
-
-**Next step:** Run `/design-observability`
-
-**Tips:**
-- Start simple (single environment for MVP)
-- Automate everything
-- Plan for rollback from day 1
-
----
-
-### Session 14: `/design-observability`
-
-**Purpose:** Design monitoring, alerting, and observability strategy
-
-**When to run:** After Session 13 (deployment planned)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Monitoring strategy (metrics, logs, traces)
-- Alerting rules and thresholds
-- SLO/SLI definitions
-- Incident response procedures
-- Dashboard designs
-
-**Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Critical paths to monitor
-- `product-guidelines/03b-metrics.ctx.md` - Business metrics
-- `product-guidelines/13-deployment-plan.md` - Infrastructure
-
-**Outputs:**
-- `product-guidelines/14-observability-strategy.md`
-
-**What it defines:**
-- What to monitor (and what not to)
-- Alerting strategy
-- SLOs for critical paths
-- Logging approach
-- Incident response
-- Performance budgets
-
-**Next step:** Start building! Copy scaffold files and implement P0 features.
-
-**Tips:**
-- Monitor journey critical paths first
-- Don't over-alert (alert fatigue is real)
-- SLOs should align with user experience
-- Start with basics, expand as you scale
-
----
-
-## Post-Cascade Extension Commands
-
-These are **optional** deep-dive sessions that extend the core cascade. Run them after completing relevant core sessions.
-
-### `/discover-naming`
-
-**Purpose:** Generate and evaluate brand name candidates
-
-**When to run:** After Session 5 (brand strategy complete)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- 20-30 name candidates
-- Evaluation criteria
-- Domain availability checks
-- Trademark considerations
-- Final recommendations
-
-**Inputs:**
-- `product-guidelines/05-brand-strategy.md` - Brand personality
-- `product-guidelines/00-user-journey.md` - Value proposition
-
-**Outputs:**
-- `product-guidelines/15-brand-naming.md`
-
-**Use when:**
-- You need a product/company name
-- You want systematic naming evaluation
-- You need to check domain availability
-
----
-
-### `/define-messaging`
-
-**Purpose:** Create brand messaging framework and voice guidelines
-
-**When to run:** After naming (or after Session 5)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Messaging hierarchy
-- Value propositions for different audiences
-- Voice and tone guidelines
-- Key messages
-- Messaging do's and don'ts
-
-**Inputs:**
-- `product-guidelines/05-brand-strategy.md` - Brand foundation
-- `product-guidelines/15-brand-naming.md` - Name context
-
-**Outputs:**
-- `product-guidelines/16-brand-messaging.md`
-
-**Use when:**
-- Creating marketing copy
-- Need consistent messaging
-- Multiple writers need guidelines
-
----
-
-### `/design-brand-identity`
-
-**Purpose:** Design comprehensive brand identity (logo, visual system, guidelines)
-
-**When to run:** After messaging complete
-
-**Time required:** 60-90 minutes
-
-**What it creates:**
-- Logo concepts and guidelines
-- Color system
-- Typography
-- Visual language
-- Brand guidelines document
-
-**Inputs:**
-- `product-guidelines/05-brand-strategy.md` - Personality
-- `product-guidelines/16-brand-messaging.md` - Messaging
-
-**Outputs:**
-- `product-guidelines/17-brand-identity.md`
-
-**Use when:**
-- Need complete brand identity
-- Creating marketing materials
-- Establishing visual consistency
-
----
-
-### `/create-content-guidelines`
-
-**Purpose:** Create detailed content style guide and microcopy patterns
-
-**When to run:** After messaging defined
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Content style guide
-- Microcopy patterns (buttons, errors, success messages)
-- Editorial guidelines
-- SEO considerations
-- Content templates
-
-**Inputs:**
-- `product-guidelines/16-brand-messaging.md` - Voice and tone
-- `product-guidelines/00-user-journey.md` - User context
-
-**Outputs:**
-- `product-guidelines/18-content-guidelines.md`
-
-**Use when:**
-- Writing UI copy
-- Creating help documentation
-- Need consistent content voice
-
----
-
-### `/design-user-experience`
-
-**Purpose:** Create detailed UX research, flows, wireframes, and interaction specs
-
-**When to run:** After Session 4 (strategy complete)
-
-**Time required:** 60-90 minutes
-
-**What it creates:**
-- Detailed user flows
-- Wireframes for key screens
-- Interaction specifications
-- UX research plan
-- Usability testing criteria
-
-**Inputs:**
-- `product-guidelines/00-user-journey.md` - High-level journey
-- `product-guidelines/06-design-system.md` - Components
-
-**Outputs:**
-- `product-guidelines/19-user-experience.md`
-
-**Use when:**
-- Need detailed UX specifications
-- Building complex interactions
-- Want to validate UX before development
-
----
-
-### `/setup-analytics`
-
-**Purpose:** Create detailed analytics implementation plan
-
-**When to run:** After Session 4 (metrics defined)
-
-**Time required:** 30-45 minutes
-
-**What it creates:**
-- Analytics tool recommendations
-- Event tracking plan
-- Funnel analysis setup
-- Dashboard designs
-- Privacy and compliance considerations
-
-**Inputs:**
-- `product-guidelines/03b-metrics.ctx.md` - What to measure
-- `product-guidelines/00-user-journey.md` - Critical paths
-
-**Outputs:**
-- `product-guidelines/20-analytics-plan.md`
-
-**Use when:**
-- Implementing analytics
-- Need to track metrics from Session 4
-- Want data-driven decisions
-
----
-
-### `/design-growth-strategy`
-
-**Purpose:** Create data-driven growth strategy with acquisition channels and experiments
-
-**When to run:** After Session 4 (strategy complete)
-
-**Time required:** 60-90 minutes
-
-**What it creates:**
-- Acquisition channel analysis
-- Growth loops identification
-- Experiment roadmap
-- Channel-specific tactics
-- CAC/LTV projections
-
-**Inputs:**
-- `product-guidelines/00-user-journey.md` - Target audience
-- `product-guidelines/03c-monetization.ctx.md` - Unit economics
-- `product-guidelines/01-product-strategy.md` - Market size
-
-**Outputs:**
-- `product-guidelines/21-growth-strategy.md`
-
-**Use when:**
-- Planning go-to-market
-- Need customer acquisition strategy
-- Want to optimize growth loops
-
----
-
-### `/create-financial-model`
-
-**Purpose:** Create comprehensive financial model with unit economics and projections
-
-**When to run:** After Session 4 (monetization defined)
-
-**Time required:** 60-90 minutes
-
-**What it creates:**
-- Unit economics (CAC, LTV, payback)
-- Revenue projections (3-5 years)
-- Cost structure analysis
-- Scenario planning
-- Fundraising considerations
-
-**Inputs:**
-- `product-guidelines/03c-monetization.ctx.md` - Pricing
-- `product-guidelines/21-growth-strategy.md` - Acquisition costs
-- `product-guidelines/01-product-strategy.md` - Market size
-
-**Outputs:**
-- `product-guidelines/22-financial-model.md`
-
-**Use when:**
-- Fundraising preparation
-- Need financial projections
-- Validating business model viability
-
----
-
-## Meta Commands
+## Meta & Development Commands
 
 ### `/cascade-status`
-
-**Purpose:** Check cascade progress and determine next steps
-
-**When to run:** Anytime
-
-**What it does:**
-- Shows which sessions are complete
-- Shows what comes next
-- Displays cascade flow
-- Lists inputs/outputs for each session
-- Identifies any missing dependencies
-
-**No outputs** - informational only
-
-**Use when:**
-- Starting the framework (shows where to begin)
-- Lost track of progress
-- Need to know what to run next
-- Want to see full cascade structure
-
-**Example output:**
-```
-Core Cascade Progress:
-[COMPLETE] Session 1: /refine-journey (complete)
-[COMPLETE] Session 2: /create-product-strategy (complete)
-[NOT STARTED] Session 3: /choose-tech-stack (not started)
-
-Next step: Run /choose-tech-stack
-```
-
----
+Check cascade progress anytime. Shows completed sessions, what comes next, cascade flow, inputs/outputs for each session, missing dependencies. Informational only (no files created). Use when starting framework, lost track, or need to know next step.
 
 ### `/run-cascade`
-
-**Purpose:** Automatically execute all sessions sequentially from current progress
-
-**When to run:** Session 1 start (or after any session to auto-continue)
-
-**Time required:** Full cascade time (8-10 hours, can pause/resume)
-
-**What it does:**
-- Executes sessions automatically in order
-- Pauses at major milestones for review
-- Handles dependencies between sessions
-- Continues from where you left off
-
-**Use when:**
-- Want rapid progress through framework
-- Prefer automated execution
-- Have clear requirements (less iteration needed)
-
-**vs Manual:**
-- Manual (individual commands): Better for learning, more control
-- Auto (/run-cascade): Faster, fewer interruptions
-
----
-
-## Development Commands
+Automatically execute all sessions sequentially from current progress point. Pauses at major milestones for review. Handles dependencies. Can resume after interruptions. Use for rapid progress vs. manual step-by-step. Full cascade: 8-10 hours (can pause/resume).
 
 ### `/validate-outputs`
-
-**Purpose:** Validate cascade outputs for quality and completeness
-
-**When to run:** During or after cascade sessions
-
-**What it does:**
-- Validates all cascade outputs against Stack-Driven quality standards
-- Checks journey alignment (decisions trace to user value)
-- Verifies philosophy adherence (user-first, journey-driven, generative)
-- Assesses completeness and consistency across sessions
-- Identifies generic outputs that need more specificity
-- Provides actionable recommendations for improvement
-
-**Quality criteria checked:**
-- **Journey Alignment**: References specific journey steps, quantified value
-- **Philosophy Adherence**: User-first thinking, not tech-first
-- **Completeness**: All template sections filled, alternatives considered
-- **Consistency**: Cross-file references match (tech aligns with journey, etc.)
-- **Specificity**: Concrete examples, not generic statements
-- **Technical Soundness**: Proper indexes, error handling, edge cases
-
-**Outputs:**
-- Comprehensive quality report (in conversation, no file created)
-- Critical issues that must be addressed
-- Important suggestions for improvement
-- Sessions to regenerate if needed
-
-**Use when:**
-- Unsure if outputs are specific enough (not generic)
-- Want to verify quality before continuing cascade
-- Preparing to share outputs with team/stakeholders
-- Checking journey alignment after completing sessions
-- Identifying which sessions may need refinement
-
-**Example issues caught:**
-- Generic journey descriptions ("users want better experience")
-- Tech choices without journey justification
-- Missing "What We DIDN'T Choose" sections
-- Inconsistent references across files
-- Superficial analysis where depth needed
-
-**Tips:**
-- Run after completing key milestones (Session 4, 10, 14)
-- Address critical issues before continuing cascade
-- Use to validate before sharing with team
-
----
+Validate all cascade outputs against Stack-Driven quality standards. Checks: journey alignment (decisions trace to user value), philosophy adherence (user-first, generative), completeness (template sections filled, alternatives considered), consistency (cross-file references match), specificity (concrete vs. generic), technical soundness (proper indexes, error handling, SLOs). Provides actionable recommendations. Run after key milestones (Sessions 4, 10, 14) or before sharing with team.
 
 ### `/review-code`
+Guide comprehensive code review with quality framework. Checks alignment with architecture principles, design system, API contracts, testing strategy. Reviews security vulnerabilities, performance issues, code quality, journey alignment. Use when reviewing PRs or before deployment.
 
-**Purpose:** Guide comprehensive code review with quality framework
+### `/plan-issue [issue-number]`
+Fetch GitHub issue details, load relevant product-guidelines (.ctx.md files: tech-stack, coding-standards, conditionally architecture/design/database/API based on issue type), create detailed implementation plan. Plan posted to issue as comment for approval. Run before implementation.
 
-**When to run:** During development, before merging PRs
+### `/implement-issue [issue-number]`
+Fetch approved plan from issue comments, create branch `[number]-slug`, implement following plan exactly, commit with "feat: description (closes #[number])", create PR with "Closes #[number]". Uses plan as complete context (plan already contains necessary guidelines). Run after plan approved.
 
-**What it does:**
-- Provides code review checklist
-- Checks alignment with:
-  - Architecture principles
-  - Design system
-  - API contracts
-  - Testing strategy
-- Reviews for:
-  - Security vulnerabilities
-  - Performance issues
-  - Code quality
-  - Journey alignment
-
-**Use when:**
-- Reviewing pull requests
-- Quality check before deployment
-- Ensuring consistency with strategy
+### `/update-claudemd`
+Automatically update CLAUDE.md file based on recent code changes. Analyzes git diff, updates repository architecture, command structure, design patterns sections. Maintains CLAUDE.md accuracy as codebase evolves. Run after significant code changes.
 
 ---
 
@@ -1285,13 +256,18 @@ All core sessions:
 ```bash
 /refine-journey
 /create-product-strategy
+/document-constraints       # Optional but recommended
 /choose-tech-stack
+/define-coding-standards
+/define-ai-integration-strategy  # Only if AI in stack
 /generate-strategy
 /create-brand-strategy
 /create-design
 /design-database-schema
+/generate-api-design
 /generate-api-contracts
 /create-test-strategy
+/model-application
 /generate-backlog
 /create-gh-issues
 /scaffold-project
@@ -1299,7 +275,7 @@ All core sessions:
 /design-observability
 ```
 
-**Result:** Production-ready system from idea to deployment + monitoring
+**Result:** Production-ready system from idea to deployment + monitoring + code skeletons
 
 ---
 
@@ -1327,8 +303,6 @@ Core + selected extensions:
 
 ---
 
-## Common Patterns
-
 ### Rerunning Sessions
 
 Any session can be re-run to regenerate outputs:
@@ -1339,9 +313,9 @@ Any session can be re-run to regenerate outputs:
 
 # ... later, after user interviews ...
 # Refine and regenerate
-/refine-journey  # Updates journey
-/choose-tech-stack  # Regenerates with new journey
-/generate-strategy  # Regenerates with new tech
+/refine-journey        # Updates journey
+/choose-tech-stack     # Regenerates with new journey
+/generate-strategy     # Regenerates with new tech
 # etc.
 ```
 
@@ -1349,21 +323,7 @@ Any session can be re-run to regenerate outputs:
 
 ---
 
-### Skipping Sessions
-
-Not recommended, but possible:
-
-- **Can skip:** Post-cascade extensions (all optional)
-- **Should NOT skip:** Core Sessions 1-4 (foundation)
-- **Consider carefully:** Sessions 5-14 (highly valuable)
-
-**If you skip a session, downstream sessions won't have required inputs.**
-
----
-
-### Partial Cascade
-
-Focus on specific outcomes:
+### Partial Cascade Examples
 
 **Just want tech stack recommendation?**
 ```bash
@@ -1385,58 +345,6 @@ Focus on specific outcomes:
 # Complete Sessions 1-11 first
 /scaffold-project
 ```
-
----
-
-## Tips for Success
-
-### Session 1 (Journey)
-- Be specific: "Solo SaaS founders" not "businesses"
-- Quantify value: 4 hours → 10 minutes = 24x faster
-- Find the aha moment (usually Step 3)
-- Focus on problem, not your solution
-
-### Session 2 (Product Strategy)
-- Research market size thoroughly
-- Identify real competitors (not "no competitors")
-- Be honest about differentiation
-- Validate assumptions with data
-
-### Session 3 (Tech Stack)
-- Trust the journey-driven analysis
-- Mention constraints ("We know Python")
-- Override if you have strong reasons
-- Boring tech > exciting tech for MVPs
-
-### Session 4 (Strategy)
-- Mission should reference aha moment
-- North Star should measure mission
-- Pricing should give 10x+ ROI
-- Architecture should serve critical path
-
-### Sessions 5-6 (Brand & Design)
-- Brand expresses journey value
-- Design serves journey, not aesthetics
-- Components map to journey steps
-- Personality matches target users
-
-### Sessions 7-9 (Technical Specs)
-- Schema supports all journey steps
-- APIs cover every user action
-- Tests focus on critical paths
-- Don't over-engineer for MVP
-
-### Session 10 (Backlog)
-- Every story references journey
-- P0 = critical for MVP
-- Check dependencies
-- Accept criteria should be specific
-
-### Sessions 12-14 (Production Readiness)
-- Start simple, scale later
-- Automate everything
-- Monitor critical paths first
-- Plan for failure (rollback, recovery)
 
 ---
 
@@ -1483,35 +391,23 @@ Provide more specific constraints when running the command:
 - State limitations ("budget is $50/month")
 - Reference specific requirements from journey
 
-You can also edit the output files directly.
-
----
-
-## Command Development
-
-Want to create your own commands? See `IMPLEMENTATION-PROMPT.md` for detailed guidance on creating new slash commands that integrate with the cascade.
-
----
-
-## Version History
-
-**Current version:** 2.0.0
-
-See `CHANGELOG.md` for version history and changes.
+You can also edit the output files directly and re-run downstream sessions.
 
 ---
 
 ## Additional Resources
 
 - **README.md** - Framework overview and philosophy
-- **GETTING-STARTED.md** - New user onboarding
-- **PHILOSOPHY.md** - Framework principles and architecture
-- **TROUBLESHOOTING.md** - Common issues and solutions
-- **FAQ.md** - Frequently asked questions
-- **GLOSSARY.md** - Framework terminology
-- **QUICK-REFERENCE.md** - One-page cheat sheet
+- **CLAUDE.md** - Detailed codebase instructions for Claude Code
+- **CASCADE-DEPENDENCIES.md** - Visual dependency map showing which sessions read which files
+- **PHILOSOPHY.md** - Framework principles and architecture (if exists)
+- **TROUBLESHOOTING.md** - Common issues and solutions (if exists)
+
+For detailed guidance on creating new slash commands that integrate with the cascade, see command files in `.claude/commands/`.
 
 ---
 
-**Last Updated:** 2025-11-14
+**Last Updated:** 2025-01-30
 **Version:** 2.0.0
+
+**Remember:** This is a quick reference. For detailed instructions, run individual commands or see CLAUDE.md.

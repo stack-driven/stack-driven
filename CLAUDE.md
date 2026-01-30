@@ -106,7 +106,7 @@ Session 14: /design-observability       → 14-observability-strategy.md
 - Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards.ctx.md + 04-architecture + 07-database-schema.ctx.md + 08b-api-contracts.ctx.md
-- Session 10 (backlog) reads ALL previous sessions (00-09b including 02b) and .ctx.md files including 08-api-design.ctx.md
+- Session 10 (backlog) reads sessions 00-04, 07-09b (skips 05-06 brand/design - now post-cascade) and .ctx.md files including 08-api-design.ctx.md
 - Session 12 (scaffold) reads ALL previous sessions including 08b-api-contracts.ctx.md
 
 **Never skip sessions** - later sessions need previous outputs for context.
@@ -261,7 +261,7 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 | 8b | 00, 02, 04, 07, 08 | .ctx.md | API contracts |
 | 9 | 00-08b | .ctx.md | All technical specs |
 | 9b | 00, 02, 02b, 04, 07, 08b | .ctx.md | Application modeling |
-| 10 | 00-09b | .ctx.md for ALL | **CRITICAL** - Maximum token savings |
+| 10 | 00-04, 07-09b | .ctx.md for ALL | **CRITICAL** - Maximum token savings (skips 05-06) |
 | 11 | 10-backlog | Full .md | Stories (no .ctx) |
 | 12 | 00-11 | .ctx.md for 00-09b | Scaffold generation |
 | 13 | 00-12 | .ctx.md for 00-09b | Deployment planning |
