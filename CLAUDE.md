@@ -165,7 +165,8 @@ Each command follows this pattern:
 **`/plan-issue [issue-number]`** - Create implementation plan for GitHub issue
 - Fetches issue details via `gh` CLI
 - Analyzes issue and creates comprehensive implementation plan
-- Posts plan as comment to GitHub issue for approval
+- **NEW:** Automatically researches third-party integrations (official docs, gotchas, approaches)
+- Posts plan with research findings to GitHub issue for approval
 - Loads relevant product-guidelines context based on issue type
 
 **`/implement-issue [issue-number]`** - Implement GitHub issue
@@ -335,6 +336,11 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
    - Database work → `07-database-schema.ctx.md`
    - Testing → `09-test-strategy.ctx.md`
    - Infrastructure → `04-architecture.ctx.md`
+3.5. **If third-party integration detected:** Research official documentation
+   - Detection: Keywords (npm install, new package, library, SDK, widget)
+   - Research: Find official docs, identify recommended packages, document gotchas
+   - Time-boxed: 2-3 minutes (prevents over-research)
+   - Output: Embedded in plan as "Third-Party Integration Research" section
 4. Generate comprehensive implementation plan
 5. Post plan as comment to GitHub issue using `gh` CLI
 

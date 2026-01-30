@@ -39,8 +39,8 @@ Identify which sessions are complete based on these files:
 - `02b-coding-standards.md` + `02b-coding-standards.ctx.md` → Session 3b complete
 - `02c-ai-integration-strategy.md` + `02c-ai-integration-strategy.ctx.md` → Session 3c complete (optional)
 - `03a-mission.md` + `03b-metrics.md` + `03c-monetization.md` + `04-architecture.md` → Session 4 complete
-- `05-brand-strategy.md` → Session 5 complete
-- `06-design-system.md` → Session 6 complete
+- `05-brand-strategy.md` + `05-brand-strategy.ctx.md` → Session 5 complete
+- `06-design-system.md` + `06-design-system.ctx.md` → Session 6 complete
 - `07-database-schema.md` → Session 7 complete
 - `08-api-design.md` + `08-api-design.ctx.md` → Session 8 complete
 - `08b-api-contracts.md` + `08b-api-contracts.ctx.md` → Session 8b complete

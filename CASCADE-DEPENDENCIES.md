@@ -76,13 +76,14 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ---
 
 ### Session 3: `/choose-tech-stack`
-**Outputs:** `02-tech-stack.md`
+**Outputs:**
+- `02-tech-stack.md`
+- `02-tech-stack.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
-├─ [CTX] product-guidelines/02a-constraints.md (if exists)
 ├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
 └─ [TMPL] /templates/02-tech-stack-template.md
 ```
@@ -176,6 +177,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 ### Session 5: `/create-brand-strategy`
 **Outputs:** `05-brand-strategy.md`
+            `05-brand-strategy.ctx.md`
 
 **Reads:**
 ```
@@ -188,24 +190,38 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Dependencies:** Sessions 1, 2, 4
 
-**No context file created.** Session 5 is only read by post-cascade extensions (discover-naming, define-messaging, design-brand-identity) which need full brand personality and positioning. Session 10 and 12 don't read brand strategy.
+**Downstream consumers of context files:**
+- Post-cascade extensions: discover-naming, define-messaging, design-brand-identity (read FULL .md)
+- Session 6 (create-design) reads 05-brand-strategy.ctx.md
+
+**Why context file?** 65% reduction. Contains brand positioning, personality, voice guidelines—sufficient for design system generation without full market analysis and brand exercises.
+
+**Note:** Post-cascade extensions read FULL .md file (need complete brand personality), but Session 6 uses .ctx.md for token efficiency.
 
 ---
 
 ### Session 6: `/create-design`
 **Outputs:** `06-design-system.md`
+            `06-design-system.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [CTX] product-guidelines/01-product-strategy.ctx.md
-├─ [FULL] product-guidelines/05-brand-strategy.md
+├─ [CTX] product-guidelines/05-brand-strategy.ctx.md
 └─ [TMPL] /templates/06-design-system-template.md
 ```
 
 **Dependencies:** Sessions 1, 2, 5
 
-**No context file created.** Session 6 is only read by post-cascade extensions and dev-time commands (design-user-experience, implement-issue), which need full component specifications and design tokens. Session 10 and 12 don't read design system. Template already small (1.7KB).
+**Downstream consumers of context files:**
+- Session 7 (design-database-schema) - needs design tokens for data model naming
+- Post-cascade extensions: design-user-experience, design-brand-identity (read FULL .md)
+- /plan-issue (UI work) reads FULL .md file (needs complete component specs)
+
+**Why context file?** 60% reduction. Contains design tokens, component list, pattern names—sufficient for downstream cascade sessions without detailed component specifications and usage examples.
+
+**Note:** /plan-issue and post-cascade extensions read FULL .md file (need complete specs), but cascade sessions use .ctx.md for token efficiency.
 
 ---
 
@@ -325,7 +341,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 └─ [TMPL] /templates/09b-application-architecture-template.md
 ```
 
@@ -357,7 +373,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [FULL] product-guidelines/03c-monetization.md
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 ├─ [CTX] product-guidelines/09-test-strategy.ctx.md
 ├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
 └─ [TMPL] /templates/issue-template.md
@@ -411,11 +427,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [CTX] product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 ├─ [CTX] product-guidelines/09-test-strategy.ctx.md
 ├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
-├─ [FULL] product-guidelines/10-backlog/BACKLOG.md
-└─ [TMPL] /templates/12-project-scaffold-template.md
+└─ [FULL] product-guidelines/10-backlog/BACKLOG.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b, 10
@@ -608,15 +623,23 @@ ALL files in product-guidelines/
 ---
 
 ### `/plan-issue [issue-number]`
-**Reads (same as implement-issue):**
+**Reads (conditionally based on issue type):**
 ```
-├─ [FULL] product-guidelines/02-tech-stack.md (ALWAYS)
-├─ [FULL] product-guidelines/06-design-system.md (if UI work)
-├─ [FULL] product-guidelines/07-database-schema.md (if database work)
-└─ [FULL] product-guidelines/08-api-contracts.md (if API work)
+├─ [CTX] product-guidelines/02-tech-stack.ctx.md (ALWAYS)
+├─ [CTX] product-guidelines/02b-coding-standards.ctx.md (ALWAYS)
+├─ [CTX] product-guidelines/04-architecture.ctx.md (if infrastructure work)
+├─ [FULL] product-guidelines/06-design-system.md (if UI work - reads full for complete specs)
+├─ [CTX] product-guidelines/07-database-schema.ctx.md (if database work)
+├─ [CTX] product-guidelines/08-api-design.ctx.md (if API work)
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md (if API work)
+└─ [CTX] product-guidelines/09-test-strategy.ctx.md (if testing work)
 ```
 
-**Purpose:** Create detailed implementation plan for GitHub issue.
+**Purpose:** Create detailed implementation plan for GitHub issue, then post to GitHub.
+
+**Why context files?** Planning needs high-level technical decisions (paradigm, patterns, table list, endpoint list) but not full implementation details. Exception: 06-design-system reads FULL .md (UI planning needs complete component specs, not condensed version).
+
+**Template Embedding:** `/plan-issue` conditionally embeds template sections based on detected work type (UI → design tokens, API → endpoint structure, database → schema format) to guide plan structure. This reduces token usage vs. loading full templates.
 
 ---
 
@@ -635,16 +658,29 @@ ALL files in product-guidelines/
 ## Context Files: Token Optimization Strategy
 
 **Files WITH context files:**
+- `00-user-journey.ctx.md` (70% reduction)
 - `01-product-strategy.ctx.md` (65% reduction)
+- `02-tech-stack.ctx.md` (65% reduction)
+- `02a-constraints.ctx.md` (70% reduction)
 - `02b-coding-standards.ctx.md` (70% reduction)
+- `02c-ai-integration-strategy.ctx.md` (70% reduction)
+- `03a-mission.ctx.md` (65% reduction)
+- `03b-metrics.ctx.md` (65% reduction)
+- `03c-monetization.ctx.md` (65% reduction)
+- `04-architecture.ctx.md` (60% reduction)
+- `05-brand-strategy.ctx.md` (65% reduction)
+- `06-design-system.ctx.md` (60% reduction)
 - `07-database-schema.ctx.md` (56% reduction)
-- `08-api-contracts.ctx.md` (80% reduction)
+- `08-api-design.ctx.md` (65% reduction)
+- `08b-api-contracts.ctx.md` (80% reduction)
 - `09-test-strategy.ctx.md` (66% reduction)
 - `09b-application-architecture.ctx.md` (60% reduction)
 
-**Files WITHOUT context files:**
-- `05-brand-strategy.md` - Only read by post-cascade extensions needing full context
-- `06-design-system.md` - Only read by post-cascade/dev-time needing full component specs, template already small (1.7KB)
+**Files without context files (Sessions 10-14):**
+- `10-backlog/*.md` - User stories already concise
+- `12-project-scaffold.md` - Final scaffold documentation
+- `13-deployment-plan.md` - Final deployment plan
+- `14-observability-strategy.md` - Final observability strategy
 
 **When to use context files vs full:**
 
@@ -659,6 +695,90 @@ ALL files in product-guidelines/
 - Sessions 5/6 (brand/design) need positioning and personality
 - Dev commands (implement-issue) need indexes, validation rules, error codes
 - Post-cascade extensions need complete context
+
+---
+
+## Propagation Patterns: Cross-Cutting Concerns
+
+### Third-Party Integration Propagation
+
+When Session 2a specifies third-party integration requirements (payment processors, CRM, communication services, analytics, etc.), these requirements propagate through the cascade:
+
+**Session 2a (document-constraints):**
+- Documents integration details: provider name, integration type (API-only vs webhooks), data flow direction, technical requirements, priority level
+
+**Session 3 (choose-tech-stack):**
+- Selects appropriate SDKs/client libraries for integrations
+- Adds third-party packages to tech stack (e.g., `stripe`, `@sendgrid/mail`, `@segment/analytics-node`)
+
+**Session 4 (generate-strategy → 04-architecture.md):**
+- Includes integration architecture patterns:
+  - Credential management (environment variables, secrets management)
+  - Webhook handling (signature verification, event processing)
+  - Rate limiting strategies
+  - Monitoring and alerting for external dependencies
+
+**Session 7 (design-database-schema):**
+- Generates integration-specific tables (if webhooks or sync required):
+  - `integration_credentials` - API keys, OAuth tokens
+  - `sync_jobs` - Background job tracking for data sync
+  - `webhook_events` - Event log with deduplication, retry tracking
+
+**Session 8 (generate-api-design):**
+- Designs API endpoints for webhook handlers
+- Security requirements: signature verification, idempotency keys
+- Error handling for external service failures
+
+**Session 8b (generate-api-contracts):**
+- Generates OpenAPI specs for webhook endpoints
+- Provider-specific security details (e.g., Stripe signature headers)
+- Request/response schemas for integration callbacks
+
+**Session 10 (generate-backlog):**
+- Generates Epic 04 integration stories per provider:
+  - Credential setup and environment configuration
+  - SDK integration and API client setup
+  - Webhook handler implementation (if required)
+  - Error handling and retry logic
+  - Monitoring and logging integration
+
+**Session 12 (scaffold-project):**
+- Generates integration adapter skeletons in codebase:
+  - `src/integrations/StripeAdapter.ts`
+  - `src/integrations/SendGridAdapter.ts`
+  - Configuration files with environment variable placeholders
+  - Webhook signature verification utilities
+
+**Pattern Summary:** Like i18n, third-party integrations are detected in constraints (Session 2a) and flow through tech stack → architecture → database → API design → backlog → scaffold. This ensures comprehensive integration planning from requirements to implementation.
+
+---
+
+### Internationalization (i18n) Propagation
+
+When Session 2a marks "Internationalization requirements (i18n, l10n)" as required:
+
+**Session 3 (choose-tech-stack):**
+- Selects i18n library based on frontend framework (next-intl, react-i18next, vue-i18n, svelte-i18n)
+
+**Session 7 (design-database-schema):**
+- Adds locale columns and translation table patterns
+
+**Session 8 (generate-api-design):**
+- Adds Accept-Language header support
+- Defines localized error message requirements
+
+**Session 10 (generate-backlog):**
+- Generates Epic 04 i18n infrastructure stories:
+  - Translation file setup
+  - Locale switching UI
+  - String extraction workflow
+
+**Session 12 (scaffold-project):**
+- Generates `/locales/` directory structure
+- Example translation files (`common.json`, `auth.json`, `errors.json`)
+- i18n configuration with locale detection
+
+**Pattern Summary:** Constraint drives conditional technical decisions across cascade, similar to Session 3c (AI integration) precedent.
 
 ---
 
@@ -797,13 +917,16 @@ Context files target **30-80% reduction** from full versions:
 ```
 1  → refine-journey           00-user-journey.md
 2  → create-product-strategy  01-product-strategy.md + context
-3  → choose-tech-stack        02-tech-stack.md
+2a → document-constraints     02a-constraints.md + context
+3  → choose-tech-stack        02-tech-stack.md + context
 3b → define-coding-standards  02b-coding-standards.md + context
-4  → generate-strategy        03a-mission, 03b-metrics/monetization/architecture
-5  → create-brand-strategy    05-brand-strategy.md
-6  → create-design            06-design-system.md
+3c → define-ai-integration-strategy  02c-ai-integration-strategy.md + context (optional)
+4  → generate-strategy        03a-mission, 03b-metrics, 03c-monetization, 04-architecture + context
+5  → create-brand-strategy    05-brand-strategy.md + context
+6  → create-design            06-design-system.md + context
 7  → design-database-schema   07-database-schema.md + context
-8  → generate-api-contracts   08-api-contracts.md + context
+8  → generate-api-design      08-api-design.md + context
+8b → generate-api-contracts   08b-api-contracts.md + context
 9  → create-test-strategy     09-test-strategy.md + context
 9b → model-application        09b-application-architecture.md + context
 10 → generate-backlog         10-backlog/
