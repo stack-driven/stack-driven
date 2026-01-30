@@ -31,6 +31,7 @@ Extract only these elements from the source file:
 **Core Decisions (CRITICAL - Never Remove)**:
 - **All architectural decisions and rationale**: System design choices, patterns, principles
 - **All user journey steps**: Complete journey flow with value quantification (e.g., "4 hours → 60 seconds = 240x faster")
+- **All user behavioral profile data**: Tech proficiency, device preference, learning style, communication preferences, onboarding expectations, trust signals (CRITICAL - drives Sessions 3, 6, 8, 12)
 - **All tech stack choices**: Technology selections with justifications (condensed to 1-2 lines each)
 - **All design system specifications**: Components, tokens, patterns (names + key properties only)
 - **All constraints and requirements**: Business, technical, organizational, compliance constraints

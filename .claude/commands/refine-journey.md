@@ -104,7 +104,7 @@ Before generating the output, confirm you have:
 
 **If anything is missing**, ask clarifying questions.
 
-**Why behavioral profile matters**: These characteristics drive tech stack decisions (Session 3), design system choices (Session 6), API design (Session 8), scaffold patterns (Session 12), and UX approach (Session 19). Without them, later sessions make generic assumptions instead of journey-specific recommendations.
+**Why behavioral profile matters**: These characteristics drive tech stack decisions (Session 3), design system choices (Session 6), API design (Session 8), scaffold patterns (Session 12), and UX design (post-cascade extension: /design-user-experience). Without them, later sessions make generic assumptions instead of journey-specific recommendations.
 
 ## Generating the Output
 

@@ -92,11 +92,12 @@ You'll see all 14 sessions marked as incomplete.
 /refine-journey
 ```
 
-I'll ask 16 progressive questions to understand:
+I'll ask 21 progressive questions (including Phase 1b: Behavioral Profile) to understand:
 - Who your users are
 - What problem they face
 - Their current painful workflow
 - Their desired outcome
+- Their behavioral characteristics (tech proficiency, device preference, learning style, communication preferences, onboarding expectations)
 - The value ratio (e.g., "4 hours → 60 seconds = 240x faster")
 
 **Output:** `product-guidelines/00-user-journey.md`
