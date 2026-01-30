@@ -30,7 +30,7 @@ Stack-Driven includes **34 slash commands** organized into four categories:
 | `/generate-strategy` | 4 | 45-60 min | `03a-mission.md` + `.ctx.md`, `03b-metrics.md` + `.ctx.md`, `03c-monetization.md` + `.ctx.md`, `04-architecture.md` + `.ctx.md` |
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` |
-| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema.ctx.md` |
+| `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md`, `07-database-schema.ctx.md` (paradigm-agnostic) |
 | `/generate-api-design` | 8 | 30-45 min | `08-api-design.md`, `08-api-design.ctx.md` |
 | `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md`, `08b-api-contracts.ctx.md` |
 | `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md`, `09-test-strategy.ctx.md` |
@@ -509,46 +509,52 @@ Commands that generate context files (visible in Output File(s) column above):
 
 ### Session 7: `/design-database-schema`
 
-**Purpose:** Design complete database schema with ERD and migrations
+**Purpose:** Design database schema based on chosen paradigm (paradigm-agnostic support)
 
 **When to run:** After Session 6 (design system complete)
 
 **Time required:** 45-60 minutes
 
 **What it creates:**
-- Complete database schema
-- Entity relationship diagram (ERD)
-- Migration files (actual code)
-- Indexes and constraints
+- Complete database schema design (paradigm-specific)
+- **Relational (PostgreSQL, MySQL)**: ERD, tables, columns, foreign keys, migrations
+- **Document (MongoDB, Firestore)**: Collections, document structure, embedded vs referenced, indexes
+- **Graph (Neo4j)**: Nodes, relationships, properties, Cypher patterns
+- **Time-Series (InfluxDB, TimescaleDB)**: Measurements, tags, fields, retention policies
+- **Key-Value (Redis)**: Key patterns, value types, TTL strategies
+- Indexes and constraints appropriate to paradigm
 - Data validation rules
 
 **Inputs (what it reads):**
-- `product-guidelines/00-user-journey.md` - Data needs from journey
-- `product-guidelines/02-tech-stack.md` - Database choice
+- `product-guidelines/00-user-journey.ctx.md` - Data needs from journey
+- `product-guidelines/02-tech-stack.ctx.md` - Database choice and paradigm
 - `product-guidelines/04-architecture.ctx.md` - Data patterns
 
 **Outputs:**
-- `product-guidelines/07-database-schema.md` (documentation)
-- `product-guidelines/07-database-schema.ctx.md` (for AI reading)
+- `product-guidelines/07-database-schema.md` (comprehensive documentation)
+- `product-guidelines/07-database-schema.ctx.md` (condensed for AI reading)
 
 **What it generates:**
-- Complete schema design
-- Relationships between entities
-- Indexes for performance
+- Complete schema design matched to database paradigm
+- Relationships between entities (or document nesting, graph patterns, etc.)
+- Indexes optimized for paradigm and query patterns
 - Constraints for data integrity
-- Migration files in tech stack format (Prisma, SQL, etc.)
+- Migration files in tech stack format (Prisma, SQL, MongoDB validation schemas, etc.)
 
-**Example output:**
-- ERD diagram
-- Table definitions
-- Migration scripts ready to run
+**Example outputs:**
+- **Relational**: ERD diagram, table definitions, SQL migration scripts
+- **Document**: Collection design, document structure examples, compound indexes
+- **Graph**: Node/relationship diagram, Cypher patterns, property indexes
+- **Time-Series**: Measurement schema, tag/field definitions, retention policies
+- **Key-Value**: Key naming patterns, data structure choices, TTL strategies
 
 **Next step:** Run `/generate-api-design`
 
 **Tips:**
-- Schema should support all journey steps
-- Include indexes for critical queries
-- Consider future scale from journey analysis
+- Schema design adapts to your chosen database paradigm from Session 3
+- All paradigms support journey-driven data modeling
+- Includes "When to Reconsider" guidance for paradigm choice validation
+- Backward compatible: PostgreSQL workflows unchanged
 
 ---
 

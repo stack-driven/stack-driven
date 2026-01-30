@@ -80,6 +80,7 @@ Session 6: /create-design               → product-guidelines/06-design-system.
 
 Session 7: /design-database-schema     → product-guidelines/07-database-schema.md
   ↓ (AI reads schema, designs high-level API architecture)
+  (paradigm-agnostic: relational/document/graph/time-series/key-value)
 
 Session 8: /generate-api-design        → product-guidelines/08-api-design.md
                                          product-guidelines/08-api-design.ctx.md
@@ -152,7 +153,7 @@ After each session, I'll tell you exactly what to run next:
 - `/choose-tech-stack` - Analyzes your journey and strategy, recommends optimal tech
 - `/define-coding-standards` - Defines framework-specific coding patterns and conventions
 - `/generate-strategy` - Derives mission, metrics, monetization, architecture
-- `/design-database-schema` - Designs complete database schema with ERD and migrations
+- `/design-database-schema` - Designs complete database schema (paradigm-agnostic: relational/document/graph/time-series/key-value)
 - `/generate-api-contracts` - Generates OpenAPI specs and endpoint definitions
 - `/create-test-strategy` - Defines comprehensive testing strategy (unit, integration, E2E)
 - `/generate-backlog` - Generates 30-50 prioritized user stories informed by technical specs
@@ -189,7 +190,7 @@ Stack-Driven commands fall into two distinct phases:
 - `/generate-strategy` - Session 4: Derive mission, metrics, monetization, architecture from journey
 - `/create-brand-strategy` - Session 5: Brand positioning, personality, voice guidelines
 - `/create-design` - Session 6: Design system with components for specific user flows
-- `/design-database-schema` - Session 7: Complete database schema with ERD and migrations
+- `/design-database-schema` - Session 7: Database schema design (paradigm-agnostic: relational/document/graph/time-series/key-value)
 - `/generate-api-design` - Session 8: High-level API architectural decisions
 - `/generate-api-contracts` - Session 8b: Detailed OpenAPI specs and endpoint definitions
 - `/create-test-strategy` - Session 9: Comprehensive testing strategy (unit, integration, E2E)

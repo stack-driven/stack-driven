@@ -39,7 +39,7 @@ Create a comprehensive database schema design including:
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/01-product-strategy.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02a-constraints.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency, if exists)
 Read: product-guidelines/02c-ai-integration-strategy.ctx.md  # (context version for token efficiency, if exists)
