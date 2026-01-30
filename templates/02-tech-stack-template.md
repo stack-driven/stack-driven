@@ -12,6 +12,7 @@
 **Cache**: [Cache solution]
 **Storage**: [Object storage]
 **AI Integration**: [Required / Not Required]
+**Internationalization (i18n)**: [Library name if required / Not Required]
 **Auth**: [Authentication provider]
 **Hosting**: [Where deployed]
 
