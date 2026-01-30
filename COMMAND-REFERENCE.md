@@ -224,6 +224,16 @@ Guide comprehensive code review with quality framework. Checks alignment with ar
 ### `/plan-issue [issue-number]`
 Fetch GitHub issue details, load relevant product-guidelines (.ctx.md files: tech-stack, coding-standards, conditionally architecture/design/database/API based on issue type), create detailed implementation plan. Plan posted to issue as comment for approval. Run before implementation.
 
+**Third-Party Integration Research (Automatic):**
+When detecting new library/SDK integration, automatically performs 2-3 minute research phase:
+- Finds official documentation (not blog posts)
+- Identifies officially recommended packages/SDKs
+- Documents critical gotchas (script placement, performance, breaking changes)
+- Compares 2-3 implementation approaches with pros/cons
+- Embeds findings in implementation plan for human review
+
+Prevents trial-and-error implementations (Calendly 12-commit disaster → 1-commit success).
+
 ### `/implement-issue [issue-number]`
 Fetch approved plan from issue comments, create branch `[number]-slug`, implement following plan exactly, commit with "feat: description (closes #[number])", create PR with "Closes #[number]". Uses plan as complete context (plan already contains necessary guidelines). Run after plan approved.
 

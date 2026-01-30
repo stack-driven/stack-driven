@@ -230,7 +230,7 @@ Stack-Driven commands fall into two distinct phases:
 **When to use**: After completing core cascade (Sessions 1-14). You now have technical specifications to reference.
 
 **Issue Planning & Implementation**:
-- `/plan-issue [issue-number]` - Fetch GitHub issue, load relevant product-guidelines (.ctx.md files), create detailed implementation plan
+- `/plan-issue [issue-number]` - Fetch GitHub issue, load relevant product-guidelines (.ctx.md files), create detailed implementation plan. **NEW:** Automatically researches third-party integrations (official docs, gotchas, recommended approaches) before planning
 - `/implement-issue [issue-number]` - Fetch approved plan from issue comments, create branch, implement following plan, create PR
 
 **Code Review**:
