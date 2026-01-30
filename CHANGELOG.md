@@ -68,13 +68,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Development Commands:**
 - `/review-code` - Comprehensive code review framework
 
-**Essentials Templates:**
-- Created "essentials" versions of long documents for token optimization
-- `01-product-strategy-essentials.md`
-- `07-database-schema-essentials.md`
-- `08-api-contracts-essentials.md`
-- `09-test-strategy-essentials.md`
-- AI reads essentials versions in downstream sessions to reduce context
+**Context Files (.ctx.md):**
+- Created context files for all sessions 1-9b for token optimization
+- Format: `XX-name.ctx.md` (e.g., `00-user-journey.ctx.md`, `07-database-schema.ctx.md`)
+- Achieves 60-70% token reduction while preserving all critical decisions
+- AI reads .ctx.md versions in downstream sessions to reduce context
+- Universal pattern: every session 1-9b generates both .md (human) and .ctx.md (AI) versions
 
 **Template Numbering System:**
 - Implemented consistent numbering (00-22) across all templates
@@ -172,7 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
-| **2.0.0** | 2025-11-10 | Generative cascade, 14 core sessions, 8 post-cascade extensions, essentials templates, complete philosophy alignment |
+| **2.0.0** | 2025-11-10 | Generative cascade, 14 core sessions, 8 post-cascade extensions, context files (.ctx.md), complete philosophy alignment |
 | **1.0.0** | 2024-XX-XX | Initial release, 6 core sessions, basic cascade |
 
 ---
@@ -230,7 +229,7 @@ mv .stack-driven/* product-guidelines/
 - Complete production-ready system
 - Better philosophy alignment
 - More comprehensive outputs
-- Token-optimized with essentials templates
+- Token-optimized with context files (.ctx.md)
 
 ---
 
