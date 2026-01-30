@@ -58,7 +58,7 @@ Read: product-guidelines/02b-coding-standards.ctx.md (context version for token 
 If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
   Read: product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
 
-Read: product-guidelines/04-architecture.md (no .ctx version, always read full file)
+Read: product-guidelines/04-architecture.ctx.md (no .ctx version, always read full file)
 Read: product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
 Read: product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
 Read: product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)

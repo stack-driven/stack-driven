@@ -167,22 +167,9 @@ Use `/templates/02a-constraints-template.md` as structure.
    - Which journey elements CANNOT be compromised (even with constraints)?
    - Example: "Step 3 must complete in <2 minutes or journey fails"
 
-### Create: `product-guidelines/02a-constraints.ctx.md`
+### Context File Generation
 
-After writing the full constraints file, invoke the distillation sub-agent:
-
-```bash
-Task tool with:
-- subagent_type: distill-context
-- Source file: product-guidelines/02a-constraints.md
-- Output file: product-guidelines/02a-constraints.ctx.md
-```
-
-The distillation agent will create a condensed version (~70% reduction) for consumption by later sessions (tech stack, backlog, scaffold), including ONLY:
-- Summary lists (not detailed examples)
-- Key trade-offs (journey-optimal vs. constraint-realistic)
-- Non-negotiables (what cannot be compromised)
-- Constraint impacts on cascade sessions (which constraints affect tech/db/backlog?)
+After writing the full constraints file, you'll invoke the distillation agent to create a condensed version (~70% reduction) for consumption by later sessions. See "After Generating Constraints Document" section below for instructions.
 
 ## Validation Checklist
 
@@ -238,6 +225,31 @@ Or check progress: /cascade-status
 - Template: `/templates/02a-constraints-template.md`
 - Journey file: `product-guidelines/00-user-journey.md`
 - Strategy file: `product-guidelines/01-product-strategy.md`
+
+## After Generating Constraints Document
+
+Once you've written `product-guidelines/02a-constraints.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate constraints context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/02a-constraints.md
+  Output file: product-guidelines/02a-constraints.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract all constraints (technical, business, organizational, compliance) (CRITICAL)
+  2. Extract key trade-offs and non-negotiables
+  3. Remove constraint discovery process details and detailed examples
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

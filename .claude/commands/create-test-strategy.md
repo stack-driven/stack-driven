@@ -44,7 +44,7 @@ Create comprehensive testing strategy including:
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
-Read: product-guidelines/04-architecture.md
+Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token efficiency)
@@ -1327,10 +1327,10 @@ Don't waste time on:
 - 100% coverage goals
 
 **Reference files:**
-- Journey: `product-guidelines/00-user-journey.md`
+- Journey: `product-guidelines/00-user-journey.ctx.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/04-architecture.md`
-- Database schema: `product-guidelines/07-database-schema.md` (from Session 7)
+- Architecture: `product-guidelines/04-architecture.ctx.md`
+- Database schema: `product-guidelines/07-database-schema.ctx.md` (from Session 7)
 - API contracts: `product-guidelines/08b-api-contracts.md` (from Session 8b)
 - Backlog: `product-guidelines/10-backlog/BACKLOG.md` (generated AFTER this session in Session 10)
 - Scaffold: `product-guidelines/12-project-scaffold.md` (generated after in Session 12)
@@ -1338,6 +1338,30 @@ Don't waste time on:
 ---
 
 **Now, read previous outputs and create a testing strategy that ensures quality without slowing development!**
+
+## After Generating Test Strategy Document
+
+Once you've written `product-guidelines/09-test-strategy.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate test strategy context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/09-test-strategy.md
+  Output file: product-guidelines/09-test-strategy.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL testing frameworks, patterns, and quality gates (CRITICAL)
+  2. Extract unit/integration/E2E strategies and coverage goals
+  3. Remove detailed testing examples, test code samples, framework comparisons
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
 
 ## Output Format
 

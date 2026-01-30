@@ -41,7 +41,7 @@ Make high-level API architectural decisions:
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
-Read: product-guidelines/04-architecture.md
+Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 ```
 
@@ -618,15 +618,39 @@ Don't choose paradigms or formats because they're "modern" or "best practice". D
 If you can't trace a decision back to a journey step, tech stack choice, or architecture requirement, reconsider.
 
 **Reference files:**
-- Journey: `product-guidelines/00-user-journey.md`
+- Journey: `product-guidelines/00-user-journey.ctx.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/04-architecture.md`
+- Architecture: `product-guidelines/04-architecture.ctx.md`
 - Database schema: `product-guidelines/07-database-schema.ctx.md` (from previous session)
 - Serialization guide: `reference-material/serialization-guide.md` (decision tree lines 939-1071)
 
 ---
 
 **Now, read previous outputs and make API design decisions that serve your users' journey!**
+
+## After Generating API Design Document
+
+Once you've written `product-guidelines/08-api-design.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate API design context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/08-api-design.md
+  Output file: product-guidelines/08-api-design.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL API paradigm, serialization, auth, rate limiting decisions (CRITICAL)
+  2. Extract key design decisions and patterns
+  3. Remove detailed rationale, examples, and decision tree explanations
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
 
 ## Output Format
 

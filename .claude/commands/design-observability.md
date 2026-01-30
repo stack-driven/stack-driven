@@ -45,8 +45,8 @@ Create a comprehensive observability strategy following the instructions below.
    If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
      Read product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency)
 
-   Read product-guidelines/03b-metrics.md (no .ctx version)
-   Read product-guidelines/04-architecture.md (no .ctx version, always read full file)
+   Read product-guidelines/03b-metrics.ctx.md (no .ctx version)
+   Read product-guidelines/04-architecture.ctx.md (no .ctx version, always read full file)
    Read product-guidelines/07-database-schema.ctx.md (context version for token efficiency)
    Read product-guidelines/08b-api-contracts.ctx.md (context version for token efficiency)
    Read product-guidelines/09-test-strategy.ctx.md (context version for token efficiency)
@@ -133,7 +133,7 @@ The output follows this structure:
 ```
 You: Let's design your observability strategy. First, let me check your architecture and metrics...
 
-[Read product-guidelines/04-architecture.md and product-guidelines/03b-metrics.md]
+[Read product-guidelines/04-architecture.ctx.md and product-guidelines/03b-metrics.ctx.md]
 
 You: Got it - you have [services] and care about [business metrics]. What monitoring do you have today? What's missing?
 

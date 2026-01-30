@@ -61,7 +61,7 @@ Read: product-guidelines/08-api-design.md (from previous session - Session 8)
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
-Read: product-guidelines/04-architecture.md
+Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
 ```
@@ -627,14 +627,38 @@ If you find the API design decisions don't work for a specific endpoint, note it
 
 **Reference files:**
 - **API Design** (Session 8): `product-guidelines/08-api-design.md` - **READ THIS FIRST**
-- Journey: `product-guidelines/00-user-journey.md`
+- Journey: `product-guidelines/00-user-journey.ctx.md`
 - Tech stack: `product-guidelines/02-tech-stack.md`
-- Architecture: `product-guidelines/04-architecture.md`
+- Architecture: `product-guidelines/04-architecture.ctx.md`
 - Database schema: `product-guidelines/07-database-schema.ctx.md`
 
 ---
 
 **Now, read API design decisions (Session 8) and create technical API contracts!**
+
+## After Generating API Contracts Document
+
+Once you've written `product-guidelines/08b-api-contracts.md`, invoke the distillation agent to create a context file:
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate API contracts context file`
+- **prompt**:
+  ```
+  Invoke the context distillation agent to create token-optimized context file.
+
+  Source file: product-guidelines/08b-api-contracts.md
+  Output file: product-guidelines/08b-api-contracts.ctx.md
+
+  Follow the distillation agent specification in .claude/agents/distill-context.md to:
+  1. Extract ALL endpoint definitions, schemas, and validation rules (CRITICAL)
+  2. Extract component schemas and request/response formats
+  3. Remove example requests/responses, testing guidance, detailed explanations
+  4. Preserve section structure from source file
+  5. Achieve 60-70% token reduction
+  6. Add source reference header
+  7. Write to output file path
+  ```
 
 ## Output Format
 
