@@ -129,7 +129,7 @@ When Session 2a specifies third-party integration requirements (payment processo
 1. **Session 2a** documents integration details: provider name, integration type (API-only vs webhooks), data flow direction, technical requirements, priority
 2. **Session 3** selects appropriate SDKs/client libraries for integrations
 3. **Session 4** includes integration architecture patterns (credential management, webhook handling, rate limiting, monitoring)
-4. **Session 7** generates integration-specific tables: `integration_credentials`, `integration_sync_logs`, `webhook_events` (if webhooks required)
+4. **Session 7** generates integration-specific tables: `integration_credentials`, `sync_jobs`, `webhook_events` (if webhooks required)
 5. **Session 8** designs API endpoints for webhook handlers with security requirements (signature verification, idempotency)
 6. **Session 8b** generates OpenAPI webhook endpoint specs with provider-specific security details
 7. **Session 10** generates Epic 04 integration stories per provider (credential setup, API integration, webhook handler, error handling, monitoring)
