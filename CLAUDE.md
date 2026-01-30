@@ -99,17 +99,29 @@ Session 14: /design-observability       → 14-observability-strategy.md
 
 **Dependencies:** Each session READS previous outputs. For example:
 - Session 2a (constraints) reads 00-journey + 01-strategy
-- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider
+- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider; **Detects i18n requirement** from constraints and selects i18n library
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
-- Session 8 (api-design) reads 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
+- **Session 7 (database-schema)** checks 02a-constraints for i18n requirement → generates translation tables and locale columns if needed
+- **Session 8 (api-design)** checks 02a-constraints for i18n requirement → adds Accept-Language header support and locale fallback strategy if needed
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards.ctx.md + 04-architecture + 07-database-schema.ctx.md + 08b-api-contracts.ctx.md
-- Session 10 (backlog) reads sessions 00-04, 07-09b (skips 05-06 brand/design - now post-cascade) and .ctx.md files including 08-api-design.ctx.md
-- Session 12 (scaffold) reads ALL previous sessions including 08b-api-contracts.ctx.md
+- **Session 10 (backlog)** checks 02a-constraints for i18n requirement → generates i18n infrastructure stories (translation setup, locale switching UI, string extraction) if needed
+- **Session 12 (scaffold)** checks 02a-constraints for i18n requirement → generates `/locales/` folder structure, translation files, and i18n config if needed
 
 **Never skip sessions** - later sessions need previous outputs for context.
+
+**Internationalization (i18n) Propagation Pattern:**
+
+When Session 2a marks "Internationalization requirements (i18n, l10n)" as required:
+1. **Session 3** selects appropriate i18n library based on frontend framework (next-intl, react-i18next, vue-i18n, svelte-i18n)
+2. **Session 7** adds locale columns and translation table patterns to database schema
+3. **Session 8** adds Accept-Language header support and localized error message requirements to API design
+4. **Session 10** generates Epic 04 i18n infrastructure stories (translation file setup, locale switching UI, string extraction)
+5. **Session 12** generates `/locales/` directory structure, example translation files (common.json, auth.json, errors.json), and i18n configuration
+
+This pattern follows Session 3c (AI integration) precedent: constraint drives conditional technical decisions across cascade.
 
 ### Command Execution Pattern
 

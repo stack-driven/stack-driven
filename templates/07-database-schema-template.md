@@ -323,6 +323,30 @@ GET rate:limit:api:upload:123  // Check if > threshold
 
 ---
 
+## Internationalization (i18n) Translation Patterns
+
+**IF** Session 2a marks internationalization (i18n/l10n) as required, include translation support:
+
+### Translation Table Pattern (Relational Databases)
+For content requiring translation, use `[entity]_translations` tables:
+- Primary table: Contains locale-agnostic data (IDs, timestamps, relationships)
+- Translation table: Contains locale-specific strings (name, description, etc.)
+- Foreign key: `[entity]_id` → `[entity].id` with ON DELETE CASCADE
+- Locale column: `locale VARCHAR(10)` (e.g., 'en-US', 'de-DE', 'fr-FR')
+- Unique constraint: `UNIQUE([entity]_id, locale)` to prevent duplicate translations
+
+**Example**: `products` (id, price, created_at) + `product_translations` (product_id, locale, name, description)
+
+### User Locale Preference
+Add `locale VARCHAR(10)` column to users table for storing user's preferred language.
+
+### Document Database i18n Pattern
+Use nested translation objects: `{ "name_i18n": { "en-US": "...", "de-DE": "..." } }`
+
+**Skip this section if i18n NOT required in constraints.**
+
+---
+
 ## Relationships
 
 ### One-to-Many Relationships

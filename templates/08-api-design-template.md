@@ -468,6 +468,40 @@ All errors use consistent JSON format:
 
 ---
 
+## Internationalization (i18n) Support
+
+**IF** Session 2a marks internationalization (i18n/l10n) as required, document API localization strategy:
+
+### Locale Detection Strategy
+**Order of precedence**:
+1. Query parameter: `?locale=de-DE` (explicit override)
+2. `Accept-Language` header: `Accept-Language: de-DE,de;q=0.9,en;q=0.8`
+3. User's saved locale preference (from database)
+4. Default locale: `en-US`
+
+### Localized Response Format
+- **Content-Language** response header: Indicates response locale
+- **Localized error messages**: Use `message_key` + localized `message`
+  ```json
+  {
+    "error": {
+      "code": "VALIDATION_ERROR",
+      "message_key": "errors.validation.required_field",
+      "message": "Dieses Feld ist erforderlich", // German translation
+      "field": "email"
+    }
+  }
+  ```
+
+### Locale Fallback Chain
+Define fallback strategy for missing translations:
+- Example: `de-CH` → `de-DE` → `en-US`
+- Regional variant → Language default → System default
+
+**Skip this section if i18n NOT required in constraints.**
+
+---
+
 ## Scale-Forward Strategy
 
 ### Current (MVP - Launch to First 100 Users)

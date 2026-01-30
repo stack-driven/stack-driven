@@ -51,6 +51,7 @@ Use the Read tool to read (context versions for token efficiency):
 - Technical constraints (required platforms, tech mandates, integrations)
 - Organizational constraints (team skills, budget, timeline)
 - Compliance requirements (GDPR, HIPAA, SOC2, etc.)
+- Internationalization requirements (i18n/l10n)
 - Journey-optimal vs. constraint-realistic trade-offs
 - Non-negotiable journey elements
 
@@ -201,6 +202,26 @@ If NO to all: Set "AI Integration: Not Required" in tech stack output
 
 **IMPORTANT**: Do NOT choose AI provider or model here. That decision happens in Session 3c (`/define-ai-integration-strategy`) to maintain proper cascade ordering.
 
+**Internationalization (i18n) Requirement Detection:**
+
+Check `02a-constraints.ctx.md` if it exists:
+- Look for "Internationalization requirements (i18n, l10n)" constraint marked as required
+- Check for multi-language/multi-region requirements in journey or strategy
+
+If i18n IS required, select appropriate i18n library based on frontend choice:
+- **Next.js** → `next-intl` (native Next.js integration, App Router support)
+- **React (SPA)** → `react-i18next` (most popular, battle-tested)
+- **Vue** → `vue-i18n` (official Vue ecosystem)
+- **Svelte** → `svelte-i18n` (official Svelte ecosystem)
+- **Angular** → Built-in i18n (Angular's @angular/localize)
+
+Document in tech stack:
+- **i18n Library**: [Selected library] (journey requires multi-language support)
+- **Translation file strategy**: JSON-based locale files (e.g., `/locales/en-US/common.json`)
+- **Locale detection**: Accept-Language header + user preference
+
+If i18n is NOT required: Omit from tech stack output (don't force everyone to think about i18n).
+
 ### Step 4: Make Recommendations
 
 For each technology choice, provide:
@@ -239,6 +260,7 @@ Use `/templates/02-tech-stack-template.md` as structure.
    - Cache: [Choice if needed]
    - Storage: [Choice if needed]
    - AI Integration: [Required / Not Required]
+   - i18n: [Library if required, otherwise omit]
    - Auth: [Provider - Clerk, Auth0, Supabase, etc.]
    - Hosting: [Where it runs]
 

@@ -402,6 +402,206 @@ NODE_ENV=development
 - Authentication method (Clerk, Auth0, etc.)
 - Deployment target (Vercel, AWS, etc.)
 - AI integration strategy (if Session 3c exists - API keys, vector DB URLs, model configs)
+- Internationalization (if Session 2a marks i18n as required - default locale, supported locales)
+
+#### C2. Internationalization (i18n) Setup (if Session 2a marks i18n as required)
+
+**Check constraints file** (`product-guidelines/02a-constraints.ctx.md`) for "Internationalization requirements (i18n, l10n)" marked as required.
+
+**If i18n IS required**, generate i18n folder structure and configuration:
+
+**1. Create Locale Directory Structure**
+
+```
+/locales/
+├── en-US/
+│   ├── common.json
+│   ├── auth.json
+│   ├── errors.json
+│   └── validation.json
+├── [locale-2]/         # e.g., de-DE, fr-FR, es-ES
+│   ├── common.json
+│   ├── auth.json
+│   ├── errors.json
+│   └── validation.json
+└── [locale-n]/
+    ├── common.json
+    ├── auth.json
+    ├── errors.json
+    └── validation.json
+```
+
+**Supported locales**: Extract from constraints document (e.g., "German, French, Spanish" → de-DE, fr-FR, es-ES)
+
+**2. Generate Example Translation Files**
+
+**`/locales/en-US/common.json` (default locale):**
+```json
+{
+  "app": {
+    "title": "Product Name",
+    "tagline": "Tagline from user journey"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "logout": "Log Out"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  }
+}
+```
+
+**`/locales/en-US/auth.json`:**
+```json
+{
+  "signIn": {
+    "title": "Sign In",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Sign In",
+    "forgotPassword": "Forgot password?"
+  },
+  "signUp": {
+    "title": "Create Account",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Create Account"
+  }
+}
+```
+
+**`/locales/en-US/errors.json`:**
+```json
+{
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be at most {{max}} characters"
+  },
+  "api": {
+    "networkError": "Network error. Please check your connection.",
+    "serverError": "Something went wrong. Please try again later.",
+    "unauthorized": "You must be signed in to access this.",
+    "forbidden": "You don't have permission to access this."
+  }
+}
+```
+
+**`/locales/en-US/validation.json`:**
+```json
+{
+  "field": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name"
+  },
+  "message": {
+    "required": "{{field}} is required",
+    "invalid": "{{field}} is invalid",
+    "tooShort": "{{field}} must be at least {{min}} characters",
+    "tooLong": "{{field}} must be at most {{max}} characters"
+  }
+}
+```
+
+**For additional locales**: Copy structure and mark with `[TODO: Translate]` comments:
+```json
+{
+  "app": {
+    "title": "[TODO: Translate] Product Name",
+    "tagline": "[TODO: Translate] Tagline from user journey"
+  }
+}
+```
+
+**3. Generate i18n Configuration File**
+
+**Next.js with next-intl** (`i18n.config.ts`):
+```typescript
+import { getRequestConfig } from 'next-intl/server';
+
+export default getRequestConfig(async ({ locale }) => ({
+  messages: (await import(`./locales/${locale}/common.json`)).default,
+}));
+
+export const locales = ['en-US', 'de-DE', 'fr-FR', 'es-ES']; // From Session 2a constraints
+export const defaultLocale = 'en-US';
+```
+
+**React with react-i18next** (`i18n.config.ts`):
+```typescript
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+i18n
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en-US',
+    supportedLngs: ['en-US', 'de-DE', 'fr-FR', 'es-ES'], // From Session 2a constraints
+    ns: ['common', 'auth', 'errors', 'validation'],
+    defaultNS: 'common',
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+export default i18n;
+```
+
+**Vue with vue-i18n** (`i18n.config.ts`):
+```typescript
+import { createI18n } from 'vue-i18n';
+
+const i18n = createI18n({
+  locale: 'en-US',
+  fallbackLocale: 'en-US',
+  availableLocales: ['en-US', 'de-DE', 'fr-FR', 'es-ES'], // From Session 2a constraints
+  messages: {
+    'en-US': require('./locales/en-US/common.json'),
+    // Additional locales loaded on demand
+  },
+});
+
+export default i18n;
+```
+
+**4. Update Environment Variables**
+
+Add to `.env.example`:
+```bash
+# Internationalization
+DEFAULT_LOCALE=en-US
+SUPPORTED_LOCALES=en-US,de-DE,fr-FR,es-ES  # From Session 2a constraints
+```
+
+**5. Update Package Dependencies**
+
+Add to `package.json` dependencies based on tech stack:
+- Next.js: `"next-intl": "^3.0.0"`
+- React: `"react-i18next": "^13.0.0"`, `"i18next": "^23.0.0"`, `"i18next-http-backend": "^2.0.0"`, `"i18next-browser-languagedetector": "^7.0.0"`
+- Vue: `"vue-i18n": "^9.0.0"`
+- Svelte: `"svelte-i18n": "^4.0.0"`
+
+**If i18n is NOT required**: Skip this subsection.
+
+---
 
 #### D. CI/CD Pipeline (GitHub Actions)
 
