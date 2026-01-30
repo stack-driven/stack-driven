@@ -227,6 +227,184 @@ Entities NOT requiring translation:
 
 ---
 
+### Step 2b: Check for Integration Requirements
+
+**Check Session 2a for third-party integrations**: If `product-guidelines/02a-constraints.ctx.md` identifies external system integrations, add integration-specific tables to the schema.
+
+#### Integration-Specific Tables
+
+**When to include**:
+- `integration_credentials`: If ANY API integration exists
+- `webhook_events`: If ANY integration sends webhooks to you
+- `sync_jobs`: If bidirectional sync is required (from Session 2a)
+- `external_resource_mappings`: If sync_jobs table is needed
+
+#### integration_credentials
+**Purpose**: Store encrypted API keys, OAuth tokens, refresh tokens
+**When needed**: Any API integration requiring authentication
+
+```sql
+CREATE TABLE integration_credentials (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
+
+  -- Integration identity
+  provider VARCHAR(50) NOT NULL, -- 'stripe', 'sendgrid', 'salesforce'
+  environment VARCHAR(20) NOT NULL DEFAULT 'production', -- 'production', 'test'
+
+  -- Credentials (encrypted at application layer)
+  api_key_encrypted TEXT,
+  access_token_encrypted TEXT,
+  refresh_token_encrypted TEXT,
+
+  -- Token lifecycle
+  expires_at TIMESTAMPTZ,
+  last_refreshed_at TIMESTAMPTZ,
+
+  -- Metadata
+  scopes TEXT[], -- OAuth scopes granted
+  external_account_id TEXT, -- Their account ID (Stripe customer ID, etc.)
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(team_id, provider, environment)
+);
+
+CREATE INDEX idx_integration_credentials_team ON integration_credentials(team_id);
+CREATE INDEX idx_integration_credentials_expires ON integration_credentials(expires_at)
+  WHERE expires_at IS NOT NULL;
+```
+
+**Encryption Key Management Note:**
+- Credentials stored in `*_encrypted` columns MUST be encrypted at application layer before storage
+- Use environment-specific encryption keys (separate keys for dev/staging/production)
+- Recommended: Use key management service (AWS KMS, GCP KMS, HashiCorp Vault) for key storage
+- Never commit encryption keys to version control
+- Implement key rotation strategy with backward compatibility during rotation period
+- Consider using envelope encryption pattern for large-scale deployments
+
+#### webhook_events
+**Purpose**: Log incoming webhook payloads for idempotency and debugging
+**When needed**: Any integration that sends webhooks (Stripe, SendGrid, Salesforce)
+
+```sql
+CREATE TABLE webhook_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Event identity (for idempotency)
+  provider VARCHAR(50) NOT NULL, -- 'stripe', 'sendgrid'
+  event_id VARCHAR(255) NOT NULL, -- Provider's event ID
+  event_type VARCHAR(100) NOT NULL, -- 'payment_intent.succeeded'
+
+  -- Payload
+  payload JSONB NOT NULL, -- Full webhook payload
+  signature VARCHAR(500), -- HMAC signature for verification
+
+  -- Processing status
+  status VARCHAR(50) NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'processing', 'processed', 'failed', 'ignored')),
+  processed_at TIMESTAMPTZ,
+  error_message TEXT,
+  retry_count INTEGER DEFAULT 0,
+
+  -- Audit
+  received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(provider, event_id) -- Idempotency constraint
+);
+
+CREATE INDEX idx_webhook_events_provider_type ON webhook_events(provider, event_type);
+CREATE INDEX idx_webhook_events_status ON webhook_events(status)
+  WHERE status IN ('pending', 'failed');
+CREATE INDEX idx_webhook_events_received ON webhook_events(received_at DESC);
+```
+
+#### sync_jobs
+**Purpose**: Track background synchronization with external systems
+**When needed**: Bidirectional sync integrations (CRM sync, data imports)
+
+```sql
+CREATE TABLE sync_jobs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
+
+  -- Sync identity
+  provider VARCHAR(50) NOT NULL, -- 'salesforce', 'hubspot'
+  resource_type VARCHAR(100) NOT NULL, -- 'contacts', 'leads', 'opportunities'
+  direction VARCHAR(20) NOT NULL -- 'import', 'export', 'bidirectional'
+    CHECK (direction IN ('import', 'export', 'bidirectional')),
+
+  -- Sync status
+  status VARCHAR(50) NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'running', 'completed', 'failed', 'cancelled')),
+
+  -- Progress tracking
+  total_records INTEGER,
+  processed_records INTEGER DEFAULT 0,
+  failed_records INTEGER DEFAULT 0,
+
+  -- Timing
+  started_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  next_sync_at TIMESTAMPTZ, -- For recurring syncs
+
+  -- Results
+  summary JSONB, -- {created: 10, updated: 5, skipped: 2, errors: [{...}]}
+  error_message TEXT,
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_sync_jobs_team ON sync_jobs(team_id);
+CREATE INDEX idx_sync_jobs_status ON sync_jobs(status);
+CREATE INDEX idx_sync_jobs_next_sync ON sync_jobs(next_sync_at)
+  WHERE next_sync_at IS NOT NULL;
+```
+
+#### external_resource_mappings
+**Purpose**: Map internal IDs to external system IDs for bidirectional sync
+**When needed**: Any sync integration where you need to track "this user = that Salesforce contact"
+
+```sql
+CREATE TABLE external_resource_mappings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Internal resource
+  internal_id UUID NOT NULL,
+  internal_type VARCHAR(50) NOT NULL, -- 'user', 'document', 'assessment'
+
+  -- External resource
+  provider VARCHAR(50) NOT NULL, -- 'salesforce', 'stripe'
+  external_id VARCHAR(255) NOT NULL, -- Their ID
+  external_type VARCHAR(100), -- 'Contact', 'Customer', 'Subscription'
+
+  -- Metadata
+  last_synced_at TIMESTAMPTZ,
+  sync_direction VARCHAR(20), -- 'inbound', 'outbound', 'bidirectional'
+
+  -- Audit
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE(provider, external_id),
+  UNIQUE(internal_type, internal_id, provider)
+);
+
+CREATE INDEX idx_external_mappings_internal ON external_resource_mappings(internal_type, internal_id);
+CREATE INDEX idx_external_mappings_provider ON external_resource_mappings(provider, external_id);
+```
+
+**Adapt for database paradigm**: If the user's tech stack uses a non-relational database (from Session 3), adapt these patterns accordingly:
+- Document databases (MongoDB, DynamoDB): Use embedded documents for credentials, separate collections for webhook_events
+- Graph databases (Neo4j): Model integrations as nodes with relationships to teams/resources
+- Time-series (InfluxDB): webhook_events as time-series data, credentials in separate store
+
+---
+
 ### Step 3: Define Entity Relationships
 
 **Relationship Patterns:**

@@ -74,28 +74,46 @@ jobs:
             **Review Round:** ${{ steps.get-iteration.outputs.next_round }} of 5 maximum
             **Previous Rounds:** ${{ steps.get-iteration.outputs.review_count }}
 
+            ## IMPORTANT: Read Validation Checklist First
+
+            **Before reviewing code, read the framework consistency rules:**
+            ```bash
+            Read VALIDATION-CHECKLIST.md
+            ```
+
+            This checklist defines Stack-Driven framework-specific validation rules. Apply these rules (especially Tier 1: Rules 1.4, 2.1, 3.1, 3.2) when reviewing changes to:
+            - `.claude/commands/*.md` (command files)
+            - `templates/*.md` (template files)
+            - `CLAUDE.md`, `README.md`, `CASCADE-DEPENDENCIES.md` (documentation)
+
             ## Review Criteria
 
-            **1. Product Guidelines Alignment**
+            **1. Framework Consistency (from VALIDATION-CHECKLIST.md)**
+            - File reference integrity (Rules 1.1-1.4)
+            - Session numbering consistency (Rules 2.1-2.3)
+            - Naming consistency - tables, epics, commands (Rules 3.1-3.3)
+            - Propagation pattern completeness (Rules 4.1-4.3)
+
+            **2. Product Guidelines Alignment**
             - Check if changes align with product-guidelines (if they exist)
             - UI changes: Verify against `product-guidelines/06-design-system.md`
             - API changes: Verify against `product-guidelines/08-api-contracts.md`
             - Database changes: Verify against `product-guidelines/07-database-schema.md`
             - Tech stack: Verify against `product-guidelines/02-tech-stack.md`
 
-            **2. Journey Traceability**
+            **3. Journey Traceability**
             - Does PR description reference user journey step?
             - Is user value clearly articulated?
             - Does this align with product mission?
 
-            **3. Code Quality**
+            **4. Code Quality**
             - Follows existing code patterns and conventions
             - Proper error handling
             - Appropriate test coverage
             - Type safety (if applicable)
             - Security best practices
 
-            **4. Stack-Driven Philosophy**
+            **5. Stack-Driven Philosophy**
             - Journey-first thinking (not technology-first)
             - Specific implementation (not generic)
             - Decision traceability (changes reference guidelines)
@@ -128,7 +146,8 @@ jobs:
                ### 🔴 High Priority (blocking - must fix)
                {List critical issues that MUST be fixed before merging}
                {Use format: `file.ts:line` - Issue description with specific fix needed}
-               {Examples: Security vulnerabilities, data corruption risks, breaking changes without migration}
+               {Include: VALIDATION-CHECKLIST.md Tier 1 rule violations (Rules 1.4, 2.1, 3.1, 3.2)}
+               {Examples: Security vulnerabilities, data corruption risks, breaking changes without migration, file reference mismatches, session numbering errors}
 
                ### 🟡 Medium Priority (should fix)
                {List important issues that should be addressed}
@@ -148,6 +167,12 @@ jobs:
                - **Medium priority issues:** {Y}
                - **Low priority issues:** {Z}
                - **Review round:** ${{ steps.get-iteration.outputs.next_round }} of 5
+
+               **Framework Consistency (VALIDATION-CHECKLIST.md):**
+               - Rule 1.4 (Context vs Full File): ✅ Pass / ⚠️ Issue found
+               - Rule 2.1 (Session Numbering): ✅ Pass / ⚠️ Issue found
+               - Rule 3.1 (Table Names): ✅ Pass / ⚠️ Issue found
+               - Rule 3.2 (Epic Numbers): ✅ Pass / ⚠️ Issue found
 
                **Product Guidelines Alignment:**
                - {Guideline check 1}: ✅ Pass / ⚠️ Issue found
@@ -171,6 +196,7 @@ jobs:
             ## Severity Guidelines
 
             **🔴 High Priority (blocking):**
+            - VALIDATION-CHECKLIST.md Tier 1 rule violations (1.4, 2.1, 3.1, 3.2)
             - Security vulnerabilities
             - Data corruption or loss risks
             - Breaking API changes without migration plan
@@ -179,6 +205,7 @@ jobs:
             - Hard-coded secrets or credentials
 
             **🟡 Medium Priority (should fix):**
+            - VALIDATION-CHECKLIST.md Tier 2 rule violations (1.1, 1.2, 4.1-4.3, 6.3)
             - Code quality issues (complexity, duplication)
             - Missing or inadequate tests
             - Guideline violations (tech stack, design system)

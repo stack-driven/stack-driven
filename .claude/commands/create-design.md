@@ -17,15 +17,15 @@ Infer design needs from journey context and create a system optimized for the sp
 ```
 Read: product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
 Read: product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md (context version for token efficiency)
 Read: product-guidelines/02a-constraints.ctx.md (context version for token efficiency, if exists)
 Read: product-guidelines/02b-coding-standards.ctx.md (context version for token efficiency, if exists)
 Read: product-guidelines/02c-ai-integration-strategy.ctx.md (context version for token efficiency, if exists)
-Read: product-guidelines/04-architecture.md (for architecture principles)
-Read: product-guidelines/05-brand-strategy.md (no .ctx version, always read full file)
+Read: product-guidelines/04-architecture.ctx.md (context version for token efficiency)
+Read: product-guidelines/05-brand-strategy.ctx.md (context version for token efficiency)
 ```
 
-**Context Optimization**: We read .ctx.md files where available for significant token efficiency. Brand strategy (Session 5) has no .ctx version since it's only read by post-cascade extensions, so we always read the full file.
+**Context Optimization**: We read .ctx.md files for all previous sessions (1-5) for significant token efficiency (~60-70% reduction per file). This provides sufficient context for design system generation without full rationale and alternatives.
 
 ### Step 2: Extract Brand Personality & Visual Direction
 

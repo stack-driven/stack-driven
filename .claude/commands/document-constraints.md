@@ -80,51 +80,87 @@ Read product-guidelines/01-product-strategy.ctx.md
 
    **Listen for**: Technology mandates
 
-5. **"What existing systems must this integrate with?"**
-   - CRM (Salesforce, HubSpot)?
-   - Authentication (corporate SSO, Auth0)?
-   - Payment processing (existing Stripe account)?
-   - Legacy systems?
-
-   **Listen for**: Integration constraints
-
-6. **"What platforms must you support?"**
+5. **"What platforms must you support?"**
    - Browser requirements (modern only, or IE11)?
    - Mobile (native iOS/Android, or web)?
    - Offline support needed?
 
    **Listen for**: Platform constraints
 
+### Phase 2a: Integration Requirements
+
+6. **"What external systems must this integrate with?"**
+   - Payment processors? (Stripe, PayPal, Square, Braintree)
+   - CRM systems? (Salesforce, HubSpot, Pipedrive, Zoho)
+   - Communication? (SendGrid, Twilio, Slack, Discord)
+   - Analytics? (Segment, Amplitude, Mixpanel, Google Analytics)
+   - Marketing automation? (Mailchimp, ConvertKit, Customer.io)
+   - Auth providers? (Auth0, Clerk, Okta, WorkOS, corporate SSO)
+   - File storage? (AWS S3, Cloudinary, Uploadcare)
+   - Search? (Algolia, Elasticsearch, Typesense)
+
+   **Listen for**: Integration requirements, API availability
+
+7. **"Are you building for a marketplace or platform?"**
+   - Shopify app? (requires Shopify API, OAuth, webhooks)
+   - Slack bot/app? (requires Slack API, Events API, slash commands)
+   - Salesforce AppExchange? (requires Salesforce integration, SSO)
+   - Chrome extension? (requires web APIs, storage sync)
+
+   **Listen for**: Platform-specific integration constraints
+
+8. **"Do you need to receive webhooks from external systems?"**
+   - Payment confirmations (Stripe webhooks)
+   - Email events (SendGrid webhooks: delivered, bounced, opened)
+   - CRM updates (Salesforce outbound messages)
+   - User actions in third-party platforms
+
+   **Listen for**: Webhook requirements, real-time event needs
+
+9. **"Is data flow unidirectional or bidirectional?"**
+   - Push only: Send data TO external system (e.g., create Salesforce lead)
+   - Pull only: Read data FROM external system (e.g., import contacts)
+   - Sync: Bidirectional synchronization (e.g., two-way CRM sync)
+
+   **Listen for**: Sync complexity, conflict resolution needs
+
+10. **"What's your integration timeline priority?"**
+    - MVP required: Which integrations are launch blockers?
+    - Post-MVP: Which can be added after validation?
+    - Enterprise tier: Which are only for paid/enterprise customers?
+
+    **Listen for**: Integration complexity, phasing strategy
+
 ### Phase 3: Compliance & Standards
 
-7. **"Any regulatory or compliance requirements?"**
-   - HIPAA (healthcare data)?
-   - GDPR (EU users)?
-   - PCI-DSS (payment processing)?
-   - SOC2 (enterprise customers)?
-   - Industry-specific regulations?
+11. **"Any regulatory or compliance requirements?"**
+    - HIPAA (healthcare data)?
+    - GDPR (EU users)?
+    - PCI-DSS (payment processing)?
+    - SOC2 (enterprise customers)?
+    - Industry-specific regulations?
 
-   **Listen for**: Compliance constraints
+    **Listen for**: Compliance constraints
 
-8. **"Any accessibility or security standards you must meet?"**
-   - WCAG 2.1 AA (government customers)?
-   - ISO 27001, FedRAMP?
-   - Corporate security policies?
+12. **"Any accessibility or security standards you must meet?"**
+    - WCAG 2.1 AA (government customers)?
+    - ISO 27001, FedRAMP?
+    - Corporate security policies?
 
-   **Listen for**: Standards constraints
+    **Listen for**: Standards constraints
 
-9. **"Any organizational standards—code style, CI/CD, documentation?"**
-   - Required version control platform?
-   - Existing CI/CD pipeline?
-   - Code review process?
+13. **"Any organizational standards—code style, CI/CD, documentation?"**
+    - Required version control platform?
+    - Existing CI/CD pipeline?
+    - Code review process?
 
-   **Listen for**: Process constraints
+    **Listen for**: Process constraints
 
 ### Phase 4: Trade-off Analysis
 
 For each major constraint identified, ask:
 
-10. **"Your journey suggests [journey-optimal choice], but [constraint] means we might need [alternative]. Does that trade-off work?"**
+14. **"Your journey suggests [journey-optimal choice], but [constraint] means we might need [alternative]. Does that trade-off work?"**
 
     **Example**:
     - "Your journey suggests Claude Opus for best reasoning (Step 3 accuracy), but your $50/month budget might mean using GPT-3.5 Turbo instead. That's 10-15 seconds slower and slightly less accurate, but still 10x better than manual review. Is that acceptable?"
@@ -142,7 +178,7 @@ Use `/templates/02a-constraints-template.md` as structure.
 1. **Technical Constraints**
    - Platform & runtime (browsers, OS, mobile)
    - Technology mandates (required/prohibited tech)
-   - Integration requirements (systems to integrate)
+   - Integration requirements (external systems, marketplaces, webhooks, data flow, priorities)
    - Performance & scale (response time, concurrency targets from journey)
    - Security & compliance (encryption, auth, regulatory)
 

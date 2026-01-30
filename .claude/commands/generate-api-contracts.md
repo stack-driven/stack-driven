@@ -39,7 +39,7 @@ Create technical API implementation specifications:
 **CRITICAL - Read this first:**
 
 ```
-Read: product-guidelines/08-api-design.md (from previous session - Session 8)
+Read: product-guidelines/08-api-design.ctx.md (context version for token efficiency)
 ```
 
 **Extract from API Design**:
@@ -60,7 +60,7 @@ Read: product-guidelines/08-api-design.md (from previous session - Session 8)
 
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
@@ -373,6 +373,103 @@ Server Errors:
 
 ---
 
+### Webhook Endpoints (Inbound)
+
+When generating `product-guidelines/08b-api-contracts.md`, if Session 2a identifies integrations that send webhooks, include webhook endpoint specifications:
+
+**Endpoint Pattern**: `/webhooks/{provider}`
+
+**For each provider that sends webhooks, create an endpoint specification**:
+
+```yaml
+paths:
+  /webhooks/stripe:
+    post:
+      summary: Stripe webhook handler
+      description: |
+        Receives webhook events from Stripe for payment processing.
+
+        **Security**: Verifies Stripe signature using webhook secret.
+        **Idempotency**: Checks event_id before processing (webhook_events table).
+        **Processing**: Enqueues for async processing, returns 200 immediately.
+      operationId: handleStripeWebhook
+      tags: [Webhooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique event identifier (for idempotency)
+                  example: evt_1234567890
+                type:
+                  type: string
+                  description: Event type
+                  example: payment_intent.succeeded
+                data:
+                  type: object
+                  description: Event payload
+      responses:
+        '200':
+          description: Webhook received and queued for processing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+        '400':
+          description: Invalid signature or malformed payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /webhooks/sendgrid:
+    post:
+      summary: SendGrid webhook handler
+      description: |
+        Receives email event webhooks from SendGrid (delivered, bounced, opened, etc.).
+
+        **Security**: ECDSA signature verification via X-Twilio-Email-Event-Webhook-Signature header.
+        **Fallback**: Validate sending IP against SendGrid's IP ranges if signature verification unavailable.
+      operationId: handleSendGridWebhook
+      tags: [Webhooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  event:
+                    type: string
+                    enum: [delivered, bounce, open, click]
+                  timestamp:
+                    type: integer
+      responses:
+        '200':
+          description: Webhook received
+```
+
+**Key Elements for Each Webhook Endpoint**:
+- Request body schema (provider-specific)
+- Signature verification method (if applicable)
+- Idempotency strategy (how duplicate events are handled)
+- Response format (typically 200 with `{received: true}`)
+- Error responses (400 for invalid signature, 422 for invalid payload)
+
+---
+
 ### Step 8: Generate API Specification
 
 **For REST/GraphQL** (JSON serialization):
@@ -618,7 +715,7 @@ Before completing this session, verify:
 **Implement the decisions from Session 8 (API Design).**
 
 This session focuses on technical implementation. Don't make new architectural decisions here. Instead:
-1. Read `08-api-design.md` for paradigm, serialization, auth, rate limiting, pagination decisions
+1. Read `08-api-design.ctx.md` for paradigm, serialization, auth, rate limiting, pagination decisions
 2. Create technical specs (OpenAPI/Protobuf) that implement those decisions
 3. Define endpoints, schemas, and validation rules
 4. Provide examples and testing guidance
@@ -626,9 +723,9 @@ This session focuses on technical implementation. Don't make new architectural d
 If you find the API design decisions don't work for a specific endpoint, note it but don't override Session 8. Discuss with the user and potentially re-run Session 8 with updated analysis.
 
 **Reference files:**
-- **API Design** (Session 8): `product-guidelines/08-api-design.md` - **READ THIS FIRST**
+- **API Design** (Session 8): `product-guidelines/08-api-design.ctx.md` - **READ THIS FIRST**
 - Journey: `product-guidelines/00-user-journey.ctx.md`
-- Tech stack: `product-guidelines/02-tech-stack.md`
+- Tech stack: `product-guidelines/02-tech-stack.ctx.md`
 - Architecture: `product-guidelines/04-architecture.ctx.md`
 - Database schema: `product-guidelines/07-database-schema.ctx.md`
 

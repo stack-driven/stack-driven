@@ -770,6 +770,53 @@ components:
         example: -created_at
 ```
 
+## Webhook Endpoints (Inbound)
+
+[If third-party integrations send webhooks (from Session 2a):]
+
+### POST /webhooks/{provider}
+
+For each provider that sends webhooks:
+- **Endpoint pattern**: `/webhooks/[provider-name]`
+- **Request body schema**: Provider-specific event structure
+- **Signature verification**: HMAC/JWT verification method (if supported)
+- **Idempotency strategy**: Check `event_id` in `webhook_events` table before processing
+- **Processing model**: Async (enqueue and return 200 immediately)
+- **Success response**: `200 OK` with `{received: true}`
+- **Error responses**:
+  - `400 Bad Request`: Invalid signature
+  - `422 Unprocessable Entity`: Invalid payload structure
+
+**Example (Stripe)**:
+```yaml
+/webhooks/stripe:
+  post:
+    summary: Stripe webhook handler
+    security: []  # No bearer auth, uses signature verification
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id: {type: string, description: Event ID for idempotency}
+              type: {type: string, example: payment_intent.succeeded}
+              data: {type: object}
+    responses:
+      '200':
+        description: Webhook received
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                received: {type: boolean, example: true}
+      '400':
+        $ref: '#/components/responses/ValidationError'
+```
+
+---
+
 ## Notes
 
 - Replace all `[Resource]`, `[Project Name]`, `[domain]`, etc. with actual values

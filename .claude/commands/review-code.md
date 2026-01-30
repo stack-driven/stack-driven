@@ -22,17 +22,26 @@ Guide the user through code review using the comprehensive framework below.
 
 ### Steps to Execute
 
-1. **Ask what to review**:
+1. **Read the Validation Checklist first**:
+   ```bash
+   Read VALIDATION-CHECKLIST.md
+   ```
+   This checklist defines framework-specific consistency rules. Apply these rules in addition to general code quality checks.
+
+2. **Ask what to review**:
    - GitHub PR URL (if `gh` CLI available)
    - File paths to review
    - Specific concerns (performance? security? style?)
 
-2. **Read the code** to be reviewed:
+3. **Read the code** to be reviewed:
    ```bash
    Read [files to review]
    ```
 
-3. **Apply the code review framework**:
+4. **Apply VALIDATION-CHECKLIST.md rules** (for framework consistency)
+
+5. **Apply the code review framework**:
+   - **Framework Consistency** (from VALIDATION-CHECKLIST.md): File references, session numbering, table names, propagation patterns
    - **Correctness**: Does it work? Are there bugs?
    - **Architecture**: Does it fit the system design?
    - **Readability**: Can others understand it?
@@ -43,13 +52,13 @@ Guide the user through code review using the comprehensive framework below.
    - **Documentation**: Are complex parts explained?
    - **Style**: Does it follow project conventions?
 
-4. **Provide structured feedback**:
-   - **Critical** (must fix before merge)
+6. **Provide structured feedback**:
+   - **Critical** (must fix before merge) - Include validation rule violations (Rules 1.4, 2.1, 3.1, 3.2 are Tier 1)
    - **Important** (should fix, but not blocking)
    - **Nit** (nice to have, style preference)
    - **Praise** (what's done well)
 
-5. **Output the review**:
+7. **Output the review**:
    - Summarize findings
    - Provide specific line-by-line feedback
    - Suggest improvements
@@ -62,7 +71,9 @@ This command does NOT write to `/product-guidelines`. It provides immediate feed
 
 ## Code Review Checklist
 
-Use this comprehensive checklist:
+**FIRST: Apply rules from VALIDATION-CHECKLIST.md** (focus on Tier 1 rules for framework PRs)
+
+**THEN: Use this comprehensive checklist for general code quality:**
 
 ### 1. Correctness
 - [ ] Does the code do what it's supposed to do?

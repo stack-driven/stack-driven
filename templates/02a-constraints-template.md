@@ -36,15 +36,25 @@ Fixed technical decisions that absolutely cannot be changed.
 - **Cost impact**: $0/month for 12 months (free tier)
 
 ### 1.3 Integration Requirements
-- [ ] Must integrate with existing systems (name each: Salesforce, SAP, etc.)
-- [ ] Required authentication provider (corporate SSO, Auth0, etc.)
-- [ ] Required payment processor (Stripe, PayPal, corporate account)
-- [ ] API compatibility requirements (REST, GraphQL, SOAP)
+- [ ] Payment processors (name, API requirements, webhook needs)
+- [ ] CRM/Sales tools (name, sync frequency, data mapping requirements)
+- [ ] Communication services (email, SMS, chat - name providers, volume)
+- [ ] Authentication providers (OAuth, SAML, SSO requirements, user migration)
+- [ ] Analytics/tracking (name providers, event volume, real-time vs batch)
+- [ ] Marketplace/platform requirements (Shopify, Slack, Salesforce AppExchange, Chrome Web Store)
+- [ ] File storage/CDN (AWS S3, Cloudinary, upload size limits)
+- [ ] Search services (Algolia, Elasticsearch, index size, query volume)
+- [ ] Webhook handling requirements (which systems send webhooks? signature verification?)
+- [ ] Data flow direction (push-only, pull-only, bidirectional sync with conflict resolution)
+- [ ] Integration timeline priority (MVP-required vs post-MVP vs enterprise-tier)
 
 **Example**:
-- **Constraint**: Must integrate with Salesforce for lead capture (B2B sales process)
-- **Impact on tech**: Need Salesforce SDK, OAuth flow, webhook handling
-- **Journey step affected**: Step 5 (export/share results) → auto-create Salesforce opportunity
+- **Constraint**: Must integrate with Stripe for payments (journey Step 4 monetization)
+- **Integration type**: Bidirectional (create subscriptions, receive webhook events)
+- **Technical requirements**: Webhook signature verification, idempotency handling, subscription lifecycle management
+- **Journey impact**: Step 4 (payment) requires reliable webhook processing for instant account activation
+- **Cost impact**: $0/month (free tier), 2.9% + $0.30 per transaction
+- **Priority**: P0 (MVP launch blocker)
 
 ### 1.4 Performance & Scale Constraints
 - [ ] Response time requirements (<1s, <100ms, etc.)

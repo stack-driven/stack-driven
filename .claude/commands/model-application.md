@@ -46,7 +46,7 @@ This enables:
 
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/02b-coding-standards.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)

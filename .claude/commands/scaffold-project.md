@@ -46,7 +46,7 @@ After 11 sessions, users have:
 ```
 Read: product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
 Read: product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md (context version for token efficiency)
 
 # Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints.ctx.md exists:

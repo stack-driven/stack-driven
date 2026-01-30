@@ -33,7 +33,7 @@ Create a comprehensive deployment strategy following the instructions below.
    ```bash
    Read product-guidelines/00-user-journey.ctx.md (context version for token efficiency)
    Read product-guidelines/01-product-strategy.ctx.md (context version for token efficiency)
-   Read product-guidelines/02-tech-stack.md (no .ctx version, always read full file)
+   Read product-guidelines/02-tech-stack.ctx.md (context version for token efficiency)
 
    # Check if constraints exist (Session 2a is optional)
    If product-guidelines/02a-constraints.ctx.md exists:
@@ -129,7 +129,7 @@ The output follows this structure:
 ```
 You: Let's plan your deployment strategy. First, let me check your tech stack and architecture...
 
-[Read product-guidelines/02-tech-stack.md and product-guidelines/04-architecture.ctx.md]
+[Read product-guidelines/02-tech-stack.ctx.md and product-guidelines/04-architecture.ctx.md]
 
 You: Got it - you have [frontend] + [backend] + [database]. How do you deploy today? What's painful?
 

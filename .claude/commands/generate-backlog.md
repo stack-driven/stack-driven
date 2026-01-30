@@ -17,7 +17,7 @@ You're a technical product manager creating a systematic backlog from all cascad
 ```
 Read: product-guidelines/00-user-journey.ctx.md
 Read: product-guidelines/01-product-strategy.ctx.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/02-tech-stack.ctx.md
 
 # Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints.ctx.md exists:
@@ -110,6 +110,139 @@ Every backlog MUST include these legal/compliance stories:
 - **Data Processing Agreement** (for B2B/Enterprise): GDPR/compliance requirements
 
 These are P0 priorities - production applications cannot launch without them.
+
+**Third-Party Integration Stories** (if integrations exist from Session 2a):
+
+For EACH third-party integration identified in Session 2a, create stories following these patterns:
+
+#### Integration Infrastructure (Epic 04) - Create Once
+Before individual integration stories, create shared infrastructure:
+- [ ] **Integration credential storage**: Database schema (integration_credentials table), encryption setup (application-layer encryption using libsodium or similar)
+- [ ] **Webhook infrastructure** (if webhooks exist): Endpoint routing, signature verification middleware, async processing queue (Redis/SQS), background workers
+- [ ] **Integration monitoring**: Health checks, success rate tracking (>99.5% target), alerting setup (5+ consecutive failures)
+- [ ] **Rate limiting client**: Client-side rate limiter, track provider limits, queue excess requests
+
+#### Per-Integration Story Patterns
+
+**Pattern 1: API-only integrations** (e.g., SendGrid, Twilio)
+
+```markdown
+# [STORY-XXX] [Provider] API Integration
+
+Type: Story
+Journey Step: [Which step requires this integration]
+Priority: P0/P1 (P0 if MVP-required from Session 2a)
+
+## User Value
+When a [user persona] wants to [action], they need [integration capability], so they can [outcome].
+
+Example: "When a compliance officer completes assessment, they need email notification via SendGrid, so they can review results immediately (serves Step 4 of journey)."
+
+## Acceptance Criteria
+- [ ] [Provider] SDK/client library installed and configured
+- [ ] API credentials stored securely in integration_credentials table (encrypted at application layer)
+- [ ] [Core API functionality] implemented (send email, create resource, fetch data, etc.)
+- [ ] Error handling with retry logic (exponential backoff: 1s → 2s → 4s → 8s → 16s, max 5 attempts)
+- [ ] Rate limiting client-side (respect provider's rate limits from Session 4 architecture)
+- [ ] Integration health metrics tracked (success rate, latency, error types)
+- [ ] Unit tests for API client wrapper (mock provider responses)
+- [ ] Integration tests with provider's test mode/sandbox environment
+
+## Technical Approach
+Tech Stack: [Backend framework from Session 3], [Provider SDK]
+Database: integration_credentials table for API key storage
+Patterns: Retry with exponential backoff, circuit breaker if non-critical (from Session 4 architecture)
+
+## Dependencies
+Blocked By: STORY-XXX (Integration infrastructure setup)
+
+## Estimation
+Effort: [2-3 days] (1 day setup + SDK integration, 1 day core implementation, 0.5 day testing)
+```
+
+**Pattern 2: Webhook integrations** (e.g., Stripe, Salesforce)
+
+```markdown
+# [STORY-XXX] [Provider] Webhook Integration
+
+Type: Story
+Journey Step: [Which step requires real-time updates]
+Priority: P0 (webhooks are often critical for real-time updates)
+
+## User Value
+When [external event occurs], the system needs to receive real-time notification from [provider], so [user] can see [updated state] immediately.
+
+Example: "When Stripe confirms payment, system needs webhook notification, so user's account is activated instantly without manual check (serves Step 5 of journey)."
+
+## Acceptance Criteria
+- [ ] Webhook endpoint created: POST /webhooks/[provider] (matches Session 8b API contract)
+- [ ] Signature verification implemented (HMAC-SHA256 validation using webhook secret)
+- [ ] Idempotency check (webhook_events table, unique constraint on provider + event_id)
+- [ ] Async processing (enqueue event to Redis/SQS, return 200 within 5 seconds)
+- [ ] Background worker processes webhook events from queue
+- [ ] Retry handling for failed webhook processing (max 5 attempts with exponential backoff)
+- [ ] Webhook events logged to webhook_events table for debugging and audit
+- [ ] Provider's webhook registered in their dashboard (endpoint URL, events to subscribe, verification)
+- [ ] Integration tests with provider's webhook test events
+
+## Technical Approach
+Tech Stack: [Backend framework], webhook_events table, [Queue: Redis/SQS from Session 4]
+Security: HMAC-SHA256 signature verification using webhook secret (from Session 4 architecture)
+Processing: Async to avoid timeout (provider expects 200 within 5s per Session 8b)
+
+## Dependencies
+Blocked By: STORY-XXX (Webhook infrastructure setup)
+
+## Estimation
+Effort: [3-4 days] (1 day endpoint + verification, 1 day processing logic, 1 day testing, 0.5 day monitoring)
+```
+
+**Pattern 3: Bidirectional sync integrations** (e.g., Salesforce CRM sync)
+
+```markdown
+# [STORY-XXX] [Provider] Bidirectional Sync
+
+Type: Story
+Journey Step: [Which step requires data consistency]
+Priority: P1 (often post-MVP)
+
+## User Value
+When [user action occurs], data should sync to [external system], and when [external event occurs], changes should sync back, so [user] has consistent data everywhere.
+
+Example: "When compliance officer completes assessment, create Salesforce opportunity, and when sales rep closes deal in Salesforce, update user's account status here (serves Step 6 of journey: sharing results with sales team)."
+
+## Acceptance Criteria
+- [ ] Outbound sync: [Action] creates/updates [resource] in [provider] via API
+- [ ] Inbound sync: [Provider webhook/polling] updates [resource] locally
+- [ ] External resource mappings stored (external_resource_mappings table: internal_id ↔ external_id)
+- [ ] Sync jobs tracked (sync_jobs table with status, progress, errors, retry count)
+- [ ] Conflict resolution strategy implemented (last-write-wins, manual review, or custom per Session 2a)
+- [ ] Background sync workers process sync_jobs queue
+- [ ] Sync health dashboard (last sync time, success rate, failed records count)
+- [ ] Manual sync trigger (admin can force re-sync for debugging)
+- [ ] Error handling with retry (max 3 attempts, then flag for manual review)
+
+## Technical Approach
+Tech Stack: [Backend framework], [Provider SDK], sync_jobs + external_resource_mappings tables
+Sync Frequency: [Real-time via webhooks / Scheduled every X minutes based on Session 2a]
+Conflict Resolution: [Strategy based on Session 2a requirements: last-write-wins, timestamp-based, manual review]
+
+## Dependencies
+Blocked By: STORY-XXX ([Provider] API integration), STORY-XXX ([Provider] webhook integration if applicable)
+
+## Estimation
+Effort: [5-8 days] (2 days outbound sync, 2 days inbound sync, 2 days conflict handling + mappings, 1-2 days testing)
+```
+
+**Story Generation Logic**:
+1. Read Session 2a constraints for list of integrations
+2. For each integration, determine type:
+   - API-only: No webhooks mentioned
+   - Webhook: Session 2a mentions "receive events" or "webhooks"
+   - Bidirectional: Session 2a mentions "sync" or "two-way"
+3. Generate infrastructure stories first (once for all integrations)
+4. Generate individual stories per pattern
+5. Set priority based on Session 2a "Integration timeline priority" (MVP-required = P0, post-MVP = P1)
 
 **AI-Specific Stories (if 02c-ai-integration-strategy exists)**:
 

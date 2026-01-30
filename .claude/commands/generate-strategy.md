@@ -32,7 +32,7 @@ You are a product strategist deriving tactical decisions from previous cascade o
 ```
 Read: product-guidelines/00-user-journey.ctx.md
 Read: product-guidelines/01-product-strategy.ctx.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/02-tech-stack.ctx.md
 
 # Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints.ctx.md exists:
@@ -174,6 +174,52 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
 3. API-first design (enables integrations)
 4. Fail-safe (compliance = reliability critical)
 5. Observable (measure everything)
+
+### Step 5a: Integration Architecture Patterns (if integrations exist)
+
+**Check for integrations**: If `product-guidelines/02a-constraints.ctx.md` exists and identifies third-party integrations, include integration architecture patterns in `product-guidelines/04-architecture.md`.
+
+**Integration Registry**:
+Create a table listing all third-party integrations from Session 2a:
+
+| Integration | Purpose | Journey Step | Pattern | Priority |
+|-------------|---------|--------------|---------|----------|
+| Stripe | Payment processing | Step 4 | API + Webhooks | P0 |
+| SendGrid | Transactional email | Steps 1, 4 | API only | P0 |
+| Salesforce | CRM sync | Step 5 | API + Outbound Msgs | P1 |
+
+**Credential Management Strategy**:
+- Storage location: Environment variables / AWS Secrets Manager / HashiCorp Vault
+- Rotation policy: Manual / Automated with X-day rotation
+- Access control: Who/what can access credentials
+- Example: "Production API keys stored in AWS Secrets Manager, accessed via IAM role, rotated every 90 days automatically"
+
+**Resilience Patterns**:
+- **Retry Logic**: Exponential backoff (1s → 2s → 4s → 8s → 16s), max 5 attempts
+- **Circuit Breaker**: Open after 5 consecutive failures, half-open after 60s, applies to non-critical integrations
+- **Fallback Behavior**: Define what happens when each integration is unavailable
+  - Example: "Stripe down → Queue payment for processing, show 'Payment pending' to user"
+
+**Webhook Infrastructure** (if webhooks identified in Session 2a):
+- Endpoint pattern: `/webhooks/[provider-name]`
+- Verification: HMAC signature validation (SHA-256)
+- Processing: Async queue (Redis/SQS) + background workers
+- Idempotency: Check `webhook_events.event_id` before processing
+- Retry strategy: Provider-dependent (Stripe retries 3 days, SendGrid 72 hours)
+
+**Rate Limiting (Outbound)**:
+Track third-party API rate limits and implement client-side limiting:
+
+| Integration | Rate Limit | Strategy |
+|-------------|------------|----------|
+| Stripe | 100 req/sec | Client-side limiter, queue excess |
+| SendGrid | 600 req/min | Batch emails, respect limits |
+| Salesforce | 15K req/day | Cache reads, batch writes |
+
+**Monitoring & Alerting**:
+- Track integration success/failure rates (target: >99.5% success)
+- Alert on: 5+ consecutive failures, rate limit exceeded, credential expiration
+- Dashboard: Integration health metrics per provider
 
 ## Generating the Outputs
 

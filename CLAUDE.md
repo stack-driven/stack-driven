@@ -117,11 +117,25 @@ Session 14: /design-observability       → 14-observability-strategy.md
 When Session 2a marks "Internationalization requirements (i18n, l10n)" as required:
 1. **Session 3** selects appropriate i18n library based on frontend framework (next-intl, react-i18next, vue-i18n, svelte-i18n)
 2. **Session 7** adds locale columns and translation table patterns to database schema
-3. **Session 8** adds Accept-Language header support and localized error message requirements to API design
+3. **Session 8 (api-design)** adds Accept-Language header support and localized error message requirements to API design
 4. **Session 10** generates Epic 04 i18n infrastructure stories (translation file setup, locale switching UI, string extraction)
 5. **Session 12** generates `/locales/` directory structure, example translation files (common.json, auth.json, errors.json), and i18n configuration
 
 This pattern follows Session 3c (AI integration) precedent: constraint drives conditional technical decisions across cascade.
+
+**Third-Party Integration Propagation Pattern:**
+
+When Session 2a specifies third-party integration requirements (payment processors, CRM, communication services, etc.):
+1. **Session 2a** documents integration details: provider name, integration type (API-only vs webhooks), data flow direction, technical requirements, priority
+2. **Session 3** selects appropriate SDKs/client libraries for integrations
+3. **Session 4** includes integration architecture patterns (credential management, webhook handling, rate limiting, monitoring)
+4. **Session 7** generates integration-specific tables: `integration_credentials`, `sync_jobs`, `webhook_events` (if webhooks required)
+5. **Session 8 (api-design)** designs API endpoints for webhook handlers with security requirements (signature verification, idempotency)
+6. **Session 8b** generates OpenAPI webhook endpoint specs with provider-specific security details
+7. **Session 10** generates Epic 04 integration stories per provider (credential setup, API integration, webhook handler, error handling, monitoring)
+8. **Session 12** generates integration adapter skeletons in codebase (e.g., `StripeAdapter.ts`, `SendGridAdapter.ts`)
+
+This pattern ensures comprehensive integration planning from constraints → architecture → implementation.
 
 ### Command Execution Pattern
 
@@ -230,7 +244,8 @@ Every decision must trace back to user journey:
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)
 
 **NO context files for final outputs (sessions 10-14):**
-- `10-backlog/` - User stories are already concise
+- `10-backlog/` - User stories are already concise (Session 11 reads directly from backlog files)
+- Session 11 - No output file (pushes Session 10 issues to GitHub via `gh` CLI)
 - `12-project-scaffold.md` - Final scaffold documentation
 - `13-deployment-plan.md` - Final deployment plan
 - `14-observability-strategy.md` - Final observability strategy
@@ -339,7 +354,7 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 
 **Understand the cascade dependencies:**
 - If you modify Session 1 output structure, update sessions that read it (2, 3, 4, 10)
-- If you modify Session 7 (database-schema), update Session 8 (api-contracts) that depends on it
+- If you modify Session 7 (database-schema), update Session 8b (api-contracts) that depends on it
 - Context files must stay condensed for token efficiency
 
 **Test with actual journey:**
@@ -428,7 +443,7 @@ Every recommendation needs reasoning:
 
 ### 4. Cascade Coherence
 Sessions must build on each other:
-- Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8)
+- Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8b)
 - Session 10 (backlog) reads outputs from Sessions 1-9b (including Session 3b coding standards and Session 9b architecture)
 - Session 12 (scaffold) **generatively creates** code skeletons by analyzing tech stack (Session 3), coding standards (Session 3b), and architecture (Session 9b) - uses framework-specific best practices, NOT generic templates (places generated code in repository root, not product-guidelines/)
 - Session 14 (observability) measures metrics from Session 4
