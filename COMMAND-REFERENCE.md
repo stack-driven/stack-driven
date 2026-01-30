@@ -1,15 +1,15 @@
 # Command Reference
 
-Quick reference for all 34 Stack-Driven slash commands.
+Quick reference for all 35 Stack-Driven slash commands.
 
 ---
 
 ## Overview
 
-Stack-Driven includes **34 slash commands** organized into four categories:
+Stack-Driven includes **35 slash commands** organized into four categories:
 
 1. **Core Cascade Commands** (19) - Sequential framework sessions (1-14)
-2. **Post-Cascade Extensions** (8) - Optional deep-dive sessions
+2. **Post-Cascade Extensions** (9) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
 4. **Development Commands** (5) - Code review and implementation workflow
 
@@ -57,6 +57,7 @@ Stack-Driven includes **34 slash commands** organized into four categories:
 | `/setup-analytics` | After Session 4 | 30-45 min | `20-analytics-plan.md` |
 | `/design-growth-strategy` | After Session 4 | 60-90 min | `21-growth-strategy.md` |
 | `/create-financial-model` | After Session 4 | 60-90 min | `22-financial-model.md` |
+| `/create-compliance-plan` | After Session 2a or 10 | 45-60 min | `23-compliance-plan.md` |
 
 ### Meta Commands
 
@@ -204,6 +205,9 @@ Data-driven growth strategy: acquisition channel analysis, growth loops identifi
 
 ### `/create-financial-model` (60-90 min)
 Comprehensive financial model: unit economics (CAC, LTV, payback), revenue projections (3-5 years), cost structure analysis, scenario planning, fundraising considerations. Run after Session 4. Outputs: `22-financial-model.md`
+
+### `/create-compliance-plan` (45-60 min)
+Compliance implementation roadmap for compliance-heavy products (healthcare, fintech, enterprise B2B). Identifies applicable regulations (GDPR, HIPAA, SOC2, PCI-DSS, CCPA, ISO 27001) based on journey geography and data types. Generates detailed requirements by regulation (article/section-level), compliance-to-implementation mapping (journey → requirement → technical implementation), compliance backlog stories with RICE prioritization, compliance monitoring strategy (for Session 14 integration), compliance roadmap by stage (MVP → Growth → Scale), and cost estimates (legal, engineering, certification). Reads journey, product strategy, constraints, database schema, API design, and backlog to create comprehensive compliance plan. Run after Session 2a (constraints) or Session 10 (backlog). Outputs: `23-compliance-plan.md`
 
 ---
 

@@ -216,6 +216,7 @@ Stack-Driven commands fall into two distinct phases:
 - `/create-design-identity` - Comprehensive brand identity (logo, visual system)
 - `/setup-analytics` - Detailed analytics implementation plan
 - `/create-financial-model` - Unit economics, revenue projections, scenario planning
+- `/create-compliance-plan` - Compliance implementation roadmap (GDPR, HIPAA, SOC2, PCI-DSS)
 
 **Time Investment**: 8-10 hours for core cascade (Sessions 1-14)
 
