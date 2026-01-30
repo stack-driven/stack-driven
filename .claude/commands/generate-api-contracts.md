@@ -39,7 +39,7 @@ Create technical API implementation specifications:
 **CRITICAL - Read this first:**
 
 ```
-Read: product-guidelines/08-api-design.md (from previous session - Session 8)
+Read: product-guidelines/08-api-design.ctx.md (context version for token efficiency)
 ```
 
 **Extract from API Design**:
@@ -60,7 +60,7 @@ Read: product-guidelines/08-api-design.md (from previous session - Session 8)
 
 ```
 Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.md  # (no .ctx version, always read full file)
+Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
 Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
@@ -715,7 +715,7 @@ Before completing this session, verify:
 **Implement the decisions from Session 8 (API Design).**
 
 This session focuses on technical implementation. Don't make new architectural decisions here. Instead:
-1. Read `08-api-design.md` for paradigm, serialization, auth, rate limiting, pagination decisions
+1. Read `08-api-design.ctx.md` for paradigm, serialization, auth, rate limiting, pagination decisions
 2. Create technical specs (OpenAPI/Protobuf) that implement those decisions
 3. Define endpoints, schemas, and validation rules
 4. Provide examples and testing guidance
@@ -723,9 +723,9 @@ This session focuses on technical implementation. Don't make new architectural d
 If you find the API design decisions don't work for a specific endpoint, note it but don't override Session 8. Discuss with the user and potentially re-run Session 8 with updated analysis.
 
 **Reference files:**
-- **API Design** (Session 8): `product-guidelines/08-api-design.md` - **READ THIS FIRST**
+- **API Design** (Session 8): `product-guidelines/08-api-design.ctx.md` - **READ THIS FIRST**
 - Journey: `product-guidelines/00-user-journey.ctx.md`
-- Tech stack: `product-guidelines/02-tech-stack.md`
+- Tech stack: `product-guidelines/02-tech-stack.ctx.md`
 - Architecture: `product-guidelines/04-architecture.ctx.md`
 - Database schema: `product-guidelines/07-database-schema.ctx.md`
 

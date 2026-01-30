@@ -32,7 +32,7 @@ You are a product strategist deriving tactical decisions from previous cascade o
 ```
 Read: product-guidelines/00-user-journey.ctx.md
 Read: product-guidelines/01-product-strategy.ctx.md
-Read: product-guidelines/02-tech-stack.md
+Read: product-guidelines/02-tech-stack.ctx.md
 
 # Check if constraints exist (Session 2a is optional)
 If product-guidelines/02a-constraints.ctx.md exists:

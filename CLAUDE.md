@@ -244,7 +244,8 @@ Every decision must trace back to user journey:
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)
 
 **NO context files for final outputs (sessions 10-14):**
-- `10-backlog/` - User stories are already concise
+- `10-backlog/` - User stories are already concise (Session 11 reads directly from backlog files)
+- Session 11 - No output file (pushes Session 10 issues to GitHub via `gh` CLI)
 - `12-project-scaffold.md` - Final scaffold documentation
 - `13-deployment-plan.md` - Final deployment plan
 - `14-observability-strategy.md` - Final observability strategy

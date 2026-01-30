@@ -19,7 +19,7 @@ You are an expert software architect with deep knowledge of framework-specific p
 Before starting, ensure you have (context versions for token efficiency):
 - Session 00: User Journey (`product-guidelines/00-user-journey.ctx.md`)
 - Session 01: Product Strategy (`product-guidelines/01-product-strategy.ctx.md`)
-- Session 02: Tech Stack (`product-guidelines/02-tech-stack.md`) - no .ctx version, always read full file
+- Session 02: Tech Stack (`product-guidelines/02-tech-stack.ctx.md`)
 
 ## Steps to Execute
 
@@ -28,7 +28,7 @@ Before starting, ensure you have (context versions for token efficiency):
 Read the following files in order (context versions for token efficiency):
 1. `product-guidelines/00-user-journey.ctx.md` - Understand the journey steps and value delivery
 2. `product-guidelines/01-product-strategy.ctx.md` - Understand the product context
-3. `product-guidelines/02-tech-stack.md` - Extract the chosen frameworks and languages (no .ctx version)
+3. `product-guidelines/02-tech-stack.ctx.md` - Extract the chosen frameworks and languages
 
 Extract key information:
 - Frontend framework(s) chosen
