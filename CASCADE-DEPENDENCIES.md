@@ -76,13 +76,14 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ---
 
 ### Session 3: `/choose-tech-stack`
-**Outputs:** `02-tech-stack.md`
+**Outputs:**
+- `02-tech-stack.md`
+- `02-tech-stack.ctx.md`
 
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/00-user-journey.md
 ├─ [FULL] product-guidelines/01-product-strategy.md
-├─ [CTX] product-guidelines/02a-constraints.md (if exists)
 ├─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
 └─ [TMPL] /templates/02-tech-stack-template.md
 ```
@@ -340,7 +341,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [CTX] product-guidelines/02b-coding-standards.ctx.md
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 └─ [TMPL] /templates/09b-application-architecture-template.md
 ```
 
@@ -372,7 +373,7 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [FULL] product-guidelines/03c-monetization.md
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 ├─ [CTX] product-guidelines/09-test-strategy.ctx.md
 ├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
 └─ [TMPL] /templates/issue-template.md
@@ -426,11 +427,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 ├─ [CTX] product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
 ├─ [FULL] product-guidelines/04-architecture.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [CTX] product-guidelines/08-api-contracts.ctx.md
+├─ [CTX] product-guidelines/08b-api-contracts.ctx.md
 ├─ [CTX] product-guidelines/09-test-strategy.ctx.md
 ├─ [CTX] product-guidelines/09b-application-architecture.ctx.md
-├─ [FULL] product-guidelines/10-backlog/BACKLOG.md
-└─ [TMPL] /templates/12-project-scaffold-template.md
+└─ [FULL] product-guidelines/10-backlog/BACKLOG.md
 ```
 
 **Dependencies:** Sessions 1, 2, 2.5 (if exists), 3, 3b, 3c (if exists), 4, 7, 8, 9, 9b, 10
