@@ -95,7 +95,7 @@ Review Agent (/review-code)
 |---------|----------|--------------|-------|
 | Agentic RAG | [✓] Singh 2025 | [✓] Conditional loading | A+ |
 | Context Engineering | [✓] Anthropic 2024 | [✓] Embedded artifacts | A+ |
-| Essentials Files | [✓] Claude Code | [✓] TL;DR versions | A |
+| Context Files (.ctx.md) | [✓] Claude Code | [✓] Condensed versions | A |
 | Multi-Agent Pipeline | [✓] Google ADK | [✓] Plan→Implement→Review | A+ |
 | Human-in-the-Loop | [✓] Google ADK | [✓] Checkpoints | A+ |
 | Plan-Before-Code | [✓] CodePlan | [✓] Mandatory | A+ |
