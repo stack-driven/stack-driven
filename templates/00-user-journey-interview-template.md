@@ -121,9 +121,121 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
+## Phase 1b: Understand User Behavior
+
+### Question 6: Tech Proficiency & Digital Comfort
+**Ask**: "How comfortable is this user with digital tools? Walk me through their tech proficiency."
+
+**Follow-ups if needed**:
+- "What tools do they use daily? How complex are those tools?"
+- "Do they explore features on their own or need instructions?"
+- "When they hit a problem, do they search for answers or ask for help?"
+- "Are they using the latest apps or do they stick with familiar tools?"
+
+**What you're looking for**:
+- Tech proficiency level (affects UI complexity, onboarding needs)
+- Self-serve capability (affects help system design)
+- Tool comfort zone (sets complexity ceiling)
+
+**Example good answer**:
+"Mid-level proficiency. Daily users of Slack, Google Workspace, Asana. Comfortable with standard SaaS tools but struggle with anything requiring configuration or technical setup. Will try to figure things out but gives up after 2-3 minutes if not obvious."
+
+**Example bad answer**:
+"They use computers at work"
+
+---
+
+### Question 7: Device Preference & Context
+**Ask**: "Do they primarily use mobile or desktop for this type of work? Where and when do they use it?"
+
+**Follow-ups if needed**:
+- "When they need to do [journey step 1], are they at their desk or on the go?"
+- "Do they need to access this from multiple devices?"
+- "What's their typical screen size when using this?"
+- "Are they focused on this task or multitasking?"
+
+**What you're looking for**:
+- Primary device (drives tech stack, responsive strategy)
+- Usage context (affects performance requirements, offline needs)
+- Attention level (affects notification design, auto-save needs)
+
+**Example good answer**:
+"Primarily desktop for deep work (document review takes 2-4 hours). But check status on mobile throughout the day. Need to pick up where they left off across devices. Usually single-focused when doing reviews, but mobile usage is quick checks between meetings."
+
+**Example bad answer**:
+"Both mobile and desktop"
+
+---
+
+### Question 8: Communication & Notification Expectations
+**Ask**: "How do they want to be notified when something is ready or needs their attention?"
+
+**Follow-ups if needed**:
+- "Do they want instant alerts or are daily summaries fine?"
+- "Push notifications or email?"
+- "How fast do they expect responses or updates?"
+- "Are they monitoring this constantly or checking periodically?"
+
+**What you're looking for**:
+- Update frequency needs (affects API design: real-time vs polling)
+- Notification channel preference (affects integration points)
+- Response time expectations (affects performance SLOs)
+
+**Example good answer**:
+"Don't want constant interruptions. Email summary is fine for non-urgent items. But if a high-priority document needs review, push notification is expected. Check status 2-3 times per day. Response time: same-day is acceptable, not expecting instant."
+
+**Example bad answer**:
+"They want to be notified when things happen"
+
+---
+
+### Question 9: Onboarding & Learning Preference
+**Ask**: "When they first use a new tool, do they prefer to explore on their own or have guided instructions?"
+
+**Follow-ups if needed**:
+- "Do they watch tutorial videos or dive right in?"
+- "Do they read help docs or click around to figure it out?"
+- "What frustrates them about learning new software?"
+- "How much onboarding is too much vs too little?"
+
+**What you're looking for**:
+- Learning style (affects onboarding flow design)
+- Documentation needs (affects help system scope)
+- Tolerance for exploration vs need for guidance
+
+**Example good answer**:
+"Want a quick overview (2-3 min video or product tour) then prefer to explore on their own. Appreciate contextual tooltips when hovering over unfamiliar features. Will search help docs if stuck, but won't watch 20-minute tutorials. Frustrated by tools that force lengthy onboarding."
+
+**Example bad answer**:
+"They need to learn how to use it"
+
+---
+
+### Question 10: Decision Speed & Trust Signals
+**Ask**: "What would make them trust this solution enough to try it? How quickly do they make decisions about new tools?"
+
+**Follow-ups if needed**:
+- "Do they need to see social proof (customer logos, testimonials)?"
+- "Do they trial products or need to be convinced upfront?"
+- "Who influences their decision (themselves, manager, team)?"
+- "What makes them confident a tool will work for them?"
+
+**What you're looking for**:
+- Trust signals needed (affects marketing, pricing page design)
+- Trial behavior (affects pricing strategy, freemium vs demo)
+- Decision timeline (affects sales cycle expectations)
+
+**Example good answer**:
+"Need to see it works before committing. Will sign up for free trial immediately if value prop is clear. Trust built through: 1) seeing competitors/peers using it, 2) trying it themselves on real document, 3) transparent pricing. Decision timeline: evaluate during trial (7-14 days), then commit or churn. Manager approval needed above $500/month."
+
+**Example bad answer**:
+"They'll try it if it looks good"
+
+---
+
 ## Phase 2: Map the Complete Journey
 
-### Question 6: Entry Point Details
+### Question 11: Entry Point Details
 **Ask**: "What's the very first thing they do? How do they start?"
 
 **Follow-ups if needed**:
@@ -144,7 +256,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 7: Setup/Configuration
+### Question 12: Setup/Configuration
 **Ask**: "After they start, what configuration or setup is needed?"
 
 **Follow-ups if needed**:
@@ -165,7 +277,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 8: The Aha Moment (Critical!)
+### Question 13: The Aha Moment (Critical!)
 **Ask**: "What's the moment where they first get real value? When do they go 'wow, this actually works!'?"
 
 **Follow-ups if needed**:
@@ -190,7 +302,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 9: Value Reinforcement
+### Question 14: Value Reinforcement
 **Ask**: "After they get that initial value, what do they do next?"
 
 **Follow-ups if needed**:
@@ -213,7 +325,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 10: Journey Friction Analysis
+### Question 15: Journey Friction Analysis
 **Ask**: "At each step we've discussed, where might they get stuck or frustrated?"
 
 **Follow-ups if needed**:
@@ -238,7 +350,7 @@ This template guides you through a progressive interrogation process to understa
 
 ## Phase 3: Quantify the Value
 
-### Question 11: Time Savings
+### Question 16: Time Savings
 **Ask**: "How much time does this save them? Be specific."
 
 **Follow-ups if needed**:
@@ -259,7 +371,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 12: Cost Savings
+### Question 17: Cost Savings
 **Ask**: "Beyond time, what money does this save or help them make?"
 
 **Follow-ups if needed**:
@@ -275,7 +387,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 13: Emotional & Capability Value
+### Question 18: Emotional & Capability Value
 **Ask**: "How do they feel when using this vs. their current solution?"
 
 **Follow-ups if needed**:
@@ -290,7 +402,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 14: Pricing & Value Ratio
+### Question 19: Pricing & Value Ratio
 **Ask**: "What would they be willing to pay for this value?"
 
 **Follow-ups if needed**:
@@ -310,7 +422,7 @@ This template guides you through a progressive interrogation process to understa
 
 ## Phase 4: Journey Metrics
 
-### Question 15: Conversion & Activation
+### Question 20: Conversion & Activation
 **Ask**: "How will we know if the journey is working?"
 
 **Follow-ups if needed**:
@@ -325,7 +437,7 @@ This template guides you through a progressive interrogation process to understa
 
 ---
 
-### Question 16: Retention & Advocacy
+### Question 21: Retention & Advocacy
 **Ask**: "What would make them keep using this? What would make them tell others?"
 
 **Follow-ups if needed**:
@@ -344,11 +456,22 @@ This template guides you through a progressive interrogation process to understa
 
 Before ending the interview, confirm you have:
 
+### User & Problem
 - [ ] **Specific user persona** (not "everyone" or "small businesses")
 - [ ] **Concrete pain points** (not generic "inefficiency")
 - [ ] **Current workaround details** (how they do it today)
 - [ ] **Quantified urgency** (cost of the problem)
 - [ ] **Clear success criteria** (measurable outcomes)
+
+### Behavioral Profile (NEW)
+- [ ] **Tech proficiency level** (novice / intermediate / expert / developer-level)
+- [ ] **Primary device** (mobile-dominant / desktop-dominant / mixed usage)
+- [ ] **Learning style** (exploratory / instructional / reference)
+- [ ] **Communication preference** (real-time / fast / moderate / async)
+- [ ] **Onboarding expectation** (self-discover / hybrid / fully guided)
+- [ ] **Trust signals needed** (social proof / trial / specs / certifications)
+
+### Journey & Value
 - [ ] **Complete 3-5 step journey** (from entry to value)
 - [ ] **Identified aha moment** (Step 3 - core value delivery)
 - [ ] **Quantified time savings** (X hours → Y minutes)

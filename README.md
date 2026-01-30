@@ -46,6 +46,7 @@ Stack-Driven guides you through **14 progressive sessions**, each building on pr
 
 ```
 Session 1: /refine-journey             → product-guidelines/00-user-journey.md
+  ↓ (AI asks 21 questions including behavioral profile: tech proficiency, device preference, learning style, communication preferences, onboarding expectations)
   ↓ (AI reads journey, validates with market)
 
 Session 2: /create-product-strategy     → product-guidelines/01-product-strategy.md

@@ -121,7 +121,7 @@ Stack-Driven includes **34 slash commands** organized into four categories:
 ## Core Cascade Commands (Sessions 1-14)
 
 ### Session 1: `/refine-journey` (30-45 min)
-Define user journey through 16 progressive questions. Creates persona, pain points, aha moment (value delivery step), and quantified value ratio (e.g., "4 hours → 60 seconds = 240x faster"). Start here—everything flows from this. Outputs: `00-user-journey.md` + `.ctx.md`
+Define user journey through 21 progressive questions (including Phase 1b: Behavioral Profile). Creates persona, pain points, user behavioral characteristics (tech proficiency, device preference, learning style, communication preferences, onboarding expectations), aha moment (value delivery step), and quantified value ratio (e.g., "4 hours → 60 seconds = 240x faster"). Start here—everything flows from this. Outputs: `00-user-journey.md` + `.ctx.md`
 
 ### Session 2: `/create-product-strategy` (45-60 min)
 Validate journey with market analysis (TAM/SAM/SOM), competitive positioning, strategic vision, and product roadmap. Reads journey file. Outputs: `01-product-strategy.md` + `.ctx.md`
