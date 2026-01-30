@@ -121,6 +121,113 @@ When AI integration strategy is present, include these stories based on the chos
 - **AI Quality Assurance**: Response validation, accuracy testing, feedback loops
 - **Compliance Setup** (if regulated): DPA configuration, data retention policies
 
+**Internationalization (i18n) Stories (if 02a-constraints.ctx.md marks i18n as required)**:
+
+Check `product-guidelines/02a-constraints.ctx.md` for "Internationalization requirements (i18n, l10n)" marked as required.
+
+When i18n is required, include these Epic 04 foundation stories:
+
+**i18n Infrastructure Setup**:
+```markdown
+# [STORY-XXX] Set up i18n translation file structure
+
+Type: Story
+Epic: Epic 04 (Foundation)
+Priority: P0
+
+## User Value
+When users from different regions use the product, they want content in their native language, so they can understand and use the product effectively.
+
+Value: Enables multi-language support as required by constraints (Session 2a).
+
+## Acceptance Criteria
+- [ ] Create `/locales/` directory structure with subdirectories for each supported language
+- [ ] Initialize translation files (e.g., `common.json`, `errors.json`) for each locale
+- [ ] Configure i18n library ([from Session 3: next-intl/react-i18next/vue-i18n/etc.])
+- [ ] Implement locale detection (Accept-Language header + user preference)
+- [ ] Add locale fallback chain (e.g., de-CH → de-DE → en-US)
+
+## Technical Approach
+Tech Stack: [i18n library from Session 3], JSON translation files
+Database: User.preferred_locale column (from Session 7)
+API: Accept-Language header support (from Session 8)
+
+## Dependencies
+Blocked By: Database schema setup (User table with preferred_locale)
+
+## Estimation
+Effort: 2 days (1 day structure and config, 1 day locale detection logic)
+```
+
+**Locale Switching UI**:
+```markdown
+# [STORY-XXX] Implement locale switching UI component
+
+Type: Story
+Epic: Epic 04 (Foundation)
+Priority: P0
+
+## User Value
+When users want to change their language preference, they want a simple dropdown/selector, so they can switch languages immediately.
+
+Value: Enables users to override browser defaults and save preferences.
+
+## Acceptance Criteria
+- [ ] Create locale selector component (dropdown or similar)
+- [ ] Display available locales (from Session 2a constraints)
+- [ ] Save preference to user.preferred_locale in database
+- [ ] Page content updates immediately without refresh
+- [ ] Persist selection across sessions
+
+## Technical Approach
+Component: LanguageSelector (design system component)
+API: PATCH /api/users/{id} with preferred_locale field
+State: Update i18n context/provider with new locale
+
+## Dependencies
+Blocked By: i18n infrastructure setup, User API endpoints
+
+## Estimation
+Effort: 1.5 days
+```
+
+**Extract Hardcoded Strings to Translation Keys**:
+```markdown
+# [STORY-XXX] Extract hardcoded UI strings to translation files
+
+Type: Story
+Epic: Epic 04 (Foundation)
+Priority: P1 (can be done incrementally per feature)
+
+## User Value
+When users switch languages, they want ALL UI text translated, so the experience is fully localized.
+
+Value: Ensures consistent multi-language experience across the product.
+
+## Acceptance Criteria
+- [ ] Audit codebase for hardcoded strings in components
+- [ ] Extract strings to translation keys (e.g., "Sign Up" → t('auth.signUp'))
+- [ ] Create translation entries for all supported locales
+- [ ] Verify no hardcoded user-facing strings remain
+- [ ] Document translation key naming convention
+
+## Technical Approach
+Tools: i18n library's translation function (e.g., useTranslation hook, $t function)
+Pattern: Namespace-based keys (e.g., 'auth.signUp', 'errors.validation.required')
+
+## Dependencies
+Blocked By: i18n infrastructure setup
+
+## Estimation
+Effort: 3-5 days (depends on codebase size; can be split by feature/epic)
+```
+
+**Translation Requirement Markers**:
+When generating other user stories, check if they involve user-facing content:
+- If UI components, forms, or messages: Add acceptance criterion "[ ] All user-facing strings use translation keys"
+- If API endpoints: Add acceptance criterion "[ ] Error messages localized based on Accept-Language"
+- If database entities (e.g., Product, Framework): Reference translation table pattern from Session 7
+
 ### Step 4: Apply RICE Prioritization
 
 For each story, calculate RICE:

@@ -138,6 +138,95 @@ Journey Step 4: User reviews and shares report
 
 ---
 
+### Step 2a: Check for Internationalization (i18n) Requirements
+
+**If constraints file exists**, check for i18n requirement:
+
+Read `product-guidelines/02a-constraints.ctx.md` and look for:
+- "Internationalization requirements (i18n, l10n)" marked as required
+- Multi-language or multi-region requirements
+
+**If i18n IS required**, apply translation patterns to your schema:
+
+**Pattern 1: Locale Column for User-Facing Content**
+Add `locale` column to tables with translatable content:
+```sql
+-- For content that varies by user's language preference
+CREATE TABLE products (
+  id UUID PRIMARY KEY,
+  sku VARCHAR(50) NOT NULL,
+  price_cents INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Separate translation table (recommended for multiple languages)
+CREATE TABLE product_translations (
+  id UUID PRIMARY KEY,
+  product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  locale VARCHAR(10) NOT NULL, -- e.g., 'en-US', 'es-ES', 'de-DE'
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  UNIQUE(product_id, locale)
+);
+
+CREATE INDEX idx_product_translations_locale ON product_translations(locale);
+CREATE INDEX idx_product_translations_product_id ON product_translations(product_id);
+```
+
+**Pattern 2: User Locale Preference**
+Track user's preferred language:
+```sql
+ALTER TABLE users ADD COLUMN preferred_locale VARCHAR(10) DEFAULT 'en-US';
+CREATE INDEX idx_users_preferred_locale ON users(preferred_locale);
+```
+
+**Pattern 3: Accept-Language Tracking (if analytics required)**
+For understanding locale distribution:
+```sql
+CREATE TABLE user_sessions (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  detected_locale VARCHAR(10), -- From Accept-Language header
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+**Decision Tree - What Needs Translation?**
+```
+For each entity, ask:
+
+1. Is this content user-facing?
+   ├─ NO → Skip translation (internal IDs, timestamps, metrics)
+   └─ YES → Continue to 2
+
+2. Does this content vary by language?
+   ├─ NO → Keep in main table (names, emails, numeric values)
+   └─ YES → Add translation pattern
+
+3. How many languages?
+   ├─ 1-2 languages → Consider locale column in main table
+   └─ 3+ languages → Use separate translation table (cleaner)
+```
+
+**Example (EU compliance SaaS with German, French, Spanish):**
+```
+Entities requiring translation:
+- Framework names/descriptions (SOC2, GDPR shown in user's language)
+- Error messages (validation, processing failures)
+- Email templates (assessment complete notifications)
+- UI labels (stored in codebase translation files, not database)
+
+Entities NOT requiring translation:
+- User emails, names (user-provided data)
+- Document filenames (original upload names)
+- Timestamps, IDs, status codes (system data)
+- Audit logs (compliance requirement for English)
+```
+
+**If i18n is NOT required**: Skip this subsection and proceed with standard entity design.
+
+---
+
 ### Step 3: Define Entity Relationships
 
 **Relationship Patterns:**

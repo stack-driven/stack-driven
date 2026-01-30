@@ -154,11 +154,19 @@ Standards, legal requirements, and best practices.
 - [ ] Mobile accessibility standards
 - [ ] Internationalization requirements (i18n, l10n)
 
-**Example**:
+**Example (Accessibility)**:
 - **Constraint**: WCAG 2.1 AA required (government agency customers = 40% TAM)
 - **Impact on tech**: Accessible component library, screen reader testing, keyboard navigation
 - **Journey step affected**: All steps (frontend interactions must be accessible)
 - **Design impact**: Color contrast ratios, focus indicators, ARIA labels
+
+**Example (Internationalization)**:
+- **Constraint**: Multi-language support required for EU market (German, French, Spanish)
+- **Impact on tech**: i18n library (next-intl, react-i18next), translation management, locale detection
+- **Journey step affected**: All steps (UI, error messages, email notifications must be localized)
+- **Database impact**: Translation tables for user-facing content (product names, descriptions)
+- **API impact**: Accept-Language header support, localized error responses
+- **Content impact**: Translation workflow, professional translation services vs. machine translation
 
 ### 3.3 API & Integration Standards
 - [ ] RESTful API design principles
