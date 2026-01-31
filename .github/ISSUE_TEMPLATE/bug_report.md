@@ -78,6 +78,43 @@ ls -la product-guidelines/
 
 ---
 
+## For Automated Debugging
+
+**This issue can be debugged using `/fix-bug {issue-number}`**
+
+The debugging tracker will be automatically added as a comment below when `/fix-bug` runs for the first time.
+
+### Debugging Tracker Preview
+
+Once `/fix-bug` is run, a tracking comment will appear below with this structure:
+
+```markdown
+## 🔍 Debugging Tracker
+
+⚠️ AUTO-GENERATED - DO NOT EDIT MANUALLY
+
+### Attempt Log
+| # | Hypothesis | Local Test | Result | Error Sig |
+|---|-----------|------------|---------|----------|
+| 1 | [Hypothesis tested] | ❌ Failed / ✅ Passed | [Result] | [Error signature] |
+
+### Status
+**Current:** 1 of 5 attempts
+**Outcome:** 🔄 IN PROGRESS | ✅ RESOLVED | ⚠️ NEEDS HUMAN
+
+### Next Steps
+[Automatic instructions for next action]
+```
+
+**How it works:**
+1. Run `/fix-bug {issue-number}` to start hypothesis-driven debugging
+2. System tests one hypothesis per run (prevents circular loops)
+3. Tracking comment updates automatically after each attempt
+4. Auto-escalates if stuck (same error 3x or 5 attempts max)
+5. Creates PR automatically when tests pass
+
+---
+
 **Troubleshooting checklist:**
 - [ ] I've checked [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md)
 - [ ] I've checked [FAQ.md](../../FAQ.md)
