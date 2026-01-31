@@ -403,6 +403,29 @@ Use the Task tool (4 separate invocations):
      6. Write to output file path
      ```
 
+## CRITICAL CHECKPOINT
+
+Session 4 complete! You've established your tactical foundation.
+
+Before proceeding, validate that these strategic decisions align with your user journey and will serve as a solid foundation for all remaining sessions.
+
+**REVIEW CHECKLIST:**
+- [ ] Mission statement references journey aha moment (typically Step 3)
+- [ ] North Star metric measures user value delivery (not vanity metrics)
+- [ ] Monetization model charges where value is delivered (value ratio >10:1)
+- [ ] Architecture principles optimize journey critical path
+
+**What happens next:**
+These decisions cascade through Sessions 5-14. Session 5 will create your brand strategy using this mission as foundation. Sessions 7-9 will use these architecture principles for technical design.
+
+**If you found issues:**
+Run `/generate-strategy` again to regenerate with fresh analysis (preserves same journey context).
+
+**If everything looks good:**
+Type "continue" when ready to proceed to Session 5 (brand strategy).
+
+---
+
 ## Output Format
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

@@ -143,6 +143,61 @@ When Session 2a specifies third-party integration requirements (payment processo
 
 This pattern ensures comprehensive integration planning from constraints → architecture → implementation.
 
+### Checkpoint System (Critical Decision Validation)
+
+Stack-Driven implements **Human-in-the-Loop (HITL) checkpoints** at critical cascade sessions where decisions have significant downstream impact. These checkpoints pause execution for user review before cascading decisions flow to later sessions.
+
+**Checkpoints are implemented at:**
+- **Session 3** (`/choose-tech-stack`) - Tech stack validation
+- **Session 4** (`/generate-strategy`) - Mission, metrics, monetization, architecture validation
+- **Session 7** (`/design-database-schema`) - Database schema validation
+- **Session 10** (`/generate-backlog`) - Backlog quality validation
+
+**Why checkpoints matter:**
+Decisions made in Sessions 3, 4, 7, and 10 cascade through all remaining sessions. For example:
+- Session 4 mission → informs Session 5 brand strategy, Session 6 design system
+- Session 7 schema → informs Session 8 API design, Session 10 backlog stories, Session 12 scaffold
+- Session 10 backlog → determines implementation order and effort estimates
+
+Early validation prevents hours of downstream rework if issues exist.
+
+**Checkpoint structure:**
+Each checkpoint includes:
+1. **Completion confirmation** - "Session X complete! [What was established]"
+2. **Review checklist** - Session-specific validation criteria (journey alignment, completeness, etc.)
+3. **Cascade explanation** - What happens next, which sessions depend on these decisions
+4. **Rollback instructions** - How to regenerate if issues found (`/[session-name]` to re-run)
+5. **Continue prompt** - User types "continue" to proceed to next session
+
+**Example (Session 4 checkpoint):**
+```
+Session 4 complete! You've established your tactical foundation.
+
+REVIEW CHECKLIST:
+- [ ] Mission statement references journey aha moment (typically Step 3)
+- [ ] North Star metric measures user value delivery (not vanity metrics)
+- [ ] Monetization model charges where value is delivered (value ratio >10:1)
+- [ ] Architecture principles optimize journey critical path
+
+What happens next:
+These decisions cascade through Sessions 5-14.
+
+If you found issues:
+Run /generate-strategy again to regenerate with fresh analysis.
+
+If everything looks good:
+Type "continue" when ready to proceed to Session 5 (brand strategy).
+```
+
+**Design rationale:**
+Checkpoints implement the Human-in-the-Loop (HITL) pattern from agentic coding research (Google ADK 2024, Anthropic Multi-Agent Systems 2024). By pausing at decision boundaries, users can:
+- Review outputs before they become inputs to downstream processes (Reflection pattern)
+- Catch errors early when they're cheap to fix (vs. late when cascade has progressed)
+- Understand context flow (semantic, lineage, operational, policy dimensions)
+- Maintain control over generative process (user validates, AI generates)
+
+This aligns with Stack-Driven's Grade A+ HITL implementation at agent boundaries (plan→implement→review), extending the pattern deeper into the cascade workflow.
+
 ### Command Execution Pattern
 
 Each command follows this pattern:
