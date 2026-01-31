@@ -557,7 +557,7 @@ Sessions must build on each other:
 ### GitHub CLI (`gh`)
 Commands like `/create-gh-issues` and `/implement-issue` use `gh` CLI:
 - Requires GitHub authentication
-- Creates issues with journey traceability
+- Creates issues with journey traceability using scoped labels (see `.github/LABELS.md`)
 - Links issues to backlog files
 - Auto-closes issues via PR body
 

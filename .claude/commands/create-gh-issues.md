@@ -54,27 +54,59 @@ Wait for user to say "yes", "go ahead", "proceed", etc.
 
 ### Step 4: Create Issues (After Confirmation)
 
-Use `gh issue create` for each issue:
+Use `gh issue create` for each issue with **scoped labels** (see `.github/labels.yml` for complete schema).
 
+**Label Detection Logic:**
+
+For EACH issue file, parse the markdown to extract:
+1. **Type** (from first line or "Type:" field): `type::epic`, `type::story`, `type::task`, `type::bug`, `type::legal`, etc.
+2. **Priority** (from "Priority:" field): `priority::p0`, `priority::p1`, `priority::p2`
+3. **Domains** (detect from content):
+   - If mentions "frontend", "UI", "component": add `domain::frontend`
+   - If mentions "backend", "API endpoint", "server": add `domain::backend`
+   - If mentions "database", "schema", "migration": add `domain::database`
+   - If mentions "API contract", "endpoint": add `domain::api`
+   - If mentions "test", "testing": add `domain::testing`
+   - If mentions "infrastructure", "deployment", "CI/CD": add `domain::infrastructure`
+   - If mentions "third-party", "integration", "webhook": add `domain::integration`
+   - If mentions "AI", "prompt", "RAG", "LLM": add `domain::ai`
+   - If mentions "i18n", "translation", "locale": add `domain::i18n`
+   - If mentions "analytics", "metrics", "tracking": add `domain::analytics`
+   - If mentions "design system", "component library": add `domain::design-system`
+   - If mentions "legal", "compliance", "Terms of Service", "Privacy Policy": add `domain::legal`
+   - If mentions "accessibility", "a11y", "WCAG": add `domain::accessibility`
+   - If mentions "documentation", "README", "guide": add `domain::documentation`
+
+**Example: Epic**
 ```bash
 gh issue create \
   --title "[EPIC-01] Onboarding" \
   --body "$(cat product-guidelines/10-backlog/issues/epic-01-onboarding.md)" \
-  --label "epic"
+  --label "type::epic"
 ```
 
+**Example: Story with Multiple Domains**
 ```bash
 gh issue create \
   --title "[STORY-001] OAuth-based signup" \
   --body "$(cat product-guidelines/10-backlog/issues/story-001-oauth-signup.md)" \
-  --label "story,priority:P0"
+  --label "type::story,priority::p0,domain::frontend,domain::backend,domain::database"
 ```
 
-**Labels to Apply**:
-- Epic: `epic`
-- Story: `story`
-- Priority: `priority:P0`, `priority:P1`, `priority:P2`
-- Journey step: `journey:step-1`, `journey:step-2`, etc.
+**Example: Legal Document**
+```bash
+gh issue create \
+  --title "[STORY-042] Privacy Policy" \
+  --body "$(cat product-guidelines/10-backlog/issues/story-042-privacy-policy.md)" \
+  --label "type::legal,priority::p0,domain::legal"
+```
+
+**Label Schema Reference:**
+- **Type** (exactly 1): `type::epic`, `type::story`, `type::task`, `type::bug`, `type::spike`, `type::legal`, `type::migration`
+- **Priority** (exactly 1): `priority::p0` (dark red), `priority::p1` (red-orange), `priority::p2` (orange/yellow)
+- **Domain** (0 to many): `domain::frontend`, `domain::backend`, `domain::database`, `domain::api`, `domain::testing`, `domain::infrastructure`, `domain::monitoring`, `domain::security`, `domain::performance`, `domain::integration`, `domain::ai`, `domain::i18n`, `domain::analytics`, `domain::design-system`, `domain::legal`, `domain::accessibility`, `domain::documentation`
+
+See `.github/LABELS.md` for complete documentation.
 
 ### Step 5: Link Dependencies (If Possible)
 
