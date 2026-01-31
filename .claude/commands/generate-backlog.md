@@ -60,21 +60,30 @@ Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-
 #### Step 2.1: Analyze Journey Phases
 
 Read `product-guidelines/00-user-journey.ctx.md`:
-- Count journey steps (typically 3-5)
+- Count journey steps (typically 3-7)
 - Identify logical phase groupings:
   - **Simple journey (3 steps)**: 2 epics
     - Epic 01: Onboarding & Setup (Steps 1-2)
     - Epic 02: Core Value Delivery (Step 3 - aha moment)
+  - **Medium-Simple journey (4 steps)**: 3 epics
+    - Epic 01: Onboarding & Setup (Steps 1-2)
+    - Epic 02: Core Value Delivery (Step 3 - aha moment)
+    - Epic 03: Results & Follow-up (Step 4)
   - **Medium journey (5 steps)**: 4 epics
     - Epic 01: Discovery (Step 1)
     - Epic 02: Decision (Step 2)
     - Epic 03: Core Value Delivery (Step 3 - aha moment)
     - Epic 04: Results & Expansion (Steps 4-5)
+  - **Medium-Complex journey (6 steps)**: 4-5 epics
+    - Option A (4 epics): Group Steps 1-2, Step 3 (aha), Steps 4-5, Step 6
+    - Option B (5 epics): Separate each phase if steps are distinct
+    - Analyze step descriptions to determine best grouping
   - **Complex journey (7+ steps)**: 5+ epics
     - Analyze step descriptions to group related phases
     - ALWAYS separate aha moment (typically Step 3) into its own epic
+    - Group pre-value steps (1-2), post-value steps (4+) based on thematic coherence
 
-**Principle**: The "aha moment" step deserves its own epic. Group related onboarding/setup steps together. Group related post-value steps together.
+**Principle**: The "aha moment" step deserves its own epic. Group related onboarding/setup steps together. Group related post-value steps together. For edge cases (4 or 6 steps), analyze step descriptions to determine if steps are thematically distinct enough to warrant separate epics.
 
 #### Step 2.2: Add Foundation Epic (Always)
 
@@ -90,8 +99,15 @@ Read `product-guidelines/00-user-journey.ctx.md`:
 
 **Epic: Design System Implementation**
 - **Detection**: Read `product-guidelines/06-design-system.ctx.md` if exists
-- **Criteria**: Add if >20 components OR design-heavy product (check journey behavioral profile from Session 1)
-- **Alternative**: If <20 components, embed design stories within journey epics
+- **Criteria**: Add if >20 components OR design-heavy product
+  - **Design-heavy heuristics** (check journey behavioral profile from Session 1):
+    - Visual-first users: Journey mentions "visual appeal", "aesthetics", "design quality" as critical factors
+    - Multi-platform requirements: Users access product from 3+ device types (desktop, mobile, tablet)
+    - Design-sensitive personas: Users in creative/design-oriented roles (designers, marketers, content creators)
+    - Brand-critical products: Journey emphasizes trust through visual consistency, professional appearance
+    - Consumer-facing: B2C products where first impression drives activation (vs. B2B where functionality dominates)
+  - **Component count threshold**: >20 components = automatic epic creation
+- **Alternative**: If <20 components AND not design-heavy, embed design stories within journey epics
 
 **Epic: Metrics & Analytics**
 - **Detection**: Read `product-guidelines/03b-metrics.ctx.md`
@@ -516,6 +532,14 @@ Use `/templates/issue-template.md` for EVERY story.
 
 ## Validation Checklist
 
+- [ ] **Epic count validation**: Total epic count aligns with journey complexity
+  - 3-step journey: 3-4 epics (2 journey + 1 foundation + 0-1 conditional)
+  - 4-step journey: 4-5 epics (3 journey + 1 foundation + 0-1 conditional)
+  - 5-step journey: 5-7 epics (4 journey + 1 foundation + 0-2 conditional)
+  - 6-step journey: 5-8 epics (4-5 journey + 1 foundation + 0-2 conditional)
+  - 7+ step journey: 6-11 epics (5+ journey + 1 foundation + 0-5 conditional)
+  - **Sanity check**: If >12 epics, verify each conditional epic is truly warranted
+- [ ] **Epic Structure Rationale section exists** in BACKLOG.md explaining why N epics were generated
 - [ ] Every issue references a journey step?
 - [ ] All P0 issues have clear acceptance criteria?
 - [ ] Dependencies are mapped?
@@ -591,5 +615,39 @@ Type "continue" when ready to proceed to Session 11 (push to GitHub).
 ---
 
 ## Output Format
+
+### User-Facing Output
+
+After backlog generation completes, display to the user:
+
+```
+Session 10 complete! Production backlog generated.
+
+Epic Structure Generated:
+  - [X] journey-phase epics (covering user journey steps)
+  - 1 Foundation epic (auth, database, infrastructure, legal)
+  - [Y] conditional epics ([list: Design System, Metrics, AI/ML, i18n, Integrations])
+
+Total Epics: [N] (dynamically generated based on journey complexity)
+
+Backlog Summary:
+  - [Z] user stories (prioritized with RICE)
+  - [A] P0 stories (critical for MVP)
+  - [B] P1 stories (important, post-MVP)
+  - [C] P2 stories (nice-to-have)
+
+Estimated MVP timeline: [W] weeks
+
+Files created:
+  - product-guidelines/10-backlog/BACKLOG.md
+  - product-guidelines/10-backlog/issues/epic-*.md ([N] epic files)
+  - product-guidelines/10-backlog/issues/story-*.md ([Z] story files)
+```
+
+**Epic Structure Rationale Example**:
+"Generated 6 epics because journey has medium complexity (5 steps):
+- 4 journey-phase epics: Discovery (Step 1), Decision (Step 2), Core Value (Step 3 - aha), Results (Steps 4-5)
+- 1 Foundation epic (auth, database, infrastructure, legal)
+- 1 Design System epic (24 components detected, design-heavy product based on behavioral profile)"
 
 IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.

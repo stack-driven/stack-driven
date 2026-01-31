@@ -528,7 +528,9 @@ This section identifies which regulations apply to this product and why, based o
 
 ## Compliance Backlog Stories
 
-**Epic 04: Compliance & Legal**
+**Epic: Foundation (Compliance & Legal)**
+
+> Note: Epic numbering is dynamic based on journey complexity. Compliance stories belong in the Foundation epic, which may be numbered differently depending on your backlog structure (typically Epic 03-06).
 
 ### Story AUTH-001: Implement GDPR Consent Tracking and Management
 
@@ -1128,7 +1130,7 @@ Before finalizing this compliance plan, verify:
 
 1. **Validate Assumptions**: Review this compliance plan with legal counsel (budget $3k-$5k for legal review)
 2. **Prioritize Regulations**: Confirm which regulations are Required vs. Competitive vs. Aspirational
-3. **Add to Backlog**: Import compliance stories to Session 10 backlog (Epic 04: Compliance & Legal)
+3. **Add to Backlog**: Import compliance stories to Session 10 backlog (Foundation epic: Compliance & Legal sub-category)
 4. **Integrate with Session 14**: Use monitoring strategy to add compliance metrics to observability plan
 5. **Schedule Legal Review**: Engage legal counsel for Privacy Policy, Terms of Service, BAA templates
 6. **Procurement**: Evaluate compliance platforms (Vanta, Drata, Secureframe) for SOC2/HIPAA needs

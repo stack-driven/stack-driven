@@ -661,7 +661,7 @@ Priority:
 - SOC2: Access controls, monitoring, incident response, change management
 - PCI-DSS: Payment processor integration, SAQ-A completion
 
-**Organize into Epic 04: Compliance & Legal** (or create new epic if backlog doesn't exist yet)
+**Organize into Foundation Epic: Compliance & Legal** (compliance stories belong in the Foundation epic, which is dynamically numbered based on journey complexity)
 
 **Validation criteria**:
 - [ ] Each story includes RICE prioritization
@@ -775,7 +775,7 @@ Generate the compliance plan following the template structure:
    - Table: Journey Step → Data → Requirement → Implementation → Session → Story → Timeline → Cost
 
 5. **Compliance Backlog Stories**:
-   - Epic 04: Compliance & Legal
+   - Foundation Epic: Compliance & Legal (epic number is dynamic based on journey)
    - 10-20 user stories with RICE prioritization
    - Each story: User story, traceability, acceptance criteria, technical specs, RICE, effort, dependencies, regulations, cost
 
@@ -895,7 +895,7 @@ After running this command:
 
 1. **Review with legal counsel** (budget $3k-$5k for legal review of Privacy Policy, Terms, BAA)
 2. **Validate regulation applicability** (confirm GDPR, HIPAA, SOC2 priorities based on market feedback)
-3. **Add compliance stories to backlog** (import to Session 10 backlog, Epic 04: Compliance & Legal)
+3. **Add compliance stories to backlog** (import to Session 10 backlog, Foundation epic: Compliance & Legal sub-category)
 4. **Integrate with Session 14** (use monitoring strategy to add compliance metrics to observability plan)
 5. **Procurement** (evaluate compliance platforms: Vanta, Drata, Secureframe)
 6. **Timeline alignment** (ensure compliance milestones align with Session 13 deployment plan)
