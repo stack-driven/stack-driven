@@ -53,15 +53,87 @@ Read: product-guidelines/09b-application-architecture.ctx.md
 
 Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
 
-### Step 2: Generate Epic Structure
+### Step 2: Generate Epic Structure (Dynamic, Journey-Driven)
 
-**Create 1 epic per journey step** (typically 3-5 epics):
-- Epic 01: Onboarding (Journey Steps 1-2)
-- Epic 02: Core Value Delivery (Journey Step 3 - THE KEY EPIC)
-- Epic 03: Results & Actions (Journey Steps 4-5)
-- Epic 04: Foundation (Auth, database, infrastructure, legal/compliance)
-- Epic 05: Design System Implementation
-- Epic 06: Metrics & Analytics
+**IMPORTANT**: Epic structure is generative, NOT prescriptive. Analyze cascade outputs to determine appropriate structure.
+
+#### Step 2.1: Analyze Journey Phases
+
+Read `product-guidelines/00-user-journey.ctx.md`:
+- Count journey steps (typically 3-5)
+- Identify logical phase groupings:
+  - **Simple journey (3 steps)**: 2 epics
+    - Epic 01: Onboarding & Setup (Steps 1-2)
+    - Epic 02: Core Value Delivery (Step 3 - aha moment)
+  - **Medium journey (5 steps)**: 4 epics
+    - Epic 01: Discovery (Step 1)
+    - Epic 02: Decision (Step 2)
+    - Epic 03: Core Value Delivery (Step 3 - aha moment)
+    - Epic 04: Results & Expansion (Steps 4-5)
+  - **Complex journey (7+ steps)**: 5+ epics
+    - Analyze step descriptions to group related phases
+    - ALWAYS separate aha moment (typically Step 3) into its own epic
+
+**Principle**: The "aha moment" step deserves its own epic. Group related onboarding/setup steps together. Group related post-value steps together.
+
+#### Step 2.2: Add Foundation Epic (Always)
+
+**Epic: Foundation** (always required for MVP)
+- Authentication & authorization
+- Database setup & migrations
+- Infrastructure (CI/CD, deployment)
+- Legal/compliance (Terms of Service, Privacy Policy, Cookie Policy, DPA)
+- Integration infrastructure (if third-party APIs exist)
+- Error handling & logging baseline
+
+#### Step 2.3: Detect and Add Conditional Epics
+
+**Epic: Design System Implementation**
+- **Detection**: Read `product-guidelines/06-design-system.ctx.md` if exists
+- **Criteria**: Add if >20 components OR design-heavy product (check journey behavioral profile from Session 1)
+- **Alternative**: If <20 components, embed design stories within journey epics
+
+**Epic: Metrics & Analytics**
+- **Detection**: Read `product-guidelines/03b-metrics.ctx.md`
+- **Criteria**: Add if complex funnel tracking, multi-stage conversion, or experimentation needed
+- **Alternative**: If simple metrics, add instrumentation as acceptance criteria in journey stories
+
+**Epic: AI/ML Features**
+- **Detection**: Check if `product-guidelines/02c-ai-integration-strategy.ctx.md` exists
+- **Criteria**: Add if AI is core to value delivery (not peripheral)
+- **Contains**: Prompt engineering, RAG setup, model routing, cost monitoring
+- **Alternative**: If AI is peripheral, embed in journey epics
+
+**Epic: i18n/l10n**
+- **Detection**: Read `product-guidelines/02a-constraints.ctx.md`
+- **Criteria**: Add if "Internationalization requirements (i18n, l10n)" marked as required
+- **Alternative**: If single market MVP, skip or embed i18n infrastructure in Foundation epic
+
+**Epic: Third-Party Integrations**
+- **Detection**: Read `product-guidelines/02a-constraints.ctx.md`
+- **Criteria**: Add if 3+ third-party APIs (Stripe, SendGrid, Salesforce, etc.)
+- **Alternative**: If 0-2 integrations, embed integration stories in journey epics
+
+#### Step 2.4: Generate Epic Structure Explanation
+
+Create an "Epic Structure Rationale" section for BACKLOG.md explaining:
+- Total epic count and breakdown (X journey epics + 1 foundation + Y conditional)
+- Why journey-phase epics were grouped this way
+- Which conditional epics were included and why
+- Alignment with Stack-Driven generative philosophy
+
+**Example explanation**:
+"Generated 4 epics because journey has simple 3-step flow (2 journey epics: Onboarding & Setup, Core Value Delivery) + Foundation epic + Design System epic (24 components detected in Session 6, design-heavy product based on journey behavioral profile)."
+
+**Threshold Rationale**:
+- **20+ components**: Based on analysis of typical design systems:
+  - <10 components = basic UI (embed in journey epics)
+  - 10-20 components = moderate complexity (borderline case, check behavioral profile)
+  - 20+ components = dedicated design system warranted
+- **3+ integrations**: Threshold for dedicated epic:
+  - 1-2 integrations = embed in journey epics
+  - 3+ integrations = complexity warrants dedicated epic for integration infrastructure
+- **Complex funnel**: Multi-stage conversion with dropout analysis at each stage
 
 ### Step 3: Generate User Stories (30-50 total)
 
@@ -95,13 +167,13 @@ Value: Reduces signup friction, improves activation rate (key metric).
 Tech Stack: Clerk for auth, PostgreSQL for user storage, Next.js frontend
 
 ## Dependencies
-Blocked By: EPIC-04 (Database schema setup)
+Blocked By: Foundation Epic (Database schema setup)
 
 ## Estimation
 Effort: 2 days (1 day Clerk integration, 1 day user creation flow)
 ```
 
-**Required Foundation Stories (Epic 04)**:
+**Required Foundation Stories (Foundation Epic)**:
 
 Every backlog MUST include these legal/compliance stories:
 - **Terms of Service/Conditions**: Legal agreement users accept when signing up
@@ -115,7 +187,7 @@ These are P0 priorities - production applications cannot launch without them.
 
 For EACH third-party integration identified in Session 2a, create stories following these patterns:
 
-#### Integration Infrastructure (Epic 04) - Create Once
+#### Integration Infrastructure (Foundation Epic) - Create Once
 Before individual integration stories, create shared infrastructure:
 - [ ] **Integration credential storage**: Database schema (integration_credentials table), encryption setup (application-layer encryption using libsodium or similar)
 - [ ] **Webhook infrastructure** (if webhooks exist): Endpoint routing, signature verification middleware, async processing queue (Redis/SQS), background workers
@@ -258,14 +330,14 @@ When AI integration strategy is present, include these stories based on the chos
 
 Check `product-guidelines/02a-constraints.ctx.md` for "Internationalization requirements (i18n, l10n)" marked as required.
 
-When i18n is required, include these Epic 04 foundation stories:
+When i18n is required, include these foundation stories in the Foundation epic:
 
 **i18n Infrastructure Setup**:
 ```markdown
 # [STORY-XXX] Set up i18n translation file structure
 
 Type: Story
-Epic: Epic 04 (Foundation)
+Epic: Foundation
 Priority: P0
 
 ## User Value
@@ -297,7 +369,7 @@ Effort: 2 days (1 day structure and config, 1 day locale detection logic)
 # [STORY-XXX] Implement locale switching UI component
 
 Type: Story
-Epic: Epic 04 (Foundation)
+Epic: Foundation
 Priority: P0
 
 ## User Value
@@ -329,7 +401,7 @@ Effort: 1.5 days
 # [STORY-XXX] Extract hardcoded UI strings to translation files
 
 Type: Story
-Epic: Epic 04 (Foundation)
+Epic: Foundation
 Priority: P1 (can be done incrementally per feature)
 
 ## User Value
@@ -385,7 +457,7 @@ For each story, note:
 
 Example:
 - STORY-001 (OAuth) blocks STORY-010 (User dashboard)
-- STORY-001 blocked by EPIC-04 (Database setup)
+- STORY-001 blocked by Foundation Epic (Database setup)
 
 ## Generating the Output
 
@@ -404,10 +476,31 @@ product-guidelines/10-backlog/
 
 ### BACKLOG.md Contents:
 
-- Epic summary (6-8 epics)
+- Epic summary (dynamically generated: 3-10+ epics based on journey complexity)
+- Epic Structure Rationale (explaining why N epics were generated)
 - Priority distribution (X P0 stories, Y P1, Z P2)
 - Estimated timeline (total effort in weeks)
 - Journey mapping (which stories serve which journey steps)
+
+**Epic Structure Rationale Section Format**:
+```markdown
+## Epic Structure Rationale
+
+Generated [N] epics based on journey analysis:
+
+**Journey-Phase Epics ([X] epics)**:
+- Epic 01: [Name] (Journey Steps [X-Y])
+- Epic 02: [Name] (Journey Step [Z] - aha moment)
+- ...
+
+**Foundation Epic**:
+- Epic [N]: Foundation (auth, database, infrastructure, legal/compliance)
+
+**Conditional Epics ([Y] epics)**:
+- Epic [N]: [Design System/Metrics/AI/i18n/Integrations] (reason: [detection criteria])
+
+This structure aligns with Stack-Driven's generative philosophy: journey-driven decisions, not prescriptive templates.
+```
 
 ### Issue File Contents:
 
