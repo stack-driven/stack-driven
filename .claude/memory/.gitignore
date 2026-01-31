@@ -1,0 +1,8 @@
+# Ignore all tracking JSON files (user-specific debugging state)
+*.json
+
+# Ignore optional metrics tracking
+metrics.json
+
+# Keep .gitignore itself
+!.gitignore

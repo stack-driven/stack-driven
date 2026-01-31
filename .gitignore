@@ -44,3 +44,6 @@ gha-creds-*.json
 # Review artifacts (generated during code review)
 pr-review*.md
 issue-*-evaluation.md
+
+# Debugging memory (user-specific tracking state)
+.claude/memory/*.json

@@ -1,0 +1,129 @@
+# Stack-Driven Label Schema
+# Usage: gh label sync --repo bru-digital/stack-driven --file .github/labels.yml
+# Clone to new repos: gh label clone bru-digital/stack-driven --repo yourorg/new-repo
+
+# ==============================================================================
+# TYPE LABELS (Exactly one per issue)
+# ==============================================================================
+# Color: #5843AD (purple) - for type category consistency
+
+- name: "type::epic"
+  description: "Collection of related stories"
+  color: "5843AD"
+
+- name: "type::story"
+  description: "User story delivering journey value"
+  color: "5843AD"
+
+- name: "type::task"
+  description: "Technical task (no direct user value, enables other work)"
+  color: "5843AD"
+
+- name: "type::bug"
+  description: "Something broken"
+  color: "5843AD"
+
+- name: "type::spike"
+  description: "Research/investigation task"
+  color: "5843AD"
+
+- name: "type::legal"
+  description: "Legal/compliance document (Terms, Privacy Policy, etc.)"
+  color: "5843AD"
+
+- name: "type::migration"
+  description: "Database migration or breaking change"
+  color: "5843AD"
+
+# ==============================================================================
+# DOMAIN LABELS (0 to many - can combine multiple domains per issue)
+# ==============================================================================
+# Color: #1D76DB (blue) - for domain category consistency
+
+# Core Technical Domains
+- name: "domain::frontend"
+  description: "UI/UX, components, client-side logic"
+  color: "1D76DB"
+
+- name: "domain::backend"
+  description: "Server-side logic, business rules"
+  color: "1D76DB"
+
+- name: "domain::database"
+  description: "Schema, migrations, queries, indexes"
+  color: "1D76DB"
+
+- name: "domain::api"
+  description: "API endpoints, contracts, specifications"
+  color: "1D76DB"
+
+- name: "domain::testing"
+  description: "Test infrastructure, test cases"
+  color: "1D76DB"
+
+# Infrastructure & Operations
+- name: "domain::infrastructure"
+  description: "DevOps, deployment, CI/CD, hosting"
+  color: "1D76DB"
+
+- name: "domain::monitoring"
+  description: "Observability, logging, alerting, metrics"
+  color: "1D76DB"
+
+- name: "domain::security"
+  description: "Auth, encryption, vulnerability fixes"
+  color: "1D76DB"
+
+- name: "domain::performance"
+  description: "Optimization, caching, scaling"
+  color: "1D76DB"
+
+# Specialized Domains
+- name: "domain::integration"
+  description: "Third-party API/webhook integrations"
+  color: "1D76DB"
+
+- name: "domain::ai"
+  description: "AI/ML features, prompts, RAG, model routing"
+  color: "1D76DB"
+
+- name: "domain::i18n"
+  description: "Internationalization, localization, translations"
+  color: "1D76DB"
+
+- name: "domain::analytics"
+  description: "Metrics tracking, instrumentation, dashboards"
+  color: "1D76DB"
+
+- name: "domain::design-system"
+  description: "Design components, patterns, style guide"
+  color: "1D76DB"
+
+- name: "domain::legal"
+  description: "Compliance, legal documents, policies"
+  color: "1D76DB"
+
+- name: "domain::accessibility"
+  description: "a11y improvements, WCAG compliance"
+  color: "1D76DB"
+
+- name: "domain::documentation"
+  description: "Guides, READMEs, API docs, tutorials"
+  color: "1D76DB"
+
+# ==============================================================================
+# PRIORITY LABELS (Exactly one per issue)
+# ==============================================================================
+# Color-coded by urgency: Dark red → Red-orange → Orange/Yellow
+
+- name: "priority::p0"
+  description: "Critical MVP blocker (must ship for launch)"
+  color: "B60205"
+
+- name: "priority::p1"
+  description: "Important early feature (ship within 4 weeks post-MVP)"
+  color: "D93F0B"
+
+- name: "priority::p2"
+  description: "Nice to have, deferred (backlog for later)"
+  color: "FBCA04"

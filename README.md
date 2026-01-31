@@ -240,6 +240,11 @@ Stack-Driven commands fall into two distinct phases:
 **Documentation Maintenance**:
 - `/update-claudemd` - Automatically update CLAUDE.md based on recent code changes
 
+**Debugging & Issue Resolution**:
+- `/fix-bug [issue-number]` - Fix bugs using hypothesis-driven debugging with intelligent loop prevention
+- `/address-review [pr-number]` - Apply code review feedback directly to existing PR with test validation
+- `/distill-logs [file|paste]` - Extract essential debugging info from verbose logs (500+ lines → 5-10 lines)
+
 **GitHub Workflows** (Used by implementation commands):
 - `gh issue view [number]` - Fetch issue details
 - `gh issue comment [number]` - Post implementation plan to issue
@@ -344,7 +349,7 @@ product-guidelines/
 
 ### `/.claude/commands/` - The Cascade Commands
 
-The slash commands that power the cascade (35 total). These prompt AI to read previous outputs and generate next steps.
+The slash commands that power the cascade (38 total). These prompt AI to read previous outputs and generate next steps.
 
 ### `/templates/` - Blank Starting Points
 
