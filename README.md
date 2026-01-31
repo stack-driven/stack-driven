@@ -349,7 +349,7 @@ product-guidelines/
 
 ### `/.claude/commands/` - The Cascade Commands
 
-The slash commands that power the cascade (35 total). These prompt AI to read previous outputs and generate next steps.
+The slash commands that power the cascade (38 total). These prompt AI to read previous outputs and generate next steps.
 
 ### `/templates/` - Blank Starting Points
 
