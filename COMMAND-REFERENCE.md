@@ -1,17 +1,17 @@
 # Command Reference
 
-Quick reference for all 35 Stack-Driven slash commands.
+Quick reference for all 38 Stack-Driven slash commands.
 
 ---
 
 ## Overview
 
-Stack-Driven includes **35 slash commands** organized into four categories:
+Stack-Driven includes **38 slash commands** organized into four categories:
 
 1. **Core Cascade Commands** (19) - Sequential framework sessions (1-14)
 2. **Post-Cascade Extensions** (9) - Optional deep-dive sessions
 3. **Meta Commands** (2) - Framework management
-4. **Development Commands** (5) - Code review and implementation workflow
+4. **Development Commands** (8) - Code review, implementation, and debugging workflow
 
 **For detailed philosophy and cascade flow**, see README.md and CLAUDE.md.
 
@@ -75,6 +75,9 @@ Stack-Driven includes **35 slash commands** organized into four categories:
 | `/plan-issue [issue-number]` | Before implementation | Create detailed implementation plan for GitHub issue |
 | `/implement-issue [issue-number]` | During development | Implement GitHub issue following approved plan and create PR |
 | `/update-claudemd` | After code changes | Automatically update CLAUDE.md file based on recent code changes |
+| `/fix-bug [issue-number]` | Bug reported in issue | Fix bugs using hypothesis-driven debugging with intelligent loop prevention |
+| `/address-review [pr-number]` | PR has review feedback | Apply code review feedback directly to existing PR with test validation |
+| `/distill-logs [file\|paste]` | Verbose error logs | Extract essential debugging info from verbose logs (500+ lines → 5-10 lines) |
 
 ---
 
