@@ -52,7 +52,40 @@ Proceed? (I'll wait for your confirmation before creating anything)
 
 Wait for user to say "yes", "go ahead", "proceed", etc.
 
-### Step 4: Create Issues (After Confirmation)
+### Step 3.5: Sync Labels to GitHub
+
+**Before creating issues**, ensure all labels from `.github/labels.yml` exist in the repository:
+
+```bash
+# Parse labels.yml and create/update labels
+echo "Syncing labels to GitHub..."
+
+while IFS= read -r line; do
+  if [[ $line =~ ^-\ name:\ \"(.+)\"$ ]]; then
+    name="${BASH_REMATCH[1]}"
+  elif [[ $line =~ ^\ \ description:\ \"(.+)\"$ ]]; then
+    description="${BASH_REMATCH[1]}"
+  elif [[ $line =~ ^\ \ color:\ \"(.+)\"$ ]]; then
+    color="${BASH_REMATCH[1]}"
+    # Create or update label (--force creates if missing, updates if exists)
+    gh label create "$name" --description "$description" --color "$color" --force 2>/dev/null || \
+    gh label edit "$name" --description "$description" --color "$color" 2>/dev/null
+  fi
+done < .github/labels.yml
+
+echo "✓ Labels synced successfully!"
+```
+
+**Why this step:**
+- Ensures all scoped labels (type::, domain::, priority::) exist before applying them to issues
+- Safe to run multiple times (idempotent - updates existing labels to match labels.yml)
+- Prevents "label not found" errors during issue creation
+
+**If .github/labels.yml doesn't exist:**
+- Skip this step
+- Warn user: "No .github/labels.yml found. Issues will be created without scoped labels."
+
+### Step 4: Create Issues (After Label Sync)
 
 Use `gh issue create` for each issue with **scoped labels** (see `.github/labels.yml` for complete schema).
 
