@@ -1288,14 +1288,29 @@ Before considering this session complete:
 - [ ] Scale-forward strategy for MVP → Growth → Maturity
 
 **Security Coverage (OWASP API Top 10 2023)**:
-- [ ] API1 (BOLA) - Analyzed for user-owned resources
-- [ ] API3 (Property-Level Auth) - Analyzed for sensitive fields
-- [ ] API5 (BFLA) - Analyzed for admin/owner endpoints
-- [ ] API6 (Business Flows) - Analyzed for abuse scenarios (password reset, orders, invitations)
-- [ ] API7 (SSRF) - Analyzed for user-provided URLs
-- [ ] API8 (Security Misconfiguration) - Security headers documented
-- [ ] API10 (Unsafe API Consumption) - Analyzed for third-party API dependencies
-- [ ] Input validation strategy complete with sanitization rules
+- [ ] API1 (BOLA) - Analyzed for user-owned resources with ownership check patterns
+- [ ] API3 (Property-Level Auth) - Analyzed for sensitive fields with field-level filtering
+- [ ] API5 (BFLA) - Analyzed for admin/owner endpoints with role enforcement
+- [ ] API6 (Business Flows) - Analyzed for abuse scenarios with business logic rate limiting
+- [ ] API7 (SSRF) - Analyzed for user-provided URLs with IP blocking and allowlists
+- [ ] API8 (Security Misconfiguration) - Security headers documented (HSTS, CSP, X-Content-Type-Options, X-Frame-Options)
+- [ ] API10 (Unsafe API Consumption) - Analyzed for third-party API dependencies with timeout/circuit breaker patterns
+- [ ] Input validation strategy complete with schema validation and sanitization rules
+- [ ] All OWASP patterns trace to specific journey steps or database tables (Session 7)
+
+**Resilience & Performance Coverage**:
+- [ ] Idempotency patterns documented for POST/PATCH endpoints (especially financial operations)
+- [ ] Retry-After headers specified for 429/503 responses
+- [ ] Circuit breaker configuration documented for third-party API consumption
+- [ ] HTTP caching strategy documented (if REST/HTTP-based paradigm) with ETag and Cache-Control
+- [ ] Compression strategy documented (gzip/Brotli) with size thresholds
+- [ ] Performance metrics linked to Session 14 observability (cache hit rate, bandwidth savings, 304 rate)
+
+**Developer Experience (REST APIs)**:
+- [ ] REST design patterns documented (if paradigm = REST): resource naming, HTTP verbs, query parameters
+- [ ] API documentation standards complete: camelCase/snake_case, timestamps (ISO 8601), UUIDs, null handling
+- [ ] Pagination Link headers specified (rel="next", rel="prev")
+- [ ] Response envelope consistency documented
 
 **Technical Quality**:
 - [ ] Paradigm choice matches tech stack capabilities (Session 3)
