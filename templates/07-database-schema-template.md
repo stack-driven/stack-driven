@@ -538,13 +538,28 @@ CREATE INDEX idx_external_mappings_provider ON external_resource_mappings(provid
 
 ## Indexes Strategy
 
+### Specialized Index Types (PostgreSQL 17)
+
+**IF using PostgreSQL**, document index type choices:
+
+- **B-tree indexes** (default): [List indexes] - Used for foreign keys, equality, range queries
+- **GIN indexes** (JSONB/arrays): [List indexes] - Used for JSONB containment queries (`@>`, `?`), 10-100x faster than B-tree
+- **BRIN indexes** (time-series): [List indexes] - Used for massive tables (>10M rows), 99% smaller than B-tree
+- **GiST indexes** (spatial): [List indexes] - Used for geometric/spatial data
+
+**Validation**:
+- [ ] All JSONB columns queried with containment operators have GIN indexes
+- [ ] Time-ordered tables >1M rows use BRIN indexes on timestamp columns
+- [ ] All foreign keys have B-tree indexes
+- [ ] Ran `EXPLAIN ANALYZE` to verify no Seq Scan on large tables
+
 ### Query Patterns from Backlog
 
 **Pattern 1: [Description of common query]**
 ```sql
 SELECT * FROM [table] WHERE [conditions] ORDER BY [column];
 ```
-- **Index**: `idx_[name]` on ([columns])
+- **Index**: `idx_[name]` on ([columns]) **[Type: B-tree/GIN/BRIN]**
 - **Reasoning**: [Why this index optimizes this query]
 - **Estimated Frequency**: [How often - based on journey step usage]
 
@@ -558,9 +573,100 @@ SELECT * FROM [table] WHERE [conditions] ORDER BY [column];
 - **Sort Indexes**: [Count] (for ORDER BY clauses)
 - **Composite Indexes**: [Count] (for multi-column queries)
 - **Partial Indexes**: [Count] (for filtered queries)
+- **Specialized Indexes**: [Count GIN + BRIN + GiST] (for JSONB, time-series, spatial)
 
 **Reasoning for each composite index**:
 - `idx_[name]` ([col1], [col2]): [Query pattern it serves + why this column order]
+
+---
+
+## Multi-Tenancy & Row-Level Security
+
+**IF** architecture uses multi-tenant pattern (from Session 4), document RLS policies:
+
+### Row-Level Security Policies
+
+**Tenant Isolation Pattern**:
+```sql
+-- Enable RLS on tenant-scoped tables
+ALTER TABLE [table] ENABLE ROW LEVEL SECURITY;
+ALTER TABLE [table] FORCE ROW LEVEL SECURITY;
+
+-- Create isolation policy
+CREATE POLICY tenant_isolation_policy ON [table]
+  FOR ALL
+  USING (team_id = current_setting('app.tenant_id', true)::UUID);
+```
+
+**Tables with RLS**:
+- [ ] `[table1]` - Tenant-scoped via `team_id`
+- [ ] `[table2]` - Tenant-scoped via `team_id`
+
+**Security Validation**:
+- [ ] Tested tenant isolation (SET app.tenant_id → verify filtered results)
+- [ ] FORCE RLS enabled (prevents superuser bypass)
+- [ ] Application sets `app.tenant_id` in middleware
+
+**Why RLS chosen**: [Defense-in-depth for Session 2a compliance requirements / multi-tenant SaaS pattern]
+
+**IF NOT multi-tenant**: Skip this section.
+
+---
+
+## GDPR Compliance Patterns
+
+**IF** Session 2a marks GDPR as required OR product serves EU users:
+
+### Right to Erasure Workflow
+
+**Multi-Layer Deletion Pattern**:
+
+**Phase 1 - Soft Delete** (30-day safety period):
+```sql
+UPDATE users SET deleted_at = NOW() WHERE id = $user_id;
+-- Notify external integrations (Stripe, SendGrid)
+```
+
+**Phase 2 - Upstream Deletion** (event streams):
+```sql
+-- Remove from Kafka topics, Redis cache
+DELETE FROM kafka_offset_tracking WHERE user_id = $user_id;
+```
+
+**Phase 3 - Hard Delete** (30 days later):
+```sql
+DELETE FROM users WHERE id = $user_id AND deleted_at < NOW() - INTERVAL '30 days';
+
+-- Anonymize audit logs
+UPDATE audit_log SET old_data = jsonb_set(old_data, '{email}', '"[REDACTED]"'::jsonb) WHERE user_id = $user_id;
+```
+
+**Phase 4 - Physical Purge**:
+```sql
+VACUUM FULL users; -- PostgreSQL
+-- or VACUUM TABLE users; -- Snowflake
+```
+
+**Validation Checklist**:
+- [ ] User data deleted from all tables (CASCADE)
+- [ ] Audit logs anonymized (PII → `[REDACTED]`)
+- [ ] External integrations notified (webhooks)
+- [ ] Event streams purged (Kafka, Redis)
+- [ ] Data warehouse time-travel snapshots purged
+- [ ] Deletion logged in compliance audit trail
+
+**PII Masking for Dev/Test**:
+```sql
+-- Anonymize production snapshot for staging
+UPDATE users SET email = md5(email::text) || '@example.com' WHERE TRUE;
+```
+
+**Retention Exceptions**:
+- Financial records: 7 years (legal requirement)
+- Fraud prevention: Hashed identifiers only
+- Aggregated analytics: No PII
+
+**IF GDPR NOT required**: Skip this section.
 
 ---
 
@@ -631,6 +737,61 @@ SELECT * FROM [table] WHERE [conditions] ORDER BY [column];
 
 ---
 
+## Zero-Downtime Migration Strategies
+
+**For production deployments**, document migration approach:
+
+### Migration Pattern Used
+
+**Pattern**: [Expand-Contract / Online Index Creation / Blue-Green / CDC / Shadow Testing]
+
+**Reason chosen**: [Based on team size, downtime tolerance, data size from Session 2a]
+
+**Example: Expand-Contract for Column Rename**
+
+**Phase 1 - Expand**:
+```sql
+-- Add new column
+ALTER TABLE users ADD COLUMN full_name TEXT;
+
+-- Backfill in batches
+UPDATE users SET full_name = name WHERE full_name IS NULL LIMIT 1000;
+
+-- Add index without blocking
+CREATE INDEX CONCURRENTLY idx_users_full_name ON users(full_name);
+```
+
+**Phase 2 - Migrate** (application writes to BOTH columns)
+**Phase 3 - Contract** (drop old column after validation)
+
+**Downtime**: [0 seconds / 10-30 seconds / planned maintenance window]
+
+**Migration Validation Checklist**:
+- [ ] Tested on staging with production-size dataset
+- [ ] Rollback plan documented
+- [ ] Monitoring alerts configured (lag, errors, latency)
+- [ ] Lock timeout set: `SET lock_timeout = '5s'`
+- [ ] Index creation uses CONCURRENTLY (PostgreSQL)
+- [ ] Large updates batched (1000-10000 rows/transaction)
+
+**IF NOT production deployment**: Simplified migrations acceptable.
+
+---
+
+## Schema Anti-Patterns to Avoid
+
+Document anti-patterns avoided in this schema:
+
+- [ ] **Missing FK indexes**: All foreign keys have B-tree indexes for join performance
+- [ ] **UUID without default**: All UUIDs use `DEFAULT gen_random_uuid()`
+- [ ] **TIMESTAMP without TZ**: All timestamps use TIMESTAMPTZ (timezone-aware)
+- [ ] **Low-cardinality indexes**: Booleans use partial indexes (`WHERE active = true`)
+- [ ] **JSONB without GIN**: All JSONB columns queried with `@>` have GIN indexes
+- [ ] **No CHECK constraints**: All enum-like fields have CHECK constraints
+- [ ] **Over-normalization**: Address embedded in users (not separate table)
+
+---
+
 ## Query Examples
 
 ### Critical Path Queries (Journey Steps 1-3)
@@ -648,6 +809,28 @@ SELECT * FROM [table] WHERE [conditions] ORDER BY [column];
 
 **Query 2: [Description]**
 [Continue for 3-5 most critical queries]
+
+### N+1 Query Prevention
+
+**Pattern**: ORM configured to avoid N+1 queries
+
+**Example (GOOD - 1 query with JOIN)**:
+```typescript
+const usersWithDocs = await db.query(`
+  SELECT
+    u.*,
+    json_agg(d.*) AS documents
+  FROM users u
+  LEFT JOIN documents d ON u.id = d.user_id
+  GROUP BY u.id
+  LIMIT 100
+`);
+```
+
+**Validation**:
+- [ ] All list endpoints use JOINs, not loops
+- [ ] ORM configured with eager loading for relationships
+- [ ] Query count logged in development (warn if >5 queries per request)
 
 ### Billing/Analytics Queries
 
@@ -699,6 +882,24 @@ ORDER BY month DESC;
 ---
 
 ## Scaling Considerations
+
+### Tail Latency Optimization (p99)
+
+**Metrics tracked**:
+- p50 latency: [Xms]
+- p95 latency: [Xms]
+- **p99 latency**: [Xms] ← Target: <200ms for critical path
+
+**Slow query monitoring**:
+```sql
+-- Find p99 slow queries
+SELECT query, mean_exec_time, max_exec_time
+FROM pg_stat_statements
+ORDER BY max_exec_time DESC
+LIMIT 10;
+```
+
+**SLO**: p99 latency <200ms for journey steps 1-3
 
 ### Current Scale Estimate (from journey/metrics)
 

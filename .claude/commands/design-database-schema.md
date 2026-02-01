@@ -138,6 +138,67 @@ Journey Step 4: User reviews and shares report
 
 ---
 
+### Step 2-Hybrid: Hybrid/Polyglot Architecture Decision Tree
+
+**Modern Pattern**: Combine specialized databases for optimal performance (polyglot persistence)
+
+**When to use multiple databases**:
+
+```
+IF >80% of queries hit cache layer (sessions, rate limits)
+  → Add Redis (in-memory, sub-millisecond latency)
+
+IF >1M timestamped events per day (metrics, logs, IoT)
+  → Add TimescaleDB/InfluxDB (10-20x better compression)
+
+IF complex graph traversals (social network, fraud detection)
+  → Add Neo4j (O(1) relationship queries vs O(n²) in SQL)
+
+IF full-text search required (product search, documentation)
+  → Add Elasticsearch (inverted indexes, fuzzy matching)
+```
+
+**Example Architecture** (SaaS application):
+
+```
+┌──────────────┐
+│ PostgreSQL   │ ← Primary data store (users, billing, transactions)
+└──────┬───────┘   - ACID guarantees
+       │           - Complex relationships
+       │           - Source of truth
+       ↓
+┌──────────────┐
+│ Redis        │ ← Cache layer (sessions, rate limits, leaderboards)
+└──────┬───────┘   - TTL-based eviction
+       │           - Pub/sub for real-time
+       │           - 10-100x faster than PostgreSQL
+       ↓
+┌──────────────┐
+│ TimescaleDB  │ ← Observability (metrics, logs, traces)
+└──────────────┘   - Time-bucketed storage
+                    - Continuous aggregates
+                    - 90-day retention → archive
+```
+
+**Data Flow**:
+1. Write to PostgreSQL (source of truth)
+2. Cache in Redis (read-through pattern)
+3. Stream metrics to TimescaleDB (async)
+
+**Trade-offs**:
+- Optimal performance per use case
+- Operational complexity (3 databases to maintain)
+- Data consistency challenges (eventual consistency across stores)
+
+**When NOT to use polyglot**:
+- Team <3 engineers (operational burden too high)
+- MVP stage (premature optimization)
+- Simple CRUD app (PostgreSQL sufficient)
+
+**If single database chosen**: Skip this subsection and proceed with i18n requirements.
+
+---
+
 ### Step 2a: Check for Internationalization (i18n) Requirements
 
 **If constraints file exists**, check for i18n requirement:
@@ -227,7 +288,75 @@ Entities NOT requiring translation:
 
 ---
 
-### Step 2b: Check for Integration Requirements
+### Step 2b: Implement Row-Level Security (RLS) for Multi-Tenancy
+
+**Check Session 4**: If architecture uses multi-tenant pattern (shared schema with team-based isolation), implement Row-Level Security for defense-in-depth data protection.
+
+**Why RLS is the 2025 standard**:
+- Defense-in-depth: Prevents data leakage from coding errors
+- Database-level enforcement: Cannot be bypassed by application bugs
+- Compliance-ready: Required for SOC2, ISO 27001 certification
+
+**Step 1: Enable RLS on tenant-scoped tables**
+```sql
+ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assessments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE usage_events ENABLE ROW LEVEL SECURITY;
+```
+
+**Step 2: Create tenant isolation policy using session variable**
+```sql
+-- Policy: Users can only see their team's data
+CREATE POLICY tenant_isolation_policy ON documents
+  FOR ALL
+  USING (team_id = current_setting('app.tenant_id', true)::UUID);
+
+CREATE POLICY tenant_isolation_policy ON assessments
+  FOR ALL
+  USING (team_id = current_setting('app.tenant_id', true)::UUID);
+```
+
+**Step 3: Force policy for all roles (prevents superuser bypass)**
+```sql
+ALTER TABLE documents FORCE ROW LEVEL SECURITY;
+ALTER TABLE assessments FORCE ROW LEVEL SECURITY;
+```
+
+**Application Integration** (Node.js example):
+```typescript
+// Set tenant context at request start (middleware)
+await db.query('SET app.tenant_id = $1', [user.teamId]);
+
+// All subsequent queries automatically filtered by RLS
+const docs = await db.query('SELECT * FROM documents');
+// Returns only current tenant's docs, even with SELECT *
+```
+
+**Security Validation**:
+```sql
+-- Test tenant isolation
+SET app.tenant_id = '00000000-0000-0000-0000-000000000001';
+SELECT * FROM documents; -- Should only see Team 1 docs
+
+SET app.tenant_id = '00000000-0000-0000-0000-000000000002';
+SELECT * FROM documents; -- Should only see Team 2 docs
+```
+
+**When to use RLS**:
+- Multi-tenant SaaS with shared schema (team_id on every table)
+- Compliance requirements (HIPAA, SOC2, GDPR)
+- High-risk data (financial, healthcare, PII)
+
+**When NOT to use RLS**:
+- Separate database per tenant (physical isolation)
+- Single-tenant applications
+- Performance-critical systems (adds ~5-10% query overhead)
+
+**If multi-tenancy is NOT required**: Skip this subsection and proceed with integration requirements.
+
+---
+
+### Step 2c: Check for Integration Requirements
 
 **Check Session 2a for third-party integrations**: If `product-guidelines/02a-constraints.ctx.md` identifies external system integrations, add integration-specific tables to the schema.
 
@@ -405,6 +534,105 @@ CREATE INDEX idx_external_mappings_provider ON external_resource_mappings(provid
 
 ---
 
+### Step 2d: GDPR Compliance Patterns
+
+**Check Session 2a**: If GDPR compliance marked as required OR product serves EU users, implement Right to Erasure workflow.
+
+**The Problem**: Standard `DELETE` leaves data in backups, replicas, event logs, and cloud storage time-travel snapshots.
+
+**Multi-Layer Deletion Pattern** (required for complete data removal):
+
+```sql
+-- PHASE 1: Soft Delete (30-day safety period)
+UPDATE users
+SET deleted_at = NOW(),
+    deletion_requested_by = 'user_request'
+WHERE id = $user_id;
+
+-- Notify external integrations immediately
+-- POST to Stripe API: DELETE /customers/{id}
+-- POST to SendGrid API: DELETE /contacts/{id}
+
+-- PHASE 2: Upstream Deletion (event streams)
+-- Remove from Kafka topics, Redis cache, message queues
+DELETE FROM kafka_offset_tracking WHERE user_id = $user_id;
+-- REDIS DEL user:session:{user_id};
+
+-- PHASE 3: Hard Delete After Verification (30 days later)
+BEGIN;
+  -- Delete user-owned data (CASCADE handles relationships)
+  DELETE FROM users
+  WHERE id = $user_id
+    AND deleted_at < NOW() - INTERVAL '30 days';
+
+  -- Anonymize audit logs (retain compliance records but remove PII)
+  UPDATE audit_log
+  SET old_data = jsonb_set(old_data, '{email}', '"[REDACTED]"'::jsonb),
+      new_data = jsonb_set(new_data, '{email}', '"[REDACTED]"'::jsonb)
+  WHERE user_id = $user_id;
+
+  -- Anonymize analytics events (preserve metrics, remove identity)
+  UPDATE analytics_events
+  SET user_id = '00000000-0000-0000-0000-000000000000',
+      properties = properties - 'email' - 'name' - 'phone'
+  WHERE user_id = $user_id;
+COMMIT;
+
+-- PHASE 4: Physical Purge (reclaim disk space)
+VACUUM FULL users; -- PostgreSQL: Physically removes deleted rows
+```
+
+**For Cloud Data Warehouses** (Snowflake, Databricks):
+```sql
+-- Override 30-day time travel retention (critical for GDPR)
+DELETE FROM bronze.user_events WHERE user_id = $user_id;
+VACUUM TABLE bronze.user_events; -- Snowflake
+-- or
+PURGE TABLE bronze.user_events; -- Databricks
+
+-- Verify time-travel snapshots deleted
+SELECT * FROM bronze.user_events AT (TIMESTAMP => DATEADD(day, -1, CURRENT_TIMESTAMP()))
+WHERE user_id = $user_id; -- Should return 0 rows
+```
+
+**GDPR Deletion Validation Checklist**:
+- [ ] User data deleted from all application tables (via CASCADE)
+- [ ] Audit logs anonymized (PII replaced with `[REDACTED]`)
+- [ ] External integrations notified (webhooks sent to Stripe, SendGrid, etc.)
+- [ ] Event streams purged (Kafka topics, Redis cache)
+- [ ] Data warehouse time-travel snapshots purged
+- [ ] Backups older than retention period excluded from restores
+- [ ] Deletion logged in compliance audit trail with timestamp
+
+**Retention Exceptions** (do NOT delete):
+- Financial records required by law (invoices, tax records) - 7 years
+- Fraud prevention data (hashed identifiers only)
+- Aggregated analytics with no PII (metric totals)
+
+**PII Data Masking for Dev/Test Environments**:
+
+Pattern: Hash/scramble PII in non-production environments to prevent leaks:
+
+```sql
+-- Anonymize production snapshot for dev/staging (run after DB restore)
+UPDATE users SET
+  email = md5(email::text) || '@example.com',
+  first_name = 'User',
+  last_name = substring(md5(id::text), 1, 8),
+  phone = NULL,
+  address = NULL
+WHERE TRUE; -- Apply to all rows
+
+-- Verify no real PII remains
+SELECT * FROM users WHERE email NOT LIKE '%@example.com'; -- Should be empty
+```
+
+**Automation**: Add to CI/CD pipeline for staging database refreshes.
+
+**If GDPR compliance is NOT required**: Skip this subsection and proceed with entity relationships.
+
+---
+
 ### Step 3: Define Entity Relationships
 
 **Relationship Patterns:**
@@ -540,7 +768,38 @@ CREATE TABLE assessments (
 
 ---
 
-### Step 5: Design Indexes
+### Step 5: Design Indexes with Specialized Types
+
+**Index Type Decision Tree** (PostgreSQL 17):
+
+For PostgreSQL databases, choose the optimal index type based on query patterns:
+
+```
+1. Is this a foreign key or equality/range query?
+   → Use B-tree (default): CREATE INDEX idx_assessments_user_id ON assessments(user_id);
+
+2. Is this a JSONB containment or full-text search query?
+   → Use GIN (Generalized Inverted Index):
+   CREATE INDEX idx_assessments_results_gin ON assessments USING GIN (results);
+
+   Query pattern: SELECT * FROM assessments WHERE results @> '{"status": "passed"}';
+   Performance: 10-100x faster than B-tree on JSONB columns
+
+3. Is this a massive time-ordered table (>10M rows)?
+   → Use BRIN (Block Range Index):
+   CREATE INDEX idx_usage_events_created_brin ON usage_events USING BRIN (created_at);
+
+   Performance: 99% smaller than B-tree, ideal for usage_events, audit_log, webhook_events
+
+4. Is this geometric/spatial data?
+   → Use GiST: CREATE INDEX idx_locations_geom ON locations USING GiST (geom);
+```
+
+**Validation Checklist for Specialized Indexes**:
+- [ ] All JSONB columns have GIN indexes if queried with `@>`, `?`, `?|`, `?&` operators
+- [ ] Time-ordered tables >1M rows use BRIN indexes on timestamp columns
+- [ ] All foreign keys have B-tree indexes
+- [ ] Run `EXPLAIN ANALYZE` on critical queries to verify index usage (no Seq Scan on large tables)
 
 **Indexing Strategy:**
 
@@ -558,13 +817,16 @@ Query: "Find all pending assessments"
 
 Query: "Calculate monthly usage for billing"
 → Index: CREATE INDEX idx_usage_team_month ON usage_events(team_id, date_trunc('month', created_at));
+
+Query: "Search assessments by JSONB results"
+→ Index: CREATE INDEX idx_assessments_results ON assessments USING GIN (results);
 ```
 
 **Decision Tree - Should I Index This?**
 
 ```
 1. Is this column used in WHERE clauses?
-   ├─ YES, frequently → Index it
+   ├─ YES, frequently → Index it (choose type from decision tree above)
    └─ NO → Don't index
 
 2. Is this column used in ORDER BY?
@@ -572,7 +834,7 @@ Query: "Calculate monthly usage for billing"
    └─ NO → Continue
 
 3. Is this column a foreign key?
-   ├─ YES → Almost always index (for joins)
+   ├─ YES → Almost always index (for joins) - use B-tree
    └─ NO → Continue
 
 4. Does this query filter on multiple columns?
@@ -593,15 +855,22 @@ Query: "Calculate monthly usage for billing"
 **Example index set (compliance-saas):**
 
 ```sql
--- Foreign key indexes (joins)
+-- Foreign key indexes (joins) - B-tree
 CREATE INDEX idx_assessments_user_id ON assessments(user_id);
 CREATE INDEX idx_assessments_document_id ON assessments(document_id);
 CREATE INDEX idx_documents_user_id ON documents(user_id);
 CREATE INDEX idx_users_team_id ON users(team_id);
 
--- Query pattern indexes
+-- Query pattern indexes - B-tree
 CREATE INDEX idx_assessments_created ON assessments(created_at DESC);
 CREATE INDEX idx_assessments_status ON assessments(status);
+
+-- JSONB indexes - GIN for containment queries
+CREATE INDEX idx_assessments_results ON assessments USING GIN (results);
+
+-- Time-series indexes - BRIN for massive tables
+CREATE INDEX idx_usage_events_created ON usage_events USING BRIN (created_at);
+CREATE INDEX idx_audit_log_timestamp ON audit_log USING BRIN (action_timestamp);
 
 -- Composite indexes (multiple columns commonly queried together)
 CREATE INDEX idx_assessments_user_status ON assessments(user_id, status);
@@ -683,6 +952,413 @@ CREATE TABLE documents (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 ```
+
+---
+
+### Step 6a: Implement Audit Logging (if compliance required)
+
+**Check Session 2a**: If regulatory compliance (HIPAA, SOC2, GDPR) marked as required, implement immutable audit trail with row-level change tracking.
+
+**Pattern**: Trigger-based audit logging with JSONB deltas
+
+```sql
+CREATE TABLE audit_log (
+  id BIGSERIAL PRIMARY KEY,
+  table_name TEXT NOT NULL,
+  action_type TEXT NOT NULL, -- 'INSERT', 'UPDATE', 'DELETE'
+  record_id UUID NOT NULL,    -- ID of affected row
+
+  -- Full row snapshots
+  old_data JSONB,             -- Row state before change
+  new_data JSONB,             -- Row state after change
+
+  -- Delta (what actually changed)
+  changed_fields JSONB,       -- {"email": {"old": "a@x.com", "new": "b@x.com"}}
+
+  -- Context
+  user_id UUID,               -- Who made the change
+  user_ip INET,               -- IP address (for fraud detection)
+  user_agent TEXT,            -- Browser/API client
+
+  -- Timing
+  action_timestamp TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_audit_log_table_action ON audit_log(table_name, action_timestamp DESC);
+CREATE INDEX idx_audit_log_record ON audit_log(table_name, record_id);
+CREATE INDEX idx_audit_log_user ON audit_log(user_id);
+
+-- Trigger function to capture changes automatically
+CREATE OR REPLACE FUNCTION log_audit_changes() RETURNS TRIGGER AS $$
+DECLARE
+  old_json JSONB;
+  new_json JSONB;
+  delta JSONB;
+BEGIN
+  -- Convert rows to JSONB
+  old_json := CASE WHEN TG_OP = 'DELETE' THEN row_to_json(OLD)::jsonb ELSE NULL END;
+  new_json := CASE WHEN TG_OP IN ('INSERT', 'UPDATE') THEN row_to_json(NEW)::jsonb ELSE NULL END;
+
+  -- Calculate delta (only for UPDATEs)
+  IF TG_OP = 'UPDATE' THEN
+    SELECT jsonb_object_agg(key, jsonb_build_object('old', old_val, 'new', new_val))
+    INTO delta
+    FROM jsonb_each(old_json) o(key, old_val)
+    JOIN jsonb_each(new_json) n(key, new_val) USING (key)
+    WHERE old_val IS DISTINCT FROM new_val;
+  END IF;
+
+  -- Insert audit record
+  INSERT INTO audit_log (
+    table_name,
+    action_type,
+    record_id,
+    old_data,
+    new_data,
+    changed_fields,
+    user_id
+  ) VALUES (
+    TG_TABLE_NAME,
+    TG_OP,
+    COALESCE(NEW.id, OLD.id),
+    old_json,
+    new_json,
+    delta,
+    current_setting('app.user_id', true)::UUID -- Set by application
+  );
+
+  RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Apply to sensitive tables
+CREATE TRIGGER users_audit
+  AFTER INSERT OR UPDATE OR DELETE ON users
+  FOR EACH ROW EXECUTE FUNCTION log_audit_changes();
+
+CREATE TRIGGER assessments_audit
+  AFTER INSERT OR UPDATE OR DELETE ON assessments
+  FOR EACH ROW EXECUTE FUNCTION log_audit_changes();
+```
+
+**Why Triggers Over Application Code**:
+- 100% coverage: Captures direct SQL, CLI, migrations, manual updates
+- Tamper-proof: Application cannot bypass (compliance requirement)
+- Automatic: No developer action required for new tables
+
+**Query Examples**:
+
+```sql
+-- Who deleted this user?
+SELECT user_id, action_timestamp, old_data->>'email'
+FROM audit_log
+WHERE table_name = 'users'
+  AND record_id = '...'
+  AND action_type = 'DELETE';
+
+-- What changed in last 24 hours?
+SELECT table_name, action_type, changed_fields
+FROM audit_log
+WHERE action_timestamp > NOW() - INTERVAL '24 hours'
+ORDER BY action_timestamp DESC;
+
+-- Track specific user's changes
+SELECT table_name, action_type, changed_fields, action_timestamp
+FROM audit_log
+WHERE user_id = '...'
+ORDER BY action_timestamp DESC;
+```
+
+**Retention**: Archive audit_log older than 7 years to cold storage (compliance requirement).
+
+**If compliance is NOT required**: Skip this subsection and proceed with temporal tables.
+
+---
+
+### Step 6a1: Temporal Tables for Point-in-Time Forensics
+
+**When to use**: Financial services, healthcare, legal (Session 2a compliance requirements)
+
+**Pattern** (PostgreSQL with temporal_tables extension):
+
+```sql
+-- Install extension
+CREATE EXTENSION IF NOT EXISTS temporal_tables;
+
+-- Main table with system versioning columns
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+
+  -- System versioning (managed automatically)
+  valid_from TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  valid_to TIMESTAMPTZ NOT NULL DEFAULT 'infinity'
+);
+
+-- History table (exact copy of structure)
+CREATE TABLE users_history (LIKE users);
+
+-- Trigger to automatically version changes
+CREATE TRIGGER users_versioning
+  BEFORE UPDATE OR DELETE ON users
+  FOR EACH ROW EXECUTE FUNCTION versioning(
+    'valid_from', 'valid_to', 'users_history', true
+  );
+```
+
+**How it works**:
+- Every UPDATE/DELETE copies old row to `users_history` with `valid_to = NOW()`
+- New row gets `valid_from = NOW()`, `valid_to = 'infinity'`
+- Full history of every change preserved
+
+**Point-in-time queries**:
+
+```sql
+-- What was this user's email on 2025-01-15?
+SELECT email FROM users_history
+WHERE id = '...'
+  AND valid_from <= '2025-01-15'
+  AND valid_to > '2025-01-15';
+
+-- Reconstruct entire table as of specific date
+SELECT * FROM users_history
+WHERE valid_from <= '2025-01-15'
+  AND valid_to > '2025-01-15'
+UNION ALL
+SELECT * FROM users
+WHERE valid_from <= '2025-01-15';
+```
+
+**Compliance use case**: Regulator asks "prove this user consented to terms on 2024-06-01"
+```sql
+SELECT consented_to_terms, valid_from
+FROM users_history
+WHERE id = '...'
+  AND valid_from <= '2024-06-01'
+  AND valid_to > '2024-06-01';
+-- Returns: consented_to_terms = true, valid_from = 2024-05-28
+```
+
+**Storage cost**: ~2-3x main table size (acceptable for compliance)
+
+**If temporal tables NOT required**: Skip this subsection and proceed with zero-downtime migrations.
+
+---
+
+### Step 6b: Zero-Downtime Migration Strategies
+
+**For production deployments with <1 minute downtime tolerance**, use these migration patterns:
+
+**Pattern 1: Expand-Contract (Backward-Compatible Changes)**
+
+Use case: Renaming column `name` → `full_name` in `users` table with 10M rows
+
+Traditional approach (5+ minutes downtime):
+```sql
+-- BAD: ALTER TABLE locks table, blocks all writes
+ALTER TABLE users RENAME COLUMN name TO full_name;
+```
+
+Zero-downtime approach (3-phase deployment):
+
+**Phase 1 - Expand** (Deploy v1 application + migration):
+```sql
+-- Add new column (doesn't lock table)
+ALTER TABLE users ADD COLUMN full_name TEXT;
+
+-- Backfill in batches (avoids lock escalation)
+UPDATE users SET full_name = name WHERE full_name IS NULL LIMIT 1000;
+-- Repeat until backfill complete
+
+-- Add index without blocking writes
+CREATE INDEX CONCURRENTLY idx_users_full_name ON users(full_name);
+```
+
+Application code v1 (writes to BOTH columns):
+```typescript
+await db.query(
+  'UPDATE users SET name = $1, full_name = $1 WHERE id = $2',
+  [newName, userId]
+);
+```
+
+**Phase 2 - Migrate** (Wait 1 week, monitor for issues):
+- All reads now use `full_name`
+- Writes still go to both columns
+- Monitor for any remaining `name` column usage
+
+**Phase 3 - Contract** (Deploy v2 application + migration):
+```sql
+-- Safe to drop old column (no readers/writers remain)
+ALTER TABLE users DROP COLUMN name;
+```
+
+Downtime: 0 seconds (old and new schemas coexist during migration)
+
+---
+
+**Pattern 2: Online Index Creation (PostgreSQL)**
+
+Use case: Adding index to 100M row `assessments` table
+
+```sql
+-- WRONG: Locks table for writes (5+ minutes downtime)
+CREATE INDEX idx_assessments_created ON assessments(created_at);
+
+-- CORRECT: Builds index without blocking writes
+CREATE INDEX CONCURRENTLY idx_assessments_created ON assessments(created_at);
+```
+
+Tradeoffs:
+- CONCURRENTLY takes 2-3x longer to build (acceptable for zero downtime)
+- If build fails mid-way, leaves INVALID index (must DROP and retry)
+
+Validation:
+```sql
+-- Check for invalid indexes
+SELECT indexrelid::regclass AS index_name, indisvalid
+FROM pg_index
+WHERE NOT indisvalid;
+
+-- Drop invalid indexes and retry
+DROP INDEX CONCURRENTLY idx_assessments_created; -- if invalid
+CREATE INDEX CONCURRENTLY idx_assessments_created ON assessments(created_at);
+```
+
+---
+
+**Pattern 3: Blue-Green Database Migration**
+
+Use case: Migrating PostgreSQL RDS → Aurora (different database engine)
+
+Architecture:
+1. Blue (current production): PostgreSQL RDS
+2. Green (new): Aurora cluster
+3. Replication: AWS Database Migration Service (DMS) - continuous sync Blue → Green
+
+Migration Steps:
+
+```bash
+# Day 1: Start replication
+aws dms create-replication-task \
+  --source=postgresql-rds \
+  --target=aurora-cluster \
+  --mode=full-load-and-cdc # Full copy + ongoing changes
+
+# Days 2-7: Monitor replication lag
+aws dms describe-replication-tasks | jq '.ReplicationLag'
+# Target: <1 second lag
+
+# Day 8: Cutover (maintenance window)
+# 1. Stop application writes (maintenance mode) - 10 seconds
+# 2. Wait for replication lag = 0
+# 3. Update application DATABASE_URL → Aurora
+# 4. Resume application writes
+
+# Day 9-14: Monitor Green performance
+# Keep Blue running as hot standby
+
+# Day 15: Decommission Blue (if no issues)
+```
+
+Rollback Plan:
+- If issues detected on Green: Update DATABASE_URL → Blue (10 second switch)
+- Keep Blue for 2 weeks minimum before deletion
+
+Downtime: ~10-30 seconds (application restart with new connection string)
+
+---
+
+**Pattern 4: Change Data Capture (CDC) for Large Migrations**
+
+Use case: 500GB database migration with <5 minute cutover
+
+Tools:
+- Debezium (Kafka-based CDC)
+- AWS DMS (managed service)
+- pg_logical (PostgreSQL native)
+
+Pattern:
+```bash
+# 1. Initial snapshot (runs in background, days/weeks)
+debezium capture --mode=snapshot --source=prod-db --target=new-db
+
+# 2. Continuous replication (captures ongoing changes)
+debezium capture --mode=cdc --source=prod-db --target=new-db
+
+# 3. Monitor lag until <1 second
+debezium lag-monitor
+
+# 4. Cutover (short maintenance window)
+# - Stop writes to source
+# - Wait for lag = 0
+# - Switch application to target
+# - Resume writes
+```
+
+Validation: Run queries on both databases, compare results:
+```sql
+-- Source DB
+SELECT COUNT(*), MAX(created_at) FROM users;
+
+-- Target DB (should match exactly)
+SELECT COUNT(*), MAX(created_at) FROM users;
+```
+
+---
+
+**Pattern 5: Shadow Testing for Risky Migrations**
+
+Use case: Major schema refactor (e.g., splitting monolithic table)
+
+Pattern:
+1. Deploy new schema alongside old schema
+2. Write to BOTH schemas (old + new) for 1 week
+3. Compare results: `SELECT * FROM old_table EXCEPT SELECT * FROM new_table_view`
+4. Switch reads to new schema if validation passes
+5. Drop old schema after 2 weeks
+
+Example (splitting `users` table):
+```sql
+-- Old schema
+CREATE TABLE users (id, email, name, address, phone, ...); -- 50 columns
+
+-- New schema (normalized)
+CREATE TABLE users (id, email, name);
+CREATE TABLE user_profiles (user_id, address, phone, ...);
+
+-- Write to both (application layer)
+BEGIN;
+  INSERT INTO users (id, email, name) VALUES (...);
+  INSERT INTO user_profiles (user_id, address, phone) VALUES (...);
+COMMIT;
+
+-- Validation query
+SELECT old.id FROM users_old old
+LEFT JOIN users new ON old.id = new.id
+LEFT JOIN user_profiles prof ON old.id = prof.user_id
+WHERE new.id IS NULL OR prof.user_id IS NULL;
+-- Should return 0 rows
+```
+
+---
+
+**Migration Validation Checklist**
+
+Before deploying ANY schema change to production:
+
+- [ ] Tested on staging with production-size dataset (not empty database)
+- [ ] Rollback plan documented with exact commands to revert
+- [ ] Monitoring alerts configured (replication lag, error rate, query latency)
+- [ ] Lock timeout set to prevent indefinite blocking:
+  ```sql
+  SET lock_timeout = '5s'; -- Fail fast if lock unavailable
+  ALTER TABLE users ADD COLUMN ...;
+  ```
+- [ ] Index creation uses CONCURRENTLY (PostgreSQL)
+- [ ] Large updates batched (1000-10000 rows per transaction)
+- [ ] Customer communication sent (if any user-facing impact)
 
 ---
 
@@ -918,9 +1594,80 @@ Create comprehensive documentation explaining:
 [Instructions for applying migrations]
 
 ## Query Examples
-[Common queries with EXPLAIN ANALYZE notes]
+
+### Critical Path Queries (Journey Steps 1-3)
+
+**Query 1**: [Description from journey]
+```sql
+[SQL query]
+```
+
+**EXPLAIN ANALYZE Notes**:
+- Index used: `[index_name]`
+- Estimated rows: [number]
+- Execution time: [milliseconds]
+
+### N+1 Query Prevention
+
+**The Problem**: ORM fetches related records in loop (1 + N queries instead of 1 query with JOIN)
+
+**Example (BAD - N+1)**:
+```typescript
+// 1 query to get users
+const users = await db.query('SELECT * FROM users LIMIT 100');
+
+// 100 queries to get each user's documents (N+1!)
+for (const user of users) {
+  user.documents = await db.query('SELECT * FROM documents WHERE user_id = $1', [user.id]);
+}
+```
+
+**Fixed (GOOD - 1 query with JOIN)**:
+```typescript
+const usersWithDocs = await db.query(`
+  SELECT
+    u.*,
+    json_agg(d.*) AS documents
+  FROM users u
+  LEFT JOIN documents d ON u.id = d.user_id
+  GROUP BY u.id
+  LIMIT 100
+`);
+```
+
+**Validation**:
+- [ ] All list endpoints use JOINs, not loops
+- [ ] ORM configured with eager loading for relationships
+- [ ] Query count logged in development (warn if >5 queries per request)
 
 ## Scaling Considerations
+
+### Tail Latency Optimization (p99)
+
+**The Problem**: Average latency hides slow queries affecting real users
+
+**Metrics to track**:
+- **p50** (median): 50% of queries faster than this
+- **p95**: 95% of queries faster than this
+- **p99**: 99% of queries faster than this ← **Most important for UX**
+
+**Formula**: `Throughput (X) = Concurrency (NC) / Latency (R)`
+
+**Example**:
+- p50 latency: 20ms
+- p99 latency: 500ms ← 1% of users wait 25x longer!
+
+**Optimization**:
+```sql
+-- Find slow queries (p99)
+SELECT query, mean_exec_time, max_exec_time
+FROM pg_stat_statements
+ORDER BY max_exec_time DESC
+LIMIT 10;
+```
+
+**SLO Target**: p99 latency <200ms for critical path queries (journey steps 1-3)
+
 [Partitioning, sharding, read replicas]
 ```
 
@@ -971,6 +1718,113 @@ This template will guide you through creating comprehensive database schema docu
 - [ ] Partitioning strategy for large tables (if needed)
 - [ ] No many-to-many without join table
 - [ ] Timestamp columns are timezone-aware
+
+---
+
+## Schema Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Missing Foreign Key Indexes
+
+**Problem**: PostgreSQL does NOT automatically index foreign keys (unlike MySQL).
+
+```sql
+-- BAD: Foreign key without index = slow JOINs
+ALTER TABLE documents ADD COLUMN user_id UUID REFERENCES users(id);
+
+-- GOOD: Always index foreign keys
+CREATE INDEX idx_documents_user_id ON documents(user_id);
+```
+
+**Impact**: 100-1000x slower JOINs on tables >10K rows.
+
+---
+
+### Anti-Pattern 2: UUID Primary Keys Without Default
+
+**Problem**: Application must generate UUIDs (error-prone, inconsistent).
+
+```sql
+-- BAD: No default = application burden
+id UUID PRIMARY KEY
+
+-- GOOD: Database generates UUIDs
+id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+```
+
+---
+
+### Anti-Pattern 3: TIMESTAMP Instead of TIMESTAMPTZ
+
+**Problem**: Timezone bugs when users span multiple regions.
+
+```sql
+-- BAD: Stores local time (ambiguous)
+created_at TIMESTAMP DEFAULT NOW()
+
+-- GOOD: Stores UTC with timezone
+created_at TIMESTAMPTZ DEFAULT NOW()
+```
+
+**Real bug**: User in NYC creates record at "2025-03-09 02:30 AM" during DST transition → time doesn't exist!
+
+---
+
+### Anti-Pattern 4: Indexing Low-Cardinality Columns
+
+**Problem**: Indexes on boolean/enum rarely used by query planner.
+
+```sql
+-- BAD: Only 2 values (true/false), index rarely helps
+CREATE INDEX idx_users_is_active ON users(is_active);
+
+-- GOOD: Use partial index for specific value
+CREATE INDEX idx_users_active ON users(id) WHERE is_active = true;
+```
+
+---
+
+### Anti-Pattern 5: JSONB Without GIN Index
+
+**Problem**: Full table scans on JSONB containment queries.
+
+```sql
+-- BAD: Slow containment queries
+CREATE TABLE assessments (results JSONB);
+SELECT * FROM assessments WHERE results @> '{"status": "passed"}';
+
+-- GOOD: GIN index for 10-100x speedup
+CREATE INDEX idx_assessments_results ON assessments USING GIN (results);
+```
+
+---
+
+### Anti-Pattern 6: No CHECK Constraints on Enums
+
+**Problem**: Invalid states slip through, caught only at application layer.
+
+```sql
+-- BAD: Any string accepted
+status TEXT NOT NULL
+
+-- GOOD: Database enforces valid values
+status TEXT NOT NULL CHECK (status IN ('pending', 'processing', 'completed', 'failed'))
+```
+
+---
+
+### Anti-Pattern 7: Over-Normalization
+
+**Problem**: Premature optimization leads to complex JOINs for simple queries.
+
+```sql
+-- BAD: Separate table for user address (rarely changes, always fetched with user)
+CREATE TABLE user_addresses (user_id, street, city, zip);
+
+-- GOOD: Embed address in user table (until proven performance issue)
+CREATE TABLE users (id, email, address_street, address_city, address_zip);
+```
+
+**When to normalize**: When data changes independently OR grows unbounded (e.g., order_items table for e-commerce).
 
 ---
 
