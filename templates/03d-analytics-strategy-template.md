@@ -25,6 +25,8 @@
 
 ## Core Events (Mapped to Journey + North Star)
 
+**Reminder: Use snake_case and past tense for ALL events (e.g., `document_uploaded`, NOT `DocumentUploaded` or `upload_document`)**
+
 ### Journey Step 1: [Step Name]
 | Event Name | Description | Properties | Frequency |
 |------------|-------------|------------|-----------|

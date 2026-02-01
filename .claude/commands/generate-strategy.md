@@ -35,7 +35,7 @@ This session follows a structured flow:
 4. **Define metric tree** (L0→L1→L2→L3 hierarchical structure with team ownership)
 5. **Design monetization strategy** aligned with value delivery
 6. **Establish architecture principles** based on journey + tech stack
-   - 6a. **Integration architecture patterns** (if third-party integrations exist)
+   - 6a. **Integration architecture patterns** (if third-party integrations exist - optional)
 7. **Analytics implementation strategy** (event taxonomy, tool selection, privacy compliance)
 
 ## Process
@@ -113,7 +113,7 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
   - Journey has clear "aha moment" (Step 3)
   - Cross-functional alignment around one measure
 
-**For most Stack-Driven journeys**: North Star is optimal (journey-driven, aha moment focus)
+**For most Stack-Driven journeys**: North Star is optimal because journeys emphasize clear aha moments (Step 3) and single value delivery, making cross-functional alignment around one metric natural
 
 **Document selected framework and rationale** in `03b-metrics.md`
 
