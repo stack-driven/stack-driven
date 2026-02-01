@@ -8,16 +8,26 @@ description: Create detailed implementation plan for GitHub issue
 
 You are a senior product engineer creating a detailed, actionable implementation plan for a GitHub issue. For third-party integrations, you research official documentation and identify critical gotchas BEFORE planning implementation. This plan will be used by `/implement-issue` to execute the work.
 
-## Critical Requirements
+## Critical Requirements - READ THIS FIRST
 
-This task is NOT complete until you have:
+⚠️ **MANDATORY WORKFLOW ENFORCEMENT** ⚠️
 
-1. Generated the implementation plan
-2. Saved it to `plan.md`
-3. Posted it as a comment to issue #$1
-4. Added the "planned" label to the issue
+This command uses TodoWrite tool for execution tracking. You MUST:
 
-Do not output a completion summary until all four steps are done. The plan must be posted to the issue - outputting it to the chat is not sufficient.
+1. Create TodoWrite tracker in Step 1.5 (9 tracked tasks)
+2. Mark each todo "in_progress" BEFORE starting it
+3. Mark each todo "completed" IMMEDIATELY after finishing it
+4. Complete ALL todos before outputting completion message
+
+**The task is NOT complete until:**
+- [ ] Plan generated from template
+- [ ] Plan saved to `plan.md` file
+- [ ] Plan posted as comment to issue #$1 via `gh issue comment`
+- [ ] "planned" label added to issue #$1
+- [ ] Posting verified programmatically (Step 5 bash checks)
+- [ ] ALL TodoWrite items marked "completed"
+
+**CRITICAL:** Outputting the plan in chat does NOT count. The plan MUST be posted to the GitHub issue. Step 5 programmatically verifies this happened.
 
 ## Context
 
@@ -52,6 +62,74 @@ Extract:
 - Labels (frontend, backend, database, etc.)
 - Any existing comments
 
+---
+
+## Step 1.5: Initialize Task Tracker (MANDATORY)
+
+Before proceeding, create a task tracker using TodoWrite to ensure ALL steps complete:
+
+Use TodoWrite tool with these exact todos:
+
+```json
+[
+  {
+    "content": "Fetch issue #$1 details from GitHub",
+    "status": "completed",
+    "activeForm": "Fetching issue details"
+  },
+  {
+    "content": "Load relevant product-guidelines files",
+    "status": "in_progress",
+    "activeForm": "Loading product-guidelines files"
+  },
+  {
+    "content": "Analyze requirements and guideline alignment",
+    "status": "pending",
+    "activeForm": "Analyzing requirements"
+  },
+  {
+    "content": "Research third-party integrations (if detected)",
+    "status": "pending",
+    "activeForm": "Researching third-party integrations"
+  },
+  {
+    "content": "Generate plan content from template",
+    "status": "pending",
+    "activeForm": "Generating plan content"
+  },
+  {
+    "content": "Save plan to plan.md file",
+    "status": "pending",
+    "activeForm": "Saving plan to plan.md"
+  },
+  {
+    "content": "Post plan.md to issue #$1 via gh issue comment",
+    "status": "pending",
+    "activeForm": "Posting plan to GitHub issue"
+  },
+  {
+    "content": "Add 'planned' label to issue #$1",
+    "status": "pending",
+    "activeForm": "Adding 'planned' label"
+  },
+  {
+    "content": "Verify posting succeeded (check gh command output)",
+    "status": "pending",
+    "activeForm": "Verifying posting succeeded"
+  }
+]
+```
+
+**CRITICAL RULES:**
+- Mark each todo "in_progress" BEFORE starting it
+- Mark each todo "completed" IMMEDIATELY after finishing it
+- DO NOT skip todos - complete them in order
+- DO NOT output completion message until ALL todos show "completed"
+
+The user can see this tracker. It proves you completed all steps.
+
+---
+
 ## Step 2: Load Product Guidelines
 
 First, check what guidelines exist:
@@ -81,6 +159,10 @@ ls product-guidelines/*.md 2>/dev/null || echo "No product-guidelines directory"
 - Check labels: "frontend", "backend", "database", "api"
 - Read files that exist, skip missing ones
 
+**Update TodoWrite:** Mark "Load relevant product-guidelines files" as "completed"
+
+---
+
 ## Step 3: Analyze Requirements
 
 **Journey Traceability:**
@@ -100,6 +182,10 @@ ls product-guidelines/*.md 2>/dev/null || echo "No product-guidelines directory"
 - Does this match design system patterns?
 - Does this align with API contract specifications?
 - Does this follow database schema conventions?
+
+**Update TodoWrite:** Mark "Analyze requirements and guideline alignment" as "completed"
+
+---
 
 ## Step 3.5: Research Third-Party Integrations (If Detected)
 
@@ -147,19 +233,25 @@ If third-party integration detected:
 **Output:**
 Store research findings in a variable to include in Step 4 (plan generation).
 
-## Step 4: Generate and Save the Plan
+**Update TodoWrite:** Mark "Research third-party integrations (if detected)" as "completed" (or skip if no third-party integrations detected)
 
-Generate the plan content following the template below, then save it to a file.
+---
 
-You must save the plan to `plan.md` before proceeding to Step 5:
+## Step 4: Generate Plan Content, Save to File, and Post to GitHub
 
-```bash
-cat > plan.md << 'PLAN_EOF'
-{your generated plan content here}
-PLAN_EOF
-```
+This is a SINGLE ATOMIC OPERATION with three mandatory sub-steps that must ALL complete:
 
-### Plan Template
+**4a.** Generate plan content (template below)
+**4b.** Save to plan.md (bash heredoc)
+**4c.** Post to GitHub immediately (gh issue comment)
+
+DO NOT treat these as separate steps. Complete all three before proceeding.
+
+---
+
+### Sub-Step 4a: Generate Plan Content
+
+Use the template below to generate your plan content:
 
 ```markdown
 # Plan for #$1: {Issue Title}
@@ -356,6 +448,103 @@ Ready for implementation via `/implement-issue $1`
 Note: This plan was generated by analyzing product guidelines. Review and edit if adjustments are needed before implementation.
 ```
 
+---
+
+═══════════════════════════════════════════════════════════════
+
+⚠️  CRITICAL CHECKPOINT - READ BEFORE PROCEEDING  ⚠️
+
+You have generated plan content. The user CANNOT see this yet.
+
+**Current state:**
+- ✓ Plan content exists in your context
+- ✗ Plan NOT saved to file yet
+- ✗ Plan NOT posted to GitHub yet
+- ✗ User CANNOT see plan yet
+
+**Required actions remaining (DO NOT SKIP):**
+1. Sub-Step 4b: Save plan to plan.md file
+2. Sub-Step 4c: Post plan to GitHub via `gh issue comment`
+3. Sub-Step 4c: Add 'planned' label via `gh issue edit`
+4. Step 5: Verify posting succeeded programmatically
+5. Step 6: Output completion message
+
+**What happens if you skip these steps:**
+- User gets no plan on the issue (failure)
+- /implement-issue cannot run (no plan to read)
+- User wastes time asking "where's the plan?"
+
+**Update TodoWrite:** Mark "Generate plan content from template" as "completed"
+
+Continue to Sub-Step 4b immediately. Do not output anything to user yet.
+
+═══════════════════════════════════════════════════════════════
+
+---
+
+### Sub-Step 4b: Save Plan to File (REQUIRED - DO NOT SKIP)
+
+Now save the generated plan content to `plan.md`:
+
+```bash
+cat > plan.md << 'PLAN_EOF'
+{paste your generated plan content here - the full markdown from above}
+PLAN_EOF
+```
+
+**Update TodoWrite:** Mark "Save plan to plan.md file" as "completed"
+
+---
+
+### Sub-Step 4c: Post Plan to GitHub IMMEDIATELY (REQUIRED - DO NOT SKIP)
+
+**STOP: Do not proceed past this point without executing the commands below.**
+
+The plan currently exists only in your context and in plan.md. The user CANNOT see it on the issue yet.
+
+Post the plan to the issue RIGHT NOW:
+
+**For GitHub:**
+```bash
+gh issue comment $1 --body-file plan.md && \
+gh issue edit $1 --add-label "planned"
+```
+
+**For GitLab:**
+```bash
+glab issue note $1 --message "$(cat plan.md)" && \
+glab issue update $1 --label "planned"
+```
+
+**Verify posting succeeded:**
+- Check command output for errors
+- If you see "error", "failed", or non-zero exit code, DO NOT proceed
+- Troubleshoot using error handling guide in Step 4d below
+
+**Update TodoWrite:** Mark these as "completed":
+- "Post plan.md to issue #$1 via gh issue comment"
+- "Add 'planned' label to issue #$1"
+
+---
+
+### Sub-Step 4d: Error Handling for GitHub Posting
+
+If posting failed, diagnose and fix:
+
+| Error Type | Detection | Fix |
+|------------|-----------|-----|
+| **Auth error** | `gh auth status` shows "Not logged into any GitHub hosts" | Run `gh auth login` and select github.com |
+| **Rate limit** | HTTP 403 or "rate limit" in error | Check quota: `gh api rate_limit`. Wait until reset or use auth token |
+| **Network error** | DNS/timeout errors | Check connection: `curl -I https://api.github.com`. If persistent, save plan.md locally and inform user to post manually |
+| **Permission error** | HTTP 403 permission denied | Check: `gh repo view --json viewerPermission`. Need triage+ permission. Ask repo owner for access |
+
+**If error persists after troubleshooting:**
+- Save plan.md to current directory (already done)
+- Output error message to user with plan content
+- Instruct user to post manually via GitHub web UI
+
+---
+
 ## Step 4.5: Research Quality Check
 
 If research was performed, verify:
@@ -365,32 +554,46 @@ If research was performed, verify:
 - [ ] Specific recommendation made (not "depends on requirements")
 - [ ] Version numbers included for packages/SDKs
 
-## Step 5: Post Plan to Issue and Add Label
+## Step 5: Programmatic Verification Gate (MANDATORY)
 
-After saving the plan to `plan.md`, you must post it to the issue.
+Before outputting ANY message to the user, verify posting succeeded programmatically.
 
-**For GitHub:**
+Run these verification commands:
+
 ```bash
-gh issue comment $1 --body-file plan.md
-gh issue edit $1 --add-label "planned"
+# Verify plan.md exists locally
+test -f plan.md && echo "✓ plan.md exists" || echo "✗ plan.md missing"
+
+# Verify plan was posted to GitHub (check for comment containing plan header)
+gh issue view $1 --json comments --jq '[.comments[] | select(.body | startswith("# Plan for"))] | length' | \
+  grep -q '^[1-9]' && echo "✓ Plan posted to issue" || echo "✗ Plan NOT posted"
+
+# Verify 'planned' label was added
+gh issue view $1 --json labels --jq '.labels[] | select(.name == "planned") | .name' | \
+  grep -q 'planned' && echo "✓ Label added" || echo "✗ Label NOT added"
 ```
 
-**For GitLab:**
-```bash
-glab issue note $1 --message "$(cat plan.md)"
-glab issue update $1 --label "planned"
+**If ANY verification fails:**
+1. DO NOT output completion message
+2. Review Step 4c and re-run failed commands
+3. If persistent failure, inform user of specific failure and provide plan.md content
+
+**Update TodoWrite:** Mark "Verify posting succeeded (check gh command output)" as "completed"
+
+---
+
+## Step 6: Completion Output (Only After Verification Passes)
+
+**GATE CHECK:** Before outputting this message, confirm ALL TodoWrite items show "completed" status.
+
+Only after ALL verifications pass AND ALL todos are complete, output:
+
 ```
-
-Verify the comment was posted by checking the command output for success.
-
-## Step 6: Completion
-
-Only after the plan has been posted to the issue, output a brief confirmation:
-
-```
-Plan created and posted to issue #$1.
+✓ Plan created and posted to issue #$1.
 
 Guidelines referenced: {list files that were loaded}
+
+View plan: gh issue view $1 --comments
 
 Next: Review the plan on the issue, then run /implement-issue $1
 ```
