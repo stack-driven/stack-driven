@@ -16,6 +16,17 @@
 **Auth**: [Authentication provider]
 **Hosting**: [Where deployed]
 
+**State Management**:
+- **Client State**: [Zustand / React Context + useState / Not applicable]
+- **Server State**: [TanStack Query / SWR / Apollo Client / Not applicable]
+- **Form State**: [React Hook Form + Zod / Controlled components / Not applicable]
+
+**Build & Development Tooling**:
+- **Build Tool**: [Vite / Rspack / Turbopack / Other]
+- **Package Manager**: [pnpm / npm / yarn]
+- **Testing**: [Vitest for unit/integration, Playwright for E2E]
+- **Code Quality**: [Biome / Oxlint + Prettier / ESLint + Prettier]
+
 > **Note**: If AI Integration is Required, detailed AI provider and model selections will be made in Session 3c (`/define-ai-integration-strategy`). This maintains proper cascade ordering where Session 3c makes ALL AI-specific decisions.
 
 ---

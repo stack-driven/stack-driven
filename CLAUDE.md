@@ -98,7 +98,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 
 **Key Dependencies:**
 - Session 2a (constraints) reads 00-journey + 01-strategy
-- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider; **Detects i18n requirement** from constraints and selects i18n library
+- Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider; **Detects i18n requirement** from constraints and selects i18n library; **NEW in 2025**: Generates state management (client/server/form), build tooling (build tool, package manager, testing, code quality), and auth provider decisions
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
@@ -496,6 +496,8 @@ Session 2 (product-strategy) [reads: 00.ctx.md] → Generates .md + .ctx.md
 Session 2a (constraints) [reads: 00.ctx.md, 01.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 3 (tech-stack) [reads: 00.ctx.md, 01.ctx.md, 02a.ctx.md (if exists)] → Generates .md + .ctx.md
+  ↓ OUTPUTS: Core Stack (Frontend, Backend, Database, Storage, AI detection, i18n library if required, Auth provider)
+  ↓ NEW in 2025: State Management (client/server/form), Build Tooling (build tool, package manager, testing, code quality)
   ↓ ONLY detects if AI required, does NOT choose provider
 Session 3b (coding-standards) [reads: 00.ctx.md, 01.ctx.md, 02.ctx.md] → Generates .md + .ctx.md
   ↓

@@ -135,19 +135,70 @@ For each layer (frontend, backend, database, etc.), apply this logic (adjusted f
 
 **Frontend Decision Tree:**
 ```
-Does journey require SEO/shareable links?
-  Yes → Server-side rendering framework
-    Is team familiar with React?
-      Yes → Next.js
-      No → SvelteKit or consider team expertise
-  No → SPA framework
-    Is it complex UI with lots of state?
-      Yes → React/Vue/Svelte + Zustand/Pinia
-      No → Vanilla JS or Alpine.js (keep it simple)
-
 Is it mobile-first?
-  Yes → React Native or Flutter
-  No → Web framework as above
+  Yes → Mobile framework
+    UI-rich with complex animations?
+      Yes → Flutter (60-120 FPS, native performance, 90-95% code sharing)
+      No → Team knows React?
+           Yes → React Native (70-90% code sharing with web)
+           No → Flutter
+  No → Web framework (continue below)
+
+Web framework selection:
+  Does journey require SEO/shareable links?
+    Yes → Meta-framework with SSR
+      Content-heavy (blog, docs, marketing)?
+        Yes → Astro (zero JS by default, 5x less JS than Next.js)
+        No → Continue below
+
+      Data-heavy dashboards with complex forms?
+        Yes → Remix (loader/action pattern, web standards, form-first)
+        No → Continue below
+
+      React ecosystem preference?
+        Yes → Next.js 15 (Server Components, Turbopack, largest ecosystem)
+        No → Vue ecosystem?
+             Yes → Nuxt 3 (Nitro server, auto-imports)
+             No → SvelteKit (smallest bundles, compiled performance)
+
+    No → SPA framework
+      Performance-critical (bundle size)?
+        Yes → Svelte (1.6KB vs React 42KB)
+        No → React + Vite (60% job market, huge ecosystem)
+```
+
+**Build & Development Tooling:**
+
+Note: If you selected Next.js, Remix, Nuxt, or SvelteKit in the meta-framework section above, build tool configuration is pre-configured. This section primarily applies to standalone React/Vue/Svelte SPAs. Don't add build complexity where the framework already provides it.
+
+```
+Build tool selection:
+  Starting new project?
+    Yes → Vite (40x faster dev server vs Webpack, 68x faster HMR)
+    No → Existing Webpack config?
+         Migration effort high?
+           Yes → Rspack (drop-in Webpack replacement, 23x faster)
+           No → Vite (full migration, best DX)
+
+  Next.js project?
+    Yes → Turbopack (built-in via --turbo flag)
+
+Package manager:
+  New project or monorepo?
+    Yes → pnpm (4x faster than npm, 70% disk savings, strict dependencies)
+    No → Continue with npm (migrate opportunistically)
+
+Testing frameworks:
+  Unit/integration tests?
+    → Vitest (10-20x faster than Jest, Jest-compatible API)
+
+  E2E tests?
+    → Playwright (cross-browser, parallel execution, faster at scale)
+
+Code quality:
+  Maximum CI speed needed?
+    Yes → Oxlint (50-100x faster than ESLint, 520+ rules) + Prettier
+    No → Biome (10-20x faster, replaces ESLint + Prettier, simpler)
 ```
 
 **Backend Decision Tree:**
@@ -162,6 +213,29 @@ Does journey require real-time <1s updates?
 
 Does team have strong preferences/expertise?
   Use that (boring is good)
+```
+
+**State Management Decision Tree:**
+```
+Client state (component-level UI state):
+  Complex global state shared across many components?
+    Yes → Zustand (1-3KB, minimal boilerplate, modern default for 2025)
+    No → React Context + useState (built-in, sufficient for simple needs)
+
+  Note: For very simple apps with 2-3 pages and minimal state, vanilla useState with props drilling may be sufficient. Don't add state management complexity until you need it.
+
+Server state (API data, caching, synchronization):
+  REST API with complex caching needs?
+    Yes → TanStack Query (13KB, advanced caching, optimistic updates, devtools)
+    No → SWR (4KB, simple caching for Next.js)
+
+  GraphQL API?
+    Yes → Apollo Client (30KB, normalized cache)
+
+Form state (user input, validation):
+  Complex forms with multi-step validation?
+    Yes → React Hook Form (12KB) + Zod (12KB, better TypeScript than Yup)
+    No → Controlled components (built-in useState)
 ```
 
 **Database Decision Tree:**
@@ -187,6 +261,32 @@ Need full-text search across large content?
 
 Need vector similarity search (AI embeddings, recommendations)?
   Yes → Pinecone, Weaviate, or PostgreSQL with pgvector
+```
+
+**Auth Provider Decision Tree:**
+```
+Data sovereignty required (GDPR, HIPAA strict interpretation)?
+  Yes → Self-hosted
+    DevOps expertise available?
+      Yes → Keycloak (complete SSO/SAML/OAuth)
+      No → SuperTokens (simpler self-hosted option)
+
+  No → Managed auth (SaaS)
+    Next.js project with standard OAuth providers?
+      Yes → Auth.js (free, OAuth 2.0, built for Next.js, formerly NextAuth.js)
+      No → Continue below
+
+    Budget constraints (prefer free/low cost)?
+      Yes → Supabase Auth (generous free tier, $25 for 100K MAU, includes database)
+      No → Continue below
+
+    High MAU volume (>50K users)?
+      Yes → Supabase Auth (best value at scale)
+      No → Modern DX priority?
+           Yes → Clerk (~$25/month for 10K MAU, beautiful UI)
+           No → Supabase Auth
+
+Note: Use HttpOnly cookies for JWTs (NOT localStorage, prevents XSS).
 ```
 
 **AI Requirement Detection:**
@@ -219,6 +319,7 @@ Document in tech stack:
 - **i18n Library**: [Selected library] (journey requires multi-language support)
 - **Translation file strategy**: JSON-based locale files (e.g., `/locales/en-US/common.json`)
 - **Locale detection**: Accept-Language header + user preference
+- **Implementation reference**: See `/reference-material/i18n-implementation-guide.md` for detailed patterns
 
 If i18n is NOT required: Omit from tech stack output (don't force everyone to think about i18n).
 
@@ -261,8 +362,17 @@ Use `/templates/02-tech-stack-template.md` as structure.
    - Storage: [Choice if needed]
    - AI Integration: [Required / Not Required]
    - i18n: [Library if required, otherwise omit]
-   - Auth: [Provider - Clerk, Auth0, Supabase, etc.]
+   - Auth: [Provider - Clerk, Auth0, Supabase, Keycloak, SuperTokens, etc.]
    - Hosting: [Where it runs]
+   - State Management:
+     - Client State: [Zustand / React Context + useState / Not applicable]
+     - Server State: [TanStack Query / SWR / Apollo Client / Not applicable]
+     - Form State: [React Hook Form + Zod / Controlled components / Not applicable]
+   - Build & Development Tooling:
+     - Build Tool: [Vite / Rspack / Turbopack / Other]
+     - Package Manager: [pnpm / npm / yarn]
+     - Testing: [Vitest for unit/integration, Playwright for E2E]
+     - Code Quality: [Biome / Oxlint + Prettier / ESLint + Prettier]
 
 2. **Why This Stack (Journey-Driven Decisions)**
    - For EACH choice, explain:
