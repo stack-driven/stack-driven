@@ -84,7 +84,27 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
 - Cost projections and optimization strategies
 - MVP vs scale phasing for AI features
 
-### Step 2: Derive Mission Statement
+### Step 2: Select Metrics Framework
+
+**Decision Tree**:
+- **AARRR (Pirate Metrics)** if:
+  - Early-stage startup (pre-PMF or early growth)
+  - Growth funnel optimization is priority
+  - Clear conversion stages in journey (acquisition → activation → retention → referral → revenue)
+- **HEART (Google)** if:
+  - Established product with focus on UX quality
+  - Journey emphasizes task efficiency or satisfaction
+  - Multiple user segments with different success criteria
+- **North Star** if:
+  - Single metric represents core value delivery
+  - Journey has clear "aha moment" (Step 3)
+  - Cross-functional alignment around one measure
+
+**For most Stack-Driven journeys**: North Star is optimal (journey-driven, aha moment focus)
+
+**Document selected framework and rationale** in `03b-metrics.md`
+
+### Step 3: Derive Mission Statement
 
 **Formula**: "We help [user persona] [achieve outcome] by [unique approach]"
 
@@ -103,34 +123,82 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
 - Is it specific (not generic)? [✓]
 - Does it promise measurable outcome? [✓]
 
-### Step 3: Define North Star Metric
+### Step 4: Define Metric Tree
 
-**Formula**: North Star = [Core Action] in journey
+**Formula**: North Star = [Core Action] from journey Step 3
 
 **How to Derive**:
 1. What action represents Step 3 value delivery?
-2. That's your North Star
+2. That's your North Star (L0)
 
 **Example**:
 - Journey Step 3: AI assessment completed
 - North Star: "Weekly Active Assessments" (measures mission fulfillment)
 
-**Input Metrics** (what drives North Star):
-- Break down North Star into components
-- Example: `Active Assessments = Active Users × Assessments per User × Completion Rate`
-- Define 3-5 input metrics
+**Metric Tree** (hierarchical North Star decomposition):
 
-**Health Metrics**:
+**L0 - North Star**: [Core Action from Step 3]
+- Example: "Weekly Active Assessments"
+
+**L1 - Direct Drivers** (3-5 metrics that mathematically compose North Star):
+- New Active Users (acquisition)
+- Assessment Completion Rate (activation)
+- Weekly Retention Rate (retention)
+- Formula: `North Star = New Users × Completion Rate × Retention Rate`
+
+**L2 - Driver Metrics** (per L1 input, team-level actions):
+- For "Assessment Completion Rate":
+  - Onboarding completion rate (product team)
+  - Feature discovery rate (product team)
+  - Time-to-first-assessment (product + design)
+- For "New Active Users":
+  - Signup conversion rate (growth team)
+  - Activation rate (product team)
+
+**L3 - Granular Metrics** (per team, daily tasks):
+- For "Onboarding completion rate":
+  - Tutorial video completion
+  - Sample document upload rate
+  - Help doc engagement
+
+**Validation**:
+- [ ] MECE (Mutually Exclusive, Collectively Exhaustive - no overlap, full coverage)
+- [ ] Clear ownership (each metric assigned to team)
+- [ ] Influence relationships mapped (L3 → L2 → L1 → L0)
+- [ ] 60%+ of L2/L3 metrics are leading indicators (predictive, actionable)
+
+**Leading vs Lagging Classification**:
+- **Leading indicators** (60%+ of metrics): Predictive, actionable daily, teams can influence
+  - Example: Onboarding completion rate (predicts activation)
+- **Lagging indicators**: Validation, reporting, slower-moving
+  - Example: Monthly Recurring Revenue, NPS
+
+**Input Metric Controllability Check**:
+For each L2/L3 metric, validate:
+- [ ] Team can influence through daily actions (not purely external)
+- [ ] Updates frequently enough for feedback loops (weekly or daily)
+- [ ] Clear ownership: Which team/role owns moving this?
+
+**Example**:
+- Good: "Onboarding completion rate" (product team owns, controllable)
+- Bad: "Market growth rate" (external, uncontrollable)
+
+**Health Metrics** (guardrails):
 - Retention (D7, D30)
 - NPS
 - Error rates
 - API performance
 
-**Counter-Metrics**:
-- What won't you sacrifice to improve North Star?
+**Counter-Metrics** (prevent gaming):
+- What quality measures must NOT degrade as North Star increases?
 - Example: Won't improve assessment speed by reducing accuracy
+  - Counter-metric: Assessment accuracy rate (maintain >95%)
+- Example: Won't boost signups by degrading UX
+  - Counter-metric: NPS, support ticket rate (maintain baseline)
 
-### Step 4: Design Monetization
+**Rule**: Minimum 2 counter-metrics required per North Star
+
+### Step 5: Design Monetization
 
 **Principle**: Charge where value is delivered (journey Step 3)
 
@@ -156,7 +224,7 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
 - Value ratio: 1,500x - 3,000x
 - Model: Freemium (100 free) + PAYG ($0.10 each) + Business ($299/month includes 3,500)
 
-### Step 5: Establish Architecture Principles
+### Step 6: Establish Architecture Principles
 
 **How to Derive** (from journey + tech stack):
 
@@ -175,7 +243,7 @@ If product-guidelines/02c-ai-integration-strategy.ctx.md exists:
 4. Fail-safe (compliance = reliability critical)
 5. Observable (measure everything)
 
-### Step 5a: Integration Architecture Patterns (if integrations exist)
+### Step 6a: Integration Architecture Patterns (if integrations exist)
 
 **Check for integrations**: If `product-guidelines/02a-constraints.ctx.md` exists and identifies third-party integrations, include integration architecture patterns in `product-guidelines/04-architecture.md`.
 
@@ -221,9 +289,51 @@ Track third-party API rate limits and implement client-side limiting:
 - Alert on: 5+ consecutive failures, rate limit exceeded, credential expiration
 - Dashboard: Integration health metrics per provider
 
+### Step 7: Analytics Implementation Strategy
+
+**Event Taxonomy Design**:
+Based on journey steps and North Star metric, define core events:
+
+**Naming Convention** (enforce strictly):
+- **Casing**: snake_case (e.g., `assessment_completed`)
+- **Tense**: Past tense (action already occurred)
+- **Syntax**: `[object]_[past_tense_verb]` (e.g., `document_uploaded`, `user_signed_up`)
+- **Properties**: Use event properties for context, not separate events
+  - Good: `feature_used` with `feature_name` property
+  - Bad: `ai_assessment_used`, `manual_assessment_used` (event explosion)
+
+**Core Event Set** (map to journey steps):
+- Step 1: `page_viewed`, `signup_started`, `user_signed_up`
+- Step 2: `document_uploaded`, `framework_selected`
+- Step 3: `assessment_started`, `assessment_completed` [North Star event]
+- Step 4: `result_viewed`, `report_downloaded`
+
+**User Identification Strategy**:
+- Anonymous tracking: Assign `anonymous_id` on first visit (pre-signup)
+- Identified tracking: Assign `user_id` on signup/login
+- Identity stitching: Merge anonymous → identified user history
+
+**Session Tracking**:
+- Web: 30-minute inactivity timeout
+- Mobile: 5-minute background timeout
+- Max session: 24 hours (prevent tab pollution)
+
+**Analytics Tool Recommendation**:
+Based on team size, tech stack, and privacy needs:
+- **PostHog** if: Engineering-led, need session replay + feature flags, <$50k ARR
+- **Mixpanel** if: Product-led growth, non-technical PMs need self-service
+- **Amplitude** if: Enterprise scale, complex behavioral segmentation
+- **Matomo** if: Healthcare/Finance/EU, GDPR/HIPAA strict compliance
+
+**Privacy & Compliance**:
+- [ ] GDPR consent (EU visitors): Opt-in required before tracking
+- [ ] IP anonymization: Mask last octet (192.168.1.XXX)
+- [ ] PII handling: Hash emails with salt, never log passwords
+- [ ] Data retention: Define deletion policy (30/90/365 days)
+
 ## Generating the Outputs
 
-Create 4 files:
+Create 5 files:
 
 ### 1. `product-guidelines/03a-mission.md`
 
@@ -270,14 +380,50 @@ Use `/templates/04-architecture-template.md`.
 - Scaling strategy (current capacity, bottlenecks)
 - Connection to journey (optimizes Step X)
 
+### 5. `product-guidelines/03d-analytics-strategy.md`
+
+Use `/templates/03d-analytics-strategy-template.md`.
+
+**Key Sections**:
+- Event taxonomy table with naming conventions
+- Core events mapped to journey steps
+- User identification strategy (anonymous → identified → stitching)
+- Session tracking rules (web vs mobile timeouts)
+- Analytics tool recommendation with rationale
+- Privacy compliance checklist (GDPR, IP anonymization, PII, retention)
+
 ## Validation Checklist
 
 Before writing files:
+
+### Framework & Mission
+- [ ] Metrics framework selected with rationale (AARRR/HEART/North Star)
 - [ ] Mission references journey aha moment?
+
+### Metric Tree Quality
 - [ ] North Star measures mission outcome?
+- [ ] L0→L1→L2→L3 hierarchy with influence relationships mapped
+- [ ] MECE validation (no overlap, full coverage)
+- [ ] Team ownership assigned to each L2/L3 metric
+- [ ] 60%+ of L2/L3 metrics are leading indicators
+- [ ] All input metrics are controllable by teams
+- [ ] Minimum 2 counter-metrics defined
+
+### Monetization
 - [ ] Monetization charges where value delivered?
 - [ ] Pricing has clear value ratio (10:1+)?
+
+### Architecture
 - [ ] Architecture optimizes journey critical path?
+
+### Analytics Implementation
+- [ ] Event taxonomy defined (snake_case, past tense)
+- [ ] Core events mapped to journey steps + North Star
+- [ ] Analytics tool selected with rationale
+- [ ] User ID strategy (anonymous → identified → stitching)
+- [ ] Privacy compliance (GDPR, IP, PII, retention)
+
+### Overall
 - [ ] All decisions trace to journey?
 
 ## After Generation
@@ -288,15 +434,18 @@ Show summary:
 
 Your Strategy:
   Mission: [One-sentence mission]
+  Metrics Framework: [AARRR/HEART/North Star]
   North Star: [Metric name]
   Pricing: [Model summary]
   Architecture: [Key principle]
+  Analytics: [Tool recommendation]
 
 Files created:
 - product-guidelines/03a-mission.md
 - product-guidelines/03b-metrics.md
 - product-guidelines/03c-monetization.md
 - product-guidelines/04-architecture.md
+- product-guidelines/03d-analytics-strategy.md
 
 Next, we'll create a brand strategy that expresses your journey value.
 
@@ -314,18 +463,18 @@ Or check progress: /cascade-status
 
 ## Reference Files
 
-- Templates: `/templates/03a-mission-template.md`, `/templates/03b-metrics-template.md`, `/templates/03c-monetization-template.md`, `/templates/04-architecture-template.md`
+- Templates: `/templates/03a-mission-template.md`, `/templates/03b-metrics-template.md`, `/templates/03c-monetization-template.md`, `/templates/04-architecture-template.md`, `/templates/03d-analytics-strategy-template.md`
 - Examples: `/examples/compliance-saas/foundation/` and `/examples/compliance-saas/stack/`
 
 ---
 
-**Now, read the journey, product strategy, and tech stack, then generate all 4 tactical foundation files!**
+**Now, read the journey, product strategy, and tech stack, then generate all 5 tactical foundation files!**
 
 ## After Generating Strategy Documents
 
-Once you've written all 4 files (`03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`), invoke the distillation agent to create context files for each:
+Once you've written all 5 files (`03a-mission.md`, `03b-metrics.md`, `03c-monetization.md`, `04-architecture.md`, `03d-analytics-strategy.md`), invoke the distillation agent to create context files for each:
 
-Use the Task tool (4 separate invocations):
+Use the Task tool (5 separate invocations):
 
 1. **Mission context file**:
    - **subagent_type**: `general-purpose`
@@ -403,6 +552,25 @@ Use the Task tool (4 separate invocations):
      6. Write to output file path
      ```
 
+5. **Analytics Strategy context file**:
+   - **subagent_type**: `general-purpose`
+   - **description**: `Generate analytics strategy context file`
+   - **prompt**:
+     ```
+     Invoke the context distillation agent to create token-optimized context file.
+
+     Source file: product-guidelines/03d-analytics-strategy.md
+     Output file: product-guidelines/03d-analytics-strategy.ctx.md
+
+     Follow the distillation agent specification in .claude/agents/distill-context.md to:
+     1. Extract event taxonomy, core events, tool selection, privacy rules (CRITICAL)
+     2. Remove detailed examples, rationale for tool choices
+     3. Preserve section structure from source file
+     4. Achieve 60-70% token reduction
+     5. Add source reference header
+     6. Write to output file path
+     ```
+
 ## CRITICAL CHECKPOINT
 
 Session 4 complete! You've established your tactical foundation.
@@ -410,10 +578,14 @@ Session 4 complete! You've established your tactical foundation.
 Before proceeding, validate that these strategic decisions align with your user journey and will serve as a solid foundation for all remaining sessions.
 
 **REVIEW CHECKLIST:**
+- [ ] Metrics framework selected with clear rationale (AARRR/HEART/North Star)
 - [ ] Mission statement references journey aha moment (typically Step 3)
+- [ ] Metric tree has L0→L1→L2→L3 hierarchy with team ownership
 - [ ] North Star metric measures user value delivery (not vanity metrics)
+- [ ] Minimum 2 counter-metrics defined to prevent gaming
 - [ ] Monetization model charges where value is delivered (value ratio >10:1)
 - [ ] Architecture principles optimize journey critical path
+- [ ] Analytics implementation includes event taxonomy, tool selection, privacy
 
 **What happens next:**
 These decisions cascade through Sessions 5-14. Session 5 will create your brand strategy using this mission as foundation. Sessions 7-9 will use these architecture principles for technical design.
