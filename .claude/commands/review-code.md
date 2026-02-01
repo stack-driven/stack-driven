@@ -1,18 +1,21 @@
 ---
-description: DEV-TIME - Guide code review with comprehensive framework
+description: DEV-TIME - Guide general code review with comprehensive framework
 ---
 
 # Review Code (Development Tool)
 
 You are helping the user review code using a comprehensive code review framework. This is a development-time tool, not part of the cascade.
 
+**For GitHub PR reviews with automated posting**, use `/review-pr` instead.
+
 ## When to Use This
 
 **Use during development** when:
-- You're reviewing a pull request
-- You want to apply consistent review standards
+- You're reviewing code snippets, files, or pasted code
+- You want to apply consistent review standards to general code
 - You need a checklist for thorough code review
 - You're mentoring junior developers on code quality
+- You want review feedback in the conversation (not posted to GitHub)
 
 **This is NOT part of the cascade** - it's a tool you use during development.
 
