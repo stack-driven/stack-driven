@@ -127,3 +127,12 @@
 - name: "priority::p2"
   description: "Nice to have, deferred (backlog for later)"
   color: "FBCA04"
+
+# ==============================================================================
+# STATUS LABELS (Track issue lifecycle state)
+# ==============================================================================
+# Color: #0E8A16 (green) - for status/workflow consistency
+
+- name: "status::planned"
+  description: "Implementation plan created and approved"
+  color: "0E8A16"
