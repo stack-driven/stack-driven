@@ -117,6 +117,21 @@ For each activity, estimate implementation scope:
 - Can this be implemented in 2-6 sprints?
 - Does this group have 5-20+ stories?
 
+**Edge Case Guidance:**
+
+**Minimum Epic Count:**
+- **Minimum: 2 business epics** - If journey analysis yields only 1 activity, reconsider activity grouping. Look for sub-goals that could be separate epics.
+- **Solo activity edge case**: Valid for MVPs focused on single core feature, but plan for future expansion. Document in Epic Structure Rationale that additional epics will emerge as product matures.
+
+**Maximum Epic Count:**
+- **Maximum: 10 business epics** - If journey analysis yields >10 activities, consider merging related goals. Too many epics dilutes focus and complicates prioritization.
+- **Over-fragmentation warning**: If you have >10 activities, you're likely splitting too granularly. Group related sub-goals under broader activity umbrellas.
+
+**Unusual Journey Structures:**
+- **Linear journey (no branching)**: Still extract distinct goals, not just sequential steps
+- **Circular/recurring journey**: Group by goal type, not iteration (e.g., "Submit Document" epic handles all submissions, not "First Submission" and "Second Submission")
+- **Multi-persona journey**: Create epics by shared goals across personas, not separate epics per persona
+
 #### Step 2.3: Convert Activities → Business Epics
 
 Each validated activity = One business epic
@@ -128,7 +143,7 @@ Each validated activity = One business epic
 - ❌ "Onboarding (Steps 1-2)" (step-range, FORBIDDEN)
 - ❌ "Epic 01: User Journey Start" (generic, FORBIDDEN)
 
-**Business epics will be numbered Epic 02+ (Foundation is always Epic 01)**
+**Business epics will be numbered Epic 02+ (Foundation/Enabler is always Epic 01)**
 
 #### Step 2.4: Add Enabler Epics
 
@@ -594,22 +609,27 @@ Use `/templates/issue-template.md` for EVERY story.
 
 ## Validation Checklist
 
+### Epic Structure Validations
 - [ ] **Activity extraction validation**: Each business epic traces to a user GOAL (not step range)
 - [ ] **Epic count validation**: Epic count = activities extracted (NOT step count formula)
 - [ ] **Epic naming validation**: Names are goal-based ("Get Access", not "Onboarding (Steps 1-2)")
-- [ ] **Epic numbering validation**: Epic 01 is always Foundation (enabler)
+- [ ] **Epic numbering validation**: Epic 01 is always Foundation/Enabler
 - [ ] **Business epic order**: Epic 02+ numbered in journey chronological order
 - [ ] **Epic sizing validation**: Each epic estimated at 5-20+ stories (appropriate size)
+- [ ] **Edge cases handled**: Minimum 2 business epics, maximum 10 (unless justified)
 - [ ] **Epic Structure Rationale exists**: BACKLOG.md explains activity extraction and grouping decisions
+
+### Story-Level Validations
+- [ ] **Journey alignment**: Every issue references a journey step or foundation requirement
+- [ ] **Acceptance criteria**: All P0 issues have clear acceptance criteria
 - [ ] **Dependencies mapped**: All business epics show "Blocked By: Epic 01 (Foundation)"
-- [ ] Every issue references a journey step?
-- [ ] All P0 issues have clear acceptance criteria?
-- [ ] Dependencies are mapped?
-- [ ] Tech stack alignment (using Session 3 choices)?
-- [ ] Required legal stories included (Terms, Privacy Policy, Cookie Policy, DPA)?
-- [ ] Third-party integration stories follow pattern (if integrations exist)?
-- [ ] AI integration stories included (if 02c-ai-integration-strategy exists)?
-- [ ] i18n stories included (if 02a-constraints marks i18n required)?
+- [ ] **Tech stack alignment**: Stories use Session 3 technology choices
+- [ ] **Required legal stories**: Terms, Privacy Policy, Cookie Policy, DPA included
+
+### Conditional Story Validations
+- [ ] **Third-party integrations**: Integration stories follow pattern (if integrations exist in 02a-constraints)
+- [ ] **AI integration**: AI stories included (if 02c-ai-integration-strategy.ctx.md exists)
+- [ ] **i18n infrastructure**: i18n stories included (if 02a-constraints marks i18n required)
 
 ## After Generation
 
