@@ -412,6 +412,93 @@ X-Request-ID: [UUID for request tracing]
 
 ---
 
+## Idempotency and Retry Strategies
+
+Document idempotency protection and retry guidance for operations that require resilience against network failures and service disruptions.
+
+### Idempotency-Protected Endpoints
+
+**Pattern**: Idempotency-Key header for POST/PATCH operations
+
+#### Financial Operations (CRITICAL)
+- Endpoint: POST /api/payments
+  - Idempotency-Key: Required
+  - Expiry: 24 hours
+  - Journey context: [Journey Step X: payment processing]
+  - Duplicate prevention: [How idempotency prevents duplicate charges]
+
+#### Resource Creation
+- Endpoint: POST /api/orders
+  - Idempotency-Key: Required
+  - Journey context: [Journey Step X: order placement]
+  - Expiry: 24 hours
+- Endpoint: POST /api/documents
+  - Idempotency-Key: Recommended
+  - Journey context: [Journey Step X: document upload]
+  - Expiry: 1 hour
+
+**Implementation Requirements**:
+- Idempotency store: [Redis / Database table `idempotency_keys`]
+- Key format: UUIDv4 (client-generated)
+- Response caching: Store full HTTP response (status code, headers, body)
+- Expiry: [24 hours for financial, 1 hour for non-financial, configurable per endpoint]
+
+### Retry Strategy
+
+**Retry-After Header Usage**:
+- 429 Too Many Requests: Include `Retry-After` header (seconds until reset)
+- 503 Service Unavailable: Include `Retry-After` header (estimated recovery time)
+- 202 Accepted (async): Include `Retry-After` header (polling interval)
+
+**Client Retry Guidance**:
+- Exponential backoff: 1s, 2s, 4s, 8s, 16s (max 60s)
+- Max retries: 5 attempts
+- Jitter: Random 0-1s to prevent thundering herd
+
+**Journey-Based Retry Design**:
+
+**Rate-Limited Endpoints** (429):
+- Response includes: `Retry-After` header + `retry_after_seconds` in error body
+- Client behavior: Wait specified time before retry
+- Journey context: [Which endpoints have strict rate limits?]
+
+**Temporarily Unavailable** (503):
+- Response includes: `Retry-After: 30` (maintenance, overload)
+- Client behavior: Exponential backoff (30s, 60s, 120s)
+- Journey context: [Which journey steps tolerate temporary downtime?]
+
+**Async Operations** (202):
+- Response includes: `Retry-After: 5` (polling interval)
+- Client behavior: Poll at specified interval until completion (200/201)
+- Journey context: [Journey Step X: AI document processing takes 2-5min]
+
+### Circuit Breaker Configuration
+
+**Third-Party API Protection**:
+
+#### [Third-Party API Name, e.g., "Stripe Payment API"]
+- Journey Step: [Which step depends on this API]
+- Timeout: [5-30 seconds]
+- Circuit: Open after [5] consecutive failures
+- Half-open retry: After [30-60 seconds]
+- Fallback: [Return cached data / degraded response / user error message]
+- Reasoning: [Why this configuration serves the journey]
+
+**Implementation Requirements**:
+- Circuit breaker library: [Polly (.NET) / resilience4j (Java) / circuitbreaker (Python) / opossum (Node.js)]
+- Metrics: Track failure rate, circuit state, fallback usage (for Session 14 observability)
+- Alerting: Notify team when circuit opens (indicates third-party degradation)
+
+### Journey-Based Reasoning
+
+[3-5 sentences tracing idempotency, retry, and circuit breaker strategies to:
+- Journey operations requiring idempotency (payments, orders, mutations)
+- Journey steps tolerating retries (async operations, non-critical actions)
+- Third-party dependencies from Session 4 architecture
+- User experience impact (prevent duplicate charges, handle downtime gracefully)]
+
+---
+
 ## Input Validation Strategy
 
 Document server-side validation for ALL user input based on journey requirements and database schema.
@@ -697,16 +784,34 @@ All errors use consistent JSON format:
 ```
 
 **Rate Limit Error** (429):
-```json
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 60
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1699315200
+
 {
   "error": {
     "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Rate limit exceeded. Try again later.",
-    "details": {
-      "limit": 100,
-      "remaining": 0,
-      "reset_at": "2025-11-11T11:00:00Z"
-    }
+    "message": "Rate limit exceeded. Please retry after 60 seconds.",
+    "retry_after_seconds": 60,
+    "request_id": "req_abc123"
+  }
+}
+```
+
+**Service Unavailable Error** (503):
+```http
+HTTP/1.1 503 Service Unavailable
+Retry-After: 30
+
+{
+  "error": {
+    "code": "SERVICE_TEMPORARILY_UNAVAILABLE",
+    "message": "Service temporarily unavailable. Please retry after 30 seconds.",
+    "retry_after_seconds": 30,
+    "request_id": "req_abc123"
   }
 }
 ```

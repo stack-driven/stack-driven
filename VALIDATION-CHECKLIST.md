@@ -613,6 +613,81 @@
 
 ---
 
+### Rule 11.5: Idempotency and Retry Strategies
+
+**What:** Session 8 API design output must document idempotency protection and retry strategies for resilient operations
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Idempotency and Retry Strategies" section
+- Check required subsections:
+  - Idempotency-Protected Endpoints (financial operations, resource creation)
+  - Retry Strategy (Retry-After header usage, client retry guidance)
+  - Circuit Breaker Configuration (third-party API protection)
+  - Journey-Based Reasoning
+
+**Idempotency pattern requirements:**
+- Financial operations (payments, orders) MUST require Idempotency-Key header
+- Resource creation endpoints (POST/PATCH) SHOULD require or recommend Idempotency-Key
+- Implementation requirements documented (store, key format, expiry)
+- Journey context provided (which steps need idempotency protection)
+
+**Failure example:**
+```
+❌ Idempotency strategy incomplete
+   08-api-design.md has "Idempotency and Retry Strategies" section ✓
+   But POST /api/payments endpoint missing from idempotency-protected list
+   Journey Step 4 involves payment processing → Idempotency-Key required
+   Fix: Add POST /api/payments to Financial Operations section
+```
+
+**Retry strategy requirements:**
+- 429 (Rate Limit) responses include `Retry-After` header
+- 503 (Service Unavailable) responses include `Retry-After` header
+- 202 (Accepted - async) responses include `Retry-After` header for polling
+- Client retry guidance documented (exponential backoff, max retries, jitter)
+
+**Failure example:**
+```
+❌ Retry strategy missing Retry-After header
+   Error examples show 429 response ✓
+   But no Retry-After header in response
+   Fix: Add "Retry-After: 60" header to 429 response example
+```
+
+**Circuit breaker requirements:**
+- All third-party APIs documented (from Session 4 architecture)
+- For each third-party API: timeout, circuit states, fallback strategy
+- Journey context (which steps depend on third-party APIs)
+- Implementation library specified (from tech stack)
+
+**Failure example:**
+```
+❌ Circuit breaker missing third-party API
+   08-api-design.md has Circuit Breaker Configuration section ✓
+   Journey Step 3 uses OpenAI API (from Session 4 architecture)
+   But no circuit breaker configuration for OpenAI documented
+   Fix: Add OpenAI circuit breaker (timeout 30s, fallback: queue for retry)
+```
+
+**Journey traceability check:**
+- Idempotency endpoints reference specific journey steps
+- Retry strategies explain which journey steps tolerate delays
+- Circuit breakers trace to third-party dependencies from Session 4
+- Reasoning connects to user experience impact
+
+**Acceptable references:**
+- "Journey Step 4 (payment processing) creates charges → Network timeout risk → Idempotency-Key prevents duplicate charges" ✓
+- "Third-party dependency: OpenAI API (Session 4 architecture) → Circuit breaker prevents cascade failures" ✓
+
+**Unacceptable references:**
+- "Idempotency is a best practice" ✗ (generic, no journey context)
+- "APIs should be resilient" ✗ (not journey-specific)
+
+**Rationale**: Idempotency and retry strategies prevent critical user-facing failures (duplicate charges, cascade failures, poor UX during network issues). Must be documented based on journey requirements, not generic resilience advice.
+
+---
+
 ## Implementation Priority
 
 ### Tier 1 (Critical - Implement First):
@@ -630,6 +705,7 @@
 - Rule 6.3: Decision Matrix Table Accuracy
 - Rule 11.3: Input Validation Strategy Presence (NEW - Session 8 security)
 - Rule 11.4: Security Headers Configuration (NEW - Session 8 security)
+- Rule 11.5: Idempotency and Retry Strategies (NEW - Phase 2: Resilience)
 
 ### Tier 3 (Nice to Have - Implement Later):
 - Rule 5.1: Template Section Alignment

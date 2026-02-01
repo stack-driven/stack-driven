@@ -1047,6 +1047,298 @@ Server Errors:
 504 Gateway Timeout       - Upstream service timeout
 ```
 
+---
+
+### Step 6a: Define Idempotency and Retry Strategies
+
+**Reference**: Idempotency prevents duplicate operations (critical for payments, orders, mutations)
+
+Analyze the journey to identify operations that require idempotency protection and retry guidance.
+
+**Decision Tree - Idempotency Requirements:**
+
+```
+1. Does journey include financial transactions?
+   ├─ Payments (charges, refunds) → CRITICAL: Idempotency-Key required
+   ├─ Orders (purchases, subscriptions) → CRITICAL: Idempotency-Key required
+   └─ No financial operations → Continue to #2
+
+2. Does journey include state-changing operations that must not duplicate?
+   ├─ User creation (invitations, signups) → Idempotency-Key recommended
+   ├─ Resource creation (documents, reports) → Idempotency-Key recommended
+   ├─ Email/notification sending → Idempotency-Key recommended
+   └─ Read-only operations (GET) → No idempotency needed
+
+3. Does journey include async operations?
+   ├─ Long-running tasks (AI processing, exports) → Idempotency-Key + polling
+   └─ Synchronous operations → Standard idempotency
+```
+
+**Journey-Based Analysis**:
+- Which journey steps involve POST/PATCH operations? (from Session 1)
+- Which operations involve money? (from Session 4: monetization)
+- Which operations cannot safely be retried? (duplicate orders, duplicate emails)
+
+**Example**: "Journey Step 4 (payment processing) creates charges → Network timeout risk → Idempotency-Key prevents duplicate charges"
+
+#### Idempotency Pattern
+
+**For POST and PATCH endpoints that create resources or mutate state:**
+
+```http
+POST /api/orders
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+Content-Type: application/json
+
+{
+  "product_id": 123,
+  "quantity": 2
+}
+```
+
+**Server-Side Idempotency Logic:**
+
+```
+1. Client generates UUIDv4 as Idempotency-Key
+2. Client sends request with Idempotency-Key header
+3. Server checks if key exists in idempotency store (Redis, database table)
+   ├─ Key exists → Return cached response (200 OK with original response body)
+   └─ Key doesn't exist → Process request, store result with key, return response
+4. Key expires after 24 hours (configurable based on journey)
+```
+
+**Journey-Based Idempotency Design:**
+
+```markdown
+### Idempotency-Protected Endpoints
+
+**Financial Operations** (CRITICAL):
+- POST /api/payments
+  - Idempotency-Key: Required
+  - Expiry: 24 hours
+  - Journey context: [Journey Step X: payment processing]
+  - Duplicate prevention: Prevents duplicate charges if network fails
+
+**Resource Creation**:
+- POST /api/orders
+  - Idempotency-Key: Required
+  - Expiry: 24 hours
+  - Journey context: [Journey Step X: order placement]
+- POST /api/documents
+  - Idempotency-Key: Recommended
+  - Expiry: 1 hour
+  - Journey context: [Journey Step X: document upload]
+
+**Notification Operations**:
+- POST /api/invitations
+  - Idempotency-Key: Recommended
+  - Expiry: 1 hour
+  - Journey context: [Journey Step X: send invitations]
+```
+
+**Implementation Requirements:**
+- Idempotency store: Redis (fast lookup) or database table (`idempotency_keys` with `key`, `response_body`, `created_at`, `expires_at`)
+- Key format: UUIDv4 (client-generated)
+- Response caching: Store full HTTP response (status code, headers, body)
+- Expiry: 24 hours (financial), 1 hour (non-financial), configurable per endpoint
+
+---
+
+#### Retry Strategy Pattern
+
+**For rate limit and temporary failure responses:**
+
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 60
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1709251200
+
+{
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Rate limit exceeded. Please retry after 60 seconds.",
+    "retry_after_seconds": 60,
+    "request_id": "req_abc123"
+  }
+}
+```
+
+```http
+HTTP/1.1 503 Service Unavailable
+Retry-After: 30
+
+{
+  "error": {
+    "code": "SERVICE_TEMPORARILY_UNAVAILABLE",
+    "message": "Service temporarily unavailable. Please retry after 30 seconds.",
+    "retry_after_seconds": 30,
+    "request_id": "req_abc123"
+  }
+}
+```
+
+**Retry-After Header Usage:**
+
+- **429 Too Many Requests**: Retry-After = seconds until rate limit resets
+- **503 Service Unavailable**: Retry-After = estimated recovery time (30-120 seconds)
+- **202 Accepted** (async operations): Retry-After = polling interval (e.g., 5 seconds)
+
+**Client Retry Guidance:**
+
+```
+Client should implement exponential backoff with jitter:
+1. First retry: Wait Retry-After seconds (or 1s if not provided)
+2. Second retry: Wait 2x previous (2s, 4s, 8s, 16s)
+3. Max retries: 5 attempts
+4. Jitter: Add random 0-1s to prevent thundering herd
+5. Max backoff: Cap at 60 seconds
+```
+
+**Journey-Based Retry Design:**
+
+```markdown
+### Retry Strategy by Endpoint Type
+
+**Rate-Limited Endpoints** (429):
+- Response includes: `Retry-After` header + `retry_after_seconds` in error body
+- Client behavior: Wait specified time before retry
+- Journey context: [Which endpoints have strict rate limits?]
+
+**Temporarily Unavailable** (503):
+- Response includes: `Retry-After: 30` (maintenance, overload)
+- Client behavior: Exponential backoff (30s, 60s, 120s)
+- Journey context: [Which journey steps tolerate temporary downtime?]
+
+**Async Operations** (202):
+- Response includes: `Retry-After: 5` (polling interval)
+- Client behavior: Poll at specified interval until completion (200/201)
+- Journey context: [Journey Step X: AI document processing takes 2-5min]
+```
+
+---
+
+#### Circuit Breaker Pattern (Third-Party API Protection)
+
+**For third-party API consumption (API10:2023 - Unsafe Consumption of APIs):**
+
+Protect your API from third-party service failures cascading to users.
+
+**Pattern Configuration:**
+
+```
+Third-party API: [Name, e.g., "Stripe Payment API"]
+
+1. Timeout: 5-30 seconds (fail fast, don't block user request)
+2. Circuit States:
+   ├─ CLOSED: Normal operation, requests pass through
+   ├─ OPEN: 5 consecutive failures → Stop sending requests, return fallback immediately
+   └─ HALF-OPEN: After 30s cooldown → Try 1 request to test recovery
+3. Fallback Strategy:
+   ├─ Return cached data (if applicable)
+   ├─ Return degraded response (partial data, "unavailable" status)
+   └─ Return user-facing error with actionable message
+```
+
+**Journey-Based Circuit Breaker Design:**
+
+```markdown
+### Circuit Breaker Configuration by Third-Party API
+
+**Payment Gateway** (e.g., Stripe, PayPal):
+- Journey Step: [X - payment processing]
+- Timeout: 10 seconds
+- Circuit: Open after 5 failures
+- Half-open retry: After 60 seconds
+- Fallback: Return "Payment processing delayed, please try again in 1 minute" (503)
+- Why: Payment failures must inform user immediately, not hang
+
+**AI Service** (e.g., OpenAI, Anthropic):
+- Journey Step: [Y - document analysis]
+- Timeout: 30 seconds
+- Circuit: Open after 5 failures
+- Half-open retry: After 30 seconds
+- Fallback: Return "processing" status, queue for later retry (202 Accepted)
+- Why: AI processing can be async, queue for retry without blocking user
+
+**Email Service** (e.g., SendGrid, Mailgun):
+- Journey Step: [Z - send notification]
+- Timeout: 5 seconds
+- Circuit: Open after 10 failures
+- Half-open retry: After 60 seconds
+- Fallback: Queue email for later delivery, return success to user
+- Why: Email delivery can be delayed without impacting user flow
+```
+
+**Implementation Requirements:**
+- Circuit breaker library: Polly (.NET), resilience4j (Java), circuitbreaker (Python), opossum (Node.js)
+- Metrics: Track failure rate, circuit state, fallback usage (for Session 14 observability)
+- Alerting: Notify team when circuit opens (indicates third-party degradation)
+
+---
+
+**Output Format:**
+
+```markdown
+## Idempotency and Retry Strategies
+
+### Idempotency-Protected Endpoints
+
+**Pattern**: Idempotency-Key header for POST/PATCH operations
+
+#### Financial Operations (CRITICAL)
+- Endpoint: POST /api/payments
+  - Idempotency-Key: Required
+  - Expiry: 24 hours
+  - Journey context: [Journey Step X: payment processing]
+  - Duplicate prevention: Network retry doesn't create duplicate charges
+
+#### Resource Creation
+- Endpoint: POST /api/orders
+  - Idempotency-Key: Required
+  - Journey context: [Journey Step X: order placement]
+  - Expiry: 24 hours
+- Endpoint: POST /api/documents
+  - Idempotency-Key: Recommended
+  - Journey context: [Journey Step X: document upload]
+  - Expiry: 1 hour
+
+### Retry Strategy
+
+**Retry-After Header Usage**:
+- 429 Too Many Requests: Include `Retry-After` header (seconds until reset)
+- 503 Service Unavailable: Include `Retry-After` header (estimated recovery time)
+- 202 Accepted (async): Include `Retry-After` header (polling interval)
+
+**Client Retry Guidance**:
+- Exponential backoff: 1s, 2s, 4s, 8s, 16s (max 60s)
+- Max retries: 5 attempts
+- Jitter: Random 0-1s to prevent thundering herd
+
+### Circuit Breaker Configuration
+
+**Third-Party API Protection**:
+
+#### [Third-Party API Name, e.g., "Stripe Payment API"]
+- Journey Step: [Which step depends on this API]
+- Timeout: [5-30 seconds]
+- Circuit: Open after [5] consecutive failures
+- Half-open retry: After [30-60 seconds]
+- Fallback: [Return cached data / degraded response / user error message]
+- Reasoning: [Why this configuration serves the journey]
+
+### Journey-Based Reasoning
+
+[3-5 sentences tracing idempotency, retry, and circuit breaker strategies to:
+- Journey operations requiring idempotency (payments, orders, mutations)
+- Journey steps tolerating retries (async operations, non-critical actions)
+- Third-party dependencies from Session 4 architecture
+- User experience impact (prevent duplicate charges, handle downtime gracefully)]
+```
+
+---
+
 **Output Format:**
 
 ```markdown
