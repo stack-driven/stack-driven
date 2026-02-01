@@ -272,6 +272,10 @@ Data sovereignty required (GDPR, HIPAA strict interpretation)?
       No → SuperTokens (simpler self-hosted option)
 
   No → Managed auth (SaaS)
+    Next.js project with standard OAuth providers?
+      Yes → Auth.js (free, OAuth 2.0, built for Next.js, formerly NextAuth.js)
+      No → Continue below
+
     High MAU volume (>50K users)?
       Yes → Supabase Auth ($25/month for 100K MAU, includes database)
       No → Modern DX priority with budget?
@@ -311,6 +315,7 @@ Document in tech stack:
 - **i18n Library**: [Selected library] (journey requires multi-language support)
 - **Translation file strategy**: JSON-based locale files (e.g., `/locales/en-US/common.json`)
 - **Locale detection**: Accept-Language header + user preference
+- **Implementation reference**: See `/reference-material/i18n-implementation-guide.md` for detailed patterns
 
 If i18n is NOT required: Omit from tech stack output (don't force everyone to think about i18n).
 
