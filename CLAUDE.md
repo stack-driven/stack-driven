@@ -292,7 +292,7 @@ Context files are automatically created using the **distillation sub-agent** (`.
 3. Agent applies universal extraction rules with **critical preservation**:
    - **KEEP:** ALL architectural decisions, user journey steps, tech choices, design specs (including DTCG token hierarchies, WCAG 2.2 criteria, performance configs), constraints, database schemas, API specifications
    - **REMOVE:** Rationale (keep 1-2 line summaries), alternatives considered, detailed examples, validation checklists
-4. Agent preserves source file structure, achieves 60-70% token reduction
+4. Agent preserves source file structure, achieves 60-70% token reduction (Note: Session 6 design-system may achieve 55-65% reduction due to preserving detailed DTCG token hierarchies, WCAG 2.2 tables, and performance optimization configs)
 5. Agent validates ALL critical decisions preserved before writing
 
 ### 5. Simplified Decision Matrix: When to Read .ctx.md vs .md

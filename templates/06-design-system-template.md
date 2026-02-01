@@ -476,8 +476,8 @@ MFA: TOTP or WebAuthn (not SMS puzzles)
 ```
 
 **Validation Criteria**:
-- [✓] Excellent: CSS tool aligns with tech stack; styled-components marked MAINTENANCE MODE if mentioned; zero-runtime options recommended; performance comparison documented; theming pattern includes FOIT prevention
-- (Warning) Needs Work: Arbitrary CSS choice; no styled-components deprecation warning; runtime CSS-in-JS recommended without trade-off analysis; missing theming pattern
+- [✓] Excellent: CSS tool aligns with tech stack; styled-components marked MAINTENANCE MODE if mentioned; zero-runtime options recommended; performance comparison documented; theming pattern includes FOIT prevention; migration path included if existing styled-components detected
+- (Warning) Needs Work: Arbitrary CSS choice; no styled-components deprecation warning; runtime CSS-in-JS recommended without trade-off analysis; missing theming pattern; no migration path when needed
 
 ---
 

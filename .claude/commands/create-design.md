@@ -363,6 +363,8 @@ Label patterns by journey step:
 
 ### Step 7b: WCAG 2.2 Compliance (October 2023 Standard)
 
+**Reference**: https://www.w3.org/TR/WCAG22/
+
 After defining WCAG 2.1 accessibility standards in Step 7, add the three new success criteria from WCAG 2.2 (published October 2023).
 
 **WCAG 2.2 New Success Criteria**:
@@ -844,23 +846,35 @@ export default {
 
 **Core Web Vitals Targets** (Journey-Mapped):
 
+**IMPORTANT**: Read the actual journey steps from `product-guidelines/00-user-journey.ctx.md` and map Core Web Vitals to real journey step names.
+
 | Metric | Target | Journey Step | Optimization |
 |--------|--------|--------------|--------------|
-| **LCP** (Largest Contentful Paint) | <2.5s | Step 1 Upload | Preload hero image, font-display: swap |
-| **FID** (First Input Delay) | <100ms | Step 2 Selection | Code-split heavy components, defer non-critical JS |
+| **LCP** (Largest Contentful Paint) | <2.5s | [Actual Step 1 from journey] | Preload hero image, font-display: swap |
+| **FID** (First Input Delay) | <100ms | [Actual Step 2 from journey] | Code-split heavy components, defer non-critical JS |
 | **CLS** (Cumulative Layout Shift) | <0.1 | All steps | Size-adjust on fallback fonts, reserve space for images |
-| **INP** (Interaction to Next Paint) | <200ms | Step 4 Filters | Debounce search, virtualize long lists |
+| **INP** (Interaction to Next Paint) | <200ms | [Actual Step 3/4 from journey with interaction] | Debounce search, virtualize long lists |
 
 **5. Journey-Specific Performance Analysis**
+
+**IMPORTANT**: Read the actual journey steps from `product-guidelines/00-user-journey.ctx.md` and use the real step names/descriptions (not generic labels like "Step 1: Upload").
 
 Map performance optimizations to journey steps where they matter most:
 
 | Journey Step | Performance Priority | Optimization Strategy | Impact |
 |--------------|---------------------|----------------------|--------|
-| **Step 1: Upload** | LCP (hero section) | Preload hero image, critical CSS inline | First impression speed |
-| **Step 2: Selection** | INP (checkbox interaction) | Debounce search, optimize re-renders | Smooth filtering |
-| **Step 3: Processing** | N/A (passive wait) | Skeleton screens, optimistic UI updates | Perceived performance |
-| **Step 4: Results** | FCP, INP (table rendering) | Virtual scrolling for >100 rows, lazy load cards | Fast results display |
+| **[Actual Step 1 name from journey]** | LCP (hero section) | Preload hero image, critical CSS inline | First impression speed |
+| **[Actual Step 2 name from journey]** | INP (interaction) | Debounce search, optimize re-renders | Smooth interaction |
+| **[Actual Step 3 name from journey]** | N/A (passive wait) | Skeleton screens, optimistic UI updates | Perceived performance |
+| **[Actual Step 4 name from journey]** | FCP, INP (rendering) | Virtual scrolling for >100 rows, lazy load cards | Fast display |
+
+**Example** (if journey is "Compliance officers reviewing documents"):
+| Journey Step | Performance Priority | Optimization Strategy | Impact |
+|--------------|---------------------|----------------------|--------|
+| **Step 1: Upload compliance document** | LCP (upload form) | Preload form assets, critical CSS inline | Fast form interaction |
+| **Step 2: Select assessment framework** | INP (dropdown selection) | Debounce search, optimize re-renders | Smooth framework selection |
+| **Step 3: AI analysis processing** | N/A (passive wait) | Skeleton screens, progress indicators | Perceived speed during wait |
+| **Step 4: Review gap analysis results** | FCP, INP (table rendering) | Virtual scrolling for 100+ gaps, lazy load details | Fast results scanning |
 
 **6. Monitoring & Validation**
 
@@ -1034,6 +1048,7 @@ Frontend Framework?
 - [ ] Zero-runtime options (Tailwind v4, Panda CSS, Vanilla Extract) listed first with checkmarks
 - [ ] Performance comparison documents runtime cost (20-30KB overhead)
 - [ ] CSS custom properties theming pattern includes FOIT prevention script
+- [ ] Migration path documented if existing styled-components detected (phase-by-phase with timeline, journey-critical components prioritized, rollback strategy included)
 - [ ] Decision traces to journey requirements (not arbitrary technology choice)
 
 **2. Design Tokens: Hard-coded vs Design Token System**
