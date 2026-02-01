@@ -278,8 +278,12 @@ A high-quality context file:
 - **Remove**: Full field lists (unless critical), normalization reasoning, migration strategies
 
 ### API Design (Session 8)
-- **Keep**: Paradigm choice, serialization format, auth strategy, OWASP protection patterns (condensed to pattern + endpoints), idempotency configs, circuit breaker settings, HTTP caching directives, compression strategy
-- **Remove**: Decision tree analysis (5-point paradigm analysis), alternatives considered, validation checklist, scale-forward reasoning
+- **Keep**: Paradigm choice, serialization format, auth strategy, OWASP protection patterns (condensed to pattern + endpoints), idempotency configs, circuit breaker settings, HTTP caching directives, compression strategy, input validation rules (condensed to table format)
+- **Remove**: Decision tree analysis (5-point paradigm analysis), OWASP threat descriptions (keep only protection patterns), alternatives considered, validation checklist, scale-forward reasoning, detailed code examples (keep only ownership check patterns)
+
+**Example Session 8 distillation**:
+- **KEEP**: "API1 BOLA Protection: Resource ownership validation via `WHERE user_id = :current_user_id` on endpoints: GET /documents/{id}, PUT /documents/{id}, DELETE /documents/{id}. Journey traceability: Step 3 document upload requires user-specific access control (Session 7 documents.user_id foreign key)."
+- **REMOVE**: "Broken Object Level Authorization (BOLA) occurs when... [500-word threat description]. Decision tree: Does journey involve user-owned resources? Yes → Apply ownership checks. Alternatives considered: 1) Session-based ownership cache 2) Middleware authorization layer 3) Database-level RLS."
 
 ### API Contracts (Session 8b)
 - **Keep**: Endpoint paths, methods, purpose, key parameters
