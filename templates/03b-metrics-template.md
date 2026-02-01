@@ -94,9 +94,11 @@
 - [ ] Full coverage of North Star drivers (nothing missing)
 
 **Influence Relationships**:
-- L3 → L2: [Explain how L3 metrics drive L2 metrics]
-- L2 → L1: [Explain how L2 metrics drive L1 metrics]
-- L1 → L0: [Explain mathematical relationship to North Star]
+- L3 → L2: [Example: Higher tutorial completion rate (L3) increases onboarding completion rate (L2)]
+- L2 → L1: [Example: Higher onboarding completion rate (L2) increases assessment completion rate (L1)]
+- L1 → L0: [Mathematical formula: North Star = L1.1 × L1.2 × L1.3]
+
+*Replace bracketed examples with your product's actual metric relationships*
 
 **Team Ownership Matrix**:
 | Metric Level | Metric | Owner Team | Update Frequency |

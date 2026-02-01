@@ -25,6 +25,19 @@ You are a product strategist deriving tactical decisions from previous cascade o
 - Monetization → Charges where journey delivers value
 - Architecture → Optimizes journey critical path
 
+## Steps Overview
+
+This session follows a structured flow:
+
+1. **Read previous outputs** (journey, strategy, tech stack, constraints, coding standards, AI integration)
+2. **Select metrics framework** (AARRR / HEART / North Star) based on product stage
+3. **Derive mission statement** from journey's aha moment (Step 3)
+4. **Define metric tree** (L0→L1→L2→L3 hierarchical structure with team ownership)
+5. **Design monetization strategy** aligned with value delivery
+6. **Establish architecture principles** based on journey + tech stack
+   - 6a. **Integration architecture patterns** (if third-party integrations exist)
+7. **Analytics implementation strategy** (event taxonomy, tool selection, privacy compliance)
+
 ## Process
 
 ### Step 1: Read Previous Outputs

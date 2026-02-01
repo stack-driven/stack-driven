@@ -14,7 +14,8 @@
 
 **Examples**:
 - ✅ Good: `document_uploaded`, `user_signed_up`, `assessment_completed`
-- ❌ Bad: `DocumentUploaded`, `signUp`, `assessment_complete`
+- ❌ Bad (wrong casing): `DocumentUploaded`, `signUp`
+- ❌ Bad (wrong tense): `sign_up`, `assessment_complete`, `upload_document`
 
 **Properties vs Separate Events**:
 - ✅ Use event properties for context: `feature_used` with `feature_name` property
