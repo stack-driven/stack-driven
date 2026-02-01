@@ -159,6 +159,255 @@ Default: REST (if no criteria match or first MVP iteration)
 
 ---
 
+### Step 2a: Define REST Design Patterns (Conditional)
+
+**ONLY execute this step if API paradigm decision = REST.**
+
+If you chose GraphQL, gRPC, or WebSocket as the primary paradigm, skip this step and proceed to Step 3.
+
+**Purpose**: Define RESTful API design conventions to ensure consistency, discoverability, and adherence to REST principles.
+
+**Decision Tree - REST Design Patterns:**
+
+```
+1. Resource Naming Conventions
+   ├─ Collections: Plural nouns (/users, /orders, /documents)
+   ├─ Single resource: /{collection}/{id} (/users/123, /orders/456)
+   ├─ Nested resources: /{parent}/{id}/{child} (/teams/5/members, /orders/123/items)
+   └─ Actions: Avoid verbs in URLs, use HTTP verbs instead
+      - Bad: POST /createUser, GET /getUsers
+      - Good: POST /users, GET /users
+
+2. HTTP Verb Usage and Idempotency Semantics
+   ├─ GET: Retrieve resource (idempotent, safe, cacheable)
+      - Returns 200 OK with resource
+      - Returns 404 Not Found if resource doesn't exist
+   ├─ POST: Create resource (NOT idempotent without Idempotency-Key)
+      - Returns 201 Created with Location header
+      - Use Idempotency-Key header to make idempotent
+   ├─ PUT: Replace entire resource (idempotent)
+      - Returns 200 OK or 204 No Content
+      - Requires ALL fields (full replacement)
+   ├─ PATCH: Partial update (idempotent with Idempotency-Key)
+      - Returns 200 OK
+      - Requires only changed fields
+      - Use Idempotency-Key to prevent duplicate updates
+   └─ DELETE: Remove resource (idempotent)
+      - Returns 204 No Content or 200 OK
+      - Subsequent DELETE of same resource returns 404
+
+3. Query Parameter Standards
+   ├─ Filtering: ?status=active&role=admin
+      - Use field names as keys
+      - Multiple values: ?tag=security&tag=compliance OR ?tag=security,compliance
+   ├─ Sorting: ?sort=-created_at,name
+      - Comma-separated fields
+      - Prefix with - for descending order
+      - No prefix or + for ascending order
+   ├─ Field Selection (Sparse Fieldsets): ?fields=id,name,email
+      - Comma-separated field names
+      - Returns only requested fields (reduces bandwidth)
+   ├─ Search: ?q=search+term OR ?search=query
+      - Full-text search across multiple fields
+   └─ Pagination: ?page=1&limit=20 OR ?cursor=abc&limit=20
+      - Covered in Step 5 (pagination strategy)
+
+4. Response Envelope Consistency
+   ├─ Single resource: Return object directly {id: 123, name: "..."}
+   ├─ Collection: Return array with metadata {data: [...], pagination: {...}}
+   └─ Errors: Standard format {error: {code, message, details}}
+```
+
+**Journey-Based REST Pattern Analysis:**
+
+For each REST convention, trace to journey requirements:
+
+**Resource Naming**:
+- Which journey steps access resources? (from Session 1)
+- What entities exist? (from Session 7 database schema)
+- Are there nested relationships? (teams → members, orders → items)
+
+**Example**: "Journey Step 2 (upload document) creates documents resource → POST /api/documents. Journey Step 4 (share with team) creates nested relationship → GET /api/teams/:id/shared-documents"
+
+**HTTP Verb Usage**:
+- Which journey steps create resources? (POST)
+- Which journey steps update resources? (PATCH for partial, PUT for full replacement)
+- Which journey steps require idempotency? (payments, orders → Idempotency-Key)
+
+**Example**: "Journey Step 5 (update document metadata) only changes title, not content → PATCH /api/documents/:id (partial update). Journey Step 7 (process payment) cannot duplicate → POST /api/payments with Idempotency-Key"
+
+**Query Parameters**:
+- Which journey steps filter data? (search, dashboards)
+- Which journey steps sort data? (lists, tables)
+- Which journey steps need selective fields? (mobile apps with bandwidth constraints)
+
+**Example**: "Journey Step 3 (filter documents by status) → GET /api/documents?status=approved&sort=-created_at. Journey Step 6 (mobile document list) → GET /api/documents?fields=id,title,created_at (reduce bandwidth)"
+
+**Output Format:**
+
+```markdown
+## REST Design Patterns
+
+**Note**: This section applies because API paradigm chosen = REST (from Step 2).
+
+### Resource Naming Conventions
+
+**Collections** (plural nouns):
+- `/users` - User collection
+- `/documents` - Document collection
+- `/teams` - Team collection
+- [List other collections from journey and Session 7 database schema]
+
+**Single Resources** (ID in path):
+- `/users/:id` - Specific user
+- `/documents/:id` - Specific document
+- `/teams/:id` - Specific team
+
+**Nested Resources** (parent-child relationships):
+- `/teams/:teamId/members` - Team members (nested under team)
+- `/documents/:docId/versions` - Document versions (nested under document)
+- [List other nested resources from Session 7 relationships]
+
+**Journey-Based Reasoning**:
+[2-3 sentences tracing resource naming to journey steps and database schema]
+
+Example: "Journey Step 2 creates user-owned documents → `/users/:userId/documents` resource. Session 7 database schema defines teams → members relationship → `/teams/:teamId/members` endpoint for Journey Step 4 (invite team members)."
+
+---
+
+### HTTP Verb Usage
+
+**GET** (Retrieve, idempotent, safe, cacheable):
+- `GET /documents` - List documents
+- `GET /documents/:id` - Get single document
+- **Journey context**: [Which journey steps read data?]
+
+**POST** (Create, NOT idempotent without Idempotency-Key):
+- `POST /documents` - Create document
+- **Returns**: 201 Created + Location header
+- **Idempotency**: Use Idempotency-Key for financial/critical operations
+- **Journey context**: [Which journey steps create resources? Which require idempotency?]
+
+**PUT** (Replace entire resource, idempotent):
+- `PUT /documents/:id` - Replace document (requires ALL fields)
+- **Returns**: 200 OK or 204 No Content
+- **Journey context**: [Which journey steps replace entire resources?]
+
+**PATCH** (Partial update, idempotent with key):
+- `PATCH /documents/:id` - Update specific fields
+- **Returns**: 200 OK
+- **Idempotency**: Use Idempotency-Key for critical updates
+- **Journey context**: [Which journey steps update partial fields?]
+
+**DELETE** (Remove resource, idempotent):
+- `DELETE /documents/:id` - Delete document
+- **Returns**: 204 No Content or 200 OK
+- **Journey context**: [Which journey steps delete resources?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing HTTP verb usage to journey operations]
+
+Example: "Journey Step 2 (upload document) creates new resource → POST /documents (201 Created). Journey Step 5 (update document title) only changes one field → PATCH /documents/:id (partial update). Journey Step 7 (process payment) cannot duplicate → POST /payments with Idempotency-Key (see Step 6a for full idempotency strategy)."
+
+---
+
+### Query Parameter Standards
+
+**Filtering** (narrow results):
+- Pattern: `?{field}={value}&{field2}={value2}`
+- Examples:
+  - `GET /documents?status=approved&category=compliance`
+  - `GET /users?role=admin&active=true`
+- Multiple values: `?tag=security&tag=compliance` OR `?tag=security,compliance`
+- **Journey context**: [Which journey steps filter data? What filters are needed?]
+
+**Sorting** (order results):
+- Pattern: `?sort={field1},{field2}` (ascending) or `?sort=-{field1}` (descending)
+- Examples:
+  - `GET /documents?sort=-created_at` (newest first)
+  - `GET /documents?sort=title,-updated_at` (title A-Z, then newest)
+- **Journey context**: [Which journey steps sort data? Default sort order?]
+
+**Field Selection** (sparse fieldsets, reduce bandwidth):
+- Pattern: `?fields={field1},{field2},{field3}`
+- Examples:
+  - `GET /documents?fields=id,title,created_at` (minimal fields for list view)
+  - `GET /users?fields=id,name,email` (exclude sensitive fields)
+- **Journey context**: [Which journey steps need selective fields? Mobile bandwidth constraints?]
+
+**Search** (full-text search):
+- Pattern: `?q={search_term}` OR `?search={query}`
+- Examples:
+  - `GET /documents?q=compliance+framework`
+  - `GET /users?search=john+doe`
+- **Journey context**: [Which journey steps search across multiple fields?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing query parameters to journey search, filtering, and bandwidth needs]
+
+Example: "Journey Step 3 (filter documents by status and category) → `/documents?status=approved&category=compliance`. Journey Step 4 (sort by date) → `/documents?sort=-created_at` (newest first). Journey Step 6 (mobile document list from behavioral profile: 40% mobile users) → `/documents?fields=id,title,status` reduces bandwidth by 70% (Session 1: mobile optimization critical)."
+
+---
+
+### Response Envelope Consistency
+
+**Single Resource Response**:
+```json
+GET /documents/123
+{
+  "id": 123,
+  "title": "Document Title",
+  "status": "approved",
+  "created_at": "2025-02-01T10:30:00Z"
+}
+```
+
+**Collection Response** (with pagination metadata):
+```json
+GET /documents?page=1&limit=20
+{
+  "data": [
+    {"id": 123, "title": "Doc 1"},
+    {"id": 124, "title": "Doc 2"}
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 47,
+    "total_pages": 3
+  }
+}
+```
+
+**Error Response** (see Step 6 for full error handling):
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Document title is required",
+    "field": "title"
+  }
+}
+```
+
+**Journey-Based Reasoning**:
+[1-2 sentences on consistency benefits for journey]
+
+Example: "Consistent response envelopes simplify client-side parsing across Journey Steps 2-7 (all document operations). Pagination metadata enables Journey Step 3 (browse large document lists) with clear navigation."
+```
+
+**Important:**
+- Only document REST patterns if paradigm = REST
+- Skip this section entirely if GraphQL, gRPC, or WebSocket chosen
+- Reference this section from Step 6 (error handling) and Step 5 (pagination)
+
+**Reconsider if:**
+- Paradigm changes from REST to GraphQL/gRPC
+- Journey adds mobile app with bandwidth constraints (consider GraphQL field selection)
+- Service-to-service communication grows (consider gRPC for internal APIs)
+
+---
+
 ### Step 3: Analyze Serialization Format Requirements
 
 **Decision Tree - Serialization Format:**
@@ -1778,6 +2027,8 @@ Before completing this session, verify:
 
 **Journey Alignment:**
 - [ ] API paradigm decision traces to specific journey steps
+- [ ] REST design patterns documented (if paradigm = REST)
+- [ ] API documentation standards defined (naming convention, timestamps, UUIDs, null handling)
 - [ ] Serialization format aligns with performance/bandwidth needs from journey
 - [ ] Authentication strategy matches journey security requirements
 - [ ] Rate limiting aligns with pricing model and journey scale

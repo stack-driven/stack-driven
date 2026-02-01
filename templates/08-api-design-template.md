@@ -11,6 +11,32 @@ This template guides the high-level architectural decisions for your API. Comple
 **Versioning Strategy**: [URL versioning (/v1/, /v2/) / Header versioning / No versioning (breaking changes with migration)]
 **Base URL**: https://api.[domain].com
 
+### API Documentation Standards
+
+**Resource Naming Convention**: [camelCase / snake_case / kebab-case]
+- **Reasoning**: [Journey-based choice - e.g., "camelCase for JSON (JavaScript clients)", "snake_case for Python backend consistency"]
+
+**Timestamp Format**: ISO 8601 / RFC 3339
+- **Format**: `YYYY-MM-DDTHH:MM:SSZ` (UTC)
+- **Example**: `2025-02-01T10:30:00Z`
+- **Timezone**: Always store and return in UTC, client converts to user timezone
+
+**UUID Format**: [UUIDv4 / UUIDv7]
+- **Reasoning**: [UUIDv4 for random IDs / UUIDv7 for time-ordered IDs with better database performance]
+- **Example**: UUIDv4: `550e8400-e29b-41d4-a716-446655440000`
+
+**Null Handling**: [Return null / Omit field]
+- **Approach**: [null for explicit absence / omit for optional fields]
+- **Reasoning**: [Journey-based choice - e.g., "Omit optional fields to reduce response size for mobile clients"]
+
+**Pagination Link Headers** (REST only):
+- **Link Header**: Include `Link` header with `rel="next"`, `rel="prev"`, `rel="first"`, `rel="last"`
+- **Example**:
+  ```http
+  Link: <https://api.example.com/documents?page=2>; rel="next",
+        <https://api.example.com/documents?page=1>; rel="first"
+  ```
+
 ---
 
 ## API Paradigm Decision
@@ -114,6 +140,127 @@ Document the 5-point decision tree analysis:
 - **Current (MVP)**: [Initial paradigm choice]
 - **Growth (10x scale)**: [How paradigm evolves]
 - **Maturity (100x scale)**: [Migration path if needed]
+
+---
+
+## REST Design Patterns
+
+**IF** API paradigm = REST, document RESTful design conventions. **SKIP** this section if GraphQL, gRPC, or WebSocket chosen.
+
+### Resource Naming Conventions
+
+**Collections** (plural nouns):
+- `/[resources]` - [Resource description from journey]
+- Example: `/documents` - User-uploaded documents
+- [List all collections from Session 7 database schema]
+
+**Single Resources** (ID in path):
+- `/[resources]/:id` - Specific resource
+- Example: `/documents/:id` - Single document
+
+**Nested Resources** (parent-child relationships):
+- `/[parent]/:parentId/[child]` - Child resources
+- Example: `/teams/:teamId/members` - Team members
+- [List nested resources from Session 7 relationships]
+
+**Journey-Based Reasoning**:
+[2-3 sentences tracing resource naming to journey steps and database schema]
+
+---
+
+### HTTP Verb Usage
+
+**GET** (Retrieve, idempotent, safe, cacheable):
+- Endpoints: [List GET endpoints from journey]
+- **Journey context**: [Which journey steps read data?]
+
+**POST** (Create, NOT idempotent without Idempotency-Key):
+- Endpoints: [List POST endpoints from journey]
+- **Returns**: 201 Created + Location header
+- **Journey context**: [Which journey steps create resources?]
+
+**PUT** (Replace entire resource, idempotent):
+- Endpoints: [List PUT endpoints OR "Not used - prefer PATCH"]
+- **Journey context**: [Which journey steps replace entire resources?]
+
+**PATCH** (Partial update, idempotent with key):
+- Endpoints: [List PATCH endpoints from journey]
+- **Journey context**: [Which journey steps update specific fields?]
+
+**DELETE** (Remove resource, idempotent):
+- Endpoints: [List DELETE endpoints from journey]
+- **Journey context**: [Which journey steps delete resources?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing HTTP verb usage to journey operations]
+
+---
+
+### Query Parameter Standards
+
+**Filtering** (narrow results):
+- Pattern: `?{field}={value}&{field2}={value2}`
+- Journey examples:
+  - `GET /[resource]?[filter1]=[value1]&[filter2]=[value2]`
+  - [List filters from journey requirements]
+- **Journey context**: [Which journey steps filter data?]
+
+**Sorting** (order results):
+- Pattern: `?sort={field1},{field2}` OR `?sort=-{field1}` (descending)
+- Journey examples:
+  - `GET /[resource]?sort=-created_at` (newest first)
+  - [List sort options from journey]
+- **Journey context**: [Which journey steps sort data? Default order?]
+
+**Field Selection** (sparse fieldsets, reduce bandwidth):
+- Pattern: `?fields={field1},{field2},{field3}`
+- Journey examples:
+  - `GET /[resource]?fields=id,name,status` (minimal fields)
+  - [List field selection use cases from journey]
+- **Journey context**: [Mobile bandwidth constraints? Which views need selective fields?]
+
+**Search** (full-text search):
+- Pattern: `?q={search_term}` OR `?search={query}`
+- Journey examples:
+  - `GET /[resource]?q=[search+term]`
+- **Journey context**: [Which journey steps search data?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing query parameters to journey search, filtering, sorting, and bandwidth needs]
+
+---
+
+### Response Envelope Consistency
+
+**Single Resource Response**:
+```json
+GET /[resource]/:id
+{
+  "id": 123,
+  "[field1]": "value",
+  "[field2]": "value"
+}
+```
+
+**Collection Response**:
+```json
+GET /[resources]?page=1&limit=20
+{
+  "data": [
+    {"id": 123, "[field]": "value"},
+    {"id": 124, "[field]": "value"}
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 47,
+    "total_pages": 3
+  }
+}
+```
+
+**Journey-Based Reasoning**:
+[1-2 sentences on consistency benefits for journey]
 
 ---
 
@@ -1111,11 +1258,13 @@ Before considering this session complete:
 
 **Journey Alignment**:
 - [ ] API paradigm decision traces to specific journey steps
+- [ ] REST design patterns documented (if paradigm = REST)
 - [ ] Serialization format aligns with performance/bandwidth needs from journey
 - [ ] Authentication strategy matches journey security requirements
 - [ ] Security patterns reference specific journey steps and database tables
 - [ ] Rate limiting aligns with pricing model and journey scale
 - [ ] Pagination approach fits data volume and UX needs
+- [ ] API documentation standards defined (naming, timestamps, UUIDs, null handling)
 
 **Decision Traceability**:
 - [ ] Each decision cites journey steps, tech stack (Session 3), or architecture (Session 4)
