@@ -488,6 +488,131 @@
 
 ---
 
+## Category 11: API Security Validation Rules
+
+### Rule 11.1: OWASP Coverage Completeness
+
+**What:** Session 8 API design output must contain sections for all applicable OWASP API Top 10 2023 risks
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Security Protection Patterns (OWASP API Top 10)" section
+- For each of 8 applicable risks (API1, 3, 5, 6, 7, 8, 10), verify:
+  - Subsection exists (e.g., "### API1:2023 - Broken Object Level Authorization")
+  - "Applicability: YES / NO" field present
+  - If YES: Journey analysis documented, protection pattern documented
+  - If NO: "Reconsider if" conditions documented
+
+**Failure example:**
+```
+❌ OWASP coverage incomplete
+   08-api-design.md has "Security Protection Patterns" section ✓
+   But missing subsection for API6:2023 (Unrestricted Access to Sensitive Business Flows)
+   Fix: Add API6 subsection with journey analysis
+```
+
+**Rationale**: Ensures generated API designs systematically address known API security vulnerabilities instead of ad-hoc security thinking.
+
+---
+
+### Rule 11.2: Security Pattern Journey Traceability
+
+**What:** Each OWASP protection pattern must reference specific journey steps or database tables (Session 7)
+
+**Check:**
+- For each applicable OWASP risk in `08-api-design.md`:
+  - Extract "Journey Analysis" subsection
+  - Verify at least ONE specific reference to:
+    - Journey Step X (e.g., "Journey Step 2: document upload")
+    - Database table from Session 7 (e.g., "`documents` table with `user_id` column")
+    - User role from journey (e.g., "admin role manages users")
+- Reject generic reasoning without journey citation
+
+**Failure example:**
+```
+❌ Security pattern lacks journey traceability
+   API1 (BOLA) section says:
+   "BOLA protection is important for securing APIs" ✗
+   Expected:
+   "Journey Step 2 (document upload) creates user-owned documents in `documents` table → BOLA: WHERE user_id = :current_user_id" ✓
+```
+
+**Acceptable references:**
+- "Journey Step 2 (document upload)" ✓
+- "`documents` table has `user_id` ownership column (Session 7)" ✓
+- "Admin role manages team members (Journey Step 5)" ✓
+
+**Unacceptable references:**
+- "Users need secure access" ✗ (generic, no specific journey step)
+- "Best practice for APIs" ✗ (not journey-driven)
+- "OWASP recommends this" ✗ (external authority, not journey)
+
+**Rationale**: Maintains Stack-Driven's journey-first philosophy—every security decision must serve specific user needs, not generic "best practices."
+
+---
+
+### Rule 11.3: Input Validation Strategy Presence
+
+**What:** Session 8 API design output must contain complete input validation strategy
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Input Validation Strategy" section
+- Check required subsections:
+  - Validation Approach (paradigm, library from Session 3)
+  - Validation Rules by Input Type (email, URLs, files, strings, numbers, dates, UUIDs)
+  - Sanitization Strategy (HTML, SQL injection, command injection, path traversal)
+  - Journey-Based Validation Reasoning
+
+**Failure example:**
+```
+❌ Input validation strategy incomplete
+   08-api-design.md has "Input Validation Strategy" section ✓
+   But missing "File Upload" validation rules
+   Journey Step 2 involves document upload → File validation required
+   Fix: Add file upload validation (MIME type, size, virus scanning)
+```
+
+**Validation library check:**
+- Library documented must match tech stack from Session 3
+- Python (FastAPI) → Pydantic ✓
+- Node.js (Express) → Joi / Zod / AJV ✓
+- Mismatch: Python backend with Joi library ✗
+
+**Rationale**: Input validation is critical for preventing injection attacks, DoS, and data corruption. Must be documented systematically, not left to implementation guesswork.
+
+---
+
+### Rule 11.4: Security Headers Configuration
+
+**What:** Session 8 API design output must document required security headers
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify API8:2023 (Security Misconfiguration) section includes:
+  - `Strict-Transport-Security` header (HSTS)
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options` (DENY or SAMEORIGIN with reasoning)
+  - `Content-Security-Policy` (journey-specific policy)
+  - `X-Request-ID` (request tracing)
+
+**Failure example:**
+```
+❌ Security headers incomplete
+   API8 section exists ✓
+   But missing Content-Security-Policy header
+   Fix: Add CSP header (e.g., "default-src 'self'" for API-only)
+```
+
+**Journey-based CSP check:**
+- API-only (no web frontend): `default-src 'self'` ✓
+- Web app with CDN: `default-src 'self' https://cdn.example.com` ✓
+- Generic CSP with no journey reasoning: ✗
+
+**Rationale**: Security headers prevent entire classes of attacks (XSS, clickjacking, MITM). Must be configured based on journey requirements, not copy-pasted from generic guides.
+
+---
+
 ## Implementation Priority
 
 ### Tier 1 (Critical - Implement First):
@@ -495,12 +620,16 @@
 - Rule 2.1: Session Number Format Standardization
 - Rule 3.1: Database Table Name Consistency
 - Rule 3.2: Epic Number Consistency
+- Rule 11.1: OWASP Coverage Completeness (NEW - Session 8 security)
+- Rule 11.2: Security Pattern Journey Traceability (NEW - Session 8 security)
 
 ### Tier 2 (Important - Implement Soon):
 - Rule 1.1: File Read References Must Be Creatable
 - Rule 1.2: Context Files Must Be Documented
 - Rule 4.1-4.3: Propagation Pattern Completeness
 - Rule 6.3: Decision Matrix Table Accuracy
+- Rule 11.3: Input Validation Strategy Presence (NEW - Session 8 security)
+- Rule 11.4: Security Headers Configuration (NEW - Session 8 security)
 
 ### Tier 3 (Nice to Have - Implement Later):
 - Rule 5.1: Template Section Alignment

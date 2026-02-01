@@ -264,6 +264,251 @@ Document the serialization format decision tree:
 
 ---
 
+## Security Protection Patterns (OWASP API Top 10 2023)
+
+**Reference**: `reference-material/owasp-api-security-2023-checklist.md`
+
+Document protection patterns for applicable OWASP API Security Top 10 2023 risks based on your journey requirements.
+
+### API1:2023 - Broken Object Level Authorization (BOLA)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Journey Step [X]: [Specific resource access scenario]
+- Database tables with user ownership: [List from Session 7]
+- Example: "Journey Step 2 (document upload) creates user-owned documents in `documents` table"
+
+**Protection Pattern**:
+- Ownership check: `WHERE user_id = :current_user_id`
+- Affected endpoints:
+  - GET /api/documents/:id
+  - PUT /api/documents/:id
+  - DELETE /api/documents/:id
+
+**Reconsider if**: Multi-tenant features added, team-shared resources introduced
+
+---
+
+### API3:2023 - Broken Object Property Level Authorization
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Sensitive fields in database schema: [List from Session 7 - e.g., `ssn`, `payment_info`, `internal_notes`]
+- User roles: [Admin / User / Owner / Public]
+
+**Protection Pattern**:
+- Admin response fields: [All fields including sensitive data]
+- User response fields: [Limited fields, no PII]
+- Public response fields: [Minimal fields only]
+- Field-level filtering: [How implemented - serializers, DTOs, response mappers]
+
+**Reconsider if**: New sensitive fields added (payment info, health data, SSN), compliance requirements change (GDPR, HIPAA)
+
+---
+
+### API5:2023 - Broken Function Level Authorization (BFLA)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Admin-only endpoints: [List endpoints that require admin role]
+- Owner-only endpoints: [List endpoints that require resource ownership]
+- Public endpoints: [List endpoints with no auth required]
+
+**Protection Pattern**:
+- Admin check: `if user.role != 'admin': return 403 Forbidden`
+- Owner check: `if resource.owner_id != current_user_id: return 403 Forbidden`
+- Role enforcement: [Middleware / decorator / route guard]
+
+**Reconsider if**: New admin features added, team hierarchy introduced (owner > admin > member)
+
+---
+
+### API6:2023 - Unrestricted Access to Sensitive Business Flows
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Sensitive business flows: [password reset / order creation / invitations / refunds / etc.]
+- Abuse scenarios: [fraud / spam / account enumeration]
+
+**Protection Pattern**:
+- Endpoint: POST /api/auth/password-reset
+  - Limit: 3 attempts per email per hour
+  - Reason: Prevent email enumeration
+- Endpoint: POST /api/orders
+  - Limit: 10 orders per user per day
+  - Reason: Prevent fraudulent orders
+- Endpoint: POST /api/teams/:id/invitations
+  - Limit: 50 invitations per team per day
+  - Reason: Prevent invitation spam
+
+**Reconsider if**: Payment processing added, invitation system introduced, account recovery flows implemented
+
+---
+
+### API7:2023 - Server-Side Request Forgery (SSRF)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- User-provided URLs accepted: [webhooks / file imports / third-party integrations / none]
+- Internal services: [List from Session 4 architecture - databases, caches, internal APIs]
+
+**Protection Pattern**:
+- URL validation: HTTPS required, HTTP blocked
+- Blocked IP ranges: 127.0.0.1, 10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16 (internal networks)
+- Domain allowlist: [Specific domains if applicable OR "No allowlist - validate only"]
+- Validation library: [URL parsing library from tech stack]
+
+**Reconsider if**: Webhook system added, file import from URLs introduced, third-party integrations allow URL configuration
+
+---
+
+### API8:2023 - Security Misconfiguration
+
+**Applicability**: YES (always applicable)
+
+**Required Security Headers** (on ALL responses):
+```http
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-Frame-Options: [DENY / SAMEORIGIN]
+Content-Security-Policy: [default-src 'self' / custom policy]
+X-Request-ID: [UUID for request tracing]
+```
+
+**Journey-Based Header Configuration**:
+- `X-Frame-Options`: [DENY for API-only / SAMEORIGIN if web app embeds API]
+- `Content-Security-Policy`: [Journey-specific CSP policy]
+
+**Disabled Endpoints**:
+- [List any default endpoints to disable: /admin, /debug, /metrics, /health if not needed]
+
+**Journey-Based Reasoning**:
+[Why these headers matter for your journey - e.g., "Web-based journey requires CSP to prevent XSS attacks"]
+
+---
+
+### API10:2023 - Unsafe Consumption of APIs
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Third-party APIs consumed: [Payment gateway / AI service / Analytics / Email service / etc.]
+- Journey steps affected: [Which steps depend on third-party APIs]
+
+**Protection Pattern**:
+- API: [Third-party API name, e.g., "OpenAI GPT-4"]
+  - Timeout: [5-30 seconds depending on operation]
+  - Circuit breaker: Open after [5] consecutive failures
+  - Half-open retry: After [30 seconds]
+  - Fallback: [Return cached data / degraded response / user-facing error message]
+  - Journey context: [Journey Step X depends on this API]
+
+**Reconsider if**: Third-party integrations added (payment gateways, AI services, analytics), webhook consumption from external sources
+
+---
+
+## Input Validation Strategy
+
+Document server-side validation for ALL user input based on journey requirements and database schema.
+
+### Validation Approach
+
+**API Paradigm**: [REST / GraphQL / gRPC] (from paradigm decision)
+**Validation Library**: [Pydantic / Joi / Zod / class-validator / AJV] (from Session 3 tech stack)
+
+**Journey-Based Selection Reasoning**:
+[Why this library matches your tech stack - e.g., "FastAPI backend uses Pydantic for automatic request validation"]
+
+### Validation Rules by Input Type
+
+#### Email Addresses
+- **Format**: RFC 5322 (`\S+@\S+\.\S+`)
+- **Max length**: 254 characters
+- **Normalization**: Lowercase
+- **Journey context**: [Which journey steps use email input - e.g., "Journey Step 1: User registration form"]
+
+#### URLs
+- **Protocol**: HTTPS required (HTTP for dev only)
+- **Domain allowlist**: [Specific domains OR "Any HTTPS domain"]
+- **Block internal IPs**: YES (SSRF protection - 127.0.0.1, 10.0.0.0/8, 192.168.0.0/16)
+- **Max length**: 2048 characters
+- **Journey context**: [Which journey steps accept URLs - e.g., "Journey Step 4: Webhook subscription"]
+
+#### Phone Numbers
+- **Format**: E.164 (+1234567890)
+- **Validation library**: libphonenumber
+- **Journey context**: [If journey requires phone numbers]
+
+#### Dates/Timestamps
+- **Format**: ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)
+- **Range**: [1900-2100] or journey-specific range
+- **Timezone**: Store in UTC, convert to user timezone
+- **Journey context**: [Which journey steps use dates]
+
+#### File Uploads
+- **Allowed MIME types**: [application/pdf, image/jpeg, image/png, etc.]
+- **Max file size**: [10MB / 50MB / etc.]
+- **File extension validation**: Double-check (don't trust client-side extension)
+- **Virus scanning**: [YES - ClamAV / VirusTotal API / NO]
+- **Storage sanitization**: Rename uploaded files (prevent directory traversal)
+- **Journey context**: [Journey Step X: document upload → PDF only, 10MB max, virus scan required]
+
+#### Strings (General Text Input)
+- **Max length**: [255 for names, 5000 for descriptions, journey-specific]
+- **Min length**: [Prevent empty inputs - e.g., min 3 chars for search queries]
+- **Pattern**: [Alphanumeric only / Allow spaces / Regex for specific format]
+- **Trim**: Remove leading/trailing whitespace
+- **Journey context**: [Which fields accept text input]
+
+#### Numbers (Integers/Floats)
+- **Type**: Integer or Float
+- **Range**: Min/max values (e.g., quantity: 1-1000, price: 0.01-999999.99)
+- **Precision**: For decimals (e.g., currency: 2 decimal places)
+- **Journey context**: [Which journey steps use numeric input]
+
+#### UUIDs
+- **Format**: UUIDv4 or UUIDv7
+- **Validation**: Regex or library validation
+- **Journey context**: [Which resources use UUID identifiers]
+
+### Sanitization Strategy
+
+#### HTML Input
+- **Approach**: [Strip all tags / Allowlist safe tags (<b>, <i>, <a>, <p>)]
+- **Library**: [DOMPurify / bleach / sanitize-html] (from tech stack)
+- **Journey context**: [Which fields allow rich text - e.g., "Comment fields allow basic formatting"]
+
+#### SQL Injection Prevention
+- **Method**: Parameterized queries (ALWAYS, NEVER string concatenation)
+- **ORM**: [Prisma / TypeORM / SQLAlchemy / Sequelize] (from Session 3 tech stack)
+- **Journey-Based Reasoning**: All database queries use ORM with parameterized queries
+
+#### Command Injection Prevention
+- **Rule**: NEVER pass user input to shell commands
+- **Alternative**: Use libraries instead of shell commands (e.g., use `fs` module, not `exec('cat file')`)
+- **Journey context**: [If journey requires file operations, image processing, etc.]
+
+#### Path Traversal Prevention
+- **Rule**: Validate all file paths, use allowlist for directories
+- **Pattern**: Reject `../`, `..\\`, absolute paths
+- **Journey context**: [If journey involves file operations]
+
+### Journey-Based Validation Reasoning
+
+[3-5 sentences tracing validation strategy to:
+- Journey input scenarios (forms, uploads, search, filters)
+- Database schema input types (Session 7 - which fields accept user input)
+- Security requirements (prevent SQL injection, XSS, file upload attacks, DoS via large inputs)]
+
+**Example**: "Journey Step 2 (document upload) requires strict file validation: only PDF/DOCX allowed (MIME type check), max 10MB (prevent DoS), virus scanning with ClamAV (prevent malware). Journey Step 3 (search documents) requires input sanitization: max 500 chars (prevent DoS), trim whitespace, escape SQL (parameterized queries via Prisma ORM)."
+
+---
+
 ## Rate Limiting Strategy
 
 ### Limits by Tier
@@ -640,6 +885,7 @@ Before considering this session complete:
 - [ ] API paradigm decision traces to specific journey steps
 - [ ] Serialization format aligns with performance/bandwidth needs from journey
 - [ ] Authentication strategy matches journey security requirements
+- [ ] Security patterns reference specific journey steps and database tables
 - [ ] Rate limiting aligns with pricing model and journey scale
 - [ ] Pagination approach fits data volume and UX needs
 
@@ -647,21 +893,38 @@ Before considering this session complete:
 - [ ] Each decision cites journey steps, tech stack (Session 3), or architecture (Session 4)
 - [ ] Paradigm choice references at least 3 of 5 decision criteria
 - [ ] Serialization format references paradigm alignment
+- [ ] OWASP patterns cite journey steps or database schema (Session 7)
+- [ ] Input validation traces to journey input scenarios
 - [ ] No decisions are arbitrary or "best practice" without reasoning
 
 **Completeness**:
 - [ ] All 5 API paradigm criteria analyzed
 - [ ] All 5+ serialization format criteria analyzed
 - [ ] Authentication includes method, placement, lifetime, authorization patterns
+- [ ] OWASP API Top 10 protection patterns documented for applicable risks
+- [ ] Input validation strategy includes paradigm-specific approach and sanitization
+- [ ] Security headers documented (HSTS, X-Content-Type-Options, X-Frame-Options, CSP)
 - [ ] Rate limiting includes limits by tier and endpoint-specific rules
 - [ ] Pagination includes approach, format, and when to use
 - [ ] Error handling includes format, status codes, and journey-based design
 - [ ] Scale-forward strategy for MVP → Growth → Maturity
 
+**Security Coverage (OWASP API Top 10 2023)**:
+- [ ] API1 (BOLA) - Analyzed for user-owned resources
+- [ ] API3 (Property-Level Auth) - Analyzed for sensitive fields
+- [ ] API5 (BFLA) - Analyzed for admin/owner endpoints
+- [ ] API6 (Business Flows) - Analyzed for abuse scenarios (password reset, orders, invitations)
+- [ ] API7 (SSRF) - Analyzed for user-provided URLs
+- [ ] API8 (Security Misconfiguration) - Security headers documented
+- [ ] API10 (Unsafe API Consumption) - Analyzed for third-party API dependencies
+- [ ] Input validation strategy complete with sanitization rules
+
 **Technical Quality**:
 - [ ] Paradigm choice matches tech stack capabilities (Session 3)
 - [ ] Serialization format compatible with paradigm
 - [ ] Auth method from tech stack implemented correctly
+- [ ] Security patterns are journey-specific (not generic security advice)
+- [ ] Validation library matches tech stack (from Session 3)
 - [ ] Rate limiting prevents abuse without hindering UX
 - [ ] Error format actionable and user-friendly
 
@@ -670,6 +933,7 @@ Before considering this session complete:
 - [ ] Each alternative has "Reconsider if" conditions
 - [ ] Each alternative traces back to journey or architecture
 - [ ] Scale-forward strategy explains evolution path
+- [ ] Security patterns preserved in context file for Session 10
 
 ---
 
