@@ -94,31 +94,9 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 ### The Cascade Order (Sacred Sequential Flow)
 
-The cascade order is **sacred** - user journey comes first, everything flows from it:
+The cascade order is **sacred** - user journey comes first, everything flows from it. See "Quick Reference: Session Dependencies" section below for complete cascade flow.
 
-```
-Session 1: /refine-journey              → 00-user-journey.md + .ctx.md
-Session 2: /create-product-strategy     → 01-product-strategy.md + .ctx.md
-Session 2a: /document-constraints       → 02a-constraints.md + .ctx.md
-Session 3: /choose-tech-stack           → 02-tech-stack.md + .ctx.md
-Session 3b: /define-coding-standards   → 02b-coding-standards.md + .ctx.md
-Session 3c: /define-ai-integration-strategy → 02c-ai-integration-strategy.md + .ctx.md
-Session 4: /generate-strategy           → 03a-mission.md + .ctx.md, 03b-metrics.md + .ctx.md, 03c-monetization.md + .ctx.md, 04-architecture.md + .ctx.md
-Session 5: /create-brand-strategy       → 05-brand-strategy.md + .ctx.md
-Session 6: /create-design               → 06-design-system.md + .ctx.md
-Session 7: /design-database-schema      → 07-database-schema.md + .ctx.md (paradigm-agnostic: relational/document/graph/time-series/key-value)
-Session 8: /generate-api-design         → 08-api-design.md + .ctx.md
-Session 8b: /generate-api-contracts     → 08b-api-contracts.md + .ctx.md
-Session 9: /create-test-strategy        → 09-test-strategy.md + .ctx.md
-Session 9b: /model-application          → 09b-application-architecture.md + .ctx.md
-Session 10: /generate-backlog           → 10-backlog/ (30-50 user stories, activity-based epic structure: 3-10+ epics derived from journey goals)
-Session 11: /create-gh-issues           → Push to GitHub
-Session 12: /scaffold-project           → 12-project-scaffold.md + code files + code skeletons
-Session 13: /plan-deployment            → 13-deployment-plan.md
-Session 14: /design-observability       → 14-observability-strategy.md
-```
-
-**Dependencies:** Each session READS previous outputs. For example:
+**Key Dependencies:**
 - Session 2a (constraints) reads 00-journey + 01-strategy
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider; **Detects i18n requirement** from constraints and selects i18n library
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
@@ -133,30 +111,11 @@ Session 14: /design-observability       → 14-observability-strategy.md
 
 **Never skip sessions** - later sessions need previous outputs for context.
 
-**Internationalization (i18n) Propagation Pattern:**
+**Constraint Propagation Patterns:**
 
-When Session 2a marks "Internationalization requirements (i18n, l10n)" as required:
-1. **Session 3** selects appropriate i18n library based on frontend framework (next-intl, react-i18next, vue-i18n, svelte-i18n)
-2. **Session 7** adds locale columns and translation table patterns to database schema
-3. **Session 8 (api-design)** adds Accept-Language header support and localized error message requirements to API design
-4. **Session 10** generates i18n infrastructure stories in Foundation epic (translation file setup, locale switching UI, string extraction)
-5. **Session 12** generates `/locales/` directory structure, example translation files (common.json, auth.json, errors.json), and i18n configuration
-
-This pattern follows Session 3c (AI integration) precedent: constraint drives conditional technical decisions across cascade.
-
-**Third-Party Integration Propagation Pattern:**
-
-When Session 2a specifies third-party integration requirements (payment processors, CRM, communication services, etc.):
-1. **Session 2a** documents integration details: provider name, integration type (API-only vs webhooks), data flow direction, technical requirements, priority
-2. **Session 3** selects appropriate SDKs/client libraries for integrations
-3. **Session 4** includes integration architecture patterns (credential management, webhook handling, rate limiting, monitoring)
-4. **Session 7** generates integration-specific tables: `integration_credentials`, `sync_jobs`, `webhook_events` (if webhooks required)
-5. **Session 8 (api-design)** designs API endpoints for webhook handlers with security requirements (signature verification, idempotency)
-6. **Session 8b** generates OpenAPI webhook endpoint specs with provider-specific security details
-7. **Session 10** generates integration stories in Foundation epic per provider (credential setup, API integration, webhook handler, error handling, monitoring)
-8. **Session 12** generates integration adapter skeletons in codebase (e.g., `StripeAdapter.ts`, `SendGridAdapter.ts`)
-
-This pattern ensures comprehensive integration planning from constraints → architecture → implementation.
+- **i18n/l10n** (when Session 2a marks required): S3 selects library → S7 adds locale columns/translation tables → S8 adds Accept-Language headers → S10 generates i18n stories → S12 generates `/locales/` structure
+- **Third-party integrations** (when Session 2a specifies): S3 selects SDKs → S4 includes integration patterns → S7 generates integration tables (`integration_credentials`, `sync_jobs`, `webhook_events`) → S8/8b designs webhook endpoints → S10 generates integration stories → S12 generates adapter skeletons
+- **AI integration** (when Session 3 detects): S3c makes ALL AI decisions (provider, model, pattern) and updates tech stack → propagates through S4 (architecture), S7 (vector storage if needed), S10 (AI stories)
 
 ### Checkpoint System (Critical Decision Validation)
 
@@ -184,28 +143,8 @@ Each checkpoint includes:
 4. **Rollback instructions** - How to regenerate if issues found (`/[session-name]` to re-run)
 5. **Continue prompt** - User types "continue" to proceed to next session
 
-**Example (Session 4 checkpoint):**
-```
-Session 4 complete! You've established your tactical foundation.
-
-REVIEW CHECKLIST:
-- [ ] Mission statement references journey aha moment (typically Step 3)
-- [ ] North Star metric measures user value delivery (not vanity metrics)
-- [ ] Monetization model charges where value is delivered (value ratio >10:1)
-- [ ] Architecture principles optimize journey critical path
-
-What happens next:
-These decisions cascade through Sessions 5-14.
-
-If you found issues:
-Run /generate-strategy again to regenerate with fresh analysis.
-
-If everything looks good:
-Type "continue" when ready to proceed to Session 5 (brand strategy).
-```
-
 **Design rationale:**
-Checkpoints implement the Human-in-the-Loop (HITL) pattern from agentic coding research (Google ADK 2024, Anthropic Multi-Agent Systems 2024). By pausing at decision boundaries, users can:
+Checkpoints implement Human-in-the-Loop (HITL) pattern from agentic coding research. By pausing at decision boundaries, users can:
 - Review outputs before they become inputs to downstream processes (Reflection pattern)
 - Catch errors early when they're cheap to fix (vs. late when cascade has progressed)
 - Understand context flow (semantic, lineage, operational, policy dimensions)
@@ -367,36 +306,6 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 - **Consistency** - Simple rule: if .ctx.md exists, read it
 - **Performance** - Faster execution, lower costs, better context window usage
 
-**Session-by-Session Matrix (Simplified):**
-
-| Session | Reads From | File Versions | Note |
-|---------|-----------|--------------|------|
-| 2 | 00 | .ctx.md | Journey steps only |
-| 2a | 00, 01 | .ctx.md | Journey + vision |
-| 3 | 00, 01, 02a (if exists) | .ctx.md | Journey + constraints |
-| 3b | 00, 01, 02 | .ctx.md | Tech stack + journey |
-| 3c | 00, 01, 02 | .ctx.md | AI decisions (optional session) |
-| 4 | 00-02c (if exists) | .ctx.md | All previous decisions |
-| 5 | 00-04 | .ctx.md | Strategic foundation |
-| 6 | 00-05 | .ctx.md | Journey + brand |
-| 7 | 00-06 | .ctx.md | Journey + design |
-| 8 | 00, 02, 04, 07 | .ctx.md | API design decisions |
-| 8b | 00, 02, 04, 07, 08 | .ctx.md | API contracts |
-| 9 | 00-08b | .ctx.md | All technical specs |
-| 9b | 00, 02, 02b, 04, 07, 08b | .ctx.md | Application modeling |
-| 10 | 00-04, 07-09b | .ctx.md for ALL | **CRITICAL** - Maximum token savings (skips 05-06) |
-| 11 | 10-backlog | Full .md | Stories (no .ctx) |
-| 12 | 00-11 | .ctx.md for 00-09b | Scaffold generation |
-| 13 | 00-12 | .ctx.md for 00-09b | Deployment planning |
-| 14 | 00-13 | .ctx.md for 00-09b | Observability strategy |
-
-**Dev Commands:**
-
-| Command | Reads | File Versions | Note |
-|---------|-------|--------------|------|
-| /plan-issue | 02, 02b, conditionally 04, 06, 07, 08, 08b, 09 | .ctx.md for all | Tech specs for planning, posts plan to GitHub |
-| /implement-issue | Uses plan only | N/A | Plan has all context |
-
 **Exception: Read Full .md Only When:**
 - User explicitly requests full document review
 - `/validate-outputs` command (needs rationale to check quality)
@@ -415,58 +324,7 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 
 ### 7. Issue Implementation Pattern
 
-`/plan-issue` loads context and creates implementation plan, then posts to GitHub:
-1. Always read `02-tech-stack.ctx.md` (tech choices)
-2. Always read `02b-coding-standards.ctx.md` (patterns, file organization)
-3. Conditionally read based on issue type (all use .ctx.md):
-   - UI work → `06-design-system.ctx.md`
-   - API work → `08-api-design.ctx.md`, `08b-api-contracts.ctx.md`
-   - Database work → `07-database-schema.ctx.md`
-   - Testing → `09-test-strategy.ctx.md`
-   - Infrastructure → `04-architecture.ctx.md`
-3.5. **If third-party integration detected:** Research official documentation
-   - Detection: Keywords (npm install, new package, library, SDK, widget)
-   - Research: Find official docs, identify recommended packages, document gotchas
-   - Time-boxed: 2-3 minutes (prevents over-research)
-   - Output: Embedded in plan as "Third-Party Integration Research" section
-4. Generate comprehensive implementation plan
-5. Post plan as comment to GitHub issue using `gh` CLI
-
-`/implement-issue` follows strict workflow:
-1. Fetch approved plan from issue comments
-2. Uses plan as complete context (plan already contains all necessary product-guidelines)
-3. Create branch: `[issue-number]-slug`
-4. Implement following plan exactly
-5. Commit: `feat: description (closes #[number])`
-6. PR with "Closes #[number]" in body
-
-`/review-pr` provides automated PR review with three-layer architecture:
-1. Fetch PR metadata and diff via `gh` CLI
-2. **Layer 1 - Framework Validation:**
-   - Read VALIDATION-CHECKLIST.md
-   - Detect changed file types from diff
-   - Apply only relevant rules (smart detection)
-   - Report pass/fail status for each applicable rule
-3. **Layer 2 - PR Quality:**
-   - Check linked issue (Closes #X in PR body)
-   - Check CI status
-   - Validate commit messages (conventional format)
-   - Analyze diff scope
-4. **Layer 3 - Code Quality:**
-   - Security review (SQL injection, XSS, auth)
-   - Performance review (N+1 queries, inefficiencies)
-   - Testing review (coverage, edge cases)
-   - Error handling review
-5. Generate structured markdown review with prioritized feedback
-6. Post review to GitHub via `gh pr comment`
-7. Track iterations (warn after 5 reviews to prevent fatigue)
-
-**Complete PR Workflow:**
-```
-/plan-issue [number] → /implement-issue [number] → /review-pr [PR-number] → (iterate) → merge
-```
-
-**For general code review without GitHub posting**, use `/review-code` instead.
+See "Development Commands" section above for full details on `/plan-issue`, `/implement-issue`, and `/review-pr` workflows.
 
 ---
 
@@ -676,170 +534,19 @@ Session 14 (observability) [reads: ALL .ctx.md files from 00-09b] → Generates 
 
 ## Post-Cascade Extensions
 
-Post-cascade extensions are **optional deep-dive commands** that run AFTER core cascade sessions (1-14) to provide specialized guidance for specific product needs. They read from core cascade outputs and are run selectively based on product requirements.
+Post-cascade extensions are **optional deep-dive commands** that run AFTER core cascade (Sessions 1-14) for specialized product needs.
 
-### Brand Strategy Extensions
+| Command | When | For Whom | Generates | Key Outputs |
+|---------|------|----------|-----------|-------------|
+| **`/discover-naming`** | After S5 | Brand name needed | 15-brand-naming.md | 20-30 candidates, trademark research, top 3 recommendations |
+| **`/define-messaging`** | After S5 | Copy templates needed | 16-brand-messaging.md | Value prop, elevator pitches, voice guidelines, sample copy |
+| **`/design-brand-identity`** | After S5 | Visual identity needed | 17-brand-identity.md | 3-5 logo concepts, color palettes, typography, usage guidelines |
+| **`/create-compliance-plan`** | After S2a/S10 | Compliance-heavy (healthcare, fintech, B2B) | 23-compliance-plan.md | Regulations mapping, backlog stories, roadmap, cost estimates |
 
-**Hierarchy**: Session 5 (`/create-brand-strategy`) creates the strategic foundation. Extensions (naming, messaging, identity) provide tactical execution that READS FROM and REFERENCES the strategic foundation.
-
-#### `/discover-naming` - Brand Name Generation
-
-**When to run**: After Session 5 (`/create-brand-strategy`)
-
-**For whom**: Products that need brand name exploration with trademark research
-
-**Prerequisites**:
-- Brand strategy defined (Session 5) - REQUIRED
-- User journey defined (Session 1)
-- Mission statement (Session 4)
-
-**What it generates**: `product-guidelines/15-brand-naming.md`
-
-**Reads from**:
-- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED)
-- `00-user-journey.md` - Journey transformation for name context
-- `03a-mission.md` - Mission promise for name alignment
-
-**Outputs**:
-- 20-30 name candidates across categories (descriptive, metaphorical, abstract, compound)
-- Trademark research summary (USPTO, domain availability)
-- 10 finalists with detailed analysis
-- Top 3 recommendations with rationale
-
-**Key principle**: Names must express [journey value] through the lens of [brand personality from 05]
-
----
-
-#### `/define-messaging` - Brand Messaging Framework
-
-**When to run**: After Session 5 (`/create-brand-strategy`)
-
-**For whom**: Products that need copy templates, voice guidelines, and messaging execution
-
-**Prerequisites**:
-- Brand strategy defined (Session 5) - REQUIRED
-- User journey defined (Session 1)
-- Mission statement (Session 4)
-
-**What it generates**: `product-guidelines/16-brand-messaging.md`
-
-**Reads from**:
-- `05-brand-strategy.md` - Brand voice, personality, values, promise (REQUIRED)
-- `00-user-journey.md` - Journey audience and transformation
-- `03a-mission.md` - Mission foundation
-
-**Outputs**:
-- Value proposition (one-sentence)
-- Elevator pitches (15-sec, 30-sec, 1-min)
-- Messaging pillars (3-5 core themes)
-- Voice and tone guidelines
-- Sample copy (homepage, emails, support, etc.)
-- Messaging do's and don'ts
-
-**Key principle**: Messaging EXECUTES [brand voice from 05] to communicate [journey value] to [journey audience]
-
----
-
-#### `/design-brand-identity` - Visual Identity System
-
-**When to run**: After Session 5 (`/create-brand-strategy`)
-
-**For whom**: Products that need logo concepts, color palettes, typography, and visual guidelines
-
-**Prerequisites**:
-- Brand strategy defined (Session 5) - REQUIRED
-- User journey defined (Session 1)
-- Design system (Session 6) - optional but helpful
-
-**What it generates**: `product-guidelines/17-brand-identity.md`
-
-**Reads from**:
-- `05-brand-strategy.md` - Brand personality, values, visual direction (REQUIRED)
-- `00-user-journey.md` - Target audience and emotional context
-- `06-design-system.md` - Component-level design patterns (if exists)
-- `15-brand-naming.md` - Chosen name for logo (if exists)
-
-**Outputs**:
-- 3-5 logo concepts with rationale
-- Recommended logo with variations (horizontal, stacked, icon-only)
-- Color palette application (primary, secondary, accent, neutral)
-- Typography system (primary/secondary fonts, hierarchy)
-- Visual elements (patterns, iconography, photography style)
-- Usage guidelines (clearspace, do's/don'ts, accessibility)
-- Brand applications (digital, marketing, product examples)
-
-**Key principle**: Visual identity VISUALLY EXPRESSES [brand personality from 05] to [target audience]
-
----
-
-**Brand Template Consolidation**:
-- **05-brand-strategy.md** - Strategic foundation (purpose, values, personality, promise)
-- **15-brand-naming.md** - Tactical name generation (reads 05)
-- **16-brand-messaging.md** - Tactical copy execution (reads 05)
-- **17-brand-identity.md** - Tactical visual execution (reads 05)
-
-Each extension REQUIRES 05-brand-strategy.md to exist first. Extensions reference brand strategy explicitly throughout. No duplicate content between 05 and 15-17.
-
----
-
-### `/create-compliance-plan` - Compliance Implementation Roadmap
-
-**When to run**: After Session 2a (constraints) or Session 10 (backlog)
-
-**For whom**: Compliance-heavy products (healthcare, fintech, enterprise B2B)
-
-**Prerequisites**:
-- User journey defined (Session 1)
-- Product strategy validated (Session 2)
-- Constraints documented (Session 2a)
-- Ideally: Database schema (Session 7), API contracts (Session 8/8b), Backlog (Session 10)
-
-**What it generates**: `product-guidelines/23-compliance-plan.md`
-
-**Reads from**:
-- `00-user-journey.md` - Where user data is collected/processed
-- `01-product-strategy.md` - Market geography, customer segments, TAM
-- `02a-constraints.md` - Basic compliance requirements identified
-- `07-database-schema.md` - Data handling, retention, storage
-- `08-api-design.md`, `08b-api-contracts.md` - Data export, deletion, API security
-- `10-backlog/` - Integration with product backlog
-
-**Outputs**:
-- **Applicable regulations** with priorities (Required/Competitive/Aspirational)
-- **Detailed requirements** by regulation (article/section-level)
-- **Compliance-to-implementation mapping** (journey → requirement → technical implementation)
-- **Compliance backlog stories** with RICE prioritization
-- **Compliance monitoring strategy** (for Session 14 integration)
-- **Compliance roadmap** by stage (MVP → Growth → Scale)
-- **Cost estimates** (legal, engineering, ongoing certification)
-
-**Key features**:
-- Identifies applicable regulations based on journey geography, data types, customer segments (GDPR, HIPAA, SOC2, PCI-DSS, CCPA, ISO 27001)
-- Breaks down regulation requirements to implementation level (database tables, API endpoints, UI components)
-- Estimates compliance costs with 2025 market rates ($3k-$5k legal, $XX-XXk engineering, $XX-XXk ongoing)
-- Creates realistic timeline (SOC2: 6-12 months, HIPAA: 6-8 weeks technical implementation)
-- Generates compliance backlog stories for Epic 04: Compliance & Legal
-- Maps compliance requirements to cascade sessions (7=database, 8=API, 12=scaffold, 14=observability)
-- Includes legal disclaimer (educational guidance, not legal advice)
-
-**Example use cases**:
-- **Healthcare SaaS**: HIPAA compliance implementation plan with BAA templates, encryption requirements, audit logging
-- **Fintech**: PCI-DSS compliance roadmap (use Stripe to minimize scope), SOC2 for enterprise customers
-- **Enterprise B2B**: SOC2 Type II certification timeline (6-9 month pre-audit, 3-6 month observation, Month 12 certification)
-- **EU market**: GDPR compliance with consent tracking, data export API, right to erasure (soft delete)
-
-**Distinguishing from Session 2a (constraints)**:
-- **Session 2a**: Captures basic compliance needs (which regulations apply, why, priority)
-- **Post-cascade compliance plan**: Translates regulations into detailed technical implementation with costs, timelines, backlog stories
-- **When to use each**:
-  - All products: Run Session 2a to document basic compliance constraints
-  - Compliance-heavy products (>20% revenue depends on certifications): Run `/create-compliance-plan` for detailed implementation guidance
-
-**Integration with cascade**:
-- **Session 10 (backlog)**: Compliance plan generates Epic 04 stories that can be imported to backlog
-- **Session 14 (observability)**: Compliance plan monitoring strategy informs compliance metrics (failed logins, PHI access, consent opt-in rates, etc.)
-
-**No context file**: Post-cascade extensions don't create .ctx.md files (outputs are already concise or final deliverables)
+**Notes**:
+- Brand extensions (naming/messaging/identity) REQUIRE Session 5 (brand-strategy) first
+- Compliance plan reads 00-02a, 07-10 for technical implementation mapping
+- Post-cascade extensions don't create .ctx.md files
 
 ---
 
