@@ -253,6 +253,18 @@ Each command follows this pattern:
 - Implements following plan exactly
 - Creates PR with "Closes #[number]"
 
+**`/review-pr [PR-number]`** - Review GitHub PR with framework validation and automated posting
+- Fetches PR details and diff via `gh` CLI
+- Three-layer review architecture:
+  - **Layer 1:** Framework validation using VALIDATION-CHECKLIST.md with smart rule detection
+  - **Layer 2:** PR quality checks (linked issue, CI status, commit messages, diff scope)
+  - **Layer 3:** Code quality review (security, performance, testing, error handling)
+- Reports pass/fail status for applicable VALIDATION-CHECKLIST rules
+- Generates structured review with prioritized feedback (High/Medium/Low)
+- Posts review as GitHub comment automatically
+- Tracks review iterations (warns after 5 rounds to prevent fatigue)
+- Use `/review-code` for general code review without GitHub posting
+
 **`/validate-outputs`** - Quality assurance for cascade outputs
 - Reads ALL files in `product-guidelines/`
 - Validates against quality criteria:
@@ -427,6 +439,34 @@ ALL sessions 2-14 read `.ctx.md` versions of previous sessions 1-9b:
 4. Implement following plan exactly
 5. Commit: `feat: description (closes #[number])`
 6. PR with "Closes #[number]" in body
+
+`/review-pr` provides automated PR review with three-layer architecture:
+1. Fetch PR metadata and diff via `gh` CLI
+2. **Layer 1 - Framework Validation:**
+   - Read VALIDATION-CHECKLIST.md
+   - Detect changed file types from diff
+   - Apply only relevant rules (smart detection)
+   - Report pass/fail status for each applicable rule
+3. **Layer 2 - PR Quality:**
+   - Check linked issue (Closes #X in PR body)
+   - Check CI status
+   - Validate commit messages (conventional format)
+   - Analyze diff scope
+4. **Layer 3 - Code Quality:**
+   - Security review (SQL injection, XSS, auth)
+   - Performance review (N+1 queries, inefficiencies)
+   - Testing review (coverage, edge cases)
+   - Error handling review
+5. Generate structured markdown review with prioritized feedback
+6. Post review to GitHub via `gh pr comment`
+7. Track iterations (warn after 5 reviews to prevent fatigue)
+
+**Complete PR Workflow:**
+```
+/plan-issue [number] → /implement-issue [number] → /review-pr [PR-number] → (iterate) → merge
+```
+
+**For general code review without GitHub posting**, use `/review-code` instead.
 
 ---
 

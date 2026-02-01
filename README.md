@@ -235,7 +235,8 @@ Stack-Driven commands fall into two distinct phases:
 - `/implement-issue [issue-number]` - Fetch approved plan from issue comments, create branch, implement following plan, create PR
 
 **Code Review**:
-- `/review-code` - Guide code review with comprehensive framework
+- `/review-pr [PR-number]` - Review GitHub PR with three-layer validation (framework consistency via VALIDATION-CHECKLIST.md, PR quality, code quality) and automatically post structured feedback to GitHub
+- `/review-code` - Guide general code review with comprehensive framework (for non-PR code review, output in conversation only)
 
 **Documentation Maintenance**:
 - `/update-claudemd` - Automatically update CLAUDE.md based on recent code changes
@@ -255,7 +256,9 @@ Stack-Driven commands fall into two distinct phases:
 1. Run `/plan-issue 42` → Claude reads issue, loads relevant `.ctx.md` files (tech-stack, coding-standards, api-contracts, database-schema), generates implementation plan
 2. Plan posted to issue as comment for approval
 3. Run `/implement-issue 42` → Claude reads approved plan, creates branch `42-issue-slug`, implements code following plan, commits with "feat: description (closes #42)", creates PR
-4. CI/CD runs tests, you merge when green
+4. Run `/review-pr [PR-number]` → Claude applies three-layer validation (framework consistency, PR quality, code quality), posts structured review to GitHub
+5. Address feedback, iterate on review if needed
+6. CI/CD runs tests, you merge when green
 
 **Key Difference from Phase 1**:
 - **Phase 1**: Generates strategy/specs → Creates `product-guidelines/` directory
