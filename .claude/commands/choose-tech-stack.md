@@ -169,7 +169,7 @@ Web framework selection:
 
 **Build & Development Tooling:**
 
-Note: If you selected Next.js, Remix, Nuxt, or SvelteKit in the meta-framework section above, build tool configuration is pre-configured. This section primarily applies to standalone React/Vue/Svelte SPAs.
+Note: If you selected Next.js, Remix, Nuxt, or SvelteKit in the meta-framework section above, build tool configuration is pre-configured. This section primarily applies to standalone React/Vue/Svelte SPAs. Don't add build complexity where the framework already provides it.
 
 ```
 Build tool selection:
@@ -276,11 +276,15 @@ Data sovereignty required (GDPR, HIPAA strict interpretation)?
       Yes → Auth.js (free, OAuth 2.0, built for Next.js, formerly NextAuth.js)
       No → Continue below
 
+    Budget constraints (prefer free/low cost)?
+      Yes → Supabase Auth (generous free tier, $25 for 100K MAU, includes database)
+      No → Continue below
+
     High MAU volume (>50K users)?
-      Yes → Supabase Auth ($25/month for 100K MAU, includes database)
-      No → Modern DX priority with budget?
+      Yes → Supabase Auth (best value at scale)
+      No → Modern DX priority?
            Yes → Clerk (~$25/month for 10K MAU, beautiful UI)
-           No → Supabase Auth (best value)
+           No → Supabase Auth
 
 Note: Use HttpOnly cookies for JWTs (NOT localStorage, prevents XSS).
 ```
