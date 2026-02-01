@@ -26,7 +26,7 @@ This schema supports the following journey steps:
 
 **IMPORTANT**: The structure of this section depends on the database paradigm chosen in Session 3 (tech stack). Use the appropriate format based on the database type:
 
-### [IF Relational Database (PostgreSQL, MySQL, etc.)]
+### **IF** Relational Database (PostgreSQL, MySQL, etc.):
 
 ## Entity Relationship Diagram
 
@@ -95,7 +95,7 @@ Example:
 
 ---
 
-### [IF Document Database (MongoDB, Firestore)]
+### **IF** Document Database (MongoDB, Firestore):
 
 ## Collection Design
 
@@ -153,7 +153,7 @@ Example:
 
 ---
 
-### [IF Graph Database (Neo4j)]
+### **IF** Graph Database (Neo4j):
 
 ## Node Types
 
@@ -211,7 +211,7 @@ RETURN b
 
 ---
 
-### [IF Time-Series Database (InfluxDB, TimescaleDB, Prometheus)]
+### **IF** Time-Series Database (InfluxDB, TimescaleDB, Prometheus):
 
 ## Measurement Design
 
@@ -266,7 +266,7 @@ from(bucket: "bucket")
 
 ---
 
-### [IF Key-Value Store (Redis)]
+### **IF** Key-Value Store (Redis):
 
 ## Key Patterns
 

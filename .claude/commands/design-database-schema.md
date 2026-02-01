@@ -4,6 +4,16 @@ description: Session 7 - Design complete database schema with migrations
 
 # Design Database Schema (Session 7)
 
+<!--
+STEP NUMBERING CONVENTION:
+- Main steps: Numbered 1-9 (Step 1, Step 2, Step 7, etc.)
+- Lettered substeps: 2a, 2b, 2c, 2d, 6a, 6a1, 6b (inserted between main steps)
+- Conditional subsections: 2-Hybrid (optional patterns with IF/SKIP gates)
+- Nested substeps: 6a1 (sub-level under 6a)
+
+When adding new optional patterns, use letter notation (2e, 6c) to avoid renumbering main steps.
+-->
+
 You are helping the user create a comprehensive database schema design based on their chosen database paradigm. This may include entity relationship diagrams (relational), collection structures (document), node/relationship definitions (graph), measurements (time-series), or key patterns (key-value), depending on the tech stack choice. This happens after defining architecture and brand strategy, but BEFORE generating the backlog, so that backlog items can be informed by the technical data model.
 
 ## When to Use This
@@ -292,6 +302,8 @@ Entities NOT requiring translation:
 
 **Check Session 4**: If architecture uses multi-tenant pattern (shared schema with team-based isolation), implement Row-Level Security for defense-in-depth data protection.
 
+**If NOT multi-tenant**: Skip this subsection and proceed with integration requirements.
+
 **Why RLS is the 2025 standard**:
 - Defense-in-depth: Prevents data leakage from coding errors
 - Database-level enforcement: Cannot be bypassed by application bugs
@@ -359,6 +371,8 @@ SELECT * FROM documents; -- Should only see Team 2 docs
 ### Step 2c: Check for Integration Requirements
 
 **Check Session 2a for third-party integrations**: If `product-guidelines/02a-constraints.ctx.md` identifies external system integrations, add integration-specific tables to the schema.
+
+**If NO third-party integrations**: Skip this subsection and proceed with GDPR compliance patterns.
 
 #### Integration-Specific Tables
 
@@ -537,6 +551,8 @@ CREATE INDEX idx_external_mappings_provider ON external_resource_mappings(provid
 ### Step 2d: GDPR Compliance Patterns
 
 **Check Session 2a**: If GDPR compliance marked as required OR product serves EU users, implement Right to Erasure workflow.
+
+**If GDPR compliance is NOT required**: Skip this subsection and proceed with entity relationships.
 
 **The Problem**: Standard `DELETE` leaves data in backups, replicas, event logs, and cloud storage time-travel snapshots.
 
@@ -958,6 +974,8 @@ CREATE TABLE documents (
 ### Step 6a: Implement Audit Logging (if compliance required)
 
 **Check Session 2a**: If regulatory compliance (HIPAA, SOC2, GDPR) marked as required, implement immutable audit trail with row-level change tracking.
+
+**If compliance is NOT required**: Skip this subsection and proceed with temporal tables.
 
 **Pattern**: Trigger-based audit logging with JSONB deltas
 
@@ -2119,7 +2137,7 @@ Use the Task tool:
   2. Extract entity relationship diagram and key design decisions
   3. Remove detailed column explanations, migration code, query examples
   4. Preserve section structure from source file
-  5. Achieve 60-70% token reduction
+  5. Achieve ~56% token reduction (Session 7 target due to preserving detailed schema structures)
   6. Add source reference header
   7. Write to output file path
   ```
