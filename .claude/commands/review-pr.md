@@ -243,6 +243,12 @@ If you have questions about any feedback, reply to this comment.
 gh pr comment [PR-number] --body-file review.md
 ```
 
+**Handle common failures:**
+- **Auth error (exit code 4):** Run `gh auth status` to verify authentication. If shows "Not logged into any GitHub hosts", run `gh auth login` and select github.com
+- **Rate limit error (HTTP 403):** GitHub API rate limit reached (60 requests/hour unauthenticated, 5000/hour authenticated). Check remaining quota: `gh api rate_limit`. Wait until reset time or use authenticated token
+- **Network error (DNS/timeout):** Check connection: `curl -I https://api.github.com`. If persistent, save review.md locally and inform user to post manually via GitHub web UI at PR URL
+- **Permission error (HTTP 403):** User may lack write access to repo. Check permissions: `gh repo view --json viewerPermission`. Requires at least triage permission to comment. If lacking, ask repo owner to grant access
+
 **3. Clean Up**
 ```bash
 rm review.md
@@ -334,9 +340,9 @@ I can still review if you'd like, but human collaboration may be more effective 
 ## Example Execution Flow
 
 ```
-User: /review-pr 142
+User: /review-pr [number]
 
-You: I'll review PR #142 with comprehensive three-layer validation and post results to GitHub.
+You: I'll review PR #[number] with comprehensive three-layer validation and post results to GitHub.
 
 [Fetch PR context]
 [Read VALIDATION-CHECKLIST.md]
@@ -348,7 +354,7 @@ You: I'll review PR #142 with comprehensive three-layer validation and post resu
 [Check iteration count: 2 of 5]
 [Post to GitHub]
 
-You: Review posted successfully to PR #142!
+You: Review posted successfully to PR #[number]!
 
 **Summary:**
 - 1 critical issue (Tier 1 rule violation)
@@ -357,7 +363,7 @@ You: Review posted successfully to PR #142!
 
 **Recommendation:** Request changes to fix Rule 2.1 violation (session numbering format)
 
-View the full review: [GitHub PR #142 comment link]
+View the full review: [GitHub PR #[number] comment link]
 ```
 
 ## No Output File
