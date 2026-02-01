@@ -290,7 +290,7 @@ Context files are automatically created using the **distillation sub-agent** (`.
 1. Session command generates full source file (`.md`)
 2. Command invokes distillation agent with source and output paths
 3. Agent applies universal extraction rules with **critical preservation**:
-   - **KEEP:** ALL architectural decisions, user journey steps, tech choices, design specs, constraints, database schemas, API specifications
+   - **KEEP:** ALL architectural decisions, user journey steps, tech choices, design specs (including DTCG token hierarchies, WCAG 2.2 criteria, performance configs), constraints, database schemas, API specifications
    - **REMOVE:** Rationale (keep 1-2 line summaries), alternatives considered, detailed examples, validation checklists
 4. Agent preserves source file structure, achieves 60-70% token reduction
 5. Agent validates ALL critical decisions preserved before writing
@@ -509,6 +509,7 @@ Session 4 (generate-strategy) [reads: 00-02c.ctx.md (all .ctx versions)] → Gen
 Session 5 (brand-strategy) [reads: 00-04.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 6 (design) [reads: 00-05.ctx.md] → Generates .md + .ctx.md
+  ↓ GENERATES: DTCG token hierarchy (primitive→semantic→component), 2025 CSS architecture (Tailwind v4, Panda CSS, Vanilla Extract with styled-components deprecation), WCAG 2.2 compliance (Target Size, Focus Not Obscured, Accessible Authentication), performance optimization (bundle splitting, icon/font optimization, Core Web Vitals targets)
   ↓
 Session 7 (database-schema) [reads: 00-06.ctx.md] → Generates .md + .ctx.md
   ↓

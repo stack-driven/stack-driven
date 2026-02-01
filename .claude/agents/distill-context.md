@@ -34,6 +34,10 @@ Extract only these elements from the source file:
 - **All user behavioral profile data**: Tech proficiency, device preference, learning style, communication preferences, onboarding expectations, trust signals (CRITICAL - drives Sessions 3, 6, 8, 12)
 - **All tech stack choices**: Technology selections with justifications (condensed to 1-2 lines each)
 - **All design system specifications**: Components, tokens, patterns (names + key properties only)
+- **All design token hierarchies**: Primitive/semantic/component token structures with $value references (CRITICAL - needed for Session 12 scaffold)
+- **All journey token mappings**: Which tokens serve which journey steps
+- **All WCAG 2.2 compliance criteria**: Target sizes, focus visibility, authentication patterns
+- **All performance optimization configs**: Bundle splitting, icon strategy, font optimization, budgets
 - **All constraints and requirements**: Business, technical, organizational, compliance constraints
 - **All database schema decisions**: Table names, relationships, key indexes, constraints
 - **All API specifications**: Endpoints, methods, key parameters (condensed format)
