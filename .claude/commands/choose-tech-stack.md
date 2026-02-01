@@ -168,6 +168,9 @@ Web framework selection:
 ```
 
 **Build & Development Tooling:**
+
+Note: If you selected Next.js, Remix, Nuxt, or SvelteKit in the meta-framework section above, build tool configuration is pre-configured. This section primarily applies to standalone React/Vue/Svelte SPAs.
+
 ```
 Build tool selection:
   Starting new project?
@@ -218,6 +221,8 @@ Client state (component-level UI state):
   Complex global state shared across many components?
     Yes → Zustand (1-3KB, minimal boilerplate, modern default for 2025)
     No → React Context + useState (built-in, sufficient for simple needs)
+
+  Note: For very simple apps with 2-3 pages and minimal state, vanilla useState with props drilling may be sufficient. Don't add state management complexity until you need it.
 
 Server state (API data, caching, synchronization):
   REST API with complex caching needs?
