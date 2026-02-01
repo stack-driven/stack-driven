@@ -701,6 +701,129 @@ Response: {
 
 ---
 
+## HTTP Caching Strategy
+
+**Note**: Only applicable for REST or HTTP-based APIs. GraphQL has its own caching strategy (persisted queries), gRPC uses different mechanisms.
+
+### Cache Strategy by Resource Type
+
+**Public Content** (cacheable by CDN):
+- **Resources**: [List from journey - e.g., GET /api/frameworks, GET /public/reports/:token]
+- **Cache-Control**: public, max-age=[3600 / 86400]
+- **ETag**: [YES / NO]
+- **Journey context**: [Which journey steps access this? How often does content change?]
+- **Reasoning**: [Why public caching benefits the journey - e.g., "Framework list accessed by 10,000 users monthly, updated weekly → CDN caching reduces origin load"]
+
+**Private Content** (browser cache only):
+- **Resources**: [List from journey - e.g., GET /api/documents/:id, GET /api/users/me]
+- **Cache-Control**: private, max-age=[300 / 600]
+- **ETag**: [YES / NO]
+- **Journey context**: [Which journey steps access user-specific data?]
+- **Reasoning**: [Why browser-only caching serves the journey - e.g., "User document metadata changes infrequently → Browser caching for 5 min reduces API calls without exposing private data to CDN"]
+
+**Sensitive Data** (no caching):
+- **Resources**: [List from journey - e.g., POST /api/payments, GET /api/users/:id/payment-methods]
+- **Cache-Control**: no-store
+- **Journey context**: [Which journey steps involve financial/PII data?]
+- **Reasoning**: [Security requirement from journey - e.g., "Payment processing involves sensitive financial data → no-store prevents any caching (browser, proxy, CDN)"]
+
+**Dynamic Content** (validate before use):
+- **Resources**: [List from journey - e.g., GET /api/dashboards/live]
+- **Cache-Control**: no-cache, must-revalidate
+- **Journey context**: [Which journey steps require fresh data?]
+- **Reasoning**: [Journey real-time requirement - e.g., "Live dashboard shows real-time metrics → must-revalidate ensures users see current data"]
+
+### ETag Implementation
+
+**ETag Generation Strategy**: [Content hash / Version number / Timestamp / Composite]
+
+**Journey-Based ETag Usage**:
+- **Resource**: GET /api/[resource]
+  - **ETag format**: [Example: "v1-abc123" / "resource-123-20250201T103000Z"]
+  - **Generation method**: [Hash of response body / Database version column / updated_at timestamp / Composite ID+timestamp]
+  - **Journey reasoning**: [Why this ETag strategy serves the journey]
+
+**Example**:
+```
+Resource: GET /api/frameworks
+- ETag format: "frameworks-v1-20250201"
+- Generation: Hash of framework list JSON
+- Why: Framework list is small (50KB), updates weekly → Hash generation cost is minimal, provides accurate cache validation
+```
+
+**Conditional Request Flow**:
+1. Client requests resource → Server returns 200 OK + ETag header
+2. Client caches response with ETag value
+3. Cache expires (based on max-age) → Client sends If-None-Match: [ETag]
+4. Resource unchanged → Server returns 304 Not Modified (no body → saves bandwidth)
+5. Resource changed → Server returns 200 OK + new ETag + updated response body
+
+**Journey-Based ETag Reasoning**:
+[2-3 sentences explaining which resources benefit from ETags based on:
+- Response size (large responses benefit more from 304 Not Modified)
+- Update frequency (frequently updated resources need efficient revalidation)
+- Access patterns (high-traffic endpoints benefit from bandwidth savings)]
+
+### Compression Configuration
+
+**Response Size Thresholds**:
+- **<1KB**: No compression (overhead not worth it)
+- **1KB-100KB**: gzip (widely supported, good compression ratio)
+- **>100KB**: Brotli (better compression than gzip, supported by modern browsers)
+
+**Content-Type Compression Map**:
+- **application/json**: Compress with Brotli/gzip (typical 70-90% reduction)
+- **text/html**: Compress with Brotli/gzip
+- **text/css, text/javascript**: Compress with Brotli/gzip
+- **image/jpeg, image/png**: No compression (already compressed formats)
+- **application/pdf**: No compression (already compressed)
+- **video/mp4**: No compression (already compressed)
+- **[Other content types from journey]**: [Compress or not? Why?]
+
+**Journey-Based Compression Examples**:
+
+**Journey Step [X]**: [Resource description]
+- **Response size**: [50KB uncompressed]
+- **Content-Type**: [application/json]
+- **Compression**: Brotli (50KB → 10KB = 80% reduction)
+- **Journey reasoning**: [Mobile users in APAC region → Bandwidth savings critical for user experience]
+
+**Journey Step [Y]**: [Resource description]
+- **Response size**: [500 bytes]
+- **Content-Type**: [application/json]
+- **Compression**: None (<1KB threshold)
+- **Journey reasoning**: [Small response, compression overhead exceeds benefit]
+
+### Journey-Based Caching Reasoning
+
+[3-5 sentences tracing HTTP caching strategy to:
+- **Journey resource access patterns**: Which steps read which resources? How often?
+- **Data update frequency**: From Session 7 database schema and journey flows (e.g., "documents table: immutable after upload → Cache-Control: private, max-age=3600")
+- **Bandwidth constraints**: Mobile users? Global access? CDN benefits?
+- **Security requirements**: Public vs private vs sensitive data (from journey and Session 4 architecture)
+- **Performance goals**: Session 4 metrics (response time targets, concurrent user load, cost optimization)]
+
+**Example**: "Journey Step 2 (view compliance frameworks) accesses public framework list updated weekly (from Session 7: frameworks table has weekly sync job) → Cache-Control: public, max-age=3600 enables CDN edge caching → Reduces origin server load by 70% for 10,000 monthly users globally. Journey Step 3 (view private documents) returns user-owned document metadata (Session 7: documents table, user_id ownership) → Cache-Control: private, max-age=300 allows browser caching without exposing private data to CDN. Brotli compression on JSON responses reduces average 50KB framework list to 10KB → 80% bandwidth savings critical for mobile users in APAC region identified in journey behavioral profile (Session 1: 40% mobile traffic, 30% from low-bandwidth regions)."
+
+### Performance Impact
+
+**Metrics to Track** (link to Session 14 observability):
+- **Cache hit rate**: % of requests served from cache (target: 60-80% for public content)
+- **Bandwidth savings**: MB saved via caching + compression (target: 70-80% reduction)
+- **304 Not Modified rate**: % of revalidations that skip body transfer (target: 40-60% for ETags)
+- **Average response size**: Before/after compression (track compression ratio)
+- **Origin server load reduction**: Requests avoided via caching (% reduction in origin traffic)
+
+**Journey-Based Performance Targets**:
+- **Journey Step [X]** (public content):
+  - Cache hit rate: [70%] (CDN edge serving)
+  - Origin load reduction: [70%] of requests
+- **Journey Step [Y]** (private content):
+  - 304 rate: [50%] (ETag revalidation)
+  - Bandwidth savings: [80%] (Brotli compression)
+
+---
+
 ## Error Handling Philosophy
 
 ### Standard Error Format
@@ -1011,6 +1134,7 @@ Before considering this session complete:
 - [ ] Security headers documented (HSTS, X-Content-Type-Options, X-Frame-Options, CSP)
 - [ ] Rate limiting includes limits by tier and endpoint-specific rules
 - [ ] Pagination includes approach, format, and when to use
+- [ ] HTTP caching strategy documented (if REST/HTTP-based paradigm)
 - [ ] Error handling includes format, status codes, and journey-based design
 - [ ] Scale-forward strategy for MVP → Growth → Maturity
 

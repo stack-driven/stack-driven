@@ -878,6 +878,322 @@ All user input must be validated on the server side. Define validation approach 
 
 ---
 
+### Step 5b: Define HTTP Caching Strategy
+
+**Reference**: HTTP caching optimizes performance by reducing server load and network bandwidth
+
+Analyze the journey and API paradigm to determine optimal caching strategy for different resource types.
+
+**Decision Tree - HTTP Caching:**
+
+```
+1. What resources are cacheable? (from journey and database schema)
+   ├─ Public content (blog posts, docs, public reports) → Cache-Control: public
+   ├─ User-specific content (documents, settings) → Cache-Control: private
+   ├─ Sensitive data (payments, PII) → Cache-Control: no-store
+   └─ Dynamic frequently-changing → Cache-Control: no-cache
+
+2. How long should cache last? (from journey update frequency)
+   ├─ Static content (rarely changes) → max-age=3600 (1 hour) or 86400 (1 day)
+   ├─ Semi-static (updates daily) → max-age=300 (5 min)
+   ├─ Dynamic (frequent updates) → max-age=0, must-revalidate
+   └─ Never cache → no-store
+
+3. Do clients need conditional requests? (from journey data volume)
+   ├─ YES (large responses, check if modified) → ETag + If-None-Match
+   ├─ Time-based validation → Last-Modified + If-Modified-Since
+   └─ NO (small responses, always fetch) → No ETag needed
+
+4. Should responses be compressed? (from journey bandwidth)
+   ├─ Responses >1KB → gzip, brotli (Accept-Encoding: br, gzip)
+   ├─ Already compressed (images, videos) → No additional compression
+   └─ <1KB responses → Compression overhead not worth it
+```
+
+**Journey-Based Caching Analysis:**
+
+For each resource type from journey:
+- Which journey steps access this resource?
+- How often does it change? (never, hourly, daily, constantly)
+- Who can access it? (public, user-owned, team, admin-only)
+- What's the response size? (bytes, KB, MB)
+- What's the bandwidth constraint? (desktop, mobile, global CDN)
+
+**Example Journey Analysis:**
+
+```markdown
+**Journey Step 2: View compliance framework list**
+- Resource: GET /api/frameworks
+- Change frequency: Weekly (new frameworks added)
+- Access: Public (anyone can view)
+- Response size: 50KB
+- **Cache strategy**: Cache-Control: public, max-age=3600 (1 hour), ETag for revalidation
+
+**Journey Step 3: View user's uploaded documents**
+- Resource: GET /api/documents/:id
+- Change frequency: Never (documents immutable after upload)
+- Access: User-owned (private)
+- Response size: Varies (metadata only: 2KB)
+- **Cache strategy**: Cache-Control: private, max-age=300 (5 min), ETag for revalidation
+
+**Journey Step 5: Payment processing**
+- Resource: POST /api/payments
+- **Cache strategy**: Cache-Control: no-store (sensitive financial data)
+```
+
+---
+
+#### ETag and Conditional Requests
+
+**Pattern: ETag for Efficient Revalidation**
+
+```http
+# Initial request
+GET /api/frameworks
+Accept-Encoding: br, gzip
+
+# Server response
+HTTP/1.1 200 OK
+ETag: "v1-abc123"
+Cache-Control: public, max-age=3600
+Content-Encoding: br
+Content-Type: application/json
+
+[...response body...]
+```
+
+```http
+# Client revalidates after cache expires
+GET /api/frameworks
+If-None-Match: "v1-abc123"
+
+# Resource unchanged
+HTTP/1.1 304 Not Modified
+ETag: "v1-abc123"
+Cache-Control: public, max-age=3600
+# No body → saves bandwidth
+```
+
+**ETag Generation Strategies:**
+
+- **Content hash**: Hash response body (MD5, SHA256) → Accurate but expensive
+- **Version number**: Increment on resource update (`v1`, `v2`) → Fast but requires tracking
+- **Last modified timestamp**: Use `updated_at` field → Simple, works for DB entities
+- **Composite**: Combine ID + updated_at (`resource-123-20250201T103000Z`) → Balanced
+
+**Journey-Based ETag Selection:**
+
+```markdown
+- GET /api/frameworks → ETag: Hash of framework list JSON (updates weekly, small list)
+- GET /api/documents/:id → ETag: `doc-${id}-${updated_at}` (immutable after upload)
+- GET /api/reports/:id → ETag: Version number from database (incremental updates)
+```
+
+---
+
+#### Cache-Control Directives
+
+**Pattern: Cache-Control Header Based on Resource Type**
+
+**Public Cacheable Content** (CDN can cache):
+```http
+Cache-Control: public, max-age=3600
+```
+- Use for: Public resources (blogs, docs, frameworks, public reports)
+- CDN benefit: Serves from edge locations, reduces origin load
+
+**Private Cacheable Content** (browser only, not CDN):
+```http
+Cache-Control: private, max-age=300
+```
+- Use for: User-specific resources (user settings, private documents, dashboards)
+- Security: Prevents shared caches (proxies, CDN) from storing
+
+**Sensitive Data** (never cache):
+```http
+Cache-Control: no-store
+```
+- Use for: Financial data, PII, auth tokens, payment info
+- Security: Prevents any caching (browser, proxy, CDN)
+
+**Dynamic Content** (validate before use):
+```http
+Cache-Control: no-cache, must-revalidate
+```
+- Use for: Frequently changing data (live dashboards, real-time feeds)
+- Behavior: Cache stores response but validates with server before using
+
+**Immutable Content** (never changes):
+```http
+Cache-Control: public, max-age=31536000, immutable
+```
+- Use for: Versioned assets (CSS, JS with hash in filename)
+- Benefit: Browser never revalidates (saves requests)
+
+---
+
+#### Compression Strategy
+
+**Pattern: Accept-Encoding and Content-Encoding**
+
+```http
+# Client declares compression support
+GET /api/documents
+Accept-Encoding: br, gzip, deflate
+
+# Server responds with compressed content
+HTTP/1.1 200 OK
+Content-Encoding: br
+Content-Type: application/json
+Content-Length: 1234 (compressed size)
+
+[...brotli-compressed JSON...]
+```
+
+**Compression Decision Tree:**
+
+```
+1. Response size:
+   ├─ <1KB → No compression (overhead not worth it)
+   ├─ 1KB-100KB → gzip (widely supported, good compression)
+   └─ >100KB → Brotli (better compression than gzip)
+
+2. Content type:
+   ├─ Text (JSON, HTML, CSS, JS, XML) → Compress (70-90% reduction)
+   ├─ Already compressed (JPEG, PNG, MP4, GZIP files) → Don't compress (wastes CPU)
+   └─ Binary formats (Protobuf) → Compress if >1KB
+
+3. Client support:
+   ├─ Client sends "Accept-Encoding: br" → Use Brotli (best compression)
+   ├─ Client sends "Accept-Encoding: gzip" → Use gzip (universal support)
+   └─ No Accept-Encoding → No compression (old clients)
+```
+
+**Journey-Based Compression Strategy:**
+
+```markdown
+**Journey Step 2: List frameworks** (GET /api/frameworks)
+- Response: 50KB JSON
+- Strategy: Brotli compression (50KB → ~10KB = 80% reduction)
+- Client support: Modern browsers (2025)
+
+**Journey Step 4: Download report PDF** (GET /api/reports/:id/pdf)
+- Response: 2MB PDF (already compressed)
+- Strategy: No additional compression (wastes CPU)
+
+**Journey Step 6: Get user settings** (GET /api/users/me/settings)
+- Response: 500 bytes JSON
+- Strategy: No compression (<1KB threshold)
+```
+
+---
+
+**Output Format:**
+
+```markdown
+## HTTP Caching Strategy
+
+### Cache Strategy by Resource Type
+
+**Public Content** (cacheable by CDN):
+- Resources: [List from journey - e.g., GET /api/frameworks, GET /public/reports/:token]
+- Cache-Control: public, max-age=[3600 / 86400]
+- ETag: [YES / NO]
+- Reasoning: [Journey step + change frequency]
+
+**Private Content** (browser cache only):
+- Resources: [List from journey - e.g., GET /api/documents/:id, GET /api/users/me]
+- Cache-Control: private, max-age=[300 / 600]
+- ETag: [YES / NO]
+- Reasoning: [Journey step + user-specific data]
+
+**Sensitive Data** (no caching):
+- Resources: [List from journey - e.g., POST /api/payments, GET /api/users/:id/payment-methods]
+- Cache-Control: no-store
+- Reasoning: [Journey step + security requirement]
+
+**Dynamic Content** (validate before use):
+- Resources: [List from journey - e.g., GET /api/dashboards/live]
+- Cache-Control: no-cache, must-revalidate
+- Reasoning: [Journey step + real-time requirement]
+
+### ETag Implementation
+
+**ETag Generation Strategy**: [Content hash / Version number / Timestamp / Composite]
+
+**Journey-Based ETag Usage**:
+- Resource: [GET /api/resource]
+  - ETag format: [Example: "v1-abc123"]
+  - Generation method: [Hash / DB version / updated_at]
+  - Why: [Reasoning from journey]
+
+**Conditional Request Flow**:
+1. Client requests resource → Server returns 200 + ETag
+2. Client caches response with ETag
+3. Cache expires → Client sends If-None-Match: [ETag]
+4. Resource unchanged → Server returns 304 (no body)
+5. Resource changed → Server returns 200 + new ETag + updated body
+
+### Compression Configuration
+
+**Response Size Thresholds**:
+- <1KB: No compression (overhead not worth it)
+- 1KB-100KB: gzip (widely supported)
+- >100KB: Brotli (better compression)
+
+**Content-Type Compression Map**:
+- application/json: Compress with Brotli/gzip (70-90% reduction)
+- text/html: Compress with Brotli/gzip
+- image/jpeg, image/png: No compression (already compressed)
+- application/pdf: No compression (already compressed)
+- [Other types from journey]
+
+**Journey-Based Compression**:
+- Journey Step [X]: [Resource with large response]
+  - Response size: [50KB]
+  - Compression: Brotli (50KB → 10KB = 80% reduction)
+  - Reasoning: [Mobile users, bandwidth savings]
+
+### Journey-Based Caching Reasoning
+
+[3-5 sentences tracing caching strategy to:
+- Journey resource access patterns (which steps read which resources)
+- Data update frequency (from Session 7 database schema and journey flows)
+- Bandwidth constraints (mobile users, global access, CDN benefits)
+- Security requirements (public vs private vs sensitive data)
+- Performance goals (Session 4 metrics - response time, concurrent users)]
+
+**Example**: "Journey Step 2 (view compliance frameworks) accesses public framework list updated weekly → Cache-Control: public, max-age=3600 enables CDN edge caching → Reduces origin server load for 10,000 monthly users. Journey Step 3 (view private documents) returns user-owned document metadata → Cache-Control: private, max-age=300 allows browser caching without CDN exposure. Brotli compression on JSON responses reduces 50KB framework list to 10KB → 80% bandwidth savings for mobile users in APAC region (from journey behavioral profile)."
+
+### Performance Impact
+
+**Metrics to track** (for Session 14 observability):
+- Cache hit rate (% requests served from cache)
+- Bandwidth savings (MB saved via caching + compression)
+- 304 Not Modified response rate (% revalidations that skip body transfer)
+- Average response size (before/after compression)
+- Origin server load reduction (requests avoided via caching)
+
+**Target metrics** (journey-based):
+- Cache hit rate: [60-80%] for public content
+- Bandwidth reduction: [70-80%] via Brotli compression
+- 304 response rate: [40-60%] for cacheable resources with ETag
+```
+
+**Important:**
+- Only implement HTTP caching if API paradigm is REST or HTTP-based
+- GraphQL has its own caching strategy (persisted queries, APQ)
+- gRPC uses different caching mechanisms (not HTTP Cache-Control)
+- WebSocket doesn't use HTTP caching (real-time, not request-response)
+
+**Reconsider if:**
+- Paradigm changes from REST to GraphQL/gRPC
+- Journey adds real-time requirements (caching conflicts with <1s updates)
+- All content becomes highly dynamic (no cacheable resources)
+- Security requirements mandate no caching for all endpoints
+
+---
+
 ### Step 5a: Check for Internationalization (i18n) Requirements
 
 **If constraints file exists**, check for i18n requirement:
@@ -1485,6 +1801,7 @@ Before completing this session, verify:
 - [ ] Security headers documented (HSTS, X-Content-Type-Options, X-Frame-Options, CSP)
 - [ ] Rate limiting includes limits by tier and endpoint-specific rules
 - [ ] Pagination includes approach, format, and when to use
+- [ ] HTTP caching strategy documented (if REST/HTTP-based paradigm)
 - [ ] Error handling includes format, status codes, and journey-based design
 
 **Security Coverage (OWASP API Top 10 2023):**

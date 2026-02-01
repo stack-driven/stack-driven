@@ -551,7 +551,100 @@
 
 ---
 
-### Rule 11.3: Input Validation Strategy Presence
+### Rule 11.3: HTTP Caching Strategy Presence
+
+**What:** Session 8 API design output must contain complete HTTP caching strategy (if REST/HTTP-based paradigm)
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify API paradigm decision: If paradigm = REST or HTTP-based → HTTP caching section required
+- If paradigm = GraphQL, gRPC, or WebSocket → HTTP caching section NOT required (skip rule)
+- If HTTP caching section exists, verify required subsections:
+  - Cache Strategy by Resource Type (public, private, sensitive, dynamic content)
+  - ETag Implementation (generation strategy, conditional request flow)
+  - Compression Configuration (size thresholds, content-type map, journey examples)
+  - Journey-Based Caching Reasoning
+  - Performance Impact (metrics to track, journey-based targets)
+
+**Failure example:**
+```
+❌ HTTP caching strategy incomplete
+   08-api-design.md paradigm decision: REST ✓
+   But missing "HTTP Caching Strategy" section
+   Journey Step 2 involves public framework list (high-traffic, cacheable)
+   Fix: Add HTTP caching section with cache strategy for public/private resources
+```
+
+**Cache strategy completeness check:**
+- At least ONE resource type documented (public OR private OR sensitive OR dynamic)
+- Cache-Control directives specified per resource type
+- Journey context provided (which steps access these resources)
+- Reasoning traces to journey requirements (performance, security, update frequency)
+
+**Failure example:**
+```
+❌ Cache strategy lacks journey traceability
+   HTTP Caching Strategy section exists ✓
+   Public Content subsection says: "Use Cache-Control: public, max-age=3600" ✓
+   But no journey context (which steps? why cacheable?)
+   Expected: "Journey Step 2 (view frameworks) accesses public framework list updated weekly → Cache-Control: public, max-age=3600"
+```
+
+**ETag implementation check:**
+- ETag generation strategy documented (content hash / version / timestamp / composite)
+- At least ONE resource with ETag usage example
+- Conditional request flow explained (If-None-Match, 304 Not Modified)
+- Journey reasoning for ETag choice (response size, update frequency)
+
+**Failure example:**
+```
+❌ ETag implementation missing generation strategy
+   ETag Implementation subsection exists ✓
+   But no generation strategy specified (hash? version? timestamp?)
+   Fix: Document ETag generation (e.g., "Composite: resource-{id}-{updated_at}")
+```
+
+**Compression configuration check:**
+- Response size thresholds documented (<1KB, 1KB-100KB, >100KB)
+- Content-Type compression map present (application/json, text/html, images, PDFs)
+- At least ONE journey-based compression example
+- Reasoning includes bandwidth constraints from journey
+
+**Failure example:**
+```
+❌ Compression configuration missing journey examples
+   Compression Configuration subsection exists ✓
+   Size thresholds documented ✓
+   But no journey-based examples (which steps benefit from compression?)
+   Fix: Add example "Journey Step 2 (list frameworks): 50KB JSON → Brotli → 10KB (80% reduction)"
+```
+
+**Performance metrics check:**
+- Metrics to track documented (cache hit rate, bandwidth savings, 304 rate, etc.)
+- Metrics link to Session 14 observability
+- Journey-based performance targets specified (e.g., "Cache hit rate: 70% for public content")
+
+**Acceptable references:**
+- "Journey Step 2 (view frameworks) accesses public framework list updated weekly → Cache-Control: public, max-age=3600" ✓
+- "Session 7: documents table immutable after upload → ETag: doc-{id}-{updated_at}" ✓
+- "Journey behavioral profile: 40% mobile users, low bandwidth → Brotli compression critical" ✓
+
+**Unacceptable references:**
+- "Caching improves performance" ✗ (generic, no journey context)
+- "Use ETags for large responses" ✗ (not journey-specific)
+- "HTTP caching is a best practice" ✗ (external authority, not journey)
+
+**Paradigm-specific exemptions:**
+- GraphQL paradigm → HTTP caching NOT required (GraphQL has persisted queries, APQ)
+- gRPC paradigm → HTTP caching NOT required (gRPC uses different mechanisms)
+- WebSocket paradigm → HTTP caching NOT required (real-time, not request-response)
+- Hybrid paradigm (REST + GraphQL) → HTTP caching required for REST portion only
+
+**Rationale**: HTTP caching is critical for performance optimization (reduces server load, bandwidth, response time) but must be designed based on journey requirements (which resources are public/private/sensitive, update frequency, bandwidth constraints). Generic caching advice without journey traceability violates Stack-Driven's philosophy.
+
+---
+
+### Rule 11.4: Input Validation Strategy Presence
 
 **What:** Session 8 API design output must contain complete input validation strategy
 
@@ -583,7 +676,7 @@
 
 ---
 
-### Rule 11.4: Security Headers Configuration
+### Rule 11.5: Security Headers Configuration
 
 **What:** Session 8 API design output must document required security headers
 
@@ -613,7 +706,7 @@
 
 ---
 
-### Rule 11.5: Idempotency and Retry Strategies
+### Rule 11.6: Idempotency and Retry Strategies
 
 **What:** Session 8 API design output must document idempotency protection and retry strategies for resilient operations
 
@@ -703,9 +796,10 @@
 - Rule 1.2: Context Files Must Be Documented
 - Rule 4.1-4.3: Propagation Pattern Completeness
 - Rule 6.3: Decision Matrix Table Accuracy
-- Rule 11.3: Input Validation Strategy Presence (NEW - Session 8 security)
-- Rule 11.4: Security Headers Configuration (NEW - Session 8 security)
-- Rule 11.5: Idempotency and Retry Strategies (NEW - Phase 2: Resilience)
+- Rule 11.3: HTTP Caching Strategy Presence (NEW - Phase 3: Performance)
+- Rule 11.4: Input Validation Strategy Presence (NEW - Session 8 security)
+- Rule 11.5: Security Headers Configuration (NEW - Session 8 security)
+- Rule 11.6: Idempotency and Retry Strategies (NEW - Phase 2: Resilience)
 
 ### Tier 3 (Nice to Have - Implement Later):
 - Rule 5.1: Template Section Alignment
