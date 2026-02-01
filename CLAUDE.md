@@ -101,7 +101,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 - Session 3 (tech-stack) reads 00-journey + 01-strategy + 02a-constraints (if exists); **ONLY detects if AI is required**, does NOT choose AI provider; **Detects i18n requirement** from constraints and selects i18n library; **NEW in 2025**: Generates state management (client/server/form), build tooling (build tool, package manager, testing, code quality), and auth provider decisions
 - Session 3b (coding-standards) reads 00-journey + 01-strategy + 02-tech-stack
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
-- Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists)
+- Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists); generates mission, metrics (with L0→L1→L2→L3 hierarchy), monetization, architecture, and analytics implementation strategy
 - **Session 7 (database-schema)** checks 02a-constraints for i18n requirement → generates translation tables and locale columns if needed
 - **Session 8 (api-design)** checks 02a-constraints for i18n requirement → adds Accept-Language header support and locale fallback strategy if needed
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
@@ -123,7 +123,7 @@ Stack-Driven implements **Human-in-the-Loop (HITL) checkpoints** at critical cas
 
 **Checkpoints are implemented at:**
 - **Session 3** (`/choose-tech-stack`) - Tech stack validation
-- **Session 4** (`/generate-strategy`) - Mission, metrics, monetization, architecture validation
+- **Session 4** (`/generate-strategy`) - Mission, metrics (framework + hierarchy), monetization, architecture, analytics validation
 - **Session 7** (`/design-database-schema`) - Database schema validation
 - **Session 10** (`/generate-backlog`) - Backlog quality validation
 
@@ -262,6 +262,7 @@ Every decision must trace back to user journey:
 - `03a-mission.md` + `03a-mission.ctx.md` (65% reduction)
 - `03b-metrics.md` + `03b-metrics.ctx.md` (65% reduction)
 - `03c-monetization.md` + `03c-monetization.ctx.md` (65% reduction)
+- `03d-analytics-strategy.md` + `03d-analytics-strategy.ctx.md` (65% reduction)
 - `04-architecture.md` + `04-architecture.ctx.md` (60% reduction)
 - `05-brand-strategy.md` + `05-brand-strategy.ctx.md` (65% reduction)
 - `06-design-system.md` + `06-design-system.ctx.md` (60% reduction)
@@ -503,7 +504,7 @@ Session 3b (coding-standards) [reads: 00.ctx.md, 01.ctx.md, 02.ctx.md] → Gener
   ↓
 Session 3c (ai-integration-strategy) [reads: 00.ctx.md, 01.ctx.md, 02.ctx.md] → Generates .md + .ctx.md
   ↓ OPTIONAL - only if "AI Integration: Required"; Makes ALL AI decisions and UPDATES 02-tech-stack.md
-Session 4 (generate-strategy) [reads: 00-02c.ctx.md (all .ctx versions)] → Generates .md + .ctx.md for each (4 files)
+Session 4 (generate-strategy) [reads: 00-02c.ctx.md (all .ctx versions)] → Generates .md + .ctx.md for each (5 files: mission, metrics, monetization, architecture, analytics)
   ↓
 Session 5 (brand-strategy) [reads: 00-04.ctx.md] → Generates .md + .ctx.md
   ↓
