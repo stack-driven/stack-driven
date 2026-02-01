@@ -39,6 +39,145 @@
 
 ---
 
+## Design Tokens (DTCG Format)
+
+> **W3C Design Tokens Community Group standard for multi-platform design systems**
+
+### Primitive Tokens (Raw Values)
+
+```json
+{
+  "color": {
+    "primitive": {
+      "[hue]": {
+        "[scale]": { "$value": "[hex]", "$type": "color" }
+      }
+    }
+  },
+  "space": {
+    "primitive": {
+      "[n]": { "$value": "[px]", "$type": "dimension" }
+    }
+  }
+}
+```
+
+**Example**:
+```json
+{
+  "color": {
+    "primitive": {
+      "blue": {
+        "500": { "$value": "#0066cc", "$type": "color" },
+        "600": { "$value": "#0052a3", "$type": "color" }
+      },
+      "gray": {
+        "100": { "$value": "#f7f7f7", "$type": "color" },
+        "900": { "$value": "#1a1a1a", "$type": "color" }
+      }
+    }
+  },
+  "space": {
+    "primitive": {
+      "4": { "$value": "16px", "$type": "dimension" },
+      "6": { "$value": "32px", "$type": "dimension" }
+    }
+  }
+}
+```
+
+### Semantic Tokens (Purpose-Based)
+
+```json
+{
+  "color": {
+    "semantic": {
+      "action": {
+        "primary": {
+          "$value": "{color.primitive.blue.500}",
+          "$description": "[Journey context - e.g., 'Primary action for journey-critical CTAs']"
+        }
+      },
+      "status": {
+        "success": {
+          "$value": "{color.primitive.green.500}",
+          "$description": "[Journey context]"
+        }
+      }
+    }
+  },
+  "layout": {
+    "section": {
+      "$value": "{space.primitive.6}",
+      "$description": "[Journey context - e.g., 'Spacing between journey steps']"
+    }
+  }
+}
+```
+
+### Component Tokens (Component-Specific)
+
+```json
+{
+  "button": {
+    "background": {
+      "primary": { "$value": "{color.semantic.action.primary}" }
+    },
+    "padding": {
+      "default": { "$value": "{space.primitive.4}" }
+    }
+  },
+  "upload": {
+    "border": {
+      "default": { "$value": "{color.semantic.interactive.idle}" },
+      "active": { "$value": "{color.semantic.action.primary}" }
+    }
+  }
+}
+```
+
+### Journey Token Mapping
+
+| Journey Step | Semantic Tokens Used | Component Tokens | Rationale |
+|--------------|---------------------|------------------|-----------|
+| [Step 1] | [action.primary, status.idle] | [button.background.primary, upload.border.default] | [Why these tokens serve this step] |
+| [Step 2] | [action.selected, interactive.hover] | [card.border.selected, checkbox.background.checked] | [Why these tokens serve this step] |
+| [Step 3] | [status.processing, feedback.info] | [progress.fill, spinner.color] | [Why these tokens serve this step] |
+| [Step 4] | [status.success, status.warning] | [card.background.success, badge.color.warning] | [Why these tokens serve this step] |
+
+### Style Dictionary Configuration
+
+```javascript
+// style-dictionary.config.js
+module.exports = {
+  source: ['tokens/**/*.json'],
+  platforms: {
+    css: {
+      transformGroup: 'css',
+      buildPath: 'dist/css/',
+      files: [{
+        destination: 'variables.css',
+        format: 'css/variables'
+      }]
+    },
+    tailwind: {
+      transformGroup: 'js',
+      buildPath: 'dist/',
+      files: [{
+        destination: 'tailwind-tokens.js',
+        format: 'javascript/module'
+      }]
+    }
+  }
+};
+```
+
+**Validation Criteria**:
+- [✓] Excellent: Three token tiers present (primitive/semantic/component); no inline hex values in component tokens; journey mapping documents which tokens serve which steps; Style Dictionary config for platform transforms
+- (Warning) Needs Work: Missing token tiers; inline hex values in components; no journey mapping; no transformation config
+
+---
+
 ## Typography
 
 ### Font Families
@@ -187,6 +326,235 @@
 **Validation Criteria**:
 - [✓] Excellent: All color combinations tested and documented; focus indicators visible on all backgrounds; ARIA patterns mapped to journey components; keyboard shortcuts for critical journey steps
 - (Warning) Needs Work: Untested contrast ratios; missing focus styles; generic ARIA without journey context; no keyboard shortcuts for frequent actions
+
+---
+
+## WCAG 2.2 Compliance (October 2023 Standard)
+
+> **Three new Level AA success criteria that affect enterprise procurement and legal compliance**
+
+### 2.5.8 Target Size (Minimum) - Level AA
+
+**Requirement**: All interactive targets minimum 24×24 CSS pixels
+
+| Journey Step | Interactive Element | Required Size | Implementation |
+|--------------|-------------------|---------------|----------------|
+| [Step 1] | [Upload button, file select] | [48×48px] | [Exceeds minimum, thumb-friendly] |
+| [Step 2] | [Framework checkboxes, cards] | [24×24px] | [Meets minimum, card area larger] |
+| [Step 3] | [Cancel button, pause control] | [32×32px] | [Exceeds minimum] |
+| [Step 4] | [Filter buttons, action icons] | [32×32px] | [Comfortable touch interaction] |
+
+**Mobile**: Increase to 44×44px minimum (Apple iOS HIG standard)
+
+**Validation**:
+- [ ] All buttons/links/controls ≥24×24px
+- [ ] Mobile touch targets ≥44×44px
+- [ ] Spacing between targets ≥8px
+- [ ] Inline text links exempt but clearly clickable
+
+### 2.4.11 Focus Not Obscured (Minimum) - Level AA
+
+**Requirement**: Focused elements not entirely hidden by fixed/sticky content
+
+| Journey Step | Potential Obstruction | Solution |
+|--------------|----------------------|----------|
+| [Step 1 Form] | [Sticky header 64px] | [Auto-scroll focused elements with offset] |
+| [Step 2 Selection] | [Fixed action bar 80px] | [Ensure 200% zoom doesn't hide focus] |
+| [Step 4 Results] | [Floating filter panel] | [Collapse panel during keyboard navigation] |
+
+**Implementation Pattern**:
+```javascript
+element.addEventListener('focus', () => {
+  const headerHeight = 64;
+  const elementTop = element.getBoundingClientRect().top;
+  if (elementTop < headerHeight) {
+    window.scrollBy({
+      top: elementTop - headerHeight - 16,
+      behavior: 'smooth'
+    });
+  }
+});
+```
+
+**Validation**:
+- [ ] Focused elements never fully hidden by fixed/sticky elements
+- [ ] Auto-scroll works at 200% zoom
+- [ ] Focus indicators always partially visible
+- [ ] Modal overlays don't obscure background focused elements
+
+### 3.3.8 Accessible Authentication - Level AA
+
+**Requirement**: No cognitive function tests (CAPTCHA, puzzles, pattern recall) unless alternative provided
+
+| Auth Method | WCAG 2.2 Compliant | Recommendation |
+|-------------|-------------------|----------------|
+| Username + Password | ✅ Yes (if password manager supported) | autocomplete="username" and "current-password" |
+| CAPTCHA | ❌ No (unless alternative provided) | Replace with invisible reCAPTCHA or WebAuthn |
+| Magic Links | ✅ Yes | No cognitive load, accessible |
+| WebAuthn / Passkeys | ✅ Yes | Modern, no memory required |
+| OAuth | ✅ Yes | Delegates auth, no cognitive tests |
+| Security Questions | ❌ No (memory test) | Avoid or provide alternative |
+
+**Recommended Pattern**:
+```
+Primary: Email + Password (with password manager support)
+Secondary: Magic link fallback (no CAPTCHA)
+Enterprise: SSO via SAML/OAuth (no cognitive tests)
+MFA: TOTP or WebAuthn (not SMS puzzles)
+```
+
+**Journey Impact**:
+
+| Journey Step | Auth Requirement | WCAG 2.2 Consideration |
+|--------------|-----------------|----------------------|
+| [Step 1] | [Login required] | [Support password managers, no CAPTCHA] |
+| [Step 2] | [Authenticated session] | [Session persists, no re-auth] |
+| [Step 4] | [Access control] | [Share links bypass auth, or magic link] |
+
+**Validation**:
+- [ ] Authentication flow documented
+- [ ] No CAPTCHA on critical journey paths
+- [ ] Alternative auth methods for cognitive tests
+- [ ] Password manager support (autocomplete attributes)
+
+**Validation Criteria**:
+- [✓] Excellent: All three WCAG 2.2 criteria documented with journey-specific examples; target sizes mapped to journey interactions; focus obscuring scenarios identified with solutions; auth method compliance table with recommendations
+- (Warning) Needs Work: Missing WCAG 2.2 criteria; generic guidance without journey context; no auth method analysis; untested target sizes
+
+---
+
+## CSS Architecture (2025 Standards)
+
+> **Zero-runtime CSS tooling has replaced runtime CSS-in-JS as industry standard**
+
+**Decision**: [Based on tech stack from Session 2]
+
+**2025 CSS Tooling Landscape**:
+
+| Tool | Status | Build Speed | Runtime Cost | Recommendation |
+|------|--------|-------------|--------------|----------------|
+| **Tailwind CSS v4** | Active | 5x faster | Zero | ✅ Default choice |
+| **Panda CSS** | Active | Fast | Zero | ✅ For Chakra migration, RSC apps |
+| **Vanilla Extract** | Active | Fast | Zero | ✅ For TypeScript-first |
+| **Emotion** | Active | Standard | 20-30KB | ⚠️ Legacy only |
+| **styled-components** | Maintenance | Standard | 20-30KB | ❌ MAINTENANCE MODE (March 2025) |
+
+**IMPORTANT**: styled-components entered MAINTENANCE MODE March 2025 (security fixes only, no new features). Do NOT use for new projects.
+
+**Decision**: [Your choice - e.g., "Tailwind CSS v4"]
+
+**Rationale**:
+- [Journey requirement - e.g., "Fast iteration needed for compliance framework changes"]
+- [Performance requirement - e.g., "Zero-runtime ensures optimal Core Web Vitals for enterprise"]
+- [Team context - e.g., "Team familiar with utility-first approach"]
+- [Build performance - e.g., "5x faster builds reduce CI/CD time"]
+
+**Trade-offs**:
+- [What you gave up - e.g., "Utility class proliferation (mitigated with @apply)"]
+- [What you gained - e.g., "Zero runtime cost improves LCP by 200ms"]
+
+**CSS Custom Properties Theming** (light/dark mode):
+
+```css
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-primary: #0066cc;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-text: #f0f0f0;
+  --color-primary: #3b8eea;
+}
+
+/* Prevent flash of incorrect theme */
+<script>
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+```
+
+**Validation Criteria**:
+- [✓] Excellent: CSS tool aligns with tech stack; styled-components marked MAINTENANCE MODE if mentioned; zero-runtime options recommended; performance comparison documented; theming pattern includes FOIT prevention; migration path included if existing styled-components detected
+- (Warning) Needs Work: Arbitrary CSS choice; no styled-components deprecation warning; runtime CSS-in-JS recommended without trade-off analysis; missing theming pattern; no migration path when needed
+
+---
+
+## Performance Optimization Strategy
+
+> **Design systems are often the largest performance bottleneck - optimize from the start**
+
+### Bundle Splitting Configuration
+
+```json
+{
+  "name": "@company/design-system",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./button": { "import": "./dist/button/index.js" },
+    "./modal": { "import": "./dist/modal/index.js" }
+  }
+}
+```
+
+**Impact**: Apps bundle only used components (50KB) vs entire library (300KB) = 83% reduction
+
+### Icon Optimization Strategy
+
+| Method | Bundle Size | Performance | Recommendation |
+|--------|-------------|-------------|----------------|
+| **SVG Sprites** | ~5KB total | Excellent | ✅ Use (70-90% reduction) |
+| **React Icon Components** | 300-400KB | Poor | ❌ Avoid |
+| **Icon Fonts** | ~50KB | Good | ⚠️ Legacy fallback |
+
+**Implementation**:
+```tsx
+export const Icon = ({ name, size = 24 }) => (
+  <svg width={size} height={size} aria-hidden="true">
+    <use href={`/icons/sprite.svg#${name}`} />
+  </svg>
+);
+```
+
+**Journey Icon Count**: [~20 unique icons: upload, check, spinner, download, etc.]
+
+### Font Optimization
+
+```css
+@font-face {
+  font-family: 'Design System';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-display: swap; /* Prevent FOIT */
+  font-weight: 100 900; /* Variable font */
+  unicode-range: U+0000-00FF; /* Latin subset only */
+}
+```
+
+**Impact**: 1 variable font (80KB) vs 6 static fonts (240KB) = 67% reduction
+
+### Performance Budgets
+
+| Asset Type | Budget | Rationale |
+|-----------|--------|-----------|
+| CSS | <50KB compressed | Design tokens + components |
+| JavaScript | <100KB compressed | Component logic |
+| Fonts | <100KB total | Variable font + fallback |
+| Icons | <10KB | SVG sprite |
+
+### Core Web Vitals Targets (Journey-Mapped)
+
+| Metric | Target | Journey Step | Optimization |
+|--------|--------|--------------|--------------|
+| **LCP** | <2.5s | [Step 1] | Preload hero image, font-display: swap |
+| **FID** | <100ms | [Step 2] | Code-split components, defer non-critical JS |
+| **CLS** | <0.1 | All steps | Reserve space for images, size-adjust fonts |
+| **INP** | <200ms | [Step 4] | Debounce search, virtualize long lists |
+
+**Validation Criteria**:
+- [✓] Excellent: Bundle splitting config with per-component exports; icon strategy shows 70-90% reduction; font optimization uses variable fonts; performance budgets for all asset types; Core Web Vitals mapped to journey steps
+- (Warning) Needs Work: No bundle splitting; React icon components recommended; static fonts without optimization; missing performance budgets; no Core Web Vitals targets
 
 ---
 

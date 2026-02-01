@@ -131,6 +131,113 @@ xl:   25px (1.563rem) → Section headings
 - Card padding: `space-4` (mobile), `space-5` (desktop)
 - Page margins: `space-6` to `space-8` depending on density needs
 
+### Step 4b: Generate Design Token Hierarchy (DTCG Format)
+
+After defining brand tokens in Step 4, transform them into industry-standard W3C Design Tokens Community Group (DTCG) format with three-tier hierarchy.
+
+**Three-Tier Token Architecture**:
+
+1. **Primitive Tokens**: Raw values (colors, sizes) without semantic meaning
+2. **Semantic Tokens**: Purpose-based tokens that reference primitives
+3. **Component Tokens**: Component-specific tokens that reference semantic tokens
+
+**DTCG Format Structure**:
+```json
+{
+  "color": {
+    "primitive": {
+      "blue": {
+        "500": { "$value": "#0066cc", "$type": "color" }
+      }
+    },
+    "semantic": {
+      "action": {
+        "primary": {
+          "$value": "{color.primitive.blue.500}",
+          "$description": "Primary action for journey-critical CTAs"
+        }
+      }
+    },
+    "component": {
+      "button": {
+        "background": {
+          "primary": { "$value": "{color.semantic.action.primary}" }
+        }
+      }
+    }
+  }
+}
+```
+
+**Generation Process**:
+
+1. **Transform brand colors to primitive tokens**:
+   - Each brand color becomes a primitive token with $value and $type
+   - Use consistent naming: `color.primitive.[hue].[scale]`
+   - Include spacing primitives: `space.primitive.[n]` (4px, 8px, 16px, etc.)
+
+2. **Create semantic tokens from journey context**:
+   - Map journey actions to semantic tokens (e.g., action.primary, action.secondary)
+   - Create semantic spacing tokens (e.g., layout.section, layout.component)
+   - Add $description field explaining journey context for each semantic token
+
+3. **Define component tokens**:
+   - Map components from Step 5 to component tokens
+   - Reference semantic tokens (not primitives) for themability
+   - Example: button.background.primary → semantic.action.primary → primitive.blue.500
+
+**Journey Token Mapping Table**:
+
+Create table showing which tokens serve which journey steps:
+
+| Journey Step | Semantic Tokens Used | Component Tokens | Rationale |
+|--------------|---------------------|------------------|-----------|
+| Step 1 Upload | action.primary, status.idle | button.background.primary, upload.border.default | High-visibility CTA |
+| Step 2 Selection | action.selected, interactive.hover | card.border.selected, checkbox.background.checked | Clear selection state |
+| Step 3 Processing | status.processing, feedback.info | progress.fill, spinner.color | Reassuring progress |
+| Step 4 Results | status.success, status.warning | card.background.success, badge.color.warning | At-a-glance status |
+
+**Style Dictionary Configuration** (for token transformation):
+
+Include Style Dictionary v4 configuration for transforming tokens to platform-specific formats (CSS variables, Tailwind config, iOS Swift, Android Compose):
+
+```javascript
+// style-dictionary.config.js
+module.exports = {
+  source: ['tokens/**/*.json'],
+  platforms: {
+    css: {
+      transformGroup: 'css',
+      buildPath: 'dist/css/',
+      files: [{
+        destination: 'variables.css',
+        format: 'css/variables'
+      }]
+    },
+    tailwind: {
+      transformGroup: 'js',
+      buildPath: 'dist/',
+      files: [{
+        destination: 'tailwind-tokens.js',
+        format: 'javascript/module'
+      }]
+    }
+  }
+};
+```
+
+**Why This Matters**:
+- **Themability**: Can implement light/dark mode by swapping semantic token values
+- **Multi-platform**: Generate iOS, Android, Web tokens from single source
+- **Design handoff**: Sync with Figma Variables via Tokens Studio plugin
+- **Maintainability**: Change `#0066cc` once (primitive) vs find/replace across codebase
+
+**Validation**:
+- [ ] Three token tiers generated (primitive, semantic, component)
+- [ ] All colors reference tokens (no inline hex values in components)
+- [ ] Journey mapping table documents semantic token usage per step
+- [ ] Style Dictionary config included for platform transforms
+
 ### Step 5: Map Components to Journey
 
 Create table showing:
@@ -253,6 +360,141 @@ Label patterns by journey step:
 - [ ] Screen reader announces journey progress
 - [ ] Focus never trapped (can always Esc or Tab out)
 - [ ] Error messages are announced and clear
+
+### Step 7b: WCAG 2.2 Compliance (October 2023 Standard)
+
+**Reference**: https://www.w3.org/TR/WCAG22/
+
+After defining WCAG 2.1 accessibility standards in Step 7, add the three new success criteria from WCAG 2.2 (published October 2023).
+
+**WCAG 2.2 New Success Criteria**:
+
+**1. Success Criterion 2.5.8: Target Size (Minimum) - Level AA**
+
+**Requirement**: All interactive targets must be at least 24×24 CSS pixels, with exceptions for:
+- Inline links within sentences
+- Targets controlled by user agent (browser controls)
+- Essential targets where size is critical to information
+
+**Journey Application**:
+
+Map target size requirements to journey-critical interactions:
+
+| Journey Step | Interactive Element | Required Size | Implementation |
+|--------------|-------------------|---------------|----------------|
+| Step 1 Upload | Upload button, file select | 48×48px | Exceeds minimum, thumb-friendly |
+| Step 2 Selection | Framework checkboxes, cards | 24×24px (checkbox) | Meets minimum, card click area larger |
+| Step 3 Processing | Cancel button, pause control | 32×32px | Exceeds minimum for accessibility |
+| Step 4 Results | Filter buttons, action icons | 32×32px | Comfortable interaction on touch |
+
+**Mobile Considerations**:
+- Increase to 44×44px minimum on mobile (Apple iOS HIG standard)
+- Provide adequate spacing between touch targets (8px minimum)
+- Test with real devices to ensure thumb-friendly zones
+
+**Validation**:
+- [ ] All buttons, links, form controls ≥24×24px
+- [ ] Touch targets on mobile ≥44×44px
+- [ ] Spacing between adjacent targets ≥8px
+- [ ] Inline text links exempt (but still clearly clickable)
+
+**2. Success Criterion 2.4.11: Focus Not Obscured (Minimum) - Level AA**
+
+**Requirement**: When a user interface component receives keyboard focus, the focused element must not be entirely hidden by author-created content (sticky headers, fixed footers, modals).
+
+**Journey Application**:
+
+Identify potential focus obscuring scenarios in journey:
+
+| Journey Step | Potential Obstruction | Solution |
+|--------------|----------------------|----------|
+| Step 1 Form | Sticky header (64px) | Scroll focused element into view with offset |
+| Step 2 Selection | Fixed action bar (80px) | Ensure 200% zoom doesn't hide focus indicators |
+| Step 4 Results | Floating filter panel | Collapse panel when keyboard navigating table |
+
+**Implementation Pattern**:
+
+```javascript
+// Auto-scroll focused elements into view with offset
+element.addEventListener('focus', () => {
+  const headerHeight = 64; // Sticky header height
+  const elementTop = element.getBoundingClientRect().top;
+
+  if (elementTop < headerHeight) {
+    window.scrollBy({
+      top: elementTop - headerHeight - 16, // 16px padding
+      behavior: 'smooth'
+    });
+  }
+});
+```
+
+**Testing Requirements**:
+- Test keyboard navigation through entire journey
+- Test with browser zoom at 200% (Level AA requirement)
+- Test with sticky headers/footers visible
+- Verify focus indicators always partially visible
+
+**Validation**:
+- [ ] Focused elements never fully hidden by fixed/sticky elements
+- [ ] Keyboard navigation scrolls focused elements into view automatically
+- [ ] Focus indicators visible at 200% zoom
+- [ ] Modal overlays don't obscure focused elements behind them
+
+**3. Success Criterion 3.3.8: Accessible Authentication - Level AA**
+
+**Requirement**: Authentication processes must not rely on cognitive function tests (CAPTCHA, puzzles, remembering patterns). Alternatives required:
+
+- Object recognition (alternative method provided)
+- Personal content recognition (alternative method provided)
+- Cognitive function tests are allowed if:
+  - Alternative authentication mechanism provided
+  - Password managers are supported
+
+**Journey Application**:
+
+If authentication is required in journey (common for Step 1 or Step 4 results access):
+
+| Auth Method | WCAG 2.2 Compliant | Recommendation |
+|-------------|-------------------|----------------|
+| Username + Password | ✅ Yes (if password manager supported) | Ensure autocomplete="username" and autocomplete="current-password" |
+| CAPTCHA | ❌ No (unless alternative provided) | Replace with invisible reCAPTCHA or WebAuthn |
+| Magic Links (email/SMS) | ✅ Yes | No cognitive load, accessibility-friendly |
+| WebAuthn / Passkeys | ✅ Yes | Modern, no memory required |
+| OAuth (Google, Microsoft) | ✅ Yes | Delegates auth, no cognitive tests |
+| Security Questions | ❌ No (memory test) | Avoid or provide password manager alternative |
+
+**Recommended Pattern for Compliance SaaS**:
+
+```
+Primary: Email + Password (with password manager support)
+Secondary: Magic link fallback (no CAPTCHA)
+Enterprise: SSO via SAML/OAuth (no cognitive tests)
+MFA: TOTP or WebAuthn (not SMS puzzles)
+```
+
+**Implementation Checklist**:
+- [ ] Login forms support password managers (autocomplete attributes)
+- [ ] No CAPTCHA on critical journey paths (upload, submission)
+- [ ] If CAPTCHA used, provide alternative (magic link, WebAuthn)
+- [ ] Security questions not required (or have alternative)
+- [ ] MFA doesn't rely on cognitive tests (no pattern recall)
+
+**Rationale**: WCAG 3.3.8 addresses cognitive disabilities. For enterprise SaaS, this aligns with procurement requirements where accessibility is mandatory.
+
+**Journey Impact Analysis**:
+
+| Journey Step | Auth Requirement | WCAG 2.2 Consideration |
+|--------------|-----------------|----------------------|
+| Step 1 Upload | Login required | Support password managers, no CAPTCHA |
+| Step 2 Selection | Authenticated session | Session persists, no re-auth |
+| Step 4 Results | Access control | Share links bypass auth, or magic link access |
+
+**Validation**:
+- [ ] Authentication flow documented in design system
+- [ ] No cognitive function tests (CAPTCHA, puzzles) on critical paths
+- [ ] Alternative auth methods provided where cognitive tests exist
+- [ ] Password manager support confirmed (autocomplete attributes)
 
 ### Step 8: Responsive Strategy & Breakpoints
 
@@ -404,6 +646,276 @@ Journey-specific empty states:
 - **Processing**: Not empty, but loading state
 - **No results**: "Assessment complete - no gaps found!" (positive empty state)
 
+### Step 10: Performance Optimization Strategy
+
+After defining components (Step 9), create a performance optimization strategy that ensures the design system delivers excellent Core Web Vitals and minimizes bundle size.
+
+**Performance Philosophy**:
+Design systems often become performance bottlenecks when implemented poorly. This step ensures production-ready performance from the start.
+
+**1. Bundle Splitting Configuration**
+
+For design system packages, configure per-component exports to enable tree-shaking:
+
+```json
+{
+  "name": "@company/design-system",
+  "version": "1.0.0",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./button": {
+      "import": "./dist/button/index.js",
+      "types": "./dist/button/index.d.ts"
+    },
+    "./modal": {
+      "import": "./dist/modal/index.js",
+      "types": "./dist/modal/index.d.ts"
+    },
+    "./upload": {
+      "import": "./dist/upload/index.js",
+      "types": "./dist/upload/index.d.ts"
+    }
+  }
+}
+```
+
+**Why This Matters**:
+- Without per-component exports: Apps bundle entire design system (300KB+)
+- With per-component exports: Apps bundle only used components (50KB typical)
+- `sideEffects: ["**/*.css"]` tells bundlers CSS must always be included
+
+**Journey Impact**:
+- Step 1 page imports only Button + Upload components (not entire library)
+- Step 4 results page imports only Table + Card + Badge (not full library)
+- Reduces initial bundle by 70-80% compared to monolithic import
+
+**2. Icon Optimization Strategy**
+
+Icons are often the largest performance bottleneck in design systems. Choose the right strategy:
+
+| Method | Bundle Size | Performance | Tree-Shaking | Recommendation |
+|--------|-------------|-------------|--------------|----------------|
+| **SVG Sprites** | ~5KB total | Excellent | N/A (shared file) | ✅ Use (70-90% reduction) |
+| **React Icon Components** | 300-400KB | Poor | Yes | ❌ Avoid |
+| **Icon Fonts** | ~50KB | Good | No | ⚠️ Legacy fallback |
+
+**Recommended: SVG Sprite Implementation**
+
+```tsx
+// Icon component using sprites (70-90% size reduction)
+export const Icon = ({ name, size = 24, ...props }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <use href={`/icons/sprite.svg#${name}`} />
+  </svg>
+);
+
+// Usage in journey components
+<Icon name="upload" size={24} />      // Step 1: Upload
+<Icon name="check-circle" size={20} /> // Step 2: Selected frameworks
+<Icon name="spinner" size={32} />      // Step 3: Processing
+<Icon name="download" size={20} />     // Step 4: Export results
+```
+
+**SVG Sprite Generation** (build-time):
+
+```javascript
+// Build script to generate sprite from individual SVGs
+import { readdir, readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
+
+const icons = await readdir('./src/icons');
+const svgContents = await Promise.all(
+  icons.map(f => readFile(join('./src/icons', f), 'utf-8'))
+);
+
+const sprite = `
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  ${svgContents.map((svg, i) => {
+    const id = icons[i].replace('.svg', '');
+    return svg
+      .replace('<svg', `<symbol id="${id}"`)
+      .replace('</svg>', '</symbol>');
+  }).join('\n')}
+</svg>
+`;
+
+await writeFile('./public/icons/sprite.svg', sprite);
+```
+
+**Journey Icon Count Analysis**:
+- Step 1 (Upload): 5 icons (upload, file, check, x, info)
+- Step 2 (Selection): 4 icons (search, check-circle, info, chevron)
+- Step 3 (Processing): 2 icons (spinner, clock)
+- Step 4 (Results): 8 icons (download, share, filter, sort, expand, collapse, check, alert)
+
+Total: ~20 unique icons × 1KB each = **20KB as React components vs 5KB as sprite** (75% reduction)
+
+**3. Font Optimization**
+
+Fonts are critical for brand but can block rendering. Optimize with these patterns:
+
+```css
+/* Variable font reduces requests and supports full weight range */
+@font-face {
+  font-family: 'Design System';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-display: swap; /* Prevent flash of invisible text (FOIT) */
+  font-weight: 100 900; /* Variable font supports all weights */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153; /* Latin subset only */
+  font-stretch: 75% 125%; /* If variable width supported */
+}
+
+/* Fallback for older browsers */
+@font-face {
+  font-family: 'Design System Fallback';
+  src: local('Arial'), local('Helvetica');
+  size-adjust: 105%; /* Match metrics to reduce layout shift */
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+```
+
+**Why Variable Fonts**:
+- Traditional: 6 font files (regular, medium, semi-bold × 2 weights) = 240KB
+- Variable: 1 font file with all weights = 80KB (67% reduction)
+- Supports any weight value (font-weight: 450) for precise typography
+
+**Font Loading Strategy**:
+
+```html
+<!-- Preload critical fonts for LCP -->
+<link
+  rel="preload"
+  href="/fonts/inter-variable.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<!-- Inline font-face CSS in <head> to prevent render-blocking -->
+<style>
+  @font-face {
+    font-family: 'Design System';
+    src: url('/fonts/inter-variable.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 100 900;
+  }
+</style>
+```
+
+**Journey Impact**:
+- Step 1 hero text loads instantly (swap prevents FOIT)
+- Brand font doesn't block journey-critical interactions
+- Variable font covers all typography scale weights without additional downloads
+
+**4. Performance Budgets**
+
+Set performance budgets to prevent regressions:
+
+| Asset Type | Budget | Rationale | Journey Context |
+|-----------|--------|-----------|-----------------|
+| **CSS** | <50KB compressed | Design tokens + components | Critical for FCP |
+| **JavaScript** | <100KB compressed | Component logic + interactions | Affects TTI |
+| **Fonts** | <100KB total | Variable font + fallback | Affects LCP |
+| **Icons** | <10KB | SVG sprite | Fast icon rendering |
+| **Images** | <200KB per page | Journey screenshots, empty states | Affects LCP on Step 1 |
+
+**Enforcement** (Bundler Plugins):
+
+```javascript
+// webpack.config.js or vite.config.js
+export default {
+  performance: {
+    maxAssetSize: 100000, // 100KB
+    maxEntrypointSize: 200000, // 200KB
+    hints: 'error' // Fail build if budget exceeded
+  }
+};
+```
+
+**Core Web Vitals Targets** (Journey-Mapped):
+
+**IMPORTANT**: Read the actual journey steps from `product-guidelines/00-user-journey.ctx.md` and map Core Web Vitals to real journey step names.
+
+| Metric | Target | Journey Step | Optimization |
+|--------|--------|--------------|--------------|
+| **LCP** (Largest Contentful Paint) | <2.5s | [Actual Step 1 from journey] | Preload hero image, font-display: swap |
+| **FID** (First Input Delay) | <100ms | [Actual Step 2 from journey] | Code-split heavy components, defer non-critical JS |
+| **CLS** (Cumulative Layout Shift) | <0.1 | All steps | Size-adjust on fallback fonts, reserve space for images |
+| **INP** (Interaction to Next Paint) | <200ms | [Actual Step 3/4 from journey with interaction] | Debounce search, virtualize long lists |
+
+**5. Journey-Specific Performance Analysis**
+
+**IMPORTANT**: Read the actual journey steps from `product-guidelines/00-user-journey.ctx.md` and use the real step names/descriptions (not generic labels like "Step 1: Upload").
+
+Map performance optimizations to journey steps where they matter most:
+
+| Journey Step | Performance Priority | Optimization Strategy | Impact |
+|--------------|---------------------|----------------------|--------|
+| **[Actual Step 1 name from journey]** | LCP (hero section) | Preload hero image, critical CSS inline | First impression speed |
+| **[Actual Step 2 name from journey]** | INP (interaction) | Debounce search, optimize re-renders | Smooth interaction |
+| **[Actual Step 3 name from journey]** | N/A (passive wait) | Skeleton screens, optimistic UI updates | Perceived performance |
+| **[Actual Step 4 name from journey]** | FCP, INP (rendering) | Virtual scrolling for >100 rows, lazy load cards | Fast display |
+
+**Example** (if journey is "Compliance officers reviewing documents"):
+| Journey Step | Performance Priority | Optimization Strategy | Impact |
+|--------------|---------------------|----------------------|--------|
+| **Step 1: Upload compliance document** | LCP (upload form) | Preload form assets, critical CSS inline | Fast form interaction |
+| **Step 2: Select assessment framework** | INP (dropdown selection) | Debounce search, optimize re-renders | Smooth framework selection |
+| **Step 3: AI analysis processing** | N/A (passive wait) | Skeleton screens, progress indicators | Perceived speed during wait |
+| **Step 4: Review gap analysis results** | FCP, INP (table rendering) | Virtual scrolling for 100+ gaps, lazy load details | Fast results scanning |
+
+**6. Monitoring & Validation**
+
+Include performance monitoring guidance:
+
+```javascript
+// Track Core Web Vitals in production
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+
+function sendToAnalytics(metric) {
+  // Send to your analytics service
+  analytics.track('Web Vitals', {
+    name: metric.name,
+    value: metric.value,
+    id: metric.id
+  });
+}
+
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getFCP(sendToAnalytics);
+getLCP(sendToAnalytics);
+getTTFB(sendToAnalytics);
+```
+
+**Performance Testing Checklist**:
+- [ ] Run Lighthouse on each journey step (target: 90+ performance score)
+- [ ] Test on 3G throttled connection (target: <5s LCP)
+- [ ] Verify bundle sizes within budgets (CSS <50KB, JS <100KB)
+- [ ] Check icon sprite file generated correctly (<10KB)
+- [ ] Validate font loading doesn't cause FOIT (swap strategy working)
+- [ ] Measure CLS on all steps (target: <0.1)
+
+**Validation**:
+- [ ] Bundle splitting config includes per-component exports
+- [ ] Icon strategy documented (SVG sprites recommended with 70-90% reduction claim)
+- [ ] Font optimization pattern includes variable fonts, font-display: swap, unicode-range subset
+- [ ] Performance budgets specified for all asset types
+- [ ] Core Web Vitals targets mapped to journey steps
+- [ ] Performance monitoring code included
+
 ## Generating the Output
 
 Use `/templates/06-design-system-template.md`.
@@ -428,26 +940,116 @@ Use `/templates/06-design-system-template.md`.
 
 Document the decisions you made and alternatives you rejected. This prevents future debates and explains the rationale:
 
-**1. Styling Approach: Custom CSS-in-JS vs Tailwind vs Component Library**
+**1. Styling Approach: Custom CSS-in-JS vs Tailwind vs Component Library (2025 Update)**
 
 **What we chose**: [Based on tech stack from Session 2]
 
-Examples:
-- **Tailwind CSS**: Utility-first, fast prototyping, small bundle
-  - [✓] Choose if: Speed-focused, startup, small team
-  - [x] Avoid if: Need strict design consistency, complex themes
+Read `02-tech-stack.ctx.md` to determine frontend framework, then apply decision tree:
 
-- **Styled Components / Emotion**: CSS-in-JS, component-scoped styles
-  - [✓] Choose if: React-heavy, dynamic theming, complex logic
-  - [x] Avoid if: Concerned about runtime cost, server-side rendering
+```
+Frontend Framework?
+├─ React + velocity focus → Tailwind CSS v4 (5x faster builds, zero-runtime)
+├─ React + type safety → Panda CSS (zero-runtime, Chakra-like DX, RSC-compatible)
+├─ TypeScript-first → Vanilla Extract (compile-time type safety)
+├─ Legacy codebase with CSS-in-JS → Emotion (with migration plan)
+└─ Vue/Svelte → TailwindCSS v4 or framework-specific solutions
+```
 
-- **CSS Modules**: Scoped CSS, framework-agnostic
-  - [✓] Choose if: Want traditional CSS, avoid JS dependencies
-  - [x] Avoid if: Need dynamic styles or theming
+**2025 CSS Tooling Landscape**:
 
-**Decision for Compliance SaaS**: Tailwind CSS
-- Rationale: Fast iteration, design tokens via config, team familiar
-- Trade-off: Less custom styling, utility class proliferation
+| Tool | Status | Build Speed | Runtime Cost | Type Safety | Recommendation |
+|------|--------|-------------|--------------|-------------|----------------|
+| **Tailwind CSS v4** | Active | 5x faster | Zero | Config-based | ✅ Default choice (fastest, most mature) |
+| **Panda CSS** | Active | Fast | Zero | Full TypeScript | ✅ For Chakra migration, RSC apps |
+| **Vanilla Extract** | Active | Fast | Zero | Full TypeScript | ✅ For strict type requirements |
+| **Emotion** | Active | Standard | 20-30KB | Limited | ⚠️ Legacy codebases only |
+| **styled-components** | Maintenance | Standard | 20-30KB | Limited | ❌ MAINTENANCE MODE (March 2025) - Avoid new projects |
+
+**IMPORTANT: styled-components Deprecation Notice**:
+- ⚠️ **MAINTENANCE MODE** as of March 2025 (no new features, security fixes only)
+- Migration path: Emotion (short-term) → Zero-runtime solution (long-term)
+- Do NOT use for new projects - industry has shifted to zero-runtime solutions
+
+**Zero-Runtime vs Runtime CSS-in-JS**:
+
+| Aspect | Zero-Runtime (Tailwind, Panda, Vanilla Extract) | Runtime CSS-in-JS (Emotion, styled-components) |
+|--------|-----------------------------------------------|---------------------------------------------|
+| Bundle Size | CSS file only (~30KB) | CSS + 20-30KB JS runtime |
+| Hydration | Instant | Delayed (JS must parse first) |
+| SSR | No FOUC | Flash of unstyled content (FOUC) risk |
+| React Server Components | ✅ Compatible | ❌ Incompatible |
+| Core Web Vitals | Better FCP, LCP | Worse FCP, LCP (runtime overhead) |
+| TypeScript | Full compile-time checking (Panda, Vanilla Extract) | Runtime-only checking |
+
+**Why This Matters**:
+- **Performance**: Runtime CSS-in-JS adds 20-30KB + parsing overhead → slower hydration, worse LCP
+- **Future-proof**: React Server Components incompatible with runtime CSS-in-JS
+- **DX**: Zero-runtime tools have better TypeScript integration and build performance
+
+**CSS Custom Properties Theming Pattern** (for light/dark mode):
+
+```css
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-primary: #0066cc;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-text: #f0f0f0;
+  --color-primary: #3b8eea;
+}
+
+/* Prevent flash of incorrect theme (FOIT) */
+<script>
+  // Execute BEFORE first paint
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    // Respect system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }
+</script>
+```
+
+**Example Decision for Compliance SaaS (2025)**:
+
+```markdown
+**Decision**: Tailwind CSS v4
+
+**Rationale**:
+- Journey requires fast iteration (compliance frameworks change frequently)
+- Zero-runtime ensures optimal Core Web Vitals for enterprise procurement
+- Design tokens via tailwind.config.ts align with DTCG format (Step 4b)
+- Team familiar with utility-first approach
+- 5x faster builds vs Tailwind v3 reduce CI/CD time
+
+**Trade-offs**:
+- Utility class proliferation in templates (mitigated with @apply for complex components)
+- Less dynamic styling vs runtime CSS-in-JS (not needed for journey)
+
+**Migration Path** (if existing styled-components):
+1. Phase 1: Install Tailwind CSS v4 alongside styled-components
+2. Phase 2: Convert new components to Tailwind (journey-critical first)
+3. Phase 3: Gradually migrate existing components
+4. Phase 4: Remove styled-components (target: 6 months)
+```
+
+**Validation**:
+- [ ] CSS architecture decision based on tech stack from Session 2
+- [ ] styled-components marked MAINTENANCE MODE if mentioned
+- [ ] Zero-runtime options (Tailwind v4, Panda CSS, Vanilla Extract) listed first with checkmarks
+- [ ] Performance comparison documents runtime cost (20-30KB overhead)
+- [ ] CSS custom properties theming pattern includes FOIT prevention script
+- [ ] Migration path documented if existing styled-components detected (phase-by-phase with timeline, journey-critical components prioritized, rollback strategy included)
+- [ ] Decision traces to journey requirements (not arbitrary technology choice)
 
 **2. Design Tokens: Hard-coded vs Design Token System**
 
