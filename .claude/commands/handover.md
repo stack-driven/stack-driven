@@ -10,7 +10,7 @@ You are orchestrating a one-way transformation that converts the Stack-Driven re
 
 After a user completes all 14 core cascade sessions (journey → observability), the repository contains:
 - Product guidelines (the valuable outputs)
-- Framework scaffolding (30 cascade commands, templates, aspects)
+- Framework scaffolding (31 cascade commands, templates, aspects)
 
 The framework served its purpose - it generated the product guidelines. Now it's time for "stage separation" - removing the framework scaffolding so developers can focus on building the MVP without clutter.
 
@@ -20,7 +20,7 @@ The framework served its purpose - it generated the product guidelines. Now it's
 
 Execute a systematic handover process that:
 1. Verifies cascade completion (all core sessions 00-14 exist)
-2. Deletes framework scaffolding (30 commands, templates, aspects, examples)
+2. Deletes framework scaffolding (31 commands, templates, aspects, examples)
 3. Generates foundation CLAUDE.md (product-focused, not framework-focused)
 4. Generates product README.md (problem, solution, features, tech stack)
 5. Commits product-guidelines/ to repository (no longer gitignored)
@@ -188,6 +188,7 @@ rm -rf examples/
 ```bash
 rm -f README.md
 rm -f COMMAND-REFERENCE.md
+rm -f VALIDATION-CHECKLIST.md  # Framework validation checklist, not needed in foundation mode
 ```
 
 **Keep agents (useful for future operations):**
@@ -336,10 +337,10 @@ This file provides guidance to Claude Code when working with this codebase. For 
 Create a product-specific README by extracting key information from product-guidelines.
 
 **Read these files:**
-- product-guidelines/00-user-journey.md (problem, solution, value proposition)
-- product-guidelines/01-product-strategy.md (vision, market positioning)
-- product-guidelines/02-tech-stack.md (full tech stack with versions)
-- product-guidelines/04-architecture.md (high-level architecture)
+- product-guidelines/00-user-journey.ctx.md (problem, solution, value proposition)
+- product-guidelines/01-product-strategy.ctx.md (vision, market positioning)
+- product-guidelines/02-tech-stack.md (full tech stack with versions - keep full version for detailed tech info)
+- product-guidelines/04-architecture.ctx.md (high-level architecture)
 - product-guidelines/10-backlog/ (extract top 5-7 P0 features)
 
 **Generate README.md with this structure:**
