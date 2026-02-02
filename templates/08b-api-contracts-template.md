@@ -990,6 +990,195 @@ For each provider that sends webhooks:
 
 ---
 
+## API Versioning & Evolution (Phase 2)
+
+### Versioning Strategy
+
+**Chosen Strategy**: [URL Versioning / Header Versioning / Query Param / Content Negotiation]
+
+**Rationale**: [Why this strategy fits the project - consider: public vs internal API, client coordination, testing complexity]
+
+**Example**:
+```yaml
+# URL Versioning Example
+servers:
+  - url: https://api.example.com/v2
+    description: Current version (v2)
+  - url: https://api.example.com/v1
+    description: Deprecated (sunset: 2026-06-01)
+
+info:
+  version: 2.0.0
+  description: |
+    ## Version History
+    - **v2.0** (current, released: 2026-01-15): [Major changes - e.g., User schema restructured]
+    - **v1.0** (deprecated, sunset: 2026-06-01): Legacy schema
+```
+
+### Deprecation Examples
+
+**Deprecated Endpoint Example**:
+```yaml
+paths:
+  /api/v1/users:
+    get:
+      deprecated: true
+      summary: List users (DEPRECATED)
+      description: |
+        **DEPRECATED:** This endpoint will be removed on 2026-06-01.
+        Use `/api/v2/users` instead.
+
+        **Migration Guide**:
+        - v2 uses `id` instead of `user_id`
+        - v2 nests profile data under `profile` object
+        - v2 returns ISO 8601 timestamps (v1 used Unix timestamps)
+      x-sunset-date: "2026-06-01"
+      x-replacement-endpoint: "/api/v2/users"
+      tags: [Users, Deprecated]
+```
+
+**Deprecated Field Example**:
+```yaml
+components:
+  schemas:
+    User:
+      properties:
+        user_id:
+          type: string
+          description: |
+            **DEPRECATED:** User identifier (use 'id' instead).
+            Will be removed on 2026-06-01.
+          deprecated: true
+          x-sunset-date: "2026-06-01"
+          x-replacement-field: "id"
+          example: "user_abc123"
+        id:
+          type: string
+          description: User identifier (replaces deprecated user_id)
+          example: "user_abc123"
+```
+
+### Protobuf Reserved Fields (if using gRPC)
+
+**Example of safe Protobuf evolution**:
+```protobuf
+// Version 1 (initial release)
+message User {
+  string name = 1;
+  string email = 2;
+  string status = 3;  // Simple string status
+}
+
+// Version 2 (evolved - field 3 replaced with enum)
+message User {
+  string name = 1;
+  string email = 2;
+
+  reserved 3;  // CRITICAL: Reserve field number 3 (never reuse!)
+  reserved "status";  // Also reserve field name
+
+  UserStatus status_v2 = 4;  // Replacement field gets NEW number
+  string middle_name = 5;  // New optional field
+  google.protobuf.Timestamp created_at = 6;  // New field
+}
+
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;  // Always include zero value
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_INACTIVE = 2;
+  USER_STATUS_SUSPENDED = 3;
+}
+```
+
+**Why reserved fields matter**:
+- Prevents field number reuse (causes data corruption)
+- Prevents field name reuse (causes confusion)
+- Documents evolution history (shows what was removed)
+
+### Breaking Change Log
+
+Document all breaking changes between versions:
+
+| Version | Release Date | Breaking Changes | Migration Path |
+|---------|--------------|------------------|----------------|
+| **v2.0** | 2026-01-15 | - Renamed `user_id` → `id`<br>- Changed timestamp format (Unix → ISO 8601)<br>- Nested profile data | See migration guide below |
+| **v1.0** | 2025-06-01 | Initial release | N/A |
+
+### Migration Guide (v1 → v2)
+
+**Field Mapping**:
+```javascript
+// v1 response
+{
+  "user_id": "user_abc123",
+  "name": "Alice Smith",
+  "email": "alice@example.com",
+  "created_at": 1704124800  // Unix timestamp
+}
+
+// v2 response (equivalent)
+{
+  "id": "user_abc123",
+  "profile": {
+    "name": "Alice Smith",
+    "email": "alice@example.com"
+  },
+  "created_at": "2025-01-01T12:00:00Z"  // ISO 8601
+}
+```
+
+**Client Migration Steps**:
+1. Update API base URL: `https://api.example.com/v1` → `https://api.example.com/v2`
+2. Replace `user_id` references with `id`
+3. Update timestamp parsing (Unix → ISO 8601)
+4. Access profile fields via `profile.name` instead of `name`
+5. Test against v2 staging environment
+6. Deploy updated client code
+
+**Timeline**:
+- **2026-01-15**: v2 released, v1 marked deprecated
+- **2026-03-01**: v1 deprecation warnings in response headers
+- **2026-06-01**: v1 sunset (removed, returns 410 Gone)
+
+### Backward Compatibility Rules
+
+**OpenAPI/REST Rules**:
+- ✅ **Safe**: Add optional fields, add new endpoints, make required fields optional
+- ❌ **Breaking**: Remove fields, rename fields, change types, add required fields
+
+**Protobuf Rules**:
+- ✅ **Safe**: Add optional fields with new numbers, mark fields as deprecated
+- ❌ **Breaking**: Change field numbers, change types, remove fields without reserved, reuse field numbers
+
+### Version Compatibility Testing
+
+**Contract Tests**:
+```yaml
+# Ensure v2 API maintains backward compatibility with v1 clients
+tests:
+  - name: v1_client_reads_v2_response
+    description: v2 API returns v1-compatible data when requested
+    request:
+      url: /api/v2/users
+      headers:
+        Accept: application/vnd.company.v1+json
+    expect:
+      - status: 200
+      - response contains: user_id  # v1 field name
+      - response contains: created_at as integer  # v1 format
+
+  - name: v2_client_reads_v1_response
+    description: v2 client handles v1 responses gracefully
+    request:
+      url: /api/v1/users
+    expect:
+      - status: 200
+      - client parses user_id as id
+      - client converts Unix timestamp to ISO 8601
+```
+
+---
+
 ## Notes
 
 - Replace all `[Resource]`, `[Project Name]`, `[domain]`, etc. with actual values
