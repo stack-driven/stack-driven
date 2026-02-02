@@ -644,6 +644,8 @@ Skip if: Simple CRUD app with <5 entities
 
 - **`design-transaction-boundaries.md` (432 lines)**: Single-pattern agent with 8% overage due to comprehensive distributed transaction guidance (saga patterns, compensation logic, event sourcing). Tight coupling between transaction types makes splitting counterproductive. Minor overage accepted in PR #171 (Epic #167).
 
+- **`design-webhook-endpoints.md` (434 lines)**: Single-pattern agent for webhook endpoint architecture with 8% overage due to comprehensive decision trees (sync vs async, idempotency, signature verification, versioning, scale-forward). Tight coupling between webhook design aspects (processing pattern affects idempotency strategy, which affects scale-forward plan) makes splitting counterproductive. Minor overage accepted in PR #175 (Epic #154).
+
 ### Enforcement
 
 **Pre-PR**: Run command size check
