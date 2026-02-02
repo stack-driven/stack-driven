@@ -297,20 +297,9 @@ X-Request-ID: req_abc123
 
 **Pattern**: Timeout + circuit breaker for third-party APIs
 
-```
-Third-party API configuration:
-- Timeout: 5 seconds (fail fast)
-- Circuit breaker: Open after 5 consecutive failures
-- Half-open: Retry after 30 seconds
-- Fallback: Return cached data or degraded response
-```
-
 **Journey-Based Analysis**:
 - Which journey steps depend on third-party APIs? (payment gateways, AI services, integrations)
 - What happens if third-party API fails? (from Session 7 and Session 4)
-- Document timeout and fallback strategy
-
-**Example**: "Journey Step 3 (AI document analysis) calls OpenAI API → Timeout: 30s → Fallback: Return 'processing' status, retry later"
 
 **Output Format**:
 ```markdown
@@ -323,10 +312,9 @@ Third-party API configuration:
 - Journey steps affected: [Which steps depend on third-party]
 
 **Protection Pattern**:
-- API: [Name]
-  - Timeout: [X seconds]
-  - Circuit breaker: Open after [N] failures
-  - Fallback: [Return cached data / degraded response / error]
+See Circuit Breaker Configuration section (from design-circuit-breakers.md sub-agent if invoked).
+
+Note: Circuit breaker details (timeout, failure threshold, fallback strategy) are documented by the dedicated design-circuit-breakers.md sub-agent, which is conditionally invoked by the orchestrator when third-party APIs are detected.
 
 **Reconsider if**: Third-party integrations added (payment, AI, analytics), webhook consumption from external sources
 ```
