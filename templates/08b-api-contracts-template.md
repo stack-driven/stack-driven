@@ -1412,6 +1412,297 @@ tests:
 
 ---
 
+## Code Generation (Phase 4)
+
+### Client SDK Generation
+
+This section provides framework for auto-generating type-safe client SDKs from API contracts. Session 12 (scaffold generation) should use these patterns to create client code automatically.
+
+#### TypeScript/JavaScript Client Generation
+
+```bash
+# Install OpenAPI generator
+npm install -g @openapitools/openapi-generator-cli
+
+# Generate TypeScript client with axios
+openapi-generator-cli generate \
+  -i product-guidelines/08b-api-contracts/openapi.yaml \
+  -g typescript-axios \
+  -o src/api-client \
+  --additional-properties=supportsES6=true,withInterfaces=true,useSingleRequestParameter=true
+
+# Generated structure:
+# src/api-client/
+#   api/
+#     documents-api.ts       # DocumentsApi class with type-safe methods
+#     users-api.ts           # UsersApi class
+#   models/
+#     document.ts            # Document interface
+#     user.ts                # User interface
+#   configuration.ts         # API config (base URL, auth)
+#   index.ts                 # Exports
+```
+
+**Usage Example:**
+```typescript
+import { DocumentsApi, Configuration } from './api-client';
+
+const config = new Configuration({
+  basePath: 'https://api.example.com',
+  accessToken: 'Bearer eyJhbGc...'
+});
+
+const documentsApi = new DocumentsApi(config);
+
+// Type-safe method call
+const response = await documentsApi.listDocuments({
+  limit: 20,
+  status: 'active'  // TypeScript validates enum values
+});
+
+// Type-safe response access
+response.data.data.forEach(doc => {
+  console.log(doc.name);  // TypeScript knows Document shape
+  console.log(doc.invalid);  // ❌ TypeScript compile error
+});
+```
+
+#### Python Client Generation
+
+```bash
+# Generate Python client with httpx
+openapi-generator-cli generate \
+  -i product-guidelines/08b-api-contracts/openapi.yaml \
+  -g python \
+  -o python-client \
+  --additional-properties=packageName=api_client,library=httpx
+
+# Generated structure:
+# python-client/
+#   api_client/
+#     api/
+#       documents_api.py     # DocumentsApi class
+#     models/
+#       document.py          # Document dataclass
+```
+
+**Usage Example:**
+```python
+from api_client import ApiClient, Configuration, DocumentsApi
+
+config = Configuration(
+    host='https://api.example.com',
+    access_token='Bearer eyJhbGc...'
+)
+
+with ApiClient(config) as api_client:
+    documents_api = DocumentsApi(api_client)
+    response = documents_api.list_documents(limit=20, status='active')
+
+    for doc in response.data:
+        print(doc.name)  # IDE autocompletes Document fields
+```
+
+#### Go Client Generation (gRPC)
+
+```bash
+# Install protoc plugins
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+# Generate Go client from .proto files
+protoc \
+  --go_out=. \
+  --go_opt=paths=source_relative \
+  --go-grpc_out=. \
+  --go-grpc_opt=paths=source_relative \
+  product-guidelines/08b-api-contracts/*.proto
+```
+
+**Usage Example:**
+```go
+import pb "github.com/example/api"
+
+conn, _ := grpc.Dial("api.example.com:443", grpc.WithTransportCredentials(creds))
+client := pb.NewDocumentServiceClient(conn)
+
+resp, err := client.ListDocuments(ctx, &pb.ListDocumentsRequest{
+    PageSize: 20,
+    Filter:   "status:active",
+})
+
+for _, doc := range resp.Documents {
+    fmt.Println(doc.Name)  // IDE knows Document fields
+}
+```
+
+### Session 12 Scaffold Integration
+
+**CRITICAL:** Session 12 should auto-generate client SDKs from these contracts.
+
+**Integration Steps:**
+1. Read API contracts from `product-guidelines/08b-api-contracts/openapi.yaml` or `.proto` files
+2. Detect serialization format from Session 8 (`08-api-design.ctx.md`)
+3. Generate client SDK using appropriate generator (openapi-generator-cli or protoc)
+4. Place generated code in project structure:
+   - Frontend: `frontend/src/api-client/` (TypeScript)
+   - Backend: `backend/internal/api/` (Go), `backend/api_client/` (Python)
+   - Monorepo: `packages/api-client/` (shared)
+5. Add generation scripts to package.json or Makefile
+
+**Example package.json:**
+```json
+{
+  "scripts": {
+    "generate:api": "openapi-generator-cli generate -i ../product-guidelines/08b-api-contracts/openapi.yaml -g typescript-axios -o src/api-client",
+    "build": "npm run generate:api && vite build"
+  }
+}
+```
+
+**Example Makefile:**
+```makefile
+.PHONY: generate-api
+generate-api:
+	protoc --go_out=. --go-grpc_out=. product-guidelines/08b-api-contracts/*.proto
+
+.PHONY: build
+build: generate-api
+	go build -o bin/server cmd/server/main.go
+```
+
+### Contract Testing
+
+**Contract testing ensures API implementation matches specification.**
+
+#### Dredd (REST/OpenAPI Contract Testing)
+
+```bash
+# Install Dredd
+npm install -g dredd
+
+# Test API implementation against OpenAPI spec
+dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
+```
+
+**Dredd Configuration:**
+```yaml
+# dredd.yml
+reporter: ['html']
+output: ['test-results/contract-tests.html']
+hookfiles: 'test/hooks/*.ts'
+language: typescript
+hooks-worker-timeout: 5000
+
+# Add authentication hooks (test/hooks/auth.ts)
+# import hooks from 'hooks';
+# hooks.beforeEach((transaction, done) => {
+#   transaction.request.headers['Authorization'] = 'Bearer test-token';
+#   done();
+# });
+```
+
+#### Contract Testing Story for Session 10 Backlog
+
+**When Session 10 generates backlog, include this story:**
+
+```markdown
+### Story: API Contract Testing (Technical Enabler)
+
+**User Story:** As a developer, I want contract tests to run in CI so that API changes don't break clients.
+
+**Description:** Implement Dredd contract testing to validate backend API matches OpenAPI spec.
+
+**Acceptance Criteria:**
+- [ ] Dredd installed and configured
+- [ ] All endpoints in `08b-api-contracts/openapi.yaml` tested
+- [ ] Tests run in CI/CD pipeline (GitHub Actions)
+- [ ] Authentication hooks implemented (test tokens)
+- [ ] Test report generated (HTML format)
+- [ ] Failures block deployment
+
+**Technical Details:**
+- Install: `npm install -g dredd`
+- Config: `dredd.yml` with hooks
+- Run: `dredd openapi.yaml http://localhost:3000`
+- CI: Add to `.github/workflows/test.yml`
+
+**Effort:** 3 points (Medium)
+**Priority:** High (prevents breaking changes)
+```
+
+#### CI/CD Integration
+
+**Add to `.github/workflows/test.yml`:**
+```yaml
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+
+      - name: Start backend server
+        run: |
+          npm install
+          npm run migrate:test
+          npm run start:test &
+          sleep 5  # Wait for server ready
+
+      - name: Run contract tests
+        run: |
+          npm install -g dredd
+          dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: contract-test-results
+          path: test-results/
+```
+
+### Type Consistency Validation
+
+**Ensure DB type → API type → Client type alignment.**
+
+**Example Validation Script (Session 12 should generate):**
+```typescript
+// scripts/validate-type-consistency.ts
+import { readFileSync } from 'fs';
+import { parse } from 'yaml';
+
+const dbSchema = readFileSync('product-guidelines/07-database-schema.md', 'utf8');
+const apiContracts = parse(readFileSync('product-guidelines/08b-api-contracts/openapi.yaml', 'utf8'));
+
+const errors = [];
+
+// Check: Database NUMERIC → API string (not number)
+if (dbSchema.includes('NUMERIC') &&
+    apiContracts.components.schemas.User.properties.balance.type === 'number') {
+  errors.push('CRITICAL: NUMERIC mapped to number (should be string for precision)');
+}
+
+// Check: Database BIGINT → API string in JSON (JavaScript safety)
+if (dbSchema.includes('BIGINT') &&
+    apiContracts.components.schemas.User.properties.id.type === 'number') {
+  errors.push('CRITICAL: BIGINT mapped to number (should be string for JS safety)');
+}
+
+if (errors.length > 0) {
+  console.error('Type consistency validation FAILED:');
+  errors.forEach(err => console.error(`  - ${err}`));
+  process.exit(1);
+}
+
+console.log('Type consistency validation passed');
+```
+
+---
+
 ## Notes
 
 - Replace all `[Resource]`, `[Project Name]`, `[domain]`, etc. with actual values
@@ -1424,3 +1715,6 @@ tests:
 - Include rate limit headers in responses
 - Use consistent naming (camelCase or snake_case, pick one)
 - Validate with OpenAPI validator before finalizing
+- **NEW (Phase 4):** Document code generation commands for all tech stack languages
+- **NEW (Phase 4):** Include Session 12 integration notes for auto-generated clients
+- **NEW (Phase 4):** Specify contract testing approach (Dredd, Pact, or grpc-testing)
