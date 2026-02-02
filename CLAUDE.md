@@ -603,6 +603,22 @@ Post-cascade extensions are **optional deep-dive commands** that run AFTER core 
 - Epic #167 tracks decomposition: /model-application, /create-test-strategy, /design-database-schema, /generate-api-design, /scaffold-project
 - Post-decomposition: 40-50% API cost reduction, better maintainability
 
+### Completed Decompositions
+
+**Session 7 (/design-database-schema) - COMPLETED**
+- **Orchestrator:** `design-database-schema.md` (418 lines)
+- **Sub-agents:** 7 specialized agents (2,954 lines total)
+  - `design-core-tables.md` (335 lines) - ALWAYS: Core entity tables from journey
+  - `design-relationships.md` (370 lines) - ALWAYS: Foreign keys, junction tables, constraints
+  - `design-indexes.md` (391 lines) - ALWAYS: Performance indexes based on query patterns
+  - `design-i18n-tables.md` (454 lines) - CONDITIONAL: Translation tables (IF i18n required in Session 2a)
+  - `design-integration-tables.md` (530 lines) - CONDITIONAL: Integration infrastructure (IF third-party integrations in Session 2a)
+  - `design-multi-tenancy.md` (366 lines) - CONDITIONAL: Tenant isolation patterns (IF multi-tenant architecture in Session 4)
+  - `design-audit-logging.md` (508 lines) - CONDITIONAL: Compliance audit tables (IF compliance requirements in Session 2a)
+- **Token efficiency:** 30% reduction for simple journeys (1,514 vs 2,170 lines), 13% for typical journeys (~1,900 lines)
+- **Conditional logic:** Explicit IF/SKIP gates in orchestrator Step 3 (lines 67-107)
+- **PR:** #169
+
 ### Decomposition Pattern (from Epic #167)
 
 ```
