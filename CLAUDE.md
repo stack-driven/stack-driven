@@ -85,7 +85,8 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 **`/reference-material/`** - Educational guides and reference documentation
 - Standalone educational resources not tied to specific cascade sessions
 - Referenced by commands but not generated as cascade outputs
-- Examples: API security fundamentals, serialization guide, AI best practices, AI debugging framework
+- **Testing Guides:** property-based-testing-guide.md, integration-testing-patterns.md, accessibility-testing-guide.md, performance-testing-guide.md, security-testing-guide.md
+- **AI/API Guides:** API security fundamentals, serialization guide, AI best practices, AI debugging framework
 - These guides provide foundational knowledge that can be consulted at any time
 
 **`/.claude/memory/`** - **GITIGNORED** - Debugging tracking state
