@@ -97,6 +97,79 @@ Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes afte
 
 ---
 
+### Step 1.5: Choose Test Distribution Model
+
+**Decision Tree - Test Model Selection:**
+
+```
+What's your architecture?
+├─ Frontend SPA (React/Vue/Svelte) → Testing Trophy (20% unit, 50% integration, 30% E2E)
+├─ Backend API/Microservices → Testing Diamond (20% unit, 50% integration, 30% E2E)
+├─ Traditional Monolith → Testing Pyramid (70% unit, 20% integration, 10% E2E)
+└─ Hybrid Full-Stack → Modified Trophy (30% unit, 45% integration, 25% E2E)
+```
+
+**Rationale by Model:**
+
+**Testing Pyramid** (70% unit, 20% integration, 10% E2E):
+- Best for: Traditional monoliths, backend services with isolated business logic
+- Why: Unit tests are fast and cheap, integration tests expensive in monoliths
+- Focus: Isolated business logic, pure functions, algorithms
+
+**Testing Trophy** (20% unit, 50% integration, 30% E2E):
+- Best for: Frontend SPAs, React/Vue/Svelte applications
+- Why: Integration tests provide most confidence for UI behavior (real DOM, real interactions)
+- Focus: Component integration, user interactions, state management
+
+**Testing Diamond** (20% unit, 50% integration, 30% E2E):
+- Best for: Microservices architectures, distributed systems
+- Why: Complexity lies in service interactions, not individual services
+- Focus: API contracts, service communication, event handling
+
+**Modified Trophy** (30% unit, 45% integration, 25% E2E):
+- Best for: Hybrid full-stack applications (frontend + backend + database)
+- Why: Balance between business logic testing and integration testing
+- Focus: Business logic (unit), API endpoints (integration), critical paths (E2E)
+
+**Example (compliance-saas):**
+
+```yaml
+Architecture: Hybrid full-stack (React + FastAPI + PostgreSQL)
+Model: Modified Trophy
+
+Distribution:
+  - 30% Unit tests:
+    - Assessment scoring algorithms
+    - Document parsing logic
+    - Validation rules
+    - Form validation (frontend)
+
+  - 45% Integration tests:
+    - API endpoints (document upload, assessment creation)
+    - Database operations (multi-tenant isolation, transactions)
+    - External services (AI API, file storage)
+    - Component integration (React Testing Library)
+
+  - 25% E2E tests:
+    - Complete assessment flow (upload → assess → results)
+    - Report sharing flow
+    - Team collaboration flow
+
+Rationale:
+- Business logic (assessment algorithms) is critical → needs unit tests
+- API reliability is critical → needs integration tests
+- User journeys are critical → needs E2E tests
+- Integration tests provide most confidence for API + database interactions
+```
+
+**How to Use This Decision:**
+1. Identify your architecture from tech stack (Session 2)
+2. Choose test model based on architecture type
+3. Use distribution ratios as coverage targets
+4. Adjust based on product risk level (high risk → more E2E)
+
+---
+
 ### Step 2: Define Testing Philosophy
 
 **Decision Tree - Testing Philosophy:**
@@ -195,11 +268,27 @@ Unit Test Patterns:
   - Use fixtures/factories for test data
   - Mock external dependencies (AI API, file storage)
 
+Coverage Metrics:
+  - Line coverage: % of lines executed (default in most tools)
+  - Branch coverage: % of if/else branches tested (BETTER indicator)
+  - Target: 70% branch coverage (stricter than line coverage)
+  - Why branch matters: 100% line coverage with no branching logic tests = false confidence
+
+Property-Based Testing (Optional - High Value):
+  - When to use:
+    * Complex algorithms with many edge cases
+    * Document parsers (PDFs, DOCXs with various formats)
+    * Assessment scoring logic (mathematical properties)
+    * Date/time calculations
+    * Currency formatting and conversions
+  - Tools: Hypothesis (Python), fast-check (JavaScript)
+  - Approach: Define properties that ALWAYS hold, generate random inputs to verify
+
 Tools (from tech stack):
   - Backend: Pytest + pytest-asyncio + pytest-cov
   - Frontend: Vitest + Testing Library + MSW (mocking)
   - Coverage reporting: Codecov / Coveralls
-  - Coverage threshold: 70% overall, 90% for critical modules
+  - Coverage threshold: 70% branch coverage overall, 90% for critical modules
 ```
 
 **Example unit test (backend):**
@@ -273,6 +362,82 @@ describe('AssessmentResults', () => {
 });
 ```
 
+**Example property-based test (Python with Hypothesis):**
+
+```python
+# tests/test_assessment_properties.py
+from hypothesis import given
+import hypothesis.strategies as st
+from app.assessment import calculate_compliance_score
+
+@given(requirements=st.lists(st.text()), findings=st.lists(st.text()))
+def test_compliance_score_properties(requirements, findings):
+    """Test that compliance score always has valid properties"""
+    score = calculate_compliance_score(requirements, findings)
+
+    # Property 1: Score is always between 0 and 100
+    assert 0 <= score <= 100
+
+    # Property 2: Empty requirements means 100% compliance
+    if not requirements:
+        assert score == 100
+
+    # Property 3: Finding all requirements means 100% compliance
+    if set(findings) >= set(requirements):
+        assert score == 100
+
+@given(
+    document_size=st.integers(min_value=1, max_value=10_000_000),
+    format=st.sampled_from(['pdf', 'docx', 'txt'])
+)
+def test_document_parser_properties(document_size, format):
+    """Test that document parser handles various inputs correctly"""
+    # Property: Parser never crashes on valid inputs
+    try:
+        result = parse_document(size=document_size, format=format)
+        assert result is not None
+        assert isinstance(result.text, str)
+    except ValueError as e:
+        # Expected failures for invalid combinations
+        assert "unsupported" in str(e).lower()
+```
+
+**Example property-based test (JavaScript with fast-check):**
+
+```typescript
+// src/utils/formatting.test.ts
+import fc from 'fast-check';
+import { formatCurrency, parseDate } from './formatting';
+
+describe('formatCurrency properties', () => {
+  it('always returns a string with currency symbol', () => {
+    fc.assert(
+      fc.property(
+        fc.float({ min: -1000000, max: 1000000 }),
+        (amount) => {
+          const formatted = formatCurrency(amount, 'USD');
+          expect(typeof formatted).toBe('string');
+          expect(formatted).toMatch(/[$]/);
+        }
+      )
+    );
+  });
+
+  it('round-trip: parse(format(x)) ≈ x', () => {
+    fc.assert(
+      fc.property(
+        fc.float({ min: 0, max: 1000000 }),
+        (amount) => {
+          const formatted = formatCurrency(amount, 'USD');
+          const parsed = parseCurrency(formatted);
+          expect(Math.abs(parsed - amount)).toBeLessThan(0.01);
+        }
+      )
+    );
+  });
+});
+```
+
 ---
 
 ### Step 4: Define Integration Testing Strategy
@@ -331,16 +496,30 @@ External Service Integration Tests:
   - Email service: Test email sending (use test mode)
 
 Integration Test Setup:
-  - Test database: Separate PostgreSQL instance (Docker)
+  - Test database: Testcontainers (industry standard 2025)
   - Database migrations: Run before tests, clean after
   - Test data: Use factories (FactoryBoy) for realistic data
   - External APIs: Use mocks (responses library) or test mode
   - Isolation: Each test gets clean database state
 
+Database Testing with Testcontainers (Industry Standard 2025):
+  - Provides production parity with real database instances in Docker
+  - Avoids SQL dialect differences (PostgreSQL, not SQLite)
+  - Complete isolation: each test run gets fresh instance
+  - Auto-cleanup: containers destroyed after tests
+  - Works in CI (GitHub Actions, GitLab CI)
+
+Database Reset Strategies:
+  Strategy             | Speed    | When to Use
+  ---------------------|----------|----------------------------------
+  Transaction rollback | Fastest  | Default choice for most tests
+  TRUNCATE tables      | Medium   | When testing transaction boundaries
+  Fresh container      | Slow     | Only when complete isolation needed
+
 Tools (from tech stack):
   - Backend: Pytest + TestClient (FastAPI) + SQLAlchemy fixtures
   - API testing: httpx + pytest-asyncio
-  - Database: pytest-postgresql or Docker + test migrations
+  - Database: Testcontainers (PostgreSQL, MySQL, MongoDB)
   - Mocking: responses (Python) / MSW (JavaScript)
 ```
 
@@ -402,6 +581,244 @@ def test_list_documents_shows_only_user_documents(authenticated_user, test_db):
     assert len(documents) == 1
     assert documents[0]["name"] == "User A Doc"
 ```
+
+**Example integration test with testcontainers (Python):**
+
+```python
+# tests/integration/conftest.py
+import pytest
+from testcontainers.postgres import PostgresContainer
+from sqlalchemy import create_engine
+from app.database import Base
+
+@pytest.fixture(scope="session")
+def postgres_container():
+    """Start PostgreSQL container for all tests in session"""
+    with PostgresContainer("postgres:15") as postgres:
+        yield postgres
+
+@pytest.fixture
+def test_db(postgres_container):
+    """Create fresh database for each test with transaction rollback"""
+    engine = create_engine(postgres_container.get_connection_url())
+
+    # Create tables
+    Base.metadata.create_all(engine)
+
+    # Start transaction
+    connection = engine.connect()
+    transaction = connection.begin()
+
+    yield connection
+
+    # Rollback transaction (clean up test data)
+    transaction.rollback()
+    connection.close()
+
+def test_user_creation(test_db):
+    """Test user creation in real PostgreSQL database"""
+    user = User(email="test@example.com", name="Test User")
+    test_db.add(user)
+    test_db.commit()
+
+    # Verify user exists
+    found_user = test_db.query(User).filter_by(email="test@example.com").first()
+    assert found_user is not None
+    assert found_user.name == "Test User"
+```
+
+**Example integration test with testcontainers (TypeScript/Node.js):**
+
+```typescript
+// tests/integration/database.test.ts
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { Client } from 'pg';
+
+describe('Database Integration', () => {
+  let container: StartedPostgreSqlContainer;
+  let client: Client;
+
+  beforeAll(async () => {
+    // Start PostgreSQL container
+    container = await new PostgreSqlContainer().start();
+
+    // Connect to container
+    client = new Client({
+      connectionString: container.getConnectionUri()
+    });
+    await client.connect();
+
+    // Run migrations
+    await client.query(`
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255) NOT NULL
+      )
+    `);
+  });
+
+  afterAll(async () => {
+    await client.end();
+    await container.stop();
+  });
+
+  afterEach(async () => {
+    // Clean up data after each test
+    await client.query('TRUNCATE TABLE users CASCADE');
+  });
+
+  it('creates user and retrieves it', async () => {
+    // Insert user
+    await client.query(
+      'INSERT INTO users (email, name) VALUES ($1, $2)',
+      ['test@example.com', 'Test User']
+    );
+
+    // Query user
+    const result = await client.query(
+      'SELECT * FROM users WHERE email = $1',
+      ['test@example.com']
+    );
+
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0].name).toBe('Test User');
+  });
+});
+```
+
+**Contract Testing for Microservices:**
+
+If Session 4 architecture has microservices, use contract testing to prevent integration failures.
+
+**Pact (Consumer-Driven Contracts):**
+
+1. Consumer writes test defining expected interaction
+2. Pact generates contract JSON
+3. Provider verifies against contract
+4. Pact Broker manages versions with `can-i-deploy` tool
+
+**Example consumer test (frontend calling assessment API):**
+
+```javascript
+// tests/pact/assessment-api.pact.test.js
+const { Pact } = require('@pact-foundation/pact');
+
+describe('Assessment API Pact', () => {
+  const provider = new Pact({
+    consumer: 'ComplianceUI',
+    provider: 'AssessmentAPI',
+    port: 8080
+  });
+
+  beforeAll(() => provider.setup());
+  afterAll(() => provider.finalize());
+
+  it('retrieves assessment results', async () => {
+    await provider.addInteraction({
+      state: 'assessment 123 exists',
+      uponReceiving: 'a request for assessment results',
+      withRequest: {
+        method: 'GET',
+        path: '/api/assessments/123',
+        headers: { 'Authorization': 'Bearer token123' }
+      },
+      willRespondWith: {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: {
+          id: 123,
+          score: 85,
+          status: 'complete',
+          findings: []
+        }
+      }
+    });
+
+    // Test your code that calls the API
+    const result = await fetchAssessment(123);
+    expect(result.score).toBe(85);
+
+    await provider.verify();
+  });
+});
+```
+
+**Example provider verification (backend):**
+
+```python
+# tests/pact/verify_pacts.py
+from pact import Verifier
+
+verifier = Verifier(
+    provider='AssessmentAPI',
+    provider_base_url='http://localhost:8000'
+)
+
+# Verify against consumer contracts
+verifier.verify_pacts(
+    './pacts/ComplianceUI-AssessmentAPI.json',
+    provider_states_setup_url='http://localhost:8000/_pact/setup'
+)
+```
+
+**CI/CD Integration for Contract Testing:**
+
+```bash
+# Before deploying, check compatibility
+pact-broker can-i-deploy \
+  --pacticipant AssessmentAPI \
+  --version $GIT_COMMIT \
+  --to production
+```
+
+**When to Use Contract Testing:**
+- Microservices architecture (from Session 4)
+- Multiple teams owning different services
+- Services deployed independently
+- API changes need coordination
+
+**Message Queue Testing (if architecture uses queues):**
+
+```python
+# tests/integration/test_message_queue.py
+from testcontainers.kafka import KafkaContainer
+from tenacity import retry, stop_after_delay, wait_fixed
+import pytest
+
+@pytest.fixture(scope="session")
+def kafka_container():
+    """Start Kafka container for queue testing"""
+    with KafkaContainer() as kafka:
+        yield kafka
+
+@retry(stop=stop_after_delay(10), wait=wait_fixed(0.5))
+def wait_for_message_processed(order_id, order_repo):
+    """Wait for async processing with timeout"""
+    order = order_repo.find_by_id(order_id)
+    assert order.status == "processed"
+
+def test_order_processing(kafka_container, order_repo):
+    """Test async order processing via Kafka"""
+    # Publish message to Kafka
+    producer.send('orders', {
+        'order_id': 'order_123',
+        'items': ['item1', 'item2']
+    })
+
+    # Wait for async processing (up to 10 seconds)
+    wait_for_message_processed('order_123', order_repo)
+
+    # Verify order was processed
+    order = order_repo.find_by_id('order_123')
+    assert order.status == "processed"
+```
+
+**Message Queue Test Patterns:**
+- Pre-populate topics with test data
+- Verify partition ordering guarantees
+- Test dead letter queue flows
+- Validate schema registry (Avro/Protobuf)
 
 ---
 
@@ -546,6 +963,121 @@ test('share report publicly', async ({ page, context }) => {
   await expect(incognitoPage.locator('[data-testid="login-prompt"]')).not.toBeVisible();
 });
 ```
+
+**Accessibility Testing Automation:**
+
+Integrate axe-core to catch ~57% of WCAG issues automatically. Critical for compliance products, government contracts, and large enterprises.
+
+**Example accessibility test (Playwright + axe-playwright):**
+
+```typescript
+// tests/e2e/accessibility.spec.ts
+import { test, expect } from '@playwright/test';
+import { injectAxe, checkA11y } from 'axe-playwright';
+
+test('homepage accessibility', async ({ page }) => {
+  await page.goto('/');
+  await injectAxe(page);
+  await checkA11y(page);
+});
+
+test('dashboard accessibility', async ({ page }) => {
+  // Login first
+  await page.goto('/login');
+  await page.fill('[data-testid="email-input"]', 'test@example.com');
+  await page.fill('[data-testid="password-input"]', 'password123');
+  await page.click('[data-testid="login-button"]');
+
+  // Check dashboard accessibility
+  await injectAxe(page);
+  await checkA11y(page);
+});
+
+test('assessment results accessibility', async ({ page }) => {
+  await page.goto('/assessments/test-assessment-id');
+  await injectAxe(page);
+
+  // Check specific WCAG rules
+  await checkA11y(page, null, {
+    rules: {
+      'color-contrast': { enabled: true },
+      'button-name': { enabled: true },
+      'image-alt': { enabled: true }
+    }
+  });
+});
+```
+
+**Example accessibility test (Pytest + axe-selenium-python):**
+
+```python
+# tests/e2e/test_accessibility.py
+from selenium import webdriver
+from axe_selenium_python import Axe
+import pytest
+
+@pytest.fixture
+def selenium():
+    driver = webdriver.Chrome()
+    yield driver
+    driver.quit()
+
+def test_homepage_accessibility(selenium):
+    selenium.get('http://localhost:3000')
+    axe = Axe(selenium)
+
+    # Run axe scan
+    results = axe.run()
+
+    # Fail if violations found
+    assert len(results['violations']) == 0, f"Found {len(results['violations'])} accessibility violations"
+
+    # Generate HTML report
+    axe.write_results(results, 'accessibility-report.html')
+
+def test_form_accessibility(selenium):
+    selenium.get('http://localhost:3000/upload')
+    axe = Axe(selenium)
+
+    # Scan with specific tags (WCAG 2.1 AA)
+    results = axe.run(options={'runOnly': {'type': 'tag', 'values': ['wcag2aa']}})
+
+    assert len(results['violations']) == 0
+```
+
+**CI/CD Integration for Accessibility:**
+
+```yaml
+# .github/workflows/test.yml
+- name: Run E2E tests with accessibility checks
+  run: npm run test:e2e
+
+- name: Upload accessibility report
+  if: failure()
+  uses: actions/upload-artifact@v3
+  with:
+    name: accessibility-report
+    path: accessibility-report.html
+```
+
+**When Critical:**
+- Government contracts (Section 508 compliance)
+- Healthcare/compliance products (ADA requirements)
+- Large enterprises (legal risk mitigation)
+- B2B SaaS (enterprise customers require accessibility)
+
+**What axe-core catches:**
+- Color contrast issues (~12% of WCAG violations)
+- Missing alt text on images (~10%)
+- Missing form labels (~8%)
+- Keyboard navigation issues (~7%)
+- ARIA misuse (~20%)
+
+**What axe-core DOESN'T catch (manual testing needed):**
+- Focus order logic
+- Screen reader experience
+- Cognitive load issues
+- Mobile touch target sizes (some)
 
 ---
 
@@ -703,6 +1235,53 @@ Example Factory Usage:
       assert assessment.status == "pending"
   ```
 
+Fixtures vs Factories Decision:
+  Approach  | When to Use                          | Trade-offs
+  ----------|--------------------------------------|----------------------------------
+  Fixtures  | Lookup tables, reference data, stable| Simple but rigid
+  Factories | Test-specific data, dynamic scenarios| Flexible but requires setup
+  Hybrid    | Fixtures for static, factories for   | Best balance (recommended)
+            | dynamic                              |
+
+Use Fixtures For:
+  - Country codes, currencies, timezones
+  - User roles, permissions
+  - Framework definitions (SOC2, GDPR, ISO 27001)
+  - Product categories, tags
+
+Use Factories For:
+  - User accounts (unique emails, passwords)
+  - Documents (varying sizes, formats, content)
+  - Assessments (different scores, statuses)
+  - Dynamic test scenarios
+
+PII Handling (for Compliance Products):
+  - NEVER use real PII in non-production environments
+  - Use Faker for realistic fake data (email, name, SSN, phone)
+  - Compliance requirements:
+    * GDPR (EU): Data minimization, pseudonymization, right to erasure
+    * HIPAA (US Healthcare): Remove 18 identifiers (names, addresses, SSNs, etc.)
+    * PCI DSS (Payment Cards): Mask cards (show last 4), never store CVV
+  - PII detection: Use Presidio to detect PII before test execution
+  - For ML models: Use synthetic data generation (SDV, Gretel.ai, Tonic.ai)
+
+Example PII-safe factory:
+  ```python
+  # tests/factories.py
+  from faker import Faker
+  fake = Faker()
+
+  class UserFactory(factory.Factory):
+      class Meta:
+          model = User
+
+      email = factory.LazyFunction(lambda: fake.email())
+      name = factory.LazyFunction(lambda: fake.name())
+      ssn = factory.LazyFunction(lambda: fake.ssn())  # Fake SSN
+      phone = factory.LazyFunction(lambda: fake.phone_number())
+      credit_card = "4111111111111111"  # Test card number
+  ```
+
 Test Data Files:
   - Fixtures location: tests/fixtures/
   - Sample documents: tests/fixtures/sample.pdf, tests/fixtures/policy.docx
@@ -724,8 +1303,23 @@ Test Data Cleanup:
 ```yaml
 # Performance Testing (compliance-saas)
 
+Performance Testing Tools:
+  Tool      | Best For                    | Key Strength              | Language
+  ----------|-----------------------------|---------------------------|----------
+  k6        | Modern DevOps, CI/CD        | Low resource usage, JS    | JavaScript
+  Gatling   | Enterprise scale            | Massive load from single  | Scala/Java/JS
+            |                             | system                    |
+  Locust    | Python teams                | Event-based efficiency    | Python
+  JMeter    | Wide protocol support       | Extensive plugins, mature | Java
+
+  Recommendation: k6 for most modern projects (2025 standard)
+  - Testing-as-code philosophy
+  - 10x lower resource usage than JMeter
+  - Native Grafana Cloud integration
+  - Excellent CI/CD integration
+
 Load Testing:
-  - Tool: Locust / k6 / Artillery
+  - Tool: k6 (recommended) / Locust / Gatling
   - Scenarios:
     1. Document upload: 10 concurrent users, 100 uploads/min
     2. Assessment status polling: 50 concurrent users, 500 requests/min
@@ -757,6 +1351,85 @@ Performance Test Execution:
   - Before production deploy: Run load tests
   - After performance optimization: Run benchmarks
   - CI integration: Optional (long-running)
+
+Core Web Vitals Monitoring (Frontend Products):
+  - Essential for SEO and user experience (Google ranking factor)
+  - Set performance budgets based on Session 6 design system
+
+  Metric | Good    | Poor    | Impact
+  -------|---------|---------|----------------------------
+  LCP    | ≤2.5s   | >4.0s   | SEO ranking, conversion
+  INP    | ≤200ms  | >500ms  | User experience
+  CLS    | ≤0.1    | >0.25   | Visual stability
+
+  Business Case:
+  - Vodafone: 31% LCP improvement → 8% sales increase
+  - Pinterest: 40% faster perceived wait → 15% SEO traffic increase
+  - BBC: 1s faster load time → 10% more users
+
+  Set budgets by page type:
+  - Homepage/landing pages: Strictest (LCP ≤2.0s)
+  - Product/checkout pages: Critical (LCP ≤2.5s)
+  - Dashboard/internal tools: Relaxed (LCP ≤3.5s)
+
+  Use Lighthouse CI for enforcement:
+  ```json
+  // .lighthouserc.json
+  {
+    "ci": {
+      "assert": {
+        "assertions": {
+          "largest-contentful-paint": ["error", {"maxNumericValue": 2500}],
+          "interactive": ["error", {"maxNumericValue": 5000}],
+          "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}]
+        }
+      }
+    }
+  }
+  ```
+
+  ```yaml
+  # .github/workflows/performance.yml
+  - name: Run Lighthouse CI
+    run: |
+      npm install -g @lhci/cli
+      lhci autorun
+  ```
+
+Database Query Performance Testing:
+  - Prevent N+1 Queries (Common ORM Bug):
+    ```python
+    # Django - Bad (N+1)
+    for user in User.objects.all():
+        print(user.profile.bio)  # Separate query for each user
+
+    # Django - Good (1 query)
+    for user in User.objects.select_related('profile'):
+        print(user.profile.bio)
+    ```
+
+  ORM-Specific Solutions:
+    ORM               | Solution
+    ------------------|---------------------------------------------
+    Django            | select_related(), prefetch_related()
+    SQLAlchemy        | joinedload(), selectinload()
+    Prisma            | include in queries
+    Entity Framework  | Include() statements
+
+  Detection Tools:
+    - Django Debug Toolbar (dev environment)
+    - Scout APM (production monitoring)
+    - Bullet gem (Ruby on Rails)
+    - Sentry performance monitoring
+
+  Performance Testing:
+    ```python
+    def test_user_list_no_n_plus_1(django_assert_num_queries):
+        with django_assert_num_queries(1):
+            users = User.objects.select_related('profile').all()
+            for user in users:
+                _ = user.profile.bio
+    ```
 ```
 
 **Security Testing Strategy:**
@@ -789,19 +1462,140 @@ Dependency Scanning:
   - Blocking: High/critical vulnerabilities block deploy
 
 SAST (Static Application Security Testing):
-  - Tool: Semgrep / Bandit (Python) / ESLint security plugin (JS)
-  - Frequency: Every PR
-  - Checks: Hardcoded secrets, SQL injection patterns, XSS
+  - Choose tool based on stack and needs:
+
+  Tool       | Best For           | Accuracy | Speed        | Cost
+  -----------|--------------------|----------|--------------|------
+  SonarQube  | 30+ languages,     | Good     | 0.4K loc/sec | Free (Community)
+             | quality + security |          |              | Paid (Enterprise)
+  Semgrep    | Custom rules,      | 82%      | 20-100K      | Free / Paid
+             | open-source        |          | loc/sec      |
+  CodeQL     | GitHub-native,     | 88%      | Medium       | Free (public)
+             | semantic analysis  |          |              | Paid (private)
+  Snyk Code  | AI-trained, low    | Good     | Fast         | Free / Paid
+             | false positives    |          |              |
+
+  Accuracy Data (independent testing):
+  - CodeQL: 88% accuracy, 5% false positives
+  - Semgrep: 82% accuracy, 12% false positives
+  - All tools struggle with: logic flaws, authorization, context-dependent vulnerabilities
+
+  Recommendation by Stack:
+  - GitHub users: CodeQL (native integration, free for public repos)
+  - Speed priority: Semgrep (20-100K loc/sec)
+  - Custom rules: Semgrep (YAML-based rule creation)
+  - Multi-language monorepo: SonarQube (30+ languages)
+
+  Integration:
+  ```yaml
+  # .github/workflows/security.yml
+  - name: Run CodeQL
+    uses: github/codeql-action/analyze@v2
+
+  - name: Run Semgrep
+    uses: returntocorp/semgrep-action@v1
+  ```
+
+Container Security Scanning:
+  - Use Trivy (industry standard 2025):
+
+  ```bash
+  # Scan container image
+  trivy image nginx:latest
+
+  # Fail CI on HIGH/CRITICAL
+  trivy image --severity HIGH,CRITICAL --exit-code 1 myapp:latest
+
+  # Scan Kubernetes cluster
+  trivy k8s --report summary cluster
+
+  # Scan IaC files (Terraform, Dockerfile)
+  trivy config .
+  ```
+
+  Trivy Coverage:
+  - Container images (Docker, OCI)
+  - File systems and Git repos
+  - Kubernetes clusters
+  - IaC misconfigurations (Terraform, CloudFormation, Dockerfile)
+  - Exposed secrets (AWS keys, API tokens)
+  - License issues
+
+  CI/CD Integration:
+  ```yaml
+  # .github/workflows/security.yml
+  - name: Run Trivy container scan
+    uses: aquasecurity/trivy-action@master
+    with:
+      image-ref: myapp:${{ github.sha }}
+      format: 'sarif'
+      severity: 'HIGH,CRITICAL'
+      exit-code: '1'
+  ```
+
+  Best Practices:
+  - Use minimal base images (Alpine, distroless)
+  - Prefer specific tags over `latest`
+  - Scan at build time AND in registry
+  - Implement image signing (Sigstore/Cosign)
+  - Use read-only root filesystems
+
+SAST/DAST/IAST Integration Strategy:
+  Stage           | Type | Tools                   | Blocking
+  ----------------|------|-------------------------|------------------
+  IDE/Pre-commit  | SAST | SonarLint, Semgrep      | No (warnings)
+  PR              | SAST | CodeQL, Snyk, Trivy     | Yes (HIGH/CRIT)
+  Merge to main   | SCA  | Trivy (container scan)  | Yes (HIGH/CRIT)
+  QA environment  | IAST | Contrast Security       | No (informational)
+  Pre-release     | DAST | OWASP ZAP               | Yes (HIGH/CRIT)
+  Production      | RASP | Contrast Protect        | No (monitor/block)
+
+  IAST (Interactive Application Security Testing):
+  - Gray-box: Instruments application runtime during functional testing
+  - Detects vulnerabilities in real execution paths
+  - Lower false positives than SAST/DAST
+  - Tools: Contrast Security, Synopsys Seeker
+  - Use during QA functional testing (piggyback on existing tests)
 
 DAST (Dynamic Application Security Testing):
   - Tool: OWASP ZAP / Burp Suite
   - Frequency: Weekly (staging environment)
   - Checks: Authentication bypasses, injection attacks, misconfigurations
 
+  DAST Configuration:
+  ```python
+  # OWASP ZAP automated scan
+  from zapv2 import ZAPv2
+
+  zap = ZAPv2(proxies={'http': 'http://localhost:8080'})
+  zap.urlopen('http://staging.myapp.com')
+  zap.spider.scan('http://staging.myapp.com')
+  zap.ascan.scan('http://staging.myapp.com')
+
+  # Generate report
+  alerts = zap.core.alerts()
+  high_alerts = [a for a in alerts if a['risk'] == 'High']
+  assert len(high_alerts) == 0, f"Found {len(high_alerts)} high-risk vulnerabilities"
+  ```
+
+OWASP Top 10 (2021) Test Coverage:
+  1. Broken Access Control → Authorization tests
+  2. Cryptographic Failures → TLS enforcement, encryption at rest tests
+  3. Injection → SQL injection, XSS, command injection tests
+  4. Insecure Design → Threat modeling, security requirements
+  5. Security Misconfiguration → Default credentials, debug mode checks
+  6. Vulnerable Components → Dependency scanning (Snyk/Dependabot)
+  7. Authentication Failures → Password strength, session management tests
+  8. Software/Data Integrity → CI/CD pipeline security, code signing
+  9. Logging/Monitoring Failures → Audit log tests, alerting validation
+  10. SSRF → Server-side request forgery prevention tests
+
+  Reference: https://owasp.org/Top10/
+
 Security Test Execution:
-  - On PR: Dependency scan + SAST (< 2 min)
+  - On PR: Dependency scan + SAST + Container scan (< 3 min)
   - Weekly: DAST scan (30-60 min)
-  - Before deploy: All security tests pass
+  - Before deploy: All security tests pass (SAST, Container, DAST)
 ```
 
 ---
@@ -875,7 +1669,240 @@ Regression test management:
 
 ---
 
-### Step 10: Document Testing Strategy
+### Step 10: Define CI/CD Integration and Flaky Test Management
+
+**CI/CD Optimization Patterns:**
+
+```yaml
+# CI/CD Test Execution Strategy
+
+Test Execution Time Budgets:
+  - Unit tests: < 5 minutes
+  - Integration tests: < 15 minutes
+  - E2E tests: < 30 minutes
+  - Full suite: < 60 minutes
+
+Optimization Techniques:
+  1. Test Sharding (Parallel Execution):
+     - Split tests across multiple workers
+     - Sweet spot: 3-5 workers (diminishing returns after)
+     - Example: 1000 tests / 5 workers = 200 tests per worker
+
+  2. Affected Test Detection:
+     - Only run tests for changed code
+     - Tools: Jest --onlyChanged, pytest-testmon
+     - Reduces PR test time by 60-80%
+     - Run full suite on merge to main
+
+  3. Fail-Fast Strategies:
+     - Stop on first failure for rapid feedback
+     - Use for unit tests (< 5 min)
+     - Run full suite before merge
+
+Parallelization Example:
+  ```yaml
+  # .github/workflows/test.yml
+  test:
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4, 5]
+    steps:
+      - run: pytest --shard-id=${{ matrix.shard }} --num-shards=5
+  ```
+
+  Affected Test Detection:
+  ```yaml
+  - name: Run affected tests
+    run: |
+      if [ "${{ github.event_name }}" == "pull_request" ]; then
+        npm test -- --onlyChanged
+      else
+        npm test  # Full suite on main
+      fi
+  ```
+```
+
+**Flaky Test Management (Atlassian-Proven Strategies):**
+
+```yaml
+# Flaky Test Management (compliance-saas)
+
+Problem:
+  - Flaky tests destroy CI confidence
+  - Teams waste hours debugging "passes locally, fails in CI"
+  - Real bugs go unnoticed when teams ignore failures
+
+Atlassian Strategies (350M+ test executions daily):
+
+1. Quarantine Pattern:
+   - Isolate flaky tests in separate suite
+   - Track separately (don't block CI)
+   - Require fixing within 2 weeks or delete
+   - Example:
+     ```yaml
+     # Run stable tests (blocking)
+     - run: pytest -m "not flaky"
+
+     # Run quarantined tests (non-blocking)
+     - run: pytest -m "flaky" --continue-on-error
+     ```
+
+2. Retry with Limit:
+   - Retry failed tests max 3 times
+   - If passes on retry, mark as "flaky" (investigate)
+   - Track flakiness % per test
+   - Example:
+     ```yaml
+     - name: Run tests with retry
+       uses: nick-invision/retry@v2
+       with:
+         timeout_minutes: 10
+         max_attempts: 3
+         command: npm test
+     ```
+
+3. Root Cause Analysis:
+   - Common flaky test causes:
+     * Timeout issues (insufficient wait time)
+     * Race conditions (async operations)
+     * Resource leaks (unclosed connections)
+     * Environment dependencies (external services)
+     * Test pollution (shared state between tests)
+
+   - Debugging approach:
+     1. Run test 100 times locally (identify frequency)
+     2. Add logging around failure point
+     3. Check for timing dependencies
+     4. Verify test isolation (can run in any order?)
+     5. Fix root cause (don't just increase timeout)
+
+4. Metrics Tracking:
+   - Flakiness %: (flaky runs / total runs) * 100
+   - Resolution time: Days from detection to fix
+   - Quarantine duration: Days in quarantine
+   - Target: < 1% flakiness rate
+
+   Example:
+     ```python
+     # Track flaky test metrics
+     @pytest.hookimpl(tryfirst=True, hookwrapper=True)
+     def pytest_runtest_makereport(item, call):
+         outcome = yield
+         report = outcome.get_result()
+
+         if report.when == "call" and report.outcome == "passed":
+             # Check if test was retried (flaky)
+             if hasattr(item, 'execution_count') and item.execution_count > 1:
+                 report_flaky_test(item.nodeid, item.execution_count)
+     ```
+
+5. Flaky Test Prevention:
+   - Use explicit waits (not sleep)
+   - Avoid brittle selectors (use data-testid)
+   - Mock external dependencies
+   - Clean up resources in teardown
+   - Use database transactions (rollback after test)
+   - Avoid shared state between tests
+```
+
+**CI/CD Integration Example:**
+
+```yaml
+# .github/workflows/test.yml (Complete Example)
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests (sharded)
+        run: pytest tests/unit --shard-id=${{ matrix.shard }} --num-shards=3 --cov --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run integration tests (with retry)
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 2
+          command: pytest tests/integration --cov --cov-append
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests (stable only)
+        run: npx playwright test -m "not flaky"
+
+      - name: Run flaky E2E tests (non-blocking)
+        run: npx playwright test -m "flaky" --continue-on-error
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Trivy container scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: myapp:latest
+          format: 'sarif'
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'
+
+      - name: Run CodeQL
+        uses: github/codeql-action/analyze@v2
+```
+
+---
+
+### Step 11: Document Testing Strategy
 
 Create comprehensive documentation including:
 - Testing philosophy and principles
@@ -884,6 +1911,7 @@ Create comprehensive documentation including:
 - Test execution workflows
 - Test data management
 - CI/CD integration
+- Flaky test management
 - Performance and security testing
 - "What We DIDN'T Choose" section
 
@@ -999,24 +2027,6 @@ Use `/templates/09-test-strategy-template.md`.
 
 ---
 
-### Property-Based Testing
-
-**What it is**: Generate random inputs to test properties (e.g., "sorting always returns sorted list")
-
-**Why not (for this journey)**:
-- **Complexity** - Harder to write and understand
-- **Overkill for CRUD** - Most web apps have predictable inputs
-- **Edge case focus** - Better for algorithms/libraries, less for business logic
-- **Team expertise** - Requires learning new testing paradigm
-
-**When to reconsider**:
-- IF complex algorithms (parsers, compilers, data processing)
-- IF many edge cases (date handling, currency conversion)
-- IF team experienced with property-based testing
-
-**Example**: PDF parser with many edge cases - property-based testing finds weird inputs. Simple REST API - example-based tests are sufficient.
-
----
 
 ### Full E2E Test Suite on Every PR
 
