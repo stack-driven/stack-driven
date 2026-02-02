@@ -23,6 +23,126 @@ This application architecture implements the following journey steps:
 
 ---
 
+## 0. Architectural Style Validation
+
+**Purpose**: Validate architectural style choice (from Session 4) against journey requirements
+
+**Journey Analysis**:
+- Journey steps: [Count main steps from Session 1]
+- Database entities: [Count tables from Session 7]
+- Team size: [From Session 2a constraints]
+- Deployment frequency: [From Session 4/Session 13]
+- Bounded contexts: [Identify from journey step clusters]
+
+**Decision Matrix**:
+
+| Factor | This Journey | Monolith | Modular Monolith | Microservices |
+|--------|--------------|----------|------------------|---------------|
+| Team size | [X engineers] | [✅/❌] | [✅/❌] | [✅/❌] |
+| Entity count | [Y entities] | [✅/❌] | [✅/❌] | [✅/❌] |
+| Deployment | [Weekly/Daily] | [✅/❌] | [✅/❌] | [✅/❌] |
+| Contexts | [Clear/Unclear] | [✅/❌] | [✅/❌] | [✅/❌] |
+| Ops maturity | [Low/Moderate/High] | [✅/❌] | [✅/❌] | [✅/❌] |
+
+**Recommendation**: **[Monolith / Modular Monolith / Microservices]**
+
+**Rationale**:
+- [Factor 1 analysis tied to recommendation]
+- [Factor 2 analysis tied to recommendation]
+- [Key insight about journey characteristics]
+- Journey connection: [How this choice serves user experience]
+
+**Structure** (if Modular Monolith):
+
+```
+/src
+  /modules
+    /[module-1]       # Journey Step X
+      /domain         # Domain entities, value objects
+      /services       # Business logic
+      /repositories   # Data access
+      /controllers    # HTTP handlers
+      index.ts        # Public API (ONLY exported interface)
+    /[module-2]       # Journey Step Y
+      ...
+    /shared
+      /domain         # Shared value objects
+      /middleware     # Shared HTTP middleware
+```
+
+**Boundary Enforcement** (if Modular Monolith):
+- Tool: [dependency-cruiser (TS) / ArchUnit (Java) / Packwerk (Ruby)]
+- Rule: Modules communicate only via public APIs (index.ts exports)
+- CI/CD: Build fails on boundary violations
+
+**Evolution Path**:
+1. [Now]: [Current choice with rationale]
+2. [Future trigger]: [When to evolve to next stage]
+3. [Extraction criteria]: [When/how to extract microservices if needed]
+
+---
+
+## 0.5. Domain Layer (DDD)
+
+**Purpose**: Domain entities with business logic (prevents anemic domain model)
+
+**Pattern**: [Domain-Driven Design (DDD) / Simple data models]
+
+### Domain Entities
+
+For each database entity (Session 7), define domain behavior:
+
+### [Entity Name 1] (e.g., Document)
+
+**Identity**: [ID field name and type]
+
+**Journey Step**: [Which journey step this serves]
+
+**Business Rules** (logic in entity, NOT service):
+- [Rule 1 traced to journey - e.g., Cannot assess unprocessed document]
+- [Rule 2 traced to journey]
+- [Rule 3 traced to journey]
+
+**Methods**:
+- `[methodName](): returnType` - [Business logic purpose]
+- `[methodName](): returnType` - [Business rule it enforces]
+
+**Value Objects Used**: [List value objects - Money, Email, DocumentStatus]
+
+**Is Aggregate Root?**: [Yes/No - if yes, list child entities]
+
+### Value Objects
+
+### [ValueObject Name 1] (e.g., DocumentStatus)
+
+**Compared By**: [Value comparison logic]
+
+**Immutability**: [Why immutable]
+
+**Journey Context**: [Where used in journey]
+
+**Example**:
+```typescript
+[Value object class structure]
+```
+
+### Aggregate Boundaries
+
+### [Aggregate Name] (if applicable)
+
+**Root Entity**: [Aggregate root name]
+
+**Boundary**: [Which entities inside consistency boundary]
+
+**Invariants**: [What rules must always be true]
+- [Invariant 1 - e.g., Order total must equal sum of line items]
+
+**Child Entities**: [Entities with no identity outside aggregate]
+
+**Journey Connection**: [Why this boundary serves user experience]
+
+---
+
 ## 1. Service Layer Architecture
 
 **Purpose**: Business logic that implements journey steps
@@ -64,6 +184,29 @@ This application architecture implements the following journey steps:
 
 #### [Other methods - repeat structure above]
 
+**Transaction Boundaries**:
+
+For each service method, document transaction scope:
+
+#### [Method Name] (e.g., uploadDocument)
+
+**Transaction Scope**: [Single repository / Multi-repository / External + DB / Saga]
+
+**Consistency Requirement**: [Strong (atomic) / Eventual]
+
+**Steps**:
+1. [Step description with transaction boundaries marked]
+2. [Mark which steps are IN transaction vs OUTSIDE]
+
+**Failure Scenarios**:
+- [Failure case] → [User experience / Compensation action]
+- [Failure case] → [User experience / Compensation action]
+
+**Compensating Actions** (if external calls):
+- [What to clean up if operation fails midway]
+
+**Journey Impact**: [What user sees if operation fails]
+
 **Design Decisions**:
 - **Why this service exists**: [Journey step requires this business logic]
 - **Why these methods**: [Maps to API endpoints from Session 8]
@@ -84,6 +227,23 @@ This application architecture implements the following journey steps:
 **Pattern**: [Repository pattern / Active Record / Data Mapper]
 
 **ORM**: [Prisma/TypeORM/SQLAlchemy from tech stack]
+
+### ORM Pattern Decision
+
+**Pattern Chosen**: [Active Record / Data Mapper]
+
+**Rationale**:
+- Entity count: [X entities from Session 7]
+- Domain complexity: [Simple CRUD / Medium / Complex business rules from Step 0.5]
+- Testing strategy: [Integration tests OK / Heavy unit testing required from Session 9]
+- Clean architecture: [Not enforced / Enforced (Step 6 - Hexagonal Architecture)]
+- Journey connection: [How this pattern serves implementation velocity and quality]
+
+**Trade-offs Accepted**:
+- [Active Record: Faster development, couples entities to database]
+- [Data Mapper: More code, but testable entities without database]
+
+---
 
 ### [Repository Name 1] (e.g., DocumentRepository)
 
@@ -162,6 +322,13 @@ This application architecture implements the following journey steps:
 - 400 Bad Request (INVALID_FILE_TYPE, VALIDATION_ERROR)
 - 413 Payload Too Large (FILE_TOO_LARGE)
 - 422 Unprocessable Entity (INSUFFICIENT_STORAGE)
+- 429 Too Many Requests (RATE_LIMIT_EXCEEDED)
+
+**Rate Limiting**:
+- **Algorithm**: [Token Bucket / Sliding Window]
+- **Scope**: [Per-user / Per-IP / Global]
+- **Limits**: [Capacity/refill for Token Bucket OR requests/window for Sliding Window]
+- **Rationale**: [Cost analysis, abuse prevention, journey UX]
 
 **OpenAPI Reference**: POST /api/documents (Session 8)
 
@@ -390,6 +557,102 @@ src/
 ```
 
 **Reconsider If**: [Conditions that would make you revisit this]
+
+---
+
+### Decision 0: Architectural Style Choice
+
+**Decision**: [Monolith / Modular Monolith / Microservices]
+
+**Rationale**:
+- Team size ([X]) aligns with [architectural choice]
+- Entity count ([Y]) supports [architectural choice]
+- Deployment frequency ([weekly/daily]) matches [architectural choice] operations
+- Bounded contexts: [Clear/Unclear] → [justification for choice]
+- Journey connection: [How this choice serves user experience and velocity]
+
+**Structure** (if Modular Monolith):
+- Modules: [List modules mapped to journey step clusters]
+- Boundary enforcement: [Tool and enforcement strategy]
+- Evolution path: [When to extract microservices if needed]
+
+**Alternative Rejected**: [Other style]
+- [Why doesn't fit team size / entity complexity / ops maturity]
+
+**Reconsider If**:
+- Team grows to [X+] developers
+- [Specific component] requires independent scaling
+- Domain boundaries stabilize for 6+ months
+
+---
+
+### Decision X: Dependency Injection Configuration
+
+**Decision**: [Framework-specific DI container] with constructor injection pattern
+
+**Rationale**:
+- Constructor injection makes dependencies explicit
+- Enables testing (inject mocks)
+- Framework DI container handles lifecycle
+- Journey connection: Clean dependency graph enables Session 12 to generate wiring code
+
+**Framework-Specific Pattern**:
+[Include framework-specific DI setup - NestJS modules, FastAPI Depends, Express container]
+
+**Configuration Management**:
+- **Hierarchy**: Defaults → Environment variables → Secrets
+- **Development**: .env file (gitignored)
+- **Production**: [Vault / AWS Secrets Manager / Kubernetes secrets]
+
+**Secrets Management**:
+- Database credentials: [Secrets provider]
+- API keys (AWS, OpenAI, etc.): [Secrets provider]
+- Journey connection: Secure configuration enables production deployment
+
+**Testability**:
+- Unit tests: Inject mocks
+- Integration tests: Inject real repo, mock external services
+
+**Alternative Rejected**: [Property Injection / Service Locator]
+- [Why doesn't fit this journey]
+
+**Reconsider If**:
+- Framework doesn't support DI (legacy codebase)
+- Circular dependencies force property injection
+
+---
+
+### Decision 4: Transaction Boundary Strategy
+
+**Decision**: [Compensation pattern / Unit of Work / Saga pattern] for [type of operations]
+
+**Rationale**:
+- Journey has external calls (S3, AI API) that can't participate in database transactions
+- Compensating actions (delete S3 file if DB fails) ensure clean failures
+- Users experience atomic operations (all-or-nothing from their perspective)
+- Simpler than distributed transactions (2PC not supported by external services)
+
+**Pattern Applied**:
+- Single repository operations → Automatic transaction
+- Multi-repository operations → Unit of Work pattern
+- External + Database operations → Compensation pattern
+- Long-running workflows → Saga pattern (eventual consistency)
+
+**Alternative Rejected**: Two-Phase Commit (2PC)
+- External services don't support 2PC
+- Performance overhead (locks during network calls)
+- Journey can tolerate brief compensation delays
+
+**Alternative Rejected**: No compensation
+- Orphaned resources (S3 files, partial state)
+- Confusing failures for users
+- Manual cleanup burden
+
+**Reconsider If**:
+- All integrations support 2PC (rare)
+- Journey can tolerate eventual consistency without compensation
+
+**Journey Connection**: [Which journey steps require atomicity? How does compensation preserve UX?]
 
 ---
 
