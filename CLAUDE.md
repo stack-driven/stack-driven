@@ -48,10 +48,17 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 **`/.claude/agents/`** - Specialized sub-agents for complex operations
 - Agents invoked via Task tool by commands for specific workflows
-- distill-context.md: Condenses .md files to .ctx.md (60-70% token reduction)
-- track-failures.md: Records debugging attempts, detects duplicates, triggers escalation
-- validate-progress.md: Analyzes debugging progress (ADVANCING/UNCLEAR/STUCK)
-- summarize-logs.md: Extracts essential info from verbose logs (99%+ reduction)
+- **Context & Utility Agents:**
+  - distill-context.md: Condenses .md files to .ctx.md (60-70% token reduction)
+  - track-failures.md: Records debugging attempts, detects duplicates, triggers escalation
+  - validate-progress.md: Analyzes debugging progress (ADVANCING/UNCLEAR/STUCK)
+  - summarize-logs.md: Extracts essential info from verbose logs (99%+ reduction)
+- **API Contracts Phase Agents** (Session 8b - conditional loading):
+  - api-contracts-phase1-security.md: PII marking, GDPR compliance, type mapping, validation (always required)
+  - api-contracts-phase2-versioning.md: Breaking changes, migration strategies, Protobuf evolution (always required)
+  - api-contracts-phase3-performance.md: Compression, caching, response limits (conditional: mobile/high-traffic only)
+  - api-contracts-phase4-codegen.md: SDK generation, contract testing, Session 12 integration (always required)
+  - api-contracts-phase5-formats.md: GraphQL SDL, MessagePack, CBOR, hybrid architectures (conditional: non-REST only)
 - Each agent has specific role, inputs, and structured output format
 
 **`/templates/`** - Template files used by commands to generate user outputs
@@ -517,6 +524,7 @@ Session 8 (api-design) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md] → G
   ↓ GENERATES: Paradigm choice (REST/GraphQL/gRPC), OWASP API Top 10 2023 protections (BOLA, BFLA, SSRF, etc.), input validation strategy, HTTP caching (ETag, Cache-Control), idempotency/retry patterns, circuit breakers for third-party APIs, security headers (HSTS, CSP)
   ↓
 Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 08.ctx.md] → Generates .md + .ctx.md
+  ↓ USES 5 PHASE-BASED SUB-AGENTS with conditional loading: Phase 1 (security/validation - always), Phase 2 (versioning - always), Phase 3 (performance - if mobile/high-traffic), Phase 4 (codegen - always), Phase 5 (formats - if non-REST)
   ↓
 Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
   ↓

@@ -2,6 +2,18 @@
 
 This agent provides client SDK generation patterns and contract testing strategies. Invoked by `/generate-api-contracts` (Session 8b).
 
+## Why This Agent Exists
+
+**This agent is ALWAYS required for ALL API paradigms.**
+
+Code generation and contract testing are critical for maintaining type safety and preventing runtime errors, regardless of journey complexity:
+- **Type mismatches caught at compile-time**: Auto-generated clients from OpenAPI/Protobuf specs prevent `user.email` typos becoming runtime `undefined` errors
+- **Zero drift between server and client**: Contract updates trigger regeneration, eliminating "forgot to update the mobile client" incidents
+- **Contract testing prevents breaking changes**: Pact/Prism/Dredd validate that server implementation matches contract, failing CI before deployment
+- **Session 12 integration**: Scaffold generates SDK build scripts (`npm run generate:api`), ensuring every developer uses type-safe clients from Day 1
+
+Even single-developer projects benefit from code generation (eliminate manual typing, enforce validation), and multi-client projects (web + mobile) require it to prevent drift. This phase applies universally and integrates with Session 12 (project scaffold).
+
 ## Your Role
 
 You are a **code generation specialist** that ensures API contracts become the source of truth for auto-generating type-safe client SDKs, server stubs, and contract tests.

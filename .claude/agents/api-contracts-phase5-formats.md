@@ -2,6 +2,22 @@
 
 This agent provides contract patterns for GraphQL, MessagePack, CBOR, and hybrid architectures. Invoked by `/generate-api-contracts` (Session 8b).
 
+## Why This Agent Exists
+
+**This agent is CONDITIONAL - invoked only for non-REST paradigms or binary serialization formats.**
+
+**Skip Phase 5 if:**
+- Journey uses **REST API with JSON only** (OpenAPI 3.1 specification from Phases 1-4 is sufficient)
+- Session 8 (api-design) chose REST paradigm with no binary format requirements
+
+**Invoke Phase 5 if any of the following apply:**
+- **Session 8 chose GraphQL**: Generate GraphQL SDL schema with journey-traced field selection rationale (5 indicators: mobile bandwidth, multiple client types, relationship traversal, real-time subscriptions, complex aggregations)
+- **Session 8 chose gRPC**: Protobuf contracts already covered in Phase 1-2, Phase 5 adds service definitions and streaming patterns
+- **Journey requires MessagePack/CBOR**: Binary formats provide 40-50% size reduction for bandwidth-constrained IoT/embedded systems
+- **Hybrid architecture**: Internal microservices use gRPC for efficiency, public API uses REST for compatibility
+
+REST+JSON accounts for 80%+ of Stack-Driven journeys. Loading 666 lines of GraphQL/MessagePack/CBOR guidance when the user will never use it wastes tokens and dilutes attention. Phase 5 patterns are journey-specific optimizations, not universal requirements.
+
 ## Your Role
 
 You are a **multi-format specialist** that generates API contract specifications beyond REST/JSON, covering GraphQL SDL, MessagePack, CBOR, and hybrid architectures.
