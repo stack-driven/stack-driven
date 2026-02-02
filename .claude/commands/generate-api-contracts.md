@@ -22,8 +22,10 @@ You are helping the user create technical API implementation specifications incl
 ## Your Task
 
 Create technical API implementation specifications:
-- OpenAPI 3.0 specification (if REST/GraphQL)
+- OpenAPI 3.1 specification (if REST)
+- GraphQL SDL schema (if GraphQL)
 - Protocol Buffers schemas (if gRPC)
+- MessagePack/CBOR contract structure (if binary schemaless formats)
 - Endpoint definitions with HTTP methods, paths, and parameters
 - Request and response schemas with validation rules
 - Component schemas and reusable definitions
@@ -1785,14 +1787,15 @@ paths:
 
 ### Step 8: Generate API Specification
 
-**For REST/GraphQL** (JSON serialization):
-Create complete OpenAPI 3.0 specification. Use template at `/templates/08b-api-contracts-template.md` for detailed structure.
+#### For REST APIs (JSON serialization):
 
-**For gRPC** (Protobuf serialization):
-Create Protocol Buffer `.proto` files with service definitions, message types, and RPC methods.
+Create complete **OpenAPI 3.1** specification. Use template at `/templates/08b-api-contracts-template.md` for detailed structure.
 
-**For Hybrid** (e.g., gRPC internal + REST external):
-Create both OpenAPI specs (external REST API) and Protobuf schemas (internal gRPC services).
+**Why OpenAPI 3.1?**
+- Full JSON Schema 2020-12 support (better validation than 3.0)
+- Improved schema composition (`prefixItems`, `unevaluatedProperties`)
+- Native `null` type (no more `nullable: true` workaround)
+- Better const/enum handling for stricter validation
 
 **Key sections to include:**
 - `info`: title, description (with auth/rate limit/error conventions), version, contact
@@ -1805,8 +1808,666 @@ Create both OpenAPI specs (external REST API) and Protobuf schemas (internal gRP
 - Use `$ref` for reusable schemas and responses
 - Include examples in schemas
 - Mark required fields explicitly
-- Use JSON Schema validation (formats, min/max, enums)
+- Use JSON Schema 2020-12 validation (formats, min/max, enums, patterns)
 - Document all error responses (4xx, 5xx)
+
+**OpenAPI 3.1 Example:**
+```yaml
+openapi: 3.1.0
+info:
+  title: ComplianceHub API
+  version: 1.0.0
+  description: REST API for document compliance assessment
+
+paths:
+  /api/documents:
+    post:
+      summary: Upload document for assessment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, frameworkIds]
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                frameworkIds:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    format: uuid
+              unevaluatedProperties: false  # Reject unknown fields
+      responses:
+        '201':
+          description: Document uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+```
+
+---
+
+#### For GraphQL APIs:
+
+Create **GraphQL SDL (Schema Definition Language)** with type definitions, queries, mutations, and subscriptions.
+
+**GraphQL Schema Structure:**
+```graphql
+# schema.graphql
+
+"""
+ComplianceHub GraphQL API
+Version: 1.0.0
+"""
+
+# ============================================================================
+# Core Types (Entity Definitions)
+# ============================================================================
+
+"""
+A document uploaded for compliance assessment
+"""
+type Document {
+  id: ID!
+  name: String!
+  fileSize: Int!
+  mimeType: String!
+  status: DocumentStatus!
+  uploadedAt: DateTime!
+  userId: ID!
+  frameworks: [Framework!]!
+  assessments: [Assessment!]!
+}
+
+"""
+Document processing status
+"""
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+"""
+A compliance framework for assessment
+"""
+type Framework {
+  id: ID!
+  name: String!
+  description: String
+  controls: [Control!]!
+}
+
+"""
+An assessment result for a document against frameworks
+"""
+type Assessment {
+  id: ID!
+  documentId: ID!
+  status: AssessmentStatus!
+  progress: Float!
+  results: AssessmentResults
+  createdAt: DateTime!
+  completedAt: DateTime
+}
+
+enum AssessmentStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+"""
+Assessment findings and score
+"""
+type AssessmentResults {
+  score: Float!
+  findings: [Finding!]!
+  summary: String!
+}
+
+type Finding {
+  id: ID!
+  controlId: ID!
+  severity: Severity!
+  description: String!
+  recommendation: String
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+}
+
+# ============================================================================
+# Input Types (for Mutations)
+# ============================================================================
+
+input CreateDocumentInput {
+  name: String!
+  frameworkIds: [ID!]!
+}
+
+input UpdateDocumentInput {
+  name: String
+  frameworkIds: [ID!]
+}
+
+input CreateAssessmentInput {
+  documentId: ID!
+  frameworkIds: [ID!]!
+}
+
+# ============================================================================
+# Query Operations
+# ============================================================================
+
+"""
+Root query type
+"""
+type Query {
+  """
+  Get document by ID
+  """
+  document(id: ID!): Document
+
+  """
+  List documents with pagination
+  """
+  documents(
+    first: Int = 20
+    after: String
+    filter: DocumentFilter
+  ): DocumentConnection!
+
+  """
+  Get assessment by ID
+  """
+  assessment(id: ID!): Assessment
+
+  """
+  List frameworks
+  """
+  frameworks: [Framework!]!
+}
+
+input DocumentFilter {
+  status: DocumentStatus
+  frameworkIds: [ID!]
+  uploadedAfter: DateTime
+}
+
+"""
+Paginated document results (Relay-style cursor pagination)
+"""
+type DocumentConnection {
+  edges: [DocumentEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DocumentEdge {
+  cursor: String!
+  node: Document!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ============================================================================
+# Mutation Operations
+# ============================================================================
+
+"""
+Root mutation type
+"""
+type Mutation {
+  """
+  Upload a new document for assessment
+  """
+  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
+
+  """
+  Update document metadata
+  """
+  updateDocument(id: ID!, input: UpdateDocumentInput!): UpdateDocumentPayload!
+
+  """
+  Delete a document
+  """
+  deleteDocument(id: ID!): DeleteDocumentPayload!
+
+  """
+  Start a new assessment for a document
+  """
+  createAssessment(input: CreateAssessmentInput!): CreateAssessmentPayload!
+}
+
+type CreateDocumentPayload {
+  document: Document
+  errors: [UserError!]
+}
+
+type UpdateDocumentPayload {
+  document: Document
+  errors: [UserError!]
+}
+
+type DeleteDocumentPayload {
+  deletedDocumentId: ID
+  errors: [UserError!]
+}
+
+type CreateAssessmentPayload {
+  assessment: Assessment
+  errors: [UserError!]
+}
+
+"""
+User-facing error (validation, authorization, not found)
+"""
+type UserError {
+  message: String!
+  field: String
+  code: String!
+}
+
+# ============================================================================
+# Subscription Operations (Real-time Updates)
+# ============================================================================
+
+"""
+Root subscription type
+"""
+type Subscription {
+  """
+  Subscribe to assessment progress updates
+  """
+  assessmentUpdated(assessmentId: ID!): Assessment!
+
+  """
+  Subscribe to document status changes
+  """
+  documentStatusChanged(documentId: ID!): Document!
+}
+
+# ============================================================================
+# Custom Scalars
+# ============================================================================
+
+"""
+ISO 8601 DateTime string (e.g., "2025-01-15T10:30:00Z")
+"""
+scalar DateTime
+```
+
+**GraphQL Best Practices:**
+- Use descriptive type names and field names
+- Add documentation strings (""") for all types and fields
+- Use `!` to mark non-nullable fields
+- Implement Relay-style cursor pagination for lists
+- Use input types for mutations
+- Return payload types with errors field for validation
+- Use enums for categorical values
+- Define custom scalars for complex types (DateTime, JSON, URL)
+
+---
+
+#### For gRPC APIs (Protobuf serialization):
+
+Create Protocol Buffer `.proto` files with service definitions, message types, and RPC methods.
+
+**Protobuf Example:**
+```protobuf
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+
+package compliancehub.v1;
+
+service DocumentService {
+  rpc CreateDocument(CreateDocumentRequest) returns (CreateDocumentResponse);
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
+  rpc UpdateDocument(UpdateDocumentRequest) returns (UpdateDocumentResponse);
+  rpc DeleteDocument(DeleteDocumentRequest) returns (DeleteDocumentResponse);
+}
+
+message Document {
+  string id = 1;
+  string name = 2;
+  int64 file_size = 3;
+  string mime_type = 4;
+  DocumentStatus status = 5;
+  google.protobuf.Timestamp uploaded_at = 6;
+  string user_id = 7;
+  repeated string framework_ids = 8;
+}
+
+enum DocumentStatus {
+  DOCUMENT_STATUS_UNSPECIFIED = 0;
+  DOCUMENT_STATUS_PENDING = 1;
+  DOCUMENT_STATUS_PROCESSING = 2;
+  DOCUMENT_STATUS_COMPLETED = 3;
+  DOCUMENT_STATUS_FAILED = 4;
+}
+
+message CreateDocumentRequest {
+  string name = 1 [(validate.rules).string = {
+    min_len: 1,
+    max_len: 255
+  }];
+  repeated string framework_ids = 2 [(validate.rules).repeated = {
+    min_items: 1
+  }];
+}
+
+message CreateDocumentResponse {
+  Document document = 1;
+}
+```
+
+---
+
+#### For MessagePack APIs (Binary JSON-like):
+
+**MessagePack** is a schemaless binary format compatible with JSON. It doesn't require a separate schema definition—use the same logical structure as JSON but serialize to binary.
+
+**MessagePack Contract Structure:**
+
+Since MessagePack is schemaless, document the **data structure** (not a schema file) and **binary encoding notes**:
+
+```markdown
+## MessagePack Contract
+
+**Format**: MessagePack (binary, schemaless, JSON-compatible)
+**Library**: msgpack (Python), @msgpack/msgpack (Node.js), encoding/msgpack (Go)
+**Content-Type**: `application/msgpack` or `application/x-msgpack`
+
+### Endpoint: POST /api/documents
+
+**Request Structure** (logical JSON, serialized to MessagePack binary):
+```json
+{
+  "name": "Compliance Report 2025",
+  "frameworkIds": ["uuid-1", "uuid-2"]
+}
+```
+
+**MessagePack Binary Encoding Notes:**
+- `name`: string type (str format, variable length)
+- `frameworkIds`: array type (array format with fixarray/array16/array32 depending on length)
+- Integers use varint encoding (small numbers = 1 byte)
+- Binary data uses bin format (avoids base64 overhead)
+
+**Response Structure** (201 Created):
+```json
+{
+  "id": "doc-uuid",
+  "name": "Compliance Report 2025",
+  "fileSize": 2048576,
+  "status": "PENDING",
+  "uploadedAt": "2025-01-15T10:30:00Z",
+  "userId": "user-uuid",
+  "frameworkIds": ["uuid-1", "uuid-2"]
+}
+```
+
+**Type Mapping (MessagePack Extension Types):**
+
+MessagePack supports **Extension Types** for custom serialization:
+- **DateTime**: Use Extension Type -1 with Unix timestamp (int64) or ISO 8601 string
+- **Binary Data**: Use bin8/bin16/bin32 format (native binary, no base64 overhead)
+- **UUIDs**: Use string format or bin16 (128-bit binary)
+
+**Validation**: Same validation rules as JSON (min/max lengths, required fields, enums)
+**Error Format**: Same error structure as JSON, serialized to MessagePack
+
+**Size Comparison** (typical document object):
+- JSON: ~400 bytes
+- MessagePack: ~250 bytes (40% smaller)
+```
+
+**When to Use MessagePack:**
+- Mobile apps (bandwidth-sensitive)
+- High-throughput APIs (lower serialization overhead than JSON)
+- Redis caching (faster than JSON)
+- IoT devices (compact binary format)
+
+---
+
+#### For CBOR APIs (IETF RFC 8949):
+
+**CBOR** (Concise Binary Object Representation) is an IETF-standard binary format similar to MessagePack but with deterministic encoding support.
+
+**CBOR Contract Structure:**
+
+```markdown
+## CBOR Contract
+
+**Format**: CBOR (binary, schemaless, IETF RFC 8949)
+**Library**: cbor2 (Python), cbor (Node.js), fxamacker/cbor (Go)
+**Content-Type**: `application/cbor`
+
+### Endpoint: POST /api/documents
+
+**Request Structure** (logical JSON, serialized to CBOR binary):
+```json
+{
+  "name": "Compliance Report 2025",
+  "frameworkIds": ["uuid-1", "uuid-2"]
+}
+```
+
+**CBOR Binary Encoding Notes:**
+- Deterministic encoding available (canonical ordering for signatures)
+- Tags support: Tag 0 (date/time string), Tag 1 (Unix timestamp), Tag 37 (UUID binary)
+- Major types: unsigned int, negative int, byte string, text string, array, map
+- Self-describing CBOR option (tag 55799 prefix for format detection)
+
+**Type Mapping (CBOR Tags):**
+
+| Type | CBOR Encoding | Tag | Example |
+|------|--------------|-----|---------|
+| DateTime | Tag 0 + text string | 0 | Tag 0 "2025-01-15T10:30:00Z" |
+| Unix Timestamp | Tag 1 + integer | 1 | Tag 1 1736938200 |
+| UUID | Tag 37 + 16-byte binary | 37 | Tag 37 0x123e4567e89b12d3... |
+| Binary Data | Byte string (major type 2) | — | h'48656C6C6F' |
+
+**Response Structure** (201 Created):
+```json
+{
+  "id": "doc-uuid",
+  "name": "Compliance Report 2025",
+  "fileSize": 2048576,
+  "status": "PENDING",
+  "uploadedAt": "2025-01-15T10:30:00Z",  // Encoded as Tag 0 (ISO 8601)
+  "userId": "user-uuid",
+  "frameworkIds": ["uuid-1", "uuid-2"]
+}
+```
+
+**Deterministic Encoding** (for digital signatures):
+When signatures are required (e.g., webhook payloads, audit logs):
+- Map keys sorted lexicographically
+- Shortest encoding preferred (e.g., int 23 uses 1 byte, not 2)
+- No duplicate keys allowed
+- Floating-point uses smallest representation
+
+**Validation**: Same validation rules as JSON
+**Error Format**: Same error structure as JSON, serialized to CBOR
+
+**Size Comparison** (typical document object):
+- JSON: ~400 bytes
+- CBOR: ~260 bytes (35% smaller)
+```
+
+**When to Use CBOR:**
+- IoT devices (IETF standard matters for compliance)
+- Constrained environments (embedded systems)
+- When deterministic encoding needed (digital signatures)
+- Cross-platform binary data (no endianness issues)
+
+---
+
+#### For Hybrid Architectures:
+
+**Hybrid Pattern: gRPC Internal + REST External**
+
+When Session 8 chose hybrid architecture (gRPC for microservice-to-microservice, REST for external clients):
+
+**1. Generate Protobuf Schemas for Internal Services:**
+
+```protobuf
+// internal-api.proto (gRPC service definitions)
+syntax = "proto3";
+
+package compliancehub.internal.v1;
+
+// Internal service (not exposed publicly)
+service DocumentProcessingService {
+  rpc ProcessDocument(ProcessDocumentRequest) returns (ProcessDocumentResponse);
+  rpc GetProcessingStatus(GetProcessingStatusRequest) returns (GetProcessingStatusResponse);
+}
+
+message ProcessDocumentRequest {
+  string document_id = 1;
+  repeated string framework_ids = 2;
+  ProcessingOptions options = 3;
+}
+
+message ProcessingOptions {
+  int32 max_concurrent_assessments = 1;
+  int32 timeout_seconds = 2;
+  bool enable_caching = 3;
+}
+
+message ProcessDocumentResponse {
+  string job_id = 1;
+  ProcessingStatus status = 2;
+}
+
+enum ProcessingStatus {
+  PROCESSING_STATUS_UNSPECIFIED = 0;
+  PROCESSING_STATUS_QUEUED = 1;
+  PROCESSING_STATUS_RUNNING = 2;
+  PROCESSING_STATUS_COMPLETED = 3;
+  PROCESSING_STATUS_FAILED = 4;
+}
+```
+
+**2. Generate OpenAPI 3.1 Spec for External REST API:**
+
+```yaml
+openapi: 3.1.0
+info:
+  title: ComplianceHub Public API
+  version: 1.0.0
+
+paths:
+  /api/documents/{id}/process:
+    post:
+      summary: Start document processing
+      description: |
+        Triggers document assessment (internally calls gRPC ProcessDocument).
+        This is the public REST endpoint that abstracts internal gRPC complexity.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [frameworkIds]
+              properties:
+                frameworkIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        '202':
+          description: Processing started (async)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [QUEUED, RUNNING]
+```
+
+**3. Document Mapping Strategy:**
+
+```markdown
+## Hybrid Architecture: Internal gRPC + External REST
+
+### Mapping Between Protocols
+
+| REST Endpoint | Internal gRPC Service | Notes |
+|---------------|---------------------|-------|
+| `POST /api/documents/{id}/process` | `DocumentProcessingService.ProcessDocument` | REST gateway translates JSON → Protobuf |
+| `GET /api/documents/{id}/status` | `DocumentProcessingService.GetProcessingStatus` | Protobuf → JSON translation |
+
+### Gateway Implementation
+
+**Technology**: Envoy Proxy with gRPC-JSON transcoding OR custom REST gateway (FastAPI/Express)
+
+**Translation Rules**:
+- REST snake_case → gRPC snake_case (field names match)
+- REST ISO 8601 timestamps → Protobuf google.protobuf.Timestamp
+- REST enums (strings) → Protobuf enums (integers with name mapping)
+- REST errors (JSON) → gRPC status codes (Unavailable → 503, NotFound → 404)
+
+**Why Hybrid?**:
+- Internal services: gRPC for performance, type safety, streaming
+- External API: REST for ease of use, browser compatibility, widespread tooling
+- Gateway abstracts complexity from external clients
+```
+
+---
+
+#### Format Selection Validation
+
+After generating contracts, **validate format choice** against Session 8 decisions:
+
+**Decision Validation Checklist:**
+- [ ] If Session 8 chose REST → OpenAPI 3.1 spec generated
+- [ ] If Session 8 chose GraphQL → GraphQL SDL schema generated
+- [ ] If Session 8 chose gRPC → Protobuf `.proto` files generated
+- [ ] If Session 8 chose MessagePack → MessagePack contract structure documented
+- [ ] If Session 8 chose CBOR → CBOR contract structure documented
+- [ ] If Session 8 chose hybrid → Both OpenAPI and Protobuf generated with mapping docs
+- [ ] If mobile app in journey → Consider bandwidth-efficient format (Protobuf, MessagePack, CBOR)
+- [ ] If browser-based app → JSON via REST or GraphQL (native browser support)
+- [ ] If IoT devices → CBOR (IETF standard) or MessagePack (compact)
+- [ ] If real-time requirements → Consider GraphQL subscriptions or WebSocket
+
+**If mismatch detected**, document the issue and recommend re-running `/generate-api-design` with updated analysis.
 
 ---
 
@@ -1846,7 +2507,9 @@ The distillation agent will create a condensed version optimized for Session 12 
 - Implementation guidance for scaffold generation
 
 **What to EXCLUDE** (these belong in full `08b-api-contracts.md`):
-- Complete OpenAPI 3.0 specification
+- Complete OpenAPI 3.1 specification
+- GraphQL SDL schema definitions
+- Protobuf message definitions
 - Request/response schemas
 - Error response definitions
 - Component schemas
@@ -1854,13 +2517,13 @@ The distillation agent will create a condensed version optimized for Session 12 
 - Validation rules
 - Rate limit headers
 
-**Why**: Session 12 (scaffold generation) only needs the endpoint list to create controller/route stubs. Loading the full 782-line OpenAPI spec bloats context by ~3,128 tokens when only ~280 tokens are needed.
+**Why**: Session 12 (scaffold generation) only needs the endpoint list to create controller/route stubs. Loading the full OpenAPI spec, GraphQL schema, or Protobuf definitions bloats context when only endpoint lists (~280 tokens) are needed.
 
 **Format**:
 ```markdown
 # API Contracts Context (For Backlog Generation)
 
-> See `08-api-contracts.md` for complete OpenAPI 3.0 specification
+> See `08-api-contracts.md` for complete API specifications (OpenAPI/GraphQL/Protobuf)
 
 ## API Configuration
 - API Style: [REST/GraphQL]
@@ -2002,9 +2665,10 @@ If you discover that the chosen paradigm doesn't fit specific endpoints during i
 
 1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, examples, testing)
 2. **`product-guidelines/08b-api-contracts.ctx.md`**: Condensed version for Session 12 (scaffold generation) - endpoint lists only (~150 lines)
-3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST/GraphQL): Complete OpenAPI 3.0 spec (all endpoints, schemas, security)
-4. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
-5. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
+3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST): Complete OpenAPI 3.1 spec (all endpoints, schemas, security)
+4. **`product-guidelines/08b-api-contracts/schema.graphql`** (if GraphQL): GraphQL SDL schema with types, queries, mutations, subscriptions
+5. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
+6. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 ---
 
@@ -2027,7 +2691,9 @@ Before completing this session, verify:
 - [ ] Rate limiting and pagination specified
 
 **Technical Quality:**
-- [ ] OpenAPI 3.0 specification valid (use validator)
+- [ ] OpenAPI 3.1 specification valid (use openapi-spec-validator or Swagger Editor)
+- [ ] GraphQL schema valid (use graphql-schema-linter or Apollo Studio)
+- [ ] Protobuf schemas compile without errors (use protoc compiler)
 - [ ] Consistent naming conventions
 - [ ] Consistent error format
 - [ ] HTTP status codes used correctly

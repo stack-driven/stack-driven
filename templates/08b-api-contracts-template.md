@@ -2,12 +2,17 @@
 
 > **Note**: This template focuses on technical implementation (OpenAPI/Protobuf schemas, endpoints, request/response examples). For high-level API design decisions (paradigm, serialization format, auth strategy), see `08-api-design.md` (Session 8).
 
-Use this template as a reference for creating complete OpenAPI specifications or Protocol Buffer definitions. Adapt to your specific project needs and implement the decisions from Session 8 (API Design).
+Use this template as a reference for creating complete API specifications. Choose the appropriate format based on Session 8 decisions:
+- **REST APIs**: OpenAPI 3.1 specification
+- **GraphQL APIs**: GraphQL SDL schema
+- **gRPC APIs**: Protocol Buffer definitions
+- **MessagePack/CBOR**: Contract structure documentation
+- **Hybrid**: Multiple specifications with mapping
 
-## Complete OpenAPI Structure
+## Complete OpenAPI 3.1 Structure
 
 ```yaml
-openapi: 3.0.3
+openapi: 3.1.0
 
 info:
   title: [Project Name] API
