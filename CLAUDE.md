@@ -531,6 +531,7 @@ Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 0
 Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 9b (application-architecture) [reads: 00.ctx.md, 02.ctx.md, 02b.ctx.md, 04.ctx.md, 07.ctx.md, 08b.ctx.md] → Generates .md + .ctx.md
+  ↓ USES 6 CONDITIONAL SUB-AGENTS: validate-architectural-style (if team>5 OR entities>10), model-domain-layer (if entities>5 AND complex), design-transaction-boundaries (if external_apis OR multi_entity), choose-orm-pattern (if entities>10 OR heavy_testing), design-rate-limiting (if public_endpoints), design-cross-cutting-concerns (always)
   ↓
 Session 10 (backlog) [reads: ALL .ctx.md files from 00-09b] → Generates backlog stories (no .ctx.md)
   ↓
@@ -650,6 +651,14 @@ Inputs: {database_entities from Session 7, journey_steps from Session 1}
 Output: Domain entities with business logic methods
 Skip if: Simple CRUD app with <5 entities
 ```
+
+### Documented Exceptions
+
+**Agent Size Exceptions** (with explicit justification):
+
+- **`design-cross-cutting-concerns.md` (564 lines)**: Cohesive cross-cutting pattern group (caching, circuit breakers, outbox pattern, observability) with high operational coupling. Production systems typically need all four patterns together, so splitting into separate agents would increase orchestration complexity without significant token savings. Patterns share common implementation concerns (error handling, monitoring, resource management) that benefit from unified presentation. Exception approved in PR #171 (Epic #167).
+
+- **`design-transaction-boundaries.md` (432 lines)**: Single-pattern agent with 8% overage due to comprehensive distributed transaction guidance (saga patterns, compensation logic, event sourcing). Tight coupling between transaction types makes splitting counterproductive. Minor overage accepted in PR #171 (Epic #167).
 
 ### Enforcement
 
