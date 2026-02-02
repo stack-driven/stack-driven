@@ -509,6 +509,32 @@ Overlap: 100 tokens (prevent context loss at boundaries)
 
 ---
 
+## Monitoring & Observability
+
+**Platform**: [Helicone / Langfuse / LangSmith / Datadog]
+**Rationale**: [Why this choice]
+
+**Key Metrics**:
+- Latency: p50/p95/p99 (targets: [specify])
+- Token usage: By feature breakdown
+- Cost: Per request/user/feature
+- Errors: Rate by type
+- Cache: Hit/miss ratio (target: >60%)
+- Quality: User feedback signals
+
+**Alerting**:
+- Latency p95 > [3s] → Notify
+- Error rate > [5%] → Investigate
+- Daily cost > [2× budget] → Alert
+- Cache hit < [50%] → Review
+
+**Dashboards**:
+- Cost tracking dashboard
+- Performance dashboard
+- Quality metrics dashboard
+
+---
+
 ## Testing & Evaluation Strategy (if Evaluation sub-agent invoked)
 
 [If quality requirements are not mission-critical, write: "Basic monitoring only - use observability metrics"]
@@ -645,32 +671,6 @@ else:
 - Analyze thumbs-down examples (what's failing?)
 - Update eval set with new edge cases
 - Consider fine-tuning if >10K labeled examples
-
----
-
-## Monitoring & Observability
-
-**Platform**: [Helicone / Langfuse / LangSmith / Datadog]
-**Rationale**: [Why this choice]
-
-**Key Metrics**:
-- Latency: p50/p95/p99 (targets: [specify])
-- Token usage: By feature breakdown
-- Cost: Per request/user/feature
-- Errors: Rate by type
-- Cache: Hit/miss ratio (target: >60%)
-- Quality: User feedback signals
-
-**Alerting**:
-- Latency p95 > [3s] → Notify
-- Error rate > [5%] → Investigate
-- Daily cost > [2× budget] → Alert
-- Cache hit < [50%] → Review
-
-**Dashboards**:
-- Cost tracking dashboard
-- Performance dashboard
-- Quality metrics dashboard
 
 ---
 

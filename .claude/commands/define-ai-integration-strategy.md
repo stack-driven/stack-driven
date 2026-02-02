@@ -70,6 +70,17 @@ Apply cost/quality trade-offs based on tasks:
 
 Now analyze requirements and **conditionally invoke** specialized sub-agents for detailed guidance:
 
+**Summary: Sub-Agent Invocation Matrix**
+
+| Sub-Agent | Invocation | Condition |
+|-----------|------------|-----------|
+| Prompt Engineering | Always | Fundamental to all AI |
+| Observability | Always | Essential for production |
+| RAG Architecture | Conditional | Document retrieval required |
+| Cost Optimization | Conditional | >100 users/day OR budget concerns |
+| Security/Compliance | Conditional | Regulated industry OR sensitive data |
+| Evaluation | Conditional | Mission-critical quality OR A/B testing |
+
 **1. RAG Architecture Sub-Agent** (Conditional):
 ```
 Condition: Journey requires document retrieval, search, or Q&A over documents
@@ -118,6 +129,9 @@ Provides: Platform selection (Helicone/Langfuse/LangSmith/Datadog)
           AI-specific metrics (latency, tokens, cost, quality)
           Streaming performance targets (if applicable)
           Cost spike alerting and anomaly detection
+
+Session 14 Coordination: See /reference-material/observability-platform-strategy.md
+                          for detailed platform comparison and decision tree.
 ```
 
 **5. Security/Compliance Sub-Agent** (Conditional):
