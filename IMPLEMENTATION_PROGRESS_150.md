@@ -36,7 +36,7 @@
 
 ### Phase 2: ✅ COMPLETED (High Priority - P1)
 
-**Commit**: [To be added after commit is created]
+**Commit**: bc5e70d - feat: Phase 2 - Add architectural style validation and transaction boundaries to /model-application (issue #150)
 
 #### Implemented Features:
 
