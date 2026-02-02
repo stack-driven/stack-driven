@@ -33,7 +33,7 @@ Stack-Driven includes **38 slash commands** organized into four categories:
 | `/create-brand-strategy` | 5 | 30-45 min | `05-brand-strategy.md` + `.ctx.md` |
 | `/create-design` | 6 | 30-40 min | `06-design-system.md` + `.ctx.md` |
 | `/design-database-schema` | 7 | 45-60 min | `07-database-schema.md` + `.ctx.md` (paradigm-agnostic) |
-| `/generate-api-design` | 8 | 30-45 min | `08-api-design.md` + `.ctx.md` |
+| `/generate-api-design` | 8 | 35-45 min | `08-api-design.md` + `.ctx.md` |
 | `/generate-api-contracts` | 8b | 45-60 min | `08b-api-contracts.md` + `.ctx.md` |
 | `/create-test-strategy` | 9 | 30-45 min | `09-test-strategy.md` + `.ctx.md` |
 | `/model-application` | 9b | 45-60 min | `09b-application-architecture.md` + `.ctx.md` |
@@ -154,8 +154,8 @@ Design system (colors, typography, components) optimized for specific user flows
 ### Session 7: `/design-database-schema` (45-60 min)
 Complete database schema design. **Paradigm-agnostic:** supports relational (PostgreSQL ERD, tables, foreign keys), document (MongoDB collections, embedded vs referenced), graph (Neo4j nodes/relationships), time-series (InfluxDB measurements), key-value (Redis patterns). Includes indexes, constraints, migrations. Reads journey through design. Outputs: `07-database-schema.md` + `.ctx.md`
 
-### Session 8: `/generate-api-design` (30-45 min)
-High-level API architecture: paradigm choice (REST/GraphQL/gRPC/WebSocket), serialization format (JSON/Protobuf), auth/authorization approach, rate limiting, pagination. Reads journey + tech stack + architecture + database schema. Outputs: `08-api-design.md` + `.ctx.md`
+### Session 8: `/generate-api-design` (35-45 min)
+High-level API architecture: paradigm choice (REST/GraphQL/gRPC/WebSocket), serialization format (JSON/Protobuf), auth/authorization approach, rate limiting, pagination. **NEW in 2025:** OWASP API Security Top 10 2023 protection patterns (BOLA, property-level authorization, BFLA, business flow abuse, SSRF, security misconfiguration, unsafe third-party consumption), input validation strategy, HTTP caching (ETag, Cache-Control, compression), idempotency/retry patterns, circuit breakers, security headers (HSTS, CSP). Reads journey + tech stack + architecture + database schema. Outputs: `08-api-design.md` + `.ctx.md`
 
 ### Session 8b: `/generate-api-contracts` (45-60 min)
 Complete OpenAPI 3.0 specification with all endpoints, request/response schemas, authentication, error handling. Every journey step has API support. Reads API design + journey + database schema + tech stack + architecture. Outputs: `08b-api-contracts.md` + `.ctx.md`

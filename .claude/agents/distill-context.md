@@ -41,6 +41,10 @@ Extract only these elements from the source file:
 - **All constraints and requirements**: Business, technical, organizational, compliance constraints
 - **All database schema decisions**: Table names, relationships, key indexes, constraints
 - **All API specifications**: Endpoints, methods, key parameters (condensed format)
+- **All OWASP API security patterns**: BOLA/BFLA/SSRF protection patterns, ownership checks, role enforcement (condensed to pattern + affected endpoints)
+- **All resilience patterns**: Idempotency configurations, circuit breaker settings, retry strategies (condensed to config values only)
+- **All HTTP caching decisions**: Cache-Control directives, ETag strategies, compression settings (condensed to resource type → cache policy mappings)
+- **All input validation rules**: Validation library, key validation rules per input type (condensed to rule table format)
 
 **Supporting Information (Keep Condensed)**:
 - **Decision statements**: Final choices made (e.g., "PostgreSQL for relational data + JSONB flexibility")
@@ -273,6 +277,14 @@ A high-quality context file:
 - **Keep**: Table names, key relationships, critical indexes, constraints
 - **Remove**: Full field lists (unless critical), normalization reasoning, migration strategies
 
+### API Design (Session 8)
+- **Keep**: Paradigm choice, serialization format, auth strategy, OWASP protection patterns (condensed to pattern + endpoints), idempotency configs, circuit breaker settings, HTTP caching directives, compression strategy, input validation rules (condensed to table format)
+- **Remove**: Decision tree analysis (5-point paradigm analysis), OWASP threat descriptions (keep only protection patterns), alternatives considered, validation checklist, scale-forward reasoning, detailed code examples (keep only ownership check patterns)
+
+**Example Session 8 distillation**:
+- **KEEP**: "API1 BOLA Protection: Resource ownership validation via `WHERE user_id = :current_user_id` on endpoints: GET /documents/{id}, PUT /documents/{id}, DELETE /documents/{id}. Journey traceability: Step 3 document upload requires user-specific access control (Session 7 documents.user_id foreign key)."
+- **REMOVE**: "Broken Object Level Authorization (BOLA) occurs when... [500-word threat description]. Decision tree: Does journey involve user-owned resources? Yes → Apply ownership checks. Alternatives considered: 1) Session-based ownership cache 2) Middleware authorization layer 3) Database-level RLS."
+
 ### API Contracts (Session 8b)
 - **Keep**: Endpoint paths, methods, purpose, key parameters
 - **Remove**: Full request/response schemas, error handling details, authentication flow descriptions
@@ -283,9 +295,10 @@ Target reduction by session type:
 
 - **Strategy/Vision sessions (1-5)**: 65-70% reduction (heavy rationale content)
 - **Technical sessions (7-9b)**: 60-65% reduction (more decisions, less rationale)
+- **Session 8 (API Design)**: 55-65% reduction (OWASP security patterns, resilience configs, caching strategy - exceptionally high decision density due to Phases 1-5 enhancements; prioritize decision preservation over aggressive reduction)
 - **Implementation sessions (12-14)**: 55-60% reduction (already fairly concise)
 
-Always prioritize decision preservation over aggressive reduction. If a session has unusually high decision density, 50-55% reduction is acceptable.
+Always prioritize decision preservation over aggressive reduction. If a session has unusually high decision density (e.g., Session 8 with OWASP patterns + resilience + caching), 55-60% reduction is acceptable.
 
 ## After Distillation
 

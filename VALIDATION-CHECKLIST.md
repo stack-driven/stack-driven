@@ -488,6 +488,299 @@
 
 ---
 
+## Category 11: API Security Validation Rules
+
+### Rule 11.1: OWASP Coverage Completeness
+
+**What:** Session 8 API design output must contain sections for all applicable OWASP API Top 10 2023 risks
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Security Protection Patterns (OWASP API Top 10)" section
+- For each of 8 applicable risks (API1, 3, 5, 6, 7, 8, 10), verify:
+  - Subsection exists (e.g., "### API1:2023 - Broken Object Level Authorization")
+  - "Applicability: YES / NO" field present
+  - If YES: Journey analysis documented, protection pattern documented
+  - If NO: "Reconsider if" conditions documented
+
+**Failure example:**
+```
+❌ OWASP coverage incomplete
+   08-api-design.md has "Security Protection Patterns" section ✓
+   But missing subsection for API6:2023 (Unrestricted Access to Sensitive Business Flows)
+   Fix: Add API6 subsection with journey analysis
+```
+
+**Rationale**: Ensures generated API designs systematically address known API security vulnerabilities instead of ad-hoc security thinking.
+
+---
+
+### Rule 11.2: Security Pattern Journey Traceability
+
+**What:** Each OWASP protection pattern must reference specific journey steps or database tables (Session 7)
+
+**Check:**
+- For each applicable OWASP risk in `08-api-design.md`:
+  - Extract "Journey Analysis" subsection
+  - Verify at least ONE specific reference to:
+    - Journey Step X (e.g., "Journey Step 2: document upload")
+    - Database table from Session 7 (e.g., "`documents` table with `user_id` column")
+    - User role from journey (e.g., "admin role manages users")
+- Reject generic reasoning without journey citation
+
+**Failure example:**
+```
+❌ Security pattern lacks journey traceability
+   API1 (BOLA) section says:
+   "BOLA protection is important for securing APIs" ✗
+   Expected:
+   "Journey Step 2 (document upload) creates user-owned documents in `documents` table → BOLA: WHERE user_id = :current_user_id" ✓
+```
+
+**Acceptable references:**
+- "Journey Step 2 (document upload)" ✓
+- "`documents` table has `user_id` ownership column (Session 7)" ✓
+- "Admin role manages team members (Journey Step 5)" ✓
+
+**Unacceptable references:**
+- "Users need secure access" ✗ (generic, no specific journey step)
+- "Best practice for APIs" ✗ (not journey-driven)
+- "OWASP recommends this" ✗ (external authority, not journey)
+
+**Rationale**: Maintains Stack-Driven's journey-first philosophy—every security decision must serve specific user needs, not generic "best practices."
+
+---
+
+### Rule 11.3: HTTP Caching Strategy Presence
+
+**What:** Session 8 API design output must contain complete HTTP caching strategy (if REST/HTTP-based paradigm)
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify API paradigm decision: If paradigm = REST or HTTP-based → HTTP caching section required
+- If paradigm = GraphQL, gRPC, or WebSocket → HTTP caching section NOT required (skip rule)
+- If HTTP caching section exists, verify required subsections:
+  - Cache Strategy by Resource Type (public, private, sensitive, dynamic content)
+  - ETag Implementation (generation strategy, conditional request flow)
+  - Compression Configuration (size thresholds, content-type map, journey examples)
+  - Journey-Based Caching Reasoning
+  - Performance Impact (metrics to track, journey-based targets)
+
+**Failure example:**
+```
+❌ HTTP caching strategy incomplete
+   08-api-design.md paradigm decision: REST ✓
+   But missing "HTTP Caching Strategy" section
+   Journey Step 2 involves public framework list (high-traffic, cacheable)
+   Fix: Add HTTP caching section with cache strategy for public/private resources
+```
+
+**Cache strategy completeness check:**
+- At least ONE resource type documented (public OR private OR sensitive OR dynamic)
+- Cache-Control directives specified per resource type
+- Journey context provided (which steps access these resources)
+- Reasoning traces to journey requirements (performance, security, update frequency)
+
+**Failure example:**
+```
+❌ Cache strategy lacks journey traceability
+   HTTP Caching Strategy section exists ✓
+   Public Content subsection says: "Use Cache-Control: public, max-age=3600" ✓
+   But no journey context (which steps? why cacheable?)
+   Expected: "Journey Step 2 (view frameworks) accesses public framework list updated weekly → Cache-Control: public, max-age=3600"
+```
+
+**ETag implementation check:**
+- ETag generation strategy documented (content hash / version / timestamp / composite)
+- At least ONE resource with ETag usage example
+- Conditional request flow explained (If-None-Match, 304 Not Modified)
+- Journey reasoning for ETag choice (response size, update frequency)
+
+**Failure example:**
+```
+❌ ETag implementation missing generation strategy
+   ETag Implementation subsection exists ✓
+   But no generation strategy specified (hash? version? timestamp?)
+   Fix: Document ETag generation (e.g., "Composite: resource-{id}-{updated_at}")
+```
+
+**Compression configuration check:**
+- Response size thresholds documented (<1KB, 1KB-100KB, >100KB)
+- Content-Type compression map present (application/json, text/html, images, PDFs)
+- At least ONE journey-based compression example
+- Reasoning includes bandwidth constraints from journey
+
+**Failure example:**
+```
+❌ Compression configuration missing journey examples
+   Compression Configuration subsection exists ✓
+   Size thresholds documented ✓
+   But no journey-based examples (which steps benefit from compression?)
+   Fix: Add example "Journey Step 2 (list frameworks): 50KB JSON → Brotli → 10KB (80% reduction)"
+```
+
+**Performance metrics check:**
+- Metrics to track documented (cache hit rate, bandwidth savings, 304 rate, etc.)
+- Metrics link to Session 14 observability
+- Journey-based performance targets specified (e.g., "Cache hit rate: 70% for public content")
+
+**Acceptable references:**
+- "Journey Step 2 (view frameworks) accesses public framework list updated weekly → Cache-Control: public, max-age=3600" ✓
+- "Session 7: documents table immutable after upload → ETag: doc-{id}-{updated_at}" ✓
+- "Journey behavioral profile: 40% mobile users, low bandwidth → Brotli compression critical" ✓
+
+**Unacceptable references:**
+- "Caching improves performance" ✗ (generic, no journey context)
+- "Use ETags for large responses" ✗ (not journey-specific)
+- "HTTP caching is a best practice" ✗ (external authority, not journey)
+
+**Paradigm-specific exemptions:**
+- GraphQL paradigm → HTTP caching NOT required (GraphQL has persisted queries, APQ)
+- gRPC paradigm → HTTP caching NOT required (gRPC uses different mechanisms)
+- WebSocket paradigm → HTTP caching NOT required (real-time, not request-response)
+- Hybrid paradigm (REST + GraphQL) → HTTP caching required for REST portion only
+
+**Rationale**: HTTP caching is critical for performance optimization (reduces server load, bandwidth, response time) but must be designed based on journey requirements (which resources are public/private/sensitive, update frequency, bandwidth constraints). Generic caching advice without journey traceability violates Stack-Driven's philosophy.
+
+---
+
+### Rule 11.4: Input Validation Strategy Presence
+
+**What:** Session 8 API design output must contain complete input validation strategy
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Input Validation Strategy" section
+- Check required subsections:
+  - Validation Approach (paradigm, library from Session 3)
+  - Validation Rules by Input Type (email, URLs, files, strings, numbers, dates, UUIDs)
+  - Sanitization Strategy (HTML, SQL injection, command injection, path traversal)
+  - Journey-Based Validation Reasoning
+
+**Failure example:**
+```
+❌ Input validation strategy incomplete
+   08-api-design.md has "Input Validation Strategy" section ✓
+   But missing "File Upload" validation rules
+   Journey Step 2 involves document upload → File validation required
+   Fix: Add file upload validation (MIME type, size, virus scanning)
+```
+
+**Validation library check:**
+- Library documented must match tech stack from Session 3
+- Python (FastAPI) → Pydantic ✓
+- Node.js (Express) → Joi / Zod / AJV ✓
+- Mismatch: Python backend with Joi library ✗
+
+**Rationale**: Input validation is critical for preventing injection attacks, DoS, and data corruption. Must be documented systematically, not left to implementation guesswork.
+
+---
+
+### Rule 11.5: Security Headers Configuration
+
+**What:** Session 8 API design output must document required security headers
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify API8:2023 (Security Misconfiguration) section includes:
+  - `Strict-Transport-Security` header (HSTS)
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options` (DENY or SAMEORIGIN with reasoning)
+  - `Content-Security-Policy` (journey-specific policy)
+  - `X-Request-ID` (request tracing)
+
+**Failure example:**
+```
+❌ Security headers incomplete
+   API8 section exists ✓
+   But missing Content-Security-Policy header
+   Fix: Add CSP header (e.g., "default-src 'self'" for API-only)
+```
+
+**Journey-based CSP check:**
+- API-only (no web frontend): `default-src 'self'` ✓
+- Web app with CDN: `default-src 'self' https://cdn.example.com` ✓
+- Generic CSP with no journey reasoning: ✗
+
+**Rationale**: Security headers prevent entire classes of attacks (XSS, clickjacking, MITM). Must be configured based on journey requirements, not copy-pasted from generic guides.
+
+---
+
+### Rule 11.6: Idempotency and Retry Strategies
+
+**What:** Session 8 API design output must document idempotency protection and retry strategies for resilient operations
+
+**Check:**
+- Read `product-guidelines/08-api-design.md`
+- Verify presence of "Idempotency and Retry Strategies" section
+- Check required subsections:
+  - Idempotency-Protected Endpoints (financial operations, resource creation)
+  - Retry Strategy (Retry-After header usage, client retry guidance)
+  - Circuit Breaker Configuration (third-party API protection)
+  - Journey-Based Reasoning
+
+**Idempotency pattern requirements:**
+- Financial operations (payments, orders) MUST require Idempotency-Key header
+- Resource creation endpoints (POST/PATCH) SHOULD require or recommend Idempotency-Key
+- Implementation requirements documented (store, key format, expiry)
+- Journey context provided (which steps need idempotency protection)
+
+**Failure example:**
+```
+❌ Idempotency strategy incomplete
+   08-api-design.md has "Idempotency and Retry Strategies" section ✓
+   But POST /api/payments endpoint missing from idempotency-protected list
+   Journey Step 4 involves payment processing → Idempotency-Key required
+   Fix: Add POST /api/payments to Financial Operations section
+```
+
+**Retry strategy requirements:**
+- 429 (Rate Limit) responses include `Retry-After` header
+- 503 (Service Unavailable) responses include `Retry-After` header
+- 202 (Accepted - async) responses include `Retry-After` header for polling
+- Client retry guidance documented (exponential backoff, max retries, jitter)
+
+**Failure example:**
+```
+❌ Retry strategy missing Retry-After header
+   Error examples show 429 response ✓
+   But no Retry-After header in response
+   Fix: Add "Retry-After: 60" header to 429 response example
+```
+
+**Circuit breaker requirements:**
+- All third-party APIs documented (from Session 4 architecture)
+- For each third-party API: timeout, circuit states, fallback strategy
+- Journey context (which steps depend on third-party APIs)
+- Implementation library specified (from tech stack)
+
+**Failure example:**
+```
+❌ Circuit breaker missing third-party API
+   08-api-design.md has Circuit Breaker Configuration section ✓
+   Journey Step 3 uses OpenAI API (from Session 4 architecture)
+   But no circuit breaker configuration for OpenAI documented
+   Fix: Add OpenAI circuit breaker (timeout 30s, fallback: queue for retry)
+```
+
+**Journey traceability check:**
+- Idempotency endpoints reference specific journey steps
+- Retry strategies explain which journey steps tolerate delays
+- Circuit breakers trace to third-party dependencies from Session 4
+- Reasoning connects to user experience impact
+
+**Acceptable references:**
+- "Journey Step 4 (payment processing) creates charges → Network timeout risk → Idempotency-Key prevents duplicate charges" ✓
+- "Third-party dependency: OpenAI API (Session 4 architecture) → Circuit breaker prevents cascade failures" ✓
+
+**Unacceptable references:**
+- "Idempotency is a best practice" ✗ (generic, no journey context)
+- "APIs should be resilient" ✗ (not journey-specific)
+
+**Rationale**: Idempotency and retry strategies prevent critical user-facing failures (duplicate charges, cascade failures, poor UX during network issues). Must be documented based on journey requirements, not generic resilience advice.
+
+---
+
 ## Implementation Priority
 
 ### Tier 1 (Critical - Implement First):
@@ -495,12 +788,18 @@
 - Rule 2.1: Session Number Format Standardization
 - Rule 3.1: Database Table Name Consistency
 - Rule 3.2: Epic Number Consistency
+- Rule 11.1: OWASP Coverage Completeness (NEW - Session 8 security)
+- Rule 11.2: Security Pattern Journey Traceability (NEW - Session 8 security)
 
 ### Tier 2 (Important - Implement Soon):
 - Rule 1.1: File Read References Must Be Creatable
 - Rule 1.2: Context Files Must Be Documented
 - Rule 4.1-4.3: Propagation Pattern Completeness
 - Rule 6.3: Decision Matrix Table Accuracy
+- Rule 11.3: HTTP Caching Strategy Presence (NEW - Phase 3: Performance)
+- Rule 11.4: Input Validation Strategy Presence (NEW - Session 8 security)
+- Rule 11.5: Security Headers Configuration (NEW - Session 8 security)
+- Rule 11.6: Idempotency and Retry Strategies (NEW - Phase 2: Resilience)
 
 ### Tier 3 (Nice to Have - Implement Later):
 - Rule 5.1: Template Section Alignment

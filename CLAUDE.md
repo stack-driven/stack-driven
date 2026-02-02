@@ -103,7 +103,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists); generates mission, metrics (with L0→L1→L2→L3 hierarchy), monetization, architecture, and analytics implementation strategy
 - **Session 7 (database-schema)** checks 02a-constraints for i18n requirement → generates translation tables and locale columns if needed
-- **Session 8 (api-design)** checks 02a-constraints for i18n requirement → adds Accept-Language header support and locale fallback strategy if needed
+- **Session 8 (api-design)** checks 02a-constraints for i18n requirement → adds Accept-Language header support and locale fallback strategy if needed; **NEW in 2025**: Integrates OWASP API Security Top 10 2023 protection patterns (BOLA, property-level auth, BFLA, business flow abuse, SSRF, security misconfiguration, unsafe third-party consumption), input validation strategy, HTTP caching strategy (ETag, Cache-Control, compression), idempotency/retry patterns, and circuit breakers
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards.ctx.md + 04-architecture + 07-database-schema.ctx.md + 08b-api-contracts.ctx.md
 - **Session 10 (backlog)** checks 02a-constraints for i18n requirement → generates i18n infrastructure stories (translation setup, locale switching UI, string extraction) if needed
@@ -267,7 +267,7 @@ Every decision must trace back to user journey:
 - `05-brand-strategy.md` + `05-brand-strategy.ctx.md` (65% reduction)
 - `06-design-system.md` + `06-design-system.ctx.md` (60% reduction)
 - `07-database-schema.md` + `07-database-schema.ctx.md` (56% reduction)
-- `08-api-design.md` + `08-api-design.ctx.md` (65% reduction)
+- `08-api-design.md` + `08-api-design.ctx.md` (60-65% reduction, high decision density from security/resilience enhancements)
 - `08b-api-contracts.md` + `08b-api-contracts.ctx.md` (80% reduction)
 - `09-test-strategy.md` + `09-test-strategy.ctx.md` (66% reduction)
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)
@@ -514,6 +514,7 @@ Session 6 (design) [reads: 00-05.ctx.md] → Generates .md + .ctx.md
 Session 7 (database-schema) [reads: 00-06.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 8 (api-design) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md] → Generates .md + .ctx.md
+  ↓ GENERATES: Paradigm choice (REST/GraphQL/gRPC), OWASP API Top 10 2023 protections (BOLA, BFLA, SSRF, etc.), input validation strategy, HTTP caching (ETag, Cache-Control), idempotency/retry patterns, circuit breakers for third-party APIs, security headers (HSTS, CSP)
   ↓
 Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 08.ctx.md] → Generates .md + .ctx.md
   ↓

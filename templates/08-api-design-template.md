@@ -11,6 +11,32 @@ This template guides the high-level architectural decisions for your API. Comple
 **Versioning Strategy**: [URL versioning (/v1/, /v2/) / Header versioning / No versioning (breaking changes with migration)]
 **Base URL**: https://api.[domain].com
 
+### API Documentation Standards
+
+**Resource Naming Convention**: [camelCase / snake_case / kebab-case]
+- **Reasoning**: [Journey-based choice - e.g., "camelCase for JSON (JavaScript clients)", "snake_case for Python backend consistency"]
+
+**Timestamp Format**: ISO 8601 / RFC 3339
+- **Format**: `YYYY-MM-DDTHH:MM:SSZ` (UTC)
+- **Example**: `2025-02-01T10:30:00Z`
+- **Timezone**: Always store and return in UTC, client converts to user timezone
+
+**UUID Format**: [UUIDv4 / UUIDv7]
+- **Reasoning**: [UUIDv4 for random IDs / UUIDv7 for time-ordered IDs with better database performance]
+- **Example**: UUIDv4: `550e8400-e29b-41d4-a716-446655440000`
+
+**Null Handling**: [Return null / Omit field]
+- **Approach**: [null for explicit absence / omit for optional fields]
+- **Reasoning**: [Journey-based choice - e.g., "Omit optional fields to reduce response size for mobile clients"]
+
+**Pagination Link Headers** (REST only):
+- **Link Header**: Include `Link` header with `rel="next"`, `rel="prev"`, `rel="first"`, `rel="last"`
+- **Example**:
+  ```http
+  Link: <https://api.example.com/documents?page=2>; rel="next",
+        <https://api.example.com/documents?page=1>; rel="first"
+  ```
+
 ---
 
 ## API Paradigm Decision
@@ -114,6 +140,138 @@ Document the 5-point decision tree analysis:
 - **Current (MVP)**: [Initial paradigm choice]
 - **Growth (10x scale)**: [How paradigm evolves]
 - **Maturity (100x scale)**: [Migration path if needed]
+
+---
+
+## REST Design Patterns
+
+> **Note:** This section applies ONLY if API Paradigm = REST.
+
+**IF API Paradigm = REST:** Document RESTful design conventions below.
+
+**IF API Paradigm = GraphQL, gRPC, or WebSocket:** Replace this entire section with:
+```
+## REST Design Patterns
+
+**Applicability:** Not applicable - API paradigm chosen = [GraphQL/gRPC/WebSocket]
+
+REST design patterns are not relevant for this paradigm. See paradigm-specific conventions in "Serialization Format" section above.
+```
+
+### Resource Naming Conventions
+
+**Collections** (plural nouns):
+- `/[resources]` - [Resource description from journey]
+- Example: `/documents` - User-uploaded documents
+- [List all collections from Session 7 database schema]
+
+**Single Resources** (ID in path):
+- `/[resources]/:id` - Specific resource
+- Example: `/documents/:id` - Single document
+
+**Nested Resources** (parent-child relationships):
+- `/[parent]/:parentId/[child]` - Child resources
+- Example: `/teams/:teamId/members` - Team members
+- [List nested resources from Session 7 relationships]
+
+**Journey-Based Reasoning**:
+[2-3 sentences tracing resource naming to journey steps and database schema]
+
+---
+
+### HTTP Verb Usage
+
+**GET** (Retrieve, idempotent, safe, cacheable):
+- Endpoints: [List GET endpoints from journey]
+- **Journey context**: [Which journey steps read data?]
+
+**POST** (Create, NOT idempotent without Idempotency-Key):
+- Endpoints: [List POST endpoints from journey]
+- **Returns**: 201 Created + Location header
+- **Journey context**: [Which journey steps create resources?]
+
+**PUT** (Replace entire resource, idempotent):
+- Endpoints: [List PUT endpoints OR "Not used - prefer PATCH"]
+- **Journey context**: [Which journey steps replace entire resources?]
+
+**PATCH** (Partial update, idempotent with key):
+- Endpoints: [List PATCH endpoints from journey]
+- **Journey context**: [Which journey steps update specific fields?]
+
+**DELETE** (Remove resource, idempotent):
+- Endpoints: [List DELETE endpoints from journey]
+- **Journey context**: [Which journey steps delete resources?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing HTTP verb usage to journey operations]
+
+---
+
+### Query Parameter Standards
+
+**Filtering** (narrow results):
+- Pattern: `?{field}={value}&{field2}={value2}`
+- Journey examples:
+  - `GET /[resource]?[filter1]=[value1]&[filter2]=[value2]`
+  - [List filters from journey requirements]
+- **Journey context**: [Which journey steps filter data?]
+
+**Sorting** (order results):
+- Pattern: `?sort={field1},{field2}` OR `?sort=-{field1}` (descending)
+- Journey examples:
+  - `GET /[resource]?sort=-created_at` (newest first)
+  - [List sort options from journey]
+- **Journey context**: [Which journey steps sort data? Default order?]
+
+**Field Selection** (sparse fieldsets, reduce bandwidth):
+- Pattern: `?fields={field1},{field2},{field3}`
+- Journey examples:
+  - `GET /[resource]?fields=id,name,status` (minimal fields)
+  - [List field selection use cases from journey]
+- **Journey context**: [Mobile bandwidth constraints? Which views need selective fields?]
+
+**Search** (full-text search):
+- Pattern: `?q={search_term}` OR `?search={query}`
+- Journey examples:
+  - `GET /[resource]?q=[search+term]`
+- **Journey context**: [Which journey steps search data?]
+
+**Journey-Based Reasoning**:
+[3-4 sentences tracing query parameters to journey search, filtering, sorting, and bandwidth needs]
+
+---
+
+### Response Envelope Consistency
+
+**Single Resource Response**:
+```json
+GET /[resource]/:id
+{
+  "id": 123,
+  "[field1]": "value",
+  "[field2]": "value"
+}
+```
+
+**Collection Response**:
+```json
+GET /[resources]?page=1&limit=20
+{
+  "data": [
+    {"id": 123, "[field]": "value"},
+    {"id": 124, "[field]": "value"}
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 47,
+    "total_pages": 3
+  }
+}
+```
+
+**Journey-Based Reasoning**:
+[1-2 sentences on consistency benefits for journey]
 
 ---
 
@@ -264,6 +422,338 @@ Document the serialization format decision tree:
 
 ---
 
+## Security Protection Patterns (OWASP API Top 10 2023)
+
+**Reference**: `reference-material/owasp-api-security-2023-checklist.md`
+
+Document protection patterns for applicable OWASP API Security Top 10 2023 risks based on your journey requirements.
+
+### API1:2023 - Broken Object Level Authorization (BOLA)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Journey Step [X]: [Specific resource access scenario]
+- Database tables with user ownership: [List from Session 7]
+- Example: "Journey Step 2 (document upload) creates user-owned documents in `documents` table"
+
+**Protection Pattern**:
+- Ownership check: `WHERE user_id = :current_user_id`
+- Affected endpoints:
+  - GET /api/documents/:id
+  - PUT /api/documents/:id
+  - DELETE /api/documents/:id
+
+**Reconsider if**: Multi-tenant features added, team-shared resources introduced
+
+---
+
+### API3:2023 - Broken Object Property Level Authorization
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Sensitive fields in database schema: [List from Session 7 - e.g., `ssn`, `payment_info`, `internal_notes`]
+- User roles: [Admin / User / Owner / Public]
+
+**Protection Pattern**:
+- Admin response fields: [All fields including sensitive data]
+- User response fields: [Limited fields, no PII]
+- Public response fields: [Minimal fields only]
+- Field-level filtering: [How implemented - serializers, DTOs, response mappers]
+
+**Reconsider if**: New sensitive fields added (payment info, health data, SSN), compliance requirements change (GDPR, HIPAA)
+
+---
+
+### API5:2023 - Broken Function Level Authorization (BFLA)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Admin-only endpoints: [List endpoints that require admin role]
+- Owner-only endpoints: [List endpoints that require resource ownership]
+- Public endpoints: [List endpoints with no auth required]
+
+**Protection Pattern**:
+- Admin check: `if user.role != 'admin': return 403 Forbidden`
+- Owner check: `if resource.owner_id != current_user_id: return 403 Forbidden`
+- Role enforcement: [Middleware / decorator / route guard]
+
+**Reconsider if**: New admin features added, team hierarchy introduced (owner > admin > member)
+
+---
+
+### API6:2023 - Unrestricted Access to Sensitive Business Flows
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Sensitive business flows: [password reset / order creation / invitations / refunds / etc.]
+- Abuse scenarios: [fraud / spam / account enumeration]
+
+**Protection Pattern**:
+- Endpoint: POST /api/auth/password-reset
+  - Limit: 3 attempts per email per hour
+  - Reason: Prevent email enumeration
+- Endpoint: POST /api/orders
+  - Limit: 10 orders per user per day
+  - Reason: Prevent fraudulent orders
+- Endpoint: POST /api/teams/:id/invitations
+  - Limit: 50 invitations per team per day
+  - Reason: Prevent invitation spam
+
+**Reconsider if**: Payment processing added, invitation system introduced, account recovery flows implemented
+
+---
+
+### API7:2023 - Server-Side Request Forgery (SSRF)
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- User-provided URLs accepted: [webhooks / file imports / third-party integrations / none]
+- Internal services: [List from Session 4 architecture - databases, caches, internal APIs]
+
+**Protection Pattern**:
+- URL validation: HTTPS required, HTTP blocked
+- Blocked IP ranges: 127.0.0.1, 10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16 (internal networks)
+- Domain allowlist: [Specific domains if applicable OR "No allowlist - validate only"]
+- Validation library: [URL parsing library from tech stack]
+
+**Reconsider if**: Webhook system added, file import from URLs introduced, third-party integrations allow URL configuration
+
+---
+
+### API8:2023 - Security Misconfiguration
+
+**Applicability**: YES (always applicable)
+
+**Required Security Headers** (on ALL responses):
+```http
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-Frame-Options: [DENY / SAMEORIGIN]
+Content-Security-Policy: [default-src 'self' / custom policy]
+X-Request-ID: [UUID for request tracing]
+```
+
+**Journey-Based Header Configuration**:
+- `X-Frame-Options`: [DENY for API-only / SAMEORIGIN if web app embeds API]
+- `Content-Security-Policy`: [Journey-specific CSP policy]
+
+**Disabled Endpoints**:
+- [List any default endpoints to disable: /admin, /debug, /metrics, /health if not needed]
+
+**Journey-Based Reasoning**:
+[Why these headers matter for your journey - e.g., "Web-based journey requires CSP to prevent XSS attacks"]
+
+---
+
+### API10:2023 - Unsafe Consumption of APIs
+
+**Applicability**: [YES / NO]
+
+**Journey Analysis**:
+- Third-party APIs consumed: [Payment gateway / AI service / Analytics / Email service / etc.]
+- Journey steps affected: [Which steps depend on third-party APIs]
+
+**Protection Pattern**:
+- API: [Third-party API name, e.g., "OpenAI GPT-4"]
+  - Timeout: [5-30 seconds depending on operation]
+  - Circuit breaker: Open after [5] consecutive failures
+  - Half-open retry: After [30 seconds]
+  - Fallback: [Return cached data / degraded response / user-facing error message]
+  - Journey context: [Journey Step X depends on this API]
+
+**Reconsider if**: Third-party integrations added (payment gateways, AI services, analytics), webhook consumption from external sources
+
+---
+
+## Idempotency and Retry Strategies
+
+Document idempotency protection and retry guidance for operations that require resilience against network failures and service disruptions.
+
+### Idempotency-Protected Endpoints
+
+**Pattern**: Idempotency-Key header for POST/PATCH operations
+
+#### Financial Operations (CRITICAL)
+- Endpoint: POST /api/payments
+  - Idempotency-Key: Required
+  - Expiry: 24 hours
+  - Journey context: [Journey Step X: payment processing]
+  - Duplicate prevention: [How idempotency prevents duplicate charges]
+
+#### Resource Creation
+- Endpoint: POST /api/orders
+  - Idempotency-Key: Required
+  - Journey context: [Journey Step X: order placement]
+  - Expiry: 24 hours
+- Endpoint: POST /api/documents
+  - Idempotency-Key: Recommended
+  - Journey context: [Journey Step X: document upload]
+  - Expiry: 1 hour
+
+**Implementation Requirements**:
+- Idempotency store: [Redis / Database table `idempotency_keys`]
+- Key format: UUIDv4 (client-generated)
+- Response caching: Store full HTTP response (status code, headers, body)
+- Expiry: [24 hours for financial, 1 hour for non-financial, configurable per endpoint]
+
+### Retry Strategy
+
+**Retry-After Header Usage**:
+- 429 Too Many Requests: Include `Retry-After` header (seconds until reset)
+- 503 Service Unavailable: Include `Retry-After` header (estimated recovery time)
+- 202 Accepted (async): Include `Retry-After` header (polling interval)
+
+**Client Retry Guidance**:
+- Exponential backoff: 1s, 2s, 4s, 8s, 16s (max 60s)
+- Max retries: 5 attempts
+- Jitter: Random 0-1s to prevent thundering herd
+
+**Journey-Based Retry Design**:
+
+**Rate-Limited Endpoints** (429):
+- Response includes: `Retry-After` header + `retry_after_seconds` in error body
+- Client behavior: Wait specified time before retry
+- Journey context: [Which endpoints have strict rate limits?]
+
+**Temporarily Unavailable** (503):
+- Response includes: `Retry-After: 30` (maintenance, overload)
+- Client behavior: Exponential backoff (30s, 60s, 120s)
+- Journey context: [Which journey steps tolerate temporary downtime?]
+
+**Async Operations** (202):
+- Response includes: `Retry-After: 5` (polling interval)
+- Client behavior: Poll at specified interval until completion (200/201)
+- Journey context: [Journey Step X: AI document processing takes 2-5min]
+
+### Circuit Breaker Configuration
+
+**Third-Party API Protection**:
+
+#### [Third-Party API Name, e.g., "Stripe Payment API"]
+- Journey Step: [Which step depends on this API]
+- Timeout: [5-30 seconds]
+- Circuit: Open after [5] consecutive failures
+- Half-open retry: After [30-60 seconds]
+- Fallback: [Return cached data / degraded response / user error message]
+- Reasoning: [Why this configuration serves the journey]
+
+**Implementation Requirements**:
+- Circuit breaker library: [Polly (.NET) / resilience4j (Java) / circuitbreaker (Python) / opossum (Node.js)]
+- Metrics: Track failure rate, circuit state, fallback usage (for Session 14 observability)
+- Alerting: Notify team when circuit opens (indicates third-party degradation)
+
+### Journey-Based Reasoning
+
+[3-5 sentences tracing idempotency, retry, and circuit breaker strategies to:
+- Journey operations requiring idempotency (payments, orders, mutations)
+- Journey steps tolerating retries (async operations, non-critical actions)
+- Third-party dependencies from Session 4 architecture
+- User experience impact (prevent duplicate charges, handle downtime gracefully)]
+
+---
+
+## Input Validation Strategy
+
+Document server-side validation for ALL user input based on journey requirements and database schema.
+
+### Validation Approach
+
+**API Paradigm**: [REST / GraphQL / gRPC] (from paradigm decision)
+**Validation Library**: [Pydantic / Joi / Zod / class-validator / AJV] (from Session 3 tech stack)
+
+**Journey-Based Selection Reasoning**:
+[Why this library matches your tech stack - e.g., "FastAPI backend uses Pydantic for automatic request validation"]
+
+### Validation Rules by Input Type
+
+#### Email Addresses
+- **Format**: RFC 5322 (`\S+@\S+\.\S+`)
+- **Max length**: 254 characters
+- **Normalization**: Lowercase
+- **Journey context**: [Which journey steps use email input - e.g., "Journey Step 1: User registration form"]
+
+#### URLs
+- **Protocol**: HTTPS required (HTTP for dev only)
+- **Domain allowlist**: [Specific domains OR "Any HTTPS domain"]
+- **Block internal IPs**: YES (SSRF protection - 127.0.0.1, 10.0.0.0/8, 192.168.0.0/16)
+- **Max length**: 2048 characters
+- **Journey context**: [Which journey steps accept URLs - e.g., "Journey Step 4: Webhook subscription"]
+
+#### Phone Numbers
+- **Format**: E.164 (+1234567890)
+- **Validation library**: libphonenumber
+- **Journey context**: [If journey requires phone numbers]
+
+#### Dates/Timestamps
+- **Format**: ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)
+- **Range**: [1900-2100] or journey-specific range
+- **Timezone**: Store in UTC, convert to user timezone
+- **Journey context**: [Which journey steps use dates]
+
+#### File Uploads
+- **Allowed MIME types**: [application/pdf, image/jpeg, image/png, etc.]
+- **Max file size**: [10MB / 50MB / etc.]
+- **File extension validation**: Double-check (don't trust client-side extension)
+- **Virus scanning**: [YES - ClamAV / VirusTotal API / NO]
+- **Storage sanitization**: Rename uploaded files (prevent directory traversal)
+- **Journey context**: [Journey Step X: document upload → PDF only, 10MB max, virus scan required]
+
+#### Strings (General Text Input)
+- **Max length**: [255 for names, 5000 for descriptions, journey-specific]
+- **Min length**: [Prevent empty inputs - e.g., min 3 chars for search queries]
+- **Pattern**: [Alphanumeric only / Allow spaces / Regex for specific format]
+- **Trim**: Remove leading/trailing whitespace
+- **Journey context**: [Which fields accept text input]
+
+#### Numbers (Integers/Floats)
+- **Type**: Integer or Float
+- **Range**: Min/max values (e.g., quantity: 1-1000, price: 0.01-999999.99)
+- **Precision**: For decimals (e.g., currency: 2 decimal places)
+- **Journey context**: [Which journey steps use numeric input]
+
+#### UUIDs
+- **Format**: UUIDv4 or UUIDv7
+- **Validation**: Regex or library validation
+- **Journey context**: [Which resources use UUID identifiers]
+
+### Sanitization Strategy
+
+#### HTML Input
+- **Approach**: [Strip all tags / Allowlist safe tags (<b>, <i>, <a>, <p>)]
+- **Library**: [DOMPurify / bleach / sanitize-html] (from tech stack)
+- **Journey context**: [Which fields allow rich text - e.g., "Comment fields allow basic formatting"]
+
+#### SQL Injection Prevention
+- **Method**: Parameterized queries (ALWAYS, NEVER string concatenation)
+- **ORM**: [Prisma / TypeORM / SQLAlchemy / Sequelize] (from Session 3 tech stack)
+- **Journey-Based Reasoning**: All database queries use ORM with parameterized queries
+
+#### Command Injection Prevention
+- **Rule**: NEVER pass user input to shell commands
+- **Alternative**: Use libraries instead of shell commands (e.g., use `fs` module, not `exec('cat file')`)
+- **Journey context**: [If journey requires file operations, image processing, etc.]
+
+#### Path Traversal Prevention
+- **Rule**: Validate all file paths, use allowlist for directories
+- **Pattern**: Reject `../`, `..\\`, absolute paths
+- **Journey context**: [If journey involves file operations]
+
+### Journey-Based Validation Reasoning
+
+[3-5 sentences tracing validation strategy to:
+- Journey input scenarios (forms, uploads, search, filters)
+- Database schema input types (Session 7 - which fields accept user input)
+- Security requirements (prevent SQL injection, XSS, file upload attacks, DoS via large inputs)]
+
+**Example**: "Journey Step 2 (document upload) requires strict file validation: only PDF/DOCX allowed (MIME type check), max 10MB (prevent DoS), virus scanning with ClamAV (prevent malware). Journey Step 3 (search documents) requires input sanitization: max 500 chars (prevent DoS), trim whitespace, escape SQL (parameterized queries via Prisma ORM)."
+
+---
+
 ## Rate Limiting Strategy
 
 ### Limits by Tier
@@ -369,6 +859,129 @@ Response: {
 
 ---
 
+## HTTP Caching Strategy
+
+**Note**: Only applicable for REST or HTTP-based APIs. GraphQL has its own caching strategy (persisted queries), gRPC uses different mechanisms.
+
+### Cache Strategy by Resource Type
+
+**Public Content** (cacheable by CDN):
+- **Resources**: [List from journey - e.g., GET /api/frameworks, GET /public/reports/:token]
+- **Cache-Control**: public, max-age=[3600 / 86400]
+- **ETag**: [YES / NO]
+- **Journey context**: [Which journey steps access this? How often does content change?]
+- **Reasoning**: [Why public caching benefits the journey - e.g., "Framework list accessed by 10,000 users monthly, updated weekly → CDN caching reduces origin load"]
+
+**Private Content** (browser cache only):
+- **Resources**: [List from journey - e.g., GET /api/documents/:id, GET /api/users/me]
+- **Cache-Control**: private, max-age=[300 / 600]
+- **ETag**: [YES / NO]
+- **Journey context**: [Which journey steps access user-specific data?]
+- **Reasoning**: [Why browser-only caching serves the journey - e.g., "User document metadata changes infrequently → Browser caching for 5 min reduces API calls without exposing private data to CDN"]
+
+**Sensitive Data** (no caching):
+- **Resources**: [List from journey - e.g., POST /api/payments, GET /api/users/:id/payment-methods]
+- **Cache-Control**: no-store
+- **Journey context**: [Which journey steps involve financial/PII data?]
+- **Reasoning**: [Security requirement from journey - e.g., "Payment processing involves sensitive financial data → no-store prevents any caching (browser, proxy, CDN)"]
+
+**Dynamic Content** (validate before use):
+- **Resources**: [List from journey - e.g., GET /api/dashboards/live]
+- **Cache-Control**: no-cache, must-revalidate
+- **Journey context**: [Which journey steps require fresh data?]
+- **Reasoning**: [Journey real-time requirement - e.g., "Live dashboard shows real-time metrics → must-revalidate ensures users see current data"]
+
+### ETag Implementation
+
+**ETag Generation Strategy**: [Content hash / Version number / Timestamp / Composite]
+
+**Journey-Based ETag Usage**:
+- **Resource**: GET /api/[resource]
+  - **ETag format**: [Example: "v1-abc123" / "resource-123-20250201T103000Z"]
+  - **Generation method**: [Hash of response body / Database version column / updated_at timestamp / Composite ID+timestamp]
+  - **Journey reasoning**: [Why this ETag strategy serves the journey]
+
+**Example**:
+```
+Resource: GET /api/frameworks
+- ETag format: "frameworks-v1-20250201"
+- Generation: Hash of framework list JSON
+- Why: Framework list is small (50KB), updates weekly → Hash generation cost is minimal, provides accurate cache validation
+```
+
+**Conditional Request Flow**:
+1. Client requests resource → Server returns 200 OK + ETag header
+2. Client caches response with ETag value
+3. Cache expires (based on max-age) → Client sends If-None-Match: [ETag]
+4. Resource unchanged → Server returns 304 Not Modified (no body → saves bandwidth)
+5. Resource changed → Server returns 200 OK + new ETag + updated response body
+
+**Journey-Based ETag Reasoning**:
+[2-3 sentences explaining which resources benefit from ETags based on:
+- Response size (large responses benefit more from 304 Not Modified)
+- Update frequency (frequently updated resources need efficient revalidation)
+- Access patterns (high-traffic endpoints benefit from bandwidth savings)]
+
+### Compression Configuration
+
+**Response Size Thresholds**:
+- **<1KB**: No compression (overhead not worth it)
+- **1KB-100KB**: gzip (widely supported, good compression ratio)
+- **>100KB**: Brotli (better compression than gzip, supported by modern browsers)
+
+**Content-Type Compression Map**:
+- **application/json**: Compress with Brotli/gzip (typical 70-90% reduction)
+- **text/html**: Compress with Brotli/gzip
+- **text/css, text/javascript**: Compress with Brotli/gzip
+- **image/jpeg, image/png**: No compression (already compressed formats)
+- **application/pdf**: No compression (already compressed)
+- **video/mp4**: No compression (already compressed)
+- **[Other content types from journey]**: [Compress or not? Why?]
+
+**Journey-Based Compression Examples**:
+
+**Journey Step [X]**: [Resource description]
+- **Response size**: [50KB uncompressed]
+- **Content-Type**: [application/json]
+- **Compression**: Brotli (50KB → 10KB = 80% reduction)
+- **Journey reasoning**: [Mobile users in APAC region → Bandwidth savings critical for user experience]
+
+**Journey Step [Y]**: [Resource description]
+- **Response size**: [500 bytes]
+- **Content-Type**: [application/json]
+- **Compression**: None (<1KB threshold)
+- **Journey reasoning**: [Small response, compression overhead exceeds benefit]
+
+### Journey-Based Caching Reasoning
+
+[3-5 sentences tracing HTTP caching strategy to:
+- **Journey resource access patterns**: Which steps read which resources? How often?
+- **Data update frequency**: From Session 7 database schema and journey flows (e.g., "documents table: immutable after upload → Cache-Control: private, max-age=3600")
+- **Bandwidth constraints**: Mobile users? Global access? CDN benefits?
+- **Security requirements**: Public vs private vs sensitive data (from journey and Session 4 architecture)
+- **Performance goals**: Session 4 metrics (response time targets, concurrent user load, cost optimization)]
+
+**Example**: "Journey Step 2 (view compliance frameworks) accesses public framework list updated weekly (from Session 7: frameworks table has weekly sync job) → Cache-Control: public, max-age=3600 enables CDN edge caching → Reduces origin server load by 70% for 10,000 monthly users globally. Journey Step 3 (view private documents) returns user-owned document metadata (Session 7: documents table, user_id ownership) → Cache-Control: private, max-age=300 allows browser caching without exposing private data to CDN. Brotli compression on JSON responses reduces average 50KB framework list to 10KB → 80% bandwidth savings critical for mobile users in APAC region identified in journey behavioral profile (Session 1: 40% mobile traffic, 30% from low-bandwidth regions)."
+
+### Performance Impact
+
+**Metrics to Track** (link to Session 14 observability):
+- **Cache hit rate**: % of requests served from cache (target: 60-80% for public content)
+- **Bandwidth savings**: MB saved via caching + compression (target: 70-80% reduction)
+- **304 Not Modified rate**: % of revalidations that skip body transfer (target: 40-60% for ETags)
+- **Average response size**: Before/after compression (track compression ratio)
+- **Origin server load reduction**: Requests avoided via caching (% reduction in origin traffic)
+
+**Journey-Based Performance Targets**:
+- **Journey Step [X]** (public content):
+  - Cache hit rate: [70%] (CDN edge serving)
+  - Origin load reduction: [70%] of requests
+- **Journey Step [Y]** (private content):
+  - 304 rate: [50%] (ETag revalidation)
+  - Bandwidth savings: [80%] (Brotli compression)
+
+---
+
 ## Error Handling Philosophy
 
 ### Standard Error Format
@@ -452,16 +1065,34 @@ All errors use consistent JSON format:
 ```
 
 **Rate Limit Error** (429):
-```json
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 60
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1699315200
+
 {
   "error": {
     "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Rate limit exceeded. Try again later.",
-    "details": {
-      "limit": 100,
-      "remaining": 0,
-      "reset_at": "2025-11-11T11:00:00Z"
-    }
+    "message": "Rate limit exceeded. Please retry after 60 seconds.",
+    "retry_after_seconds": 60,
+    "request_id": "req_abc123"
+  }
+}
+```
+
+**Service Unavailable Error** (503):
+```http
+HTTP/1.1 503 Service Unavailable
+Retry-After: 30
+
+{
+  "error": {
+    "code": "SERVICE_TEMPORARILY_UNAVAILABLE",
+    "message": "Service temporarily unavailable. Please retry after 30 seconds.",
+    "retry_after_seconds": 30,
+    "request_id": "req_abc123"
   }
 }
 ```
@@ -638,30 +1269,66 @@ Before considering this session complete:
 
 **Journey Alignment**:
 - [ ] API paradigm decision traces to specific journey steps
+- [ ] REST design patterns documented (if paradigm = REST)
 - [ ] Serialization format aligns with performance/bandwidth needs from journey
 - [ ] Authentication strategy matches journey security requirements
+- [ ] Security patterns reference specific journey steps and database tables
 - [ ] Rate limiting aligns with pricing model and journey scale
 - [ ] Pagination approach fits data volume and UX needs
+- [ ] API documentation standards defined (naming, timestamps, UUIDs, null handling)
 
 **Decision Traceability**:
 - [ ] Each decision cites journey steps, tech stack (Session 3), or architecture (Session 4)
 - [ ] Paradigm choice references at least 3 of 5 decision criteria
 - [ ] Serialization format references paradigm alignment
+- [ ] OWASP patterns cite journey steps or database schema (Session 7)
+- [ ] Input validation traces to journey input scenarios
 - [ ] No decisions are arbitrary or "best practice" without reasoning
 
 **Completeness**:
 - [ ] All 5 API paradigm criteria analyzed
 - [ ] All 5+ serialization format criteria analyzed
 - [ ] Authentication includes method, placement, lifetime, authorization patterns
+- [ ] OWASP API Top 10 protection patterns documented for applicable risks
+- [ ] Input validation strategy includes paradigm-specific approach and sanitization
+- [ ] Security headers documented (HSTS, X-Content-Type-Options, X-Frame-Options, CSP)
 - [ ] Rate limiting includes limits by tier and endpoint-specific rules
 - [ ] Pagination includes approach, format, and when to use
+- [ ] HTTP caching strategy documented (if REST/HTTP-based paradigm)
 - [ ] Error handling includes format, status codes, and journey-based design
 - [ ] Scale-forward strategy for MVP → Growth → Maturity
+
+**Security Coverage (OWASP API Top 10 2023)**:
+- [ ] API1 (BOLA) - Analyzed for user-owned resources with ownership check patterns
+- [ ] API3 (Property-Level Auth) - Analyzed for sensitive fields with field-level filtering
+- [ ] API5 (BFLA) - Analyzed for admin/owner endpoints with role enforcement
+- [ ] API6 (Business Flows) - Analyzed for abuse scenarios with business logic rate limiting
+- [ ] API7 (SSRF) - Analyzed for user-provided URLs with IP blocking and allowlists
+- [ ] API8 (Security Misconfiguration) - Security headers documented (HSTS, CSP, X-Content-Type-Options, X-Frame-Options)
+- [ ] API10 (Unsafe API Consumption) - Analyzed for third-party API dependencies with timeout/circuit breaker patterns
+- [ ] Input validation strategy complete with schema validation and sanitization rules
+- [ ] All OWASP patterns trace to specific journey steps or database tables (Session 7)
+
+**Resilience & Performance Coverage**:
+- [ ] Idempotency patterns documented for POST/PATCH endpoints (especially financial operations)
+- [ ] Retry-After headers specified for 429/503 responses
+- [ ] Circuit breaker configuration documented for third-party API consumption
+- [ ] HTTP caching strategy documented (if REST/HTTP-based paradigm) with ETag and Cache-Control
+- [ ] Compression strategy documented (gzip/Brotli) with size thresholds
+- [ ] Performance metrics linked to Session 14 observability (cache hit rate, bandwidth savings, 304 rate)
+
+**Developer Experience (REST APIs)**:
+- [ ] REST design patterns documented (if paradigm = REST): resource naming, HTTP verbs, query parameters
+- [ ] API documentation standards complete: camelCase/snake_case, timestamps (ISO 8601), UUIDs, null handling
+- [ ] Pagination Link headers specified (rel="next", rel="prev")
+- [ ] Response envelope consistency documented
 
 **Technical Quality**:
 - [ ] Paradigm choice matches tech stack capabilities (Session 3)
 - [ ] Serialization format compatible with paradigm
 - [ ] Auth method from tech stack implemented correctly
+- [ ] Security patterns are journey-specific (not generic security advice)
+- [ ] Validation library matches tech stack (from Session 3)
 - [ ] Rate limiting prevents abuse without hindering UX
 - [ ] Error format actionable and user-friendly
 
@@ -670,6 +1337,7 @@ Before considering this session complete:
 - [ ] Each alternative has "Reconsider if" conditions
 - [ ] Each alternative traces back to journey or architecture
 - [ ] Scale-forward strategy explains evolution path
+- [ ] Security patterns preserved in context file for Session 10
 
 ---
 
