@@ -2,12 +2,17 @@
 
 > **Note**: This template focuses on technical implementation (OpenAPI/Protobuf schemas, endpoints, request/response examples). For high-level API design decisions (paradigm, serialization format, auth strategy), see `08-api-design.md` (Session 8).
 
-Use this template as a reference for creating complete OpenAPI specifications or Protocol Buffer definitions. Adapt to your specific project needs and implement the decisions from Session 8 (API Design).
+Use this template as a reference for creating complete API specifications. Choose the appropriate format based on Session 8 decisions:
+- **REST APIs**: OpenAPI 3.1 specification
+- **GraphQL APIs**: GraphQL SDL schema
+- **gRPC APIs**: Protocol Buffer definitions
+- **MessagePack/CBOR**: Contract structure documentation
+- **Hybrid**: Multiple specifications with mapping
 
-## Complete OpenAPI Structure
+## Complete OpenAPI 3.1 Structure
 
 ```yaml
-openapi: 3.0.3
+openapi: 3.1.0
 
 info:
   title: [Project Name] API
@@ -350,6 +355,60 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  # GDPR Data Export Endpoint (Phase 1 Compliance Example)
+  /api/users/{user_id}/export:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: User ID to export data for
+    get:
+      summary: Export all user data (GDPR Article 20 compliance)
+      description: |
+        Returns all personal data in machine-readable JSON format.
+        Required by GDPR Article 20 (Right to Data Portability).
+
+        **Access Control**: Only the user themselves can export their data.
+        **Data Included**: All PII fields across all tables.
+        **Format**: JSON (machine-readable, structured)
+      tags: [Users, GDPR]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User data export
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataExport'
+              examples:
+                success:
+                  summary: Complete user data export
+                  value:
+                    user:
+                      id: "123e4567-e89b-12d3-a456-426614174000"
+                      email: "user@example.com"
+                      name: "Jane Smith"
+                      role: "user"
+                      created_at: "2024-01-01T00:00:00Z"
+                    documents:
+                      - id: "doc_abc123"
+                        name: "Privacy Policy.pdf"
+                        uploaded_at: "2024-06-15T10:00:00Z"
+                    activity_log:
+                      - action: "login"
+                        timestamp: "2025-01-15T14:30:00Z"
+                        ip_address: "192.0.2.1"
+                    exported_at: "2025-01-15T14:35:00Z"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+          description: User can only export their own data
+
 components:
   securitySchemes:
     bearerAuth:
@@ -493,6 +552,125 @@ components:
         uploaded_at:
           type: string
           format: date-time
+
+    # User Schema with PII Marking and Comprehensive Validation (Phase 1 Example)
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - role
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          minLength: 5
+          maxLength: 255
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: User email address (PII - handle with care)
+          example: "user@example.com"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: '^[a-zA-Z\s\-'']+$'
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: User full name (PII)
+          example: "Jane O'Connor-Smith"
+        phone:
+          type: string
+          pattern: '^\+[1-9]\d{1,14}$'
+          minLength: 10
+          maxLength: 20
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: Phone number in E.164 format (PII)
+          example: "+12025551234"
+          nullable: true
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+          description: User age in years
+          example: 35
+          nullable: true
+        role:
+          type: string
+          enum: [admin, user, guest]
+          description: User role for authorization
+          example: "user"
+        website:
+          type: string
+          format: uri
+          maxLength: 2048
+          pattern: '^https?://'
+          description: User website URL (only http/https schemes allowed)
+          example: "https://example.com"
+          nullable: true
+        preferences:
+          type: object
+          description: User preferences (dynamic structure, max 10 levels deep)
+          additionalProperties: true
+          example:
+            theme: "dark"
+            language: "en"
+            notifications: true
+        balance:
+          type: string
+          pattern: '^\d+\.\d{2}$'
+          description: Account balance in decimal format (string to preserve precision)
+          example: "1234.56"
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp (ISO 8601 with timezone)
+          example: "2025-01-15T14:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp (ISO 8601 with timezone)
+          example: "2025-01-15T14:35:00Z"
+
+    # GDPR Data Export Response (Phase 1 Compliance Example)
+    UserDataExport:
+      type: object
+      description: Complete user data export per GDPR Article 20 (Right to Data Portability)
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          description: All documents owned by the user
+        activity_log:
+          type: array
+          items:
+            type: object
+            properties:
+              action:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+              ip_address:
+                type: string
+                x-pii: true
+          description: User activity history (includes PII)
+        exported_at:
+          type: string
+          format: date-time
+          description: Export generation timestamp
 
     # Pagination Schemas
     CursorPagination:
@@ -817,6 +995,719 @@ For each provider that sends webhooks:
 
 ---
 
+## Performance Optimization Patterns (Phase 3)
+
+### Response Size Limits
+
+**Default Limits:**
+- List endpoints: Default 20 items, max 100 items
+- Search endpoints: Default 50 results, max 500 results
+- Bulk operations: Max 1000 items
+
+**Example with size limits:**
+```yaml
+paths:
+  /api/documents:
+    get:
+      summary: List documents
+      description: |
+        **Performance Limits:**
+        - Default: 20 items per page
+        - Maximum: 100 items per page
+        - Response size: <1 MB
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+```
+
+### Compression Strategy
+
+**Compression Decision Matrix:**
+
+| Endpoint | Format | Compress? | Algorithm | Impact |
+|----------|--------|-----------|-----------|--------|
+| GET /api/documents | JSON | Yes | gzip | 2.4 KB → 600 bytes (75%) |
+| GET /api/users/:id | JSON | Yes | gzip | 1.2 KB → 300 bytes (75%) |
+| gRPC ListDocuments | Protobuf | Conditional | Snappy | 150 bytes → 120 bytes (20%) |
+| WebSocket /live | JSON | No | — | Real-time, latency critical |
+
+**Example OpenAPI compression documentation:**
+```yaml
+paths:
+  /api/documents:
+    get:
+      summary: List documents
+      description: |
+        **Compression:**
+        - Supports gzip and brotli (Accept-Encoding header)
+        - Responses >1 KB automatically compressed
+        - Typical: 2400 bytes → 600 bytes (75% reduction)
+      responses:
+        '200':
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                enum: [gzip, br, identity]
+```
+
+### Field Selection (Sparse Fieldsets)
+
+**REST API Pattern:**
+```yaml
+paths:
+  /api/users:
+    get:
+      summary: List users
+      description: |
+        **Field Selection:**
+        - Minimal: `?fields[users]=id,name` (200 bytes per user)
+        - Full: No fields param (1200 bytes per user)
+        - Savings: 1000 bytes per user (83% reduction)
+      parameters:
+        - name: fields[users]
+          in: query
+          schema:
+            type: string
+          description: |
+            Comma-separated fields to include.
+            Example: ?fields[users]=id,name,email
+          example: "id,name,email"
+```
+
+**GraphQL Pattern:**
+```graphql
+# Minimal query (200 bytes response)
+query GetUsers {
+  users {
+    id
+    name
+  }
+}
+
+# Full query (1200 bytes response)
+query GetUsersDetailed {
+  users {
+    id
+    name
+    email
+    phone
+    age
+    role
+    preferences { theme, language }
+    created_at
+    updated_at
+  }
+}
+```
+
+**gRPC FieldMask Pattern:**
+```protobuf
+import "google/protobuf/field_mask.proto";
+
+message GetUserRequest {
+  string user_id = 1;
+  google.protobuf.FieldMask field_mask = 2;
+}
+
+// Usage: field_mask: {paths: ["id", "name", "email"]}
+```
+
+### Caching Headers
+
+**Caching Patterns:**
+
+| Endpoint Type | Cache-Control | ETag | Max-Age |
+|---------------|---------------|------|---------|
+| User profile | `private, max-age=300, must-revalidate` | Yes | 5 minutes |
+| Public content | `public, max-age=3600` | Yes | 1 hour |
+| Static assets | `public, max-age=31536000, immutable` | No | 1 year |
+| Real-time data | `no-store, no-cache` | No | Never |
+
+**Example OpenAPI with caching:**
+```yaml
+paths:
+  /api/users/{id}:
+    get:
+      summary: Get user profile
+      description: |
+        **Caching:**
+        - Cached for 5 minutes (Cache-Control: private, max-age=300)
+        - ETag support (If-None-Match → 304 Not Modified)
+        - Bandwidth saved: 1200 bytes → 100 bytes (92% on 304)
+      responses:
+        '200':
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+              example: "private, max-age=300, must-revalidate"
+            ETag:
+              schema:
+                type: string
+              example: '"user_123_1704124800"'
+            Last-Modified:
+              schema:
+                type: string
+                format: date-time
+              example: "2025-01-15T14:30:00Z"
+        '304':
+          description: Not Modified (ETag match, cached version valid)
+```
+
+**Caching Impact:**
+```yaml
+x-caching-impact:
+  endpoint: /api/users/{id}
+  requests_per_minute: 1000
+
+  without_caching:
+    bandwidth: 1.2 MB/min = 1.7 GB/day
+
+  with_5min_cache:
+    cache_hit_ratio: 80%
+    bandwidth: 0.24 MB/min = 346 MB/day
+    savings: 1.35 GB/day (80% reduction)
+
+  with_etag:
+    304_responses: 70% of cache misses
+    304_size: 100 bytes vs 1200 bytes full
+    additional_savings: 64% on expired cache
+```
+
+### Protobuf Varint Optimization
+
+**Type Selection Guide:**
+
+```protobuf
+message User {
+  // Small IDs (1-10,000) → Use varint (1-2 bytes)
+  int64 user_id = 1;  // NOT fixed64 (8 bytes)
+
+  // Counts (0-1000) → Use varint (1-2 bytes)
+  int32 document_count = 2;
+
+  // Timestamps (Unix seconds) → Use int64
+  int64 created_at = 3;
+
+  // UUIDs → Use fixed64 (faster, uniformly distributed)
+  fixed64 uuid_high = 4;
+  fixed64 uuid_low = 5;
+
+  // Small negatives → Use sint32/sint64 (zigzag encoding)
+  sint32 balance_delta = 6;
+
+  // Money → Use string (exact decimal precision)
+  string price = 7;  // "19.99"
+}
+```
+
+**Varint Savings:**
+```yaml
+x-varint-savings:
+  scenario: 100 user records
+
+  using_fixed64_for_user_id:
+    bytes: 800 bytes (8 bytes × 100)
+
+  using_varint_int64:
+    bytes: 100 bytes (1 byte × 100 for IDs 1-100)
+    savings: 700 bytes (87% reduction)
+
+  large_ids:
+    user_ids: 1,000,000 - 9,999,999
+    varint_bytes: 3-4 bytes
+    fixed64_bytes: 8 bytes
+    savings: 50%+ per field
+```
+
+---
+
+## API Versioning & Evolution (Phase 2)
+
+### Versioning Strategy
+
+**Chosen Strategy**: [URL Versioning / Header Versioning / Query Param / Content Negotiation]
+
+**Rationale**: [Why this strategy fits the project - consider: public vs internal API, client coordination, testing complexity]
+
+**Example**:
+```yaml
+# URL Versioning Example
+servers:
+  - url: https://api.example.com/v2
+    description: Current version (v2)
+  - url: https://api.example.com/v1
+    description: Deprecated (sunset: 2026-06-01)
+
+info:
+  version: 2.0.0
+  description: |
+    ## Version History
+    - **v2.0** (current, released: 2026-01-15): [Major changes - e.g., User schema restructured]
+    - **v1.0** (deprecated, sunset: 2026-06-01): Legacy schema
+```
+
+### Deprecation Examples
+
+**Deprecated Endpoint Example**:
+```yaml
+paths:
+  /api/v1/users:
+    get:
+      deprecated: true
+      summary: List users (DEPRECATED)
+      description: |
+        **DEPRECATED:** This endpoint will be removed on 2026-06-01.
+        Use `/api/v2/users` instead.
+
+        **Migration Guide**:
+        - v2 uses `id` instead of `user_id`
+        - v2 nests profile data under `profile` object
+        - v2 returns ISO 8601 timestamps (v1 used Unix timestamps)
+      x-sunset-date: "2026-06-01"
+      x-replacement-endpoint: "/api/v2/users"
+      tags: [Users, Deprecated]
+```
+
+**Deprecated Field Example**:
+```yaml
+components:
+  schemas:
+    User:
+      properties:
+        user_id:
+          type: string
+          description: |
+            **DEPRECATED:** User identifier (use 'id' instead).
+            Will be removed on 2026-06-01.
+          deprecated: true
+          x-sunset-date: "2026-06-01"
+          x-replacement-field: "id"
+          example: "user_abc123"
+        id:
+          type: string
+          description: User identifier (replaces deprecated user_id)
+          example: "user_abc123"
+```
+
+### Protobuf Reserved Fields (if using gRPC)
+
+**Example of safe Protobuf evolution**:
+```protobuf
+// Version 1 (initial release)
+message User {
+  string name = 1;
+  string email = 2;
+  string status = 3;  // Simple string status
+}
+
+// Version 2 (evolved - field 3 replaced with enum)
+message User {
+  string name = 1;
+  string email = 2;
+
+  reserved 3;  // CRITICAL: Reserve field number 3 (never reuse!)
+  reserved "status";  // Also reserve field name
+
+  UserStatus status_v2 = 4;  // Replacement field gets NEW number
+  string middle_name = 5;  // New optional field
+  google.protobuf.Timestamp created_at = 6;  // New field
+}
+
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;  // Always include zero value
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_INACTIVE = 2;
+  USER_STATUS_SUSPENDED = 3;
+}
+```
+
+**Why reserved fields matter**:
+- Prevents field number reuse (causes data corruption)
+- Prevents field name reuse (causes confusion)
+- Documents evolution history (shows what was removed)
+
+### Breaking Change Log
+
+Document all breaking changes between versions:
+
+| Version | Release Date | Breaking Changes | Migration Path |
+|---------|--------------|------------------|----------------|
+| **v2.0** | 2026-01-15 | - Renamed `user_id` → `id`<br>- Changed timestamp format (Unix → ISO 8601)<br>- Nested profile data | See migration guide below |
+| **v1.0** | 2025-06-01 | Initial release | N/A |
+
+### Migration Guide (v1 → v2)
+
+**Field Mapping**:
+```javascript
+// v1 response
+{
+  "user_id": "user_abc123",
+  "name": "Alice Smith",
+  "email": "alice@example.com",
+  "created_at": 1704124800  // Unix timestamp
+}
+
+// v2 response (equivalent)
+{
+  "id": "user_abc123",
+  "profile": {
+    "name": "Alice Smith",
+    "email": "alice@example.com"
+  },
+  "created_at": "2025-01-01T12:00:00Z"  // ISO 8601
+}
+```
+
+**Client Migration Steps**:
+1. Update API base URL: `https://api.example.com/v1` → `https://api.example.com/v2`
+2. Replace `user_id` references with `id`
+3. Update timestamp parsing (Unix → ISO 8601)
+4. Access profile fields via `profile.name` instead of `name`
+5. Test against v2 staging environment
+6. Deploy updated client code
+
+**Timeline**:
+- **2026-01-15**: v2 released, v1 marked deprecated
+- **2026-03-01**: v1 deprecation warnings in response headers
+- **2026-06-01**: v1 sunset (removed, returns 410 Gone)
+
+### Backward Compatibility Rules
+
+**OpenAPI/REST Rules**:
+- ✅ **Safe**: Add optional fields, add new endpoints, make required fields optional
+- ❌ **Breaking**: Remove fields, rename fields, change types, add required fields
+
+**Protobuf Rules**:
+- ✅ **Safe**: Add optional fields with new numbers, mark fields as deprecated
+- ❌ **Breaking**: Change field numbers, change types, remove fields without reserved, reuse field numbers
+
+### Version Compatibility Testing
+
+**Contract Tests**:
+```yaml
+# Ensure v2 API maintains backward compatibility with v1 clients
+tests:
+  - name: v1_client_reads_v2_response
+    description: v2 API returns v1-compatible data when requested
+    request:
+      url: /api/v2/users
+      headers:
+        Accept: application/vnd.company.v1+json
+    expect:
+      - status: 200
+      - response contains: user_id  # v1 field name
+      - response contains: created_at as integer  # v1 format
+
+  - name: v2_client_reads_v1_response
+    description: v2 client handles v1 responses gracefully
+    request:
+      url: /api/v1/users
+    expect:
+      - status: 200
+      - client parses user_id as id
+      - client converts Unix timestamp to ISO 8601
+```
+
+---
+
+## Code Generation (Phase 4)
+
+### Client SDK Generation
+
+This section provides framework for auto-generating type-safe client SDKs from API contracts. Session 12 (scaffold generation) should use these patterns to create client code automatically.
+
+#### TypeScript/JavaScript Client Generation
+
+```bash
+# Install OpenAPI generator
+npm install -g @openapitools/openapi-generator-cli
+
+# Generate TypeScript client with axios
+openapi-generator-cli generate \
+  -i product-guidelines/08b-api-contracts/openapi.yaml \
+  -g typescript-axios \
+  -o src/api-client \
+  --additional-properties=supportsES6=true,withInterfaces=true,useSingleRequestParameter=true
+
+# Generated structure:
+# src/api-client/
+#   api/
+#     documents-api.ts       # DocumentsApi class with type-safe methods
+#     users-api.ts           # UsersApi class
+#   models/
+#     document.ts            # Document interface
+#     user.ts                # User interface
+#   configuration.ts         # API config (base URL, auth)
+#   index.ts                 # Exports
+```
+
+**Usage Example:**
+```typescript
+import { DocumentsApi, Configuration } from './api-client';
+
+const config = new Configuration({
+  basePath: 'https://api.example.com',
+  accessToken: 'Bearer eyJhbGc...'
+});
+
+const documentsApi = new DocumentsApi(config);
+
+// Type-safe method call
+const response = await documentsApi.listDocuments({
+  limit: 20,
+  status: 'active'  // TypeScript validates enum values
+});
+
+// Type-safe response access
+response.data.data.forEach(doc => {
+  console.log(doc.name);  // TypeScript knows Document shape
+  console.log(doc.invalid);  // ❌ TypeScript compile error
+});
+```
+
+#### Python Client Generation
+
+```bash
+# Generate Python client with httpx
+openapi-generator-cli generate \
+  -i product-guidelines/08b-api-contracts/openapi.yaml \
+  -g python \
+  -o python-client \
+  --additional-properties=packageName=api_client,library=httpx
+
+# Generated structure:
+# python-client/
+#   api_client/
+#     api/
+#       documents_api.py     # DocumentsApi class
+#     models/
+#       document.py          # Document dataclass
+```
+
+**Usage Example:**
+```python
+from api_client import ApiClient, Configuration, DocumentsApi
+
+config = Configuration(
+    host='https://api.example.com',
+    access_token='Bearer eyJhbGc...'
+)
+
+with ApiClient(config) as api_client:
+    documents_api = DocumentsApi(api_client)
+    response = documents_api.list_documents(limit=20, status='active')
+
+    for doc in response.data:
+        print(doc.name)  # IDE autocompletes Document fields
+```
+
+#### Go Client Generation (gRPC)
+
+```bash
+# Install protoc plugins
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+# Generate Go client from .proto files
+protoc \
+  --go_out=. \
+  --go_opt=paths=source_relative \
+  --go-grpc_out=. \
+  --go-grpc_opt=paths=source_relative \
+  product-guidelines/08b-api-contracts/*.proto
+```
+
+**Usage Example:**
+```go
+import pb "github.com/example/api"
+
+conn, _ := grpc.Dial("api.example.com:443", grpc.WithTransportCredentials(creds))
+client := pb.NewDocumentServiceClient(conn)
+
+resp, err := client.ListDocuments(ctx, &pb.ListDocumentsRequest{
+    PageSize: 20,
+    Filter:   "status:active",
+})
+
+for _, doc := range resp.Documents {
+    fmt.Println(doc.Name)  // IDE knows Document fields
+}
+```
+
+### Session 12 Scaffold Integration
+
+**CRITICAL:** Session 12 should auto-generate client SDKs from these contracts.
+
+**Integration Steps:**
+1. Read API contracts from `product-guidelines/08b-api-contracts/openapi.yaml` or `.proto` files
+2. Detect serialization format from Session 8 (`08-api-design.ctx.md`)
+3. Generate client SDK using appropriate generator (openapi-generator-cli or protoc)
+4. Place generated code in project structure:
+   - Frontend: `frontend/src/api-client/` (TypeScript)
+   - Backend: `backend/internal/api/` (Go), `backend/api_client/` (Python)
+   - Monorepo: `packages/api-client/` (shared)
+5. Add generation scripts to package.json or Makefile
+
+**Example package.json:**
+```json
+{
+  "scripts": {
+    "generate:api": "openapi-generator-cli generate -i ../product-guidelines/08b-api-contracts/openapi.yaml -g typescript-axios -o src/api-client",
+    "build": "npm run generate:api && vite build"
+  }
+}
+```
+
+**Example Makefile:**
+```makefile
+.PHONY: generate-api
+generate-api:
+	protoc --go_out=. --go-grpc_out=. product-guidelines/08b-api-contracts/*.proto
+
+.PHONY: build
+build: generate-api
+	go build -o bin/server cmd/server/main.go
+```
+
+### Contract Testing
+
+**Contract testing ensures API implementation matches specification.**
+
+#### Dredd (REST/OpenAPI Contract Testing)
+
+```bash
+# Install Dredd
+npm install -g dredd
+
+# Test API implementation against OpenAPI spec
+dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
+```
+
+**Dredd Configuration:**
+```yaml
+# dredd.yml
+reporter: ['html']
+output: ['test-results/contract-tests.html']
+hookfiles: 'test/hooks/*.ts'
+language: typescript
+hooks-worker-timeout: 5000
+
+# Add authentication hooks (test/hooks/auth.ts)
+# import hooks from 'hooks';
+# hooks.beforeEach((transaction, done) => {
+#   transaction.request.headers['Authorization'] = 'Bearer test-token';
+#   done();
+# });
+```
+
+#### Contract Testing Story for Session 10 Backlog
+
+**When Session 10 generates backlog, include this story:**
+
+```markdown
+### Story: API Contract Testing (Technical Enabler)
+
+**User Story:** As a developer, I want contract tests to run in CI so that API changes don't break clients.
+
+**Description:** Implement Dredd contract testing to validate backend API matches OpenAPI spec.
+
+**Acceptance Criteria:**
+- [ ] Dredd installed and configured
+- [ ] All endpoints in `08b-api-contracts/openapi.yaml` tested
+- [ ] Tests run in CI/CD pipeline (GitHub Actions)
+- [ ] Authentication hooks implemented (test tokens)
+- [ ] Test report generated (HTML format)
+- [ ] Failures block deployment
+
+**Technical Details:**
+- Install: `npm install -g dredd`
+- Config: `dredd.yml` with hooks
+- Run: `dredd openapi.yaml http://localhost:3000`
+- CI: Add to `.github/workflows/test.yml`
+
+**Effort:** 3 points (Medium)
+**Priority:** High (prevents breaking changes)
+```
+
+#### CI/CD Integration
+
+**Add to `.github/workflows/test.yml`:**
+```yaml
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+
+      - name: Start backend server
+        run: |
+          npm install
+          npm run migrate:test
+          npm run start:test &
+          sleep 5  # Wait for server ready
+
+      - name: Run contract tests
+        run: |
+          npm install -g dredd
+          dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: contract-test-results
+          path: test-results/
+```
+
+### Type Consistency Validation
+
+**Ensure DB type → API type → Client type alignment.**
+
+**Example Validation Script (Session 12 should generate):**
+```typescript
+// scripts/validate-type-consistency.ts
+import { readFileSync } from 'fs';
+import { parse } from 'yaml';
+
+const dbSchema = readFileSync('product-guidelines/07-database-schema.md', 'utf8');
+const apiContracts = parse(readFileSync('product-guidelines/08b-api-contracts/openapi.yaml', 'utf8'));
+
+const errors = [];
+
+// Check: Database NUMERIC → API string (not number)
+if (dbSchema.includes('NUMERIC') &&
+    apiContracts.components.schemas.User.properties.balance.type === 'number') {
+  errors.push('CRITICAL: NUMERIC mapped to number (should be string for precision)');
+}
+
+// Check: Database BIGINT → API string in JSON (JavaScript safety)
+if (dbSchema.includes('BIGINT') &&
+    apiContracts.components.schemas.User.properties.id.type === 'number') {
+  errors.push('CRITICAL: BIGINT mapped to number (should be string for JS safety)');
+}
+
+if (errors.length > 0) {
+  console.error('Type consistency validation FAILED:');
+  errors.forEach(err => console.error(`  - ${err}`));
+  process.exit(1);
+}
+
+console.log('Type consistency validation passed');
+```
+
+---
+
 ## Notes
 
 - Replace all `[Resource]`, `[Project Name]`, `[domain]`, etc. with actual values
@@ -829,3 +1720,6 @@ For each provider that sends webhooks:
 - Include rate limit headers in responses
 - Use consistent naming (camelCase or snake_case, pick one)
 - Validate with OpenAPI validator before finalizing
+- **NEW (Phase 4):** Document code generation commands for all tech stack languages
+- **NEW (Phase 4):** Include Session 12 integration notes for auto-generated clients
+- **NEW (Phase 4):** Specify contract testing approach (Dredd, Pact, or grpc-testing)
