@@ -650,6 +650,14 @@ done
 **During PR Review**: Use `/review-pr` with VALIDATION-CHECKLIST.md Category 12
 **Post-Merge**: Epic #167 tracks refactor of existing bloated commands
 
+### Documented Exceptions
+
+**Agent Size Exceptions** (with explicit justification):
+
+- **`design-cross-cutting-concerns.md` (564 lines)**: Cohesive cross-cutting pattern group (caching, circuit breakers, outbox pattern, observability) with high operational coupling. Production systems typically need all four patterns together, so splitting into separate agents would increase orchestration complexity without significant token savings. Patterns share common implementation concerns (error handling, monitoring, resource management) that benefit from unified presentation. Exception approved in PR #171 (Epic #167).
+
+- **`design-transaction-boundaries.md` (432 lines)**: Single-pattern agent with 8% overage due to comprehensive distributed transaction guidance (saga patterns, compensation logic, event sourcing). Tight coupling between transaction types makes splitting counterproductive. Minor overage accepted in PR #171 (Epic #167).
+
 ---
 
 **Remember:** Stack-Driven is a generative framework that derives optimal decisions from user journey analysis. Maintain journey-first philosophy, ensure decision traceability, prioritize specificity over genericity, and **enforce agentic architecture through sub-agent decomposition**.
