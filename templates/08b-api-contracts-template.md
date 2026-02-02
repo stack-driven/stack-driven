@@ -990,6 +990,239 @@ For each provider that sends webhooks:
 
 ---
 
+## Performance Optimization Patterns (Phase 3)
+
+### Response Size Limits
+
+**Default Limits:**
+- List endpoints: Default 20 items, max 100 items
+- Search endpoints: Default 50 results, max 500 results
+- Bulk operations: Max 1000 items
+
+**Example with size limits:**
+```yaml
+paths:
+  /api/documents:
+    get:
+      summary: List documents
+      description: |
+        **Performance Limits:**
+        - Default: 20 items per page
+        - Maximum: 100 items per page
+        - Response size: <1 MB
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+```
+
+### Compression Strategy
+
+**Compression Decision Matrix:**
+
+| Endpoint | Format | Compress? | Algorithm | Impact |
+|----------|--------|-----------|-----------|--------|
+| GET /api/documents | JSON | Yes | gzip | 2.4 KB → 600 bytes (75%) |
+| GET /api/users/:id | JSON | Yes | gzip | 1.2 KB → 300 bytes (75%) |
+| gRPC ListDocuments | Protobuf | Conditional | Snappy | 150 bytes → 120 bytes (20%) |
+| WebSocket /live | JSON | No | — | Real-time, latency critical |
+
+**Example OpenAPI compression documentation:**
+```yaml
+paths:
+  /api/documents:
+    get:
+      summary: List documents
+      description: |
+        **Compression:**
+        - Supports gzip and brotli (Accept-Encoding header)
+        - Responses >1 KB automatically compressed
+        - Typical: 2400 bytes → 600 bytes (75% reduction)
+      responses:
+        '200':
+          headers:
+            Content-Encoding:
+              schema:
+                type: string
+                enum: [gzip, br, identity]
+```
+
+### Field Selection (Sparse Fieldsets)
+
+**REST API Pattern:**
+```yaml
+paths:
+  /api/users:
+    get:
+      summary: List users
+      description: |
+        **Field Selection:**
+        - Minimal: `?fields[users]=id,name` (200 bytes per user)
+        - Full: No fields param (1200 bytes per user)
+        - Savings: 1000 bytes per user (83% reduction)
+      parameters:
+        - name: fields[users]
+          in: query
+          schema:
+            type: string
+          description: |
+            Comma-separated fields to include.
+            Example: ?fields[users]=id,name,email
+          example: "id,name,email"
+```
+
+**GraphQL Pattern:**
+```graphql
+# Minimal query (200 bytes response)
+query GetUsers {
+  users {
+    id
+    name
+  }
+}
+
+# Full query (1200 bytes response)
+query GetUsersDetailed {
+  users {
+    id
+    name
+    email
+    phone
+    age
+    role
+    preferences { theme, language }
+    created_at
+    updated_at
+  }
+}
+```
+
+**gRPC FieldMask Pattern:**
+```protobuf
+import "google/protobuf/field_mask.proto";
+
+message GetUserRequest {
+  string user_id = 1;
+  google.protobuf.FieldMask field_mask = 2;
+}
+
+// Usage: field_mask: {paths: ["id", "name", "email"]}
+```
+
+### Caching Headers
+
+**Caching Patterns:**
+
+| Endpoint Type | Cache-Control | ETag | Max-Age |
+|---------------|---------------|------|---------|
+| User profile | `private, max-age=300, must-revalidate` | Yes | 5 minutes |
+| Public content | `public, max-age=3600` | Yes | 1 hour |
+| Static assets | `public, max-age=31536000, immutable` | No | 1 year |
+| Real-time data | `no-store, no-cache` | No | Never |
+
+**Example OpenAPI with caching:**
+```yaml
+paths:
+  /api/users/{id}:
+    get:
+      summary: Get user profile
+      description: |
+        **Caching:**
+        - Cached for 5 minutes (Cache-Control: private, max-age=300)
+        - ETag support (If-None-Match → 304 Not Modified)
+        - Bandwidth saved: 1200 bytes → 100 bytes (92% on 304)
+      responses:
+        '200':
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+              example: "private, max-age=300, must-revalidate"
+            ETag:
+              schema:
+                type: string
+              example: '"user_123_1704124800"'
+            Last-Modified:
+              schema:
+                type: string
+                format: date-time
+              example: "2025-01-15T14:30:00Z"
+        '304':
+          description: Not Modified (ETag match, cached version valid)
+```
+
+**Caching Impact:**
+```yaml
+x-caching-impact:
+  endpoint: /api/users/{id}
+  requests_per_minute: 1000
+
+  without_caching:
+    bandwidth: 1.2 MB/min = 1.7 GB/day
+
+  with_5min_cache:
+    cache_hit_ratio: 80%
+    bandwidth: 0.24 MB/min = 346 MB/day
+    savings: 1.35 GB/day (80% reduction)
+
+  with_etag:
+    304_responses: 70% of cache misses
+    304_size: 100 bytes vs 1200 bytes full
+    additional_savings: 64% on expired cache
+```
+
+### Protobuf Varint Optimization
+
+**Type Selection Guide:**
+
+```protobuf
+message User {
+  // Small IDs (1-10,000) → Use varint (1-2 bytes)
+  int64 user_id = 1;  // NOT fixed64 (8 bytes)
+
+  // Counts (0-1000) → Use varint (1-2 bytes)
+  int32 document_count = 2;
+
+  // Timestamps (Unix seconds) → Use int64
+  int64 created_at = 3;
+
+  // UUIDs → Use fixed64 (faster, uniformly distributed)
+  fixed64 uuid_high = 4;
+  fixed64 uuid_low = 5;
+
+  // Small negatives → Use sint32/sint64 (zigzag encoding)
+  sint32 balance_delta = 6;
+
+  // Money → Use string (exact decimal precision)
+  string price = 7;  // "19.99"
+}
+```
+
+**Varint Savings:**
+```yaml
+x-varint-savings:
+  scenario: 100 user records
+
+  using_fixed64_for_user_id:
+    bytes: 800 bytes (8 bytes × 100)
+
+  using_varint_int64:
+    bytes: 100 bytes (1 byte × 100 for IDs 1-100)
+    savings: 700 bytes (87% reduction)
+
+  large_ids:
+    user_ids: 1,000,000 - 9,999,999
+    varint_bytes: 3-4 bytes
+    fixed64_bytes: 8 bytes
+    savings: 50%+ per field
+```
+
+---
+
 ## API Versioning & Evolution (Phase 2)
 
 ### Versioning Strategy
