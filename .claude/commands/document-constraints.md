@@ -131,6 +131,22 @@ Read product-guidelines/01-product-strategy.ctx.md
 
     **Listen for**: Integration complexity, phasing strategy
 
+10a. **"What authentication/authorization do these integrations require?"**
+    - OAuth 2.0 scopes needed? (read-only, write, admin)
+    - API key permission levels?
+    - User consent flow requirements? (GDPR, OAuth consent screen)
+    - SSO requirements for enterprise integrations?
+
+    **Listen for**: Integration complexity, user consent flows, permission management
+
+10b. **"What are the provider's rate limits and usage tiers?"**
+    - Free tier limits? (Stripe: 100 req/sec, SendGrid: 100 emails/day free)
+    - Paid tier costs if MVP exceeds free limits?
+    - Rate limit impact on journey performance?
+    - Daily/monthly quotas? (Salesforce API calls, HubSpot contacts)
+
+    **Listen for**: Cost projections, MVP phasing constraints, scale limitations
+
 ### Phase 3: Compliance & Standards
 
 11. **"Any regulatory or compliance requirements?"**

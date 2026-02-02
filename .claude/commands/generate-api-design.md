@@ -1547,7 +1547,81 @@ All responses include `Content-Language` header indicating actual locale used.
 [Which journey steps require localized content? Reference specific steps from Session 00.]
 ```
 
-**If i18n is NOT required**: Skip this subsection and proceed with error handling.
+**If i18n is NOT required**: Skip this subsection and proceed with webhook endpoint design (if applicable).
+
+---
+
+### Step 5c: Webhook Endpoint Design (if webhooks exist from Session 2a)
+
+**Check for webhooks**: If `product-guidelines/02a-constraints.ctx.md` exists and identifies webhook integrations in Phase 2a (Question 8: event-driven integrations), include webhook endpoint design.
+
+**Sub-Agent Invocation**:
+```
+Use Task tool to invoke:
+  Agent: /.claude/agents/design-webhook-endpoints.md
+  Inputs:
+    - Webhook requirements from 02a-constraints.ctx.md (providers requiring webhooks)
+    - API paradigm chosen in Session 8 (REST, GraphQL, gRPC)
+    - Backend framework from Session 3 tech stack
+    - Journey requirements for webhook use cases
+    - Database schema from Session 7 (check if webhook_events table exists)
+  Output: Webhook Endpoint Design section to append to API design file
+```
+
+The sub-agent will:
+1. Analyze webhook requirements (Stripe, PayPal, Salesforce, SendGrid, etc.)
+2. Determine processing pattern (synchronous <5s vs asynchronous queue-based)
+3. Design idempotency strategy (event ID deduplication with UNIQUE constraint)
+4. Design signature verification (HMAC-SHA256 per provider)
+5. Design endpoint versioning (versioned vs unversioned)
+6. Design scale-forward strategy (MVP single endpoint → dedicated webhook service)
+7. Generate Webhook Endpoint Design section with journey-traced reasoning
+
+**Example Output** (what sub-agent generates):
+
+```markdown
+## Step 5c: Webhook Endpoint Design
+
+### Webhook Endpoints:
+- `/webhooks/stripe` - Stripe payment and subscription events
+- `/webhooks/salesforce` - Salesforce Change Data Capture (CDC) events
+- `/webhooks/sendgrid` - Email delivery and bounce events
+
+### Processing Pattern: Asynchronous
+
+**Reasoning**: Payment confirmation webhook (Stripe payment_intent.succeeded) triggers 3 operations:
+subscription activation (database write), access provisioning (external API call), confirmation email
+(SendGrid API). Estimated processing time: 2-4 seconds. Asynchronous processing required to respond
+to Stripe within <1s and prevent timeout retries.
+
+**Implementation**: Webhook endpoint returns 200 OK immediately after signature verification + event
+deduplication. Event enqueued to Redis (LPUSH webhook:queue). Background worker (webhook-processor
+service) consumes queue and processes events.
+
+### Idempotency:
+- **Deduplication Key**: Provider event_id
+- **Storage**: webhook_events table with UNIQUE constraint on (provider, event_id)
+- **Retry Handling**: Return 200 OK for duplicate events (already processed)
+
+### Security:
+- **Verification Method**: HMAC-SHA256 signature verification
+- **Stripe**: Requires raw body BEFORE JSON parsing (use express.raw() middleware)
+- **Salesforce**: X-Salesforce-Signature header
+- **SendGrid**: X-Twilio-Email-Event-Webhook-Signature header
+- **Secret Storage**: Environment variables per provider (STRIPE_WEBHOOK_SECRET, etc.)
+
+### Scale-Forward Strategy:
+- **MVP (0-100 events/hour)**: Single endpoint per provider, Redis queue + 1 worker
+- **Growth (100-1,000 events/hour)**: Separate webhook service, 3-5 workers, Redis Cluster
+- **Scale (>1,000 events/hour)**: Event bus (Kafka/EventBridge), auto-scaling workers
+
+**Reference**: `/reference-material/third-party-integration-patterns.md` (lines 25-118) for webhook patterns
+**Examples**: `/examples/integration-patterns-examples.md` Section 4 for code examples
+```
+
+**Why This Matters**: Eliminates ad-hoc webhook design decisions. Ensures systematic async processing, idempotency, signature verification, and scale-forward planning. Prevents production issues like duplicate processing, forged webhooks, and timeout retries.
+
+**If webhooks do NOT exist**: Skip this subsection and proceed with error handling.
 
 ---
 

@@ -206,6 +206,67 @@ Add these ONLY if criteria met:
 - **Criteria**: Add if 3+ third-party APIs (Stripe, SendGrid, Salesforce, etc.)
 - **Alternative**: If 0-2 integrations, embed integration stories in journey epics
 
+**Integration Epic Prioritization (if third-party integrations exist):**
+
+When integrations are identified in Session 2a, prioritize them based on journey criticality and MVP requirements:
+
+**P0 Integrations (Epic 01: Foundation)**:
+Integrations marked as "MVP required" in Session 2a MUST be in Foundation epic:
+- Payment processing (blocks monetization, journey Step 5+ revenue)
+- Authentication providers (blocks all journey steps requiring login)
+- Critical communication (transactional email for signup verification, password reset)
+- Compliance-required integrations (audit logging, DLP tools for HIPAA/SOC2)
+
+**Why**: These integrations are **launch blockers**. Product cannot go live without them. Implement first, test thoroughly before building business epics.
+
+**P1 Integrations (Parallel with Business Epics)**:
+Integrations that enhance but don't block journey steps can run parallel with Epic 02-04:
+- Analytics integrations (Segment, Mixpanel) - add during Epic 02-04 for early funnel data
+- Marketing automation (Mailchimp, ConvertKit) - add during Epic 03-05 for lead nurturing
+- CRM sync (Salesforce, HubSpot) - add after core journey validated (Epic 04+)
+- Secondary communication (SMS, push notifications) - add after email working
+
+**Why**: These integrations **improve** the product but aren't required for MVP validation. Can be added incrementally as business epics progress.
+
+**P2 Integrations (Post-MVP - Separate Epic)**:
+Integrations marked "Enterprise tier" or "Post-MVP" in Session 2a should be separate epic after business epics:
+- Advanced integrations (SSO providers, SCIM directory sync)
+- White-label/partner APIs (embeddable widgets, reseller integrations)
+- Compliance integrations (enterprise audit logging, data warehouse connectors)
+- Advanced analytics (data warehouse exports, BI tool integrations)
+
+**Why**: These integrations **unlock new markets** (enterprise tier, B2B partnerships) but aren't needed for initial customer validation.
+
+**Epic Dependency Example**:
+
+```
+Epic 01: Foundation (includes Stripe, SendGrid - P0 integrations)
+  ↓ blocks
+Epic 02: Get Access (requires SendGrid for email verification)
+  ↓ blocks
+Epic 03: Submit Document (can run parallel with Segment analytics integration - P1)
+  ↓ blocks
+Epic 04: Receive Assessment (requires Stripe for paid tier - already in Epic 01)
+  ↓
+Epic 05: Enterprise Integrations (SSO, SCIM, audit logging - P2, post-MVP)
+```
+
+**Integration Complexity Heuristics**:
+
+When deciding P0 vs P1 priority:
+- **P0 if**: Journey cannot progress without it (e.g., payment required for Step 5 "Receive Results")
+- **P0 if**: Legal/compliance requirement (e.g., GDPR data export via API)
+- **P1 if**: Journey works without it but user experience degraded (e.g., no email notifications)
+- **P2 if**: Only needed for specific customer tier (e.g., enterprise SSO)
+
+**Backlog Story Implications**:
+
+- P0 integrations: Generate stories in Epic 01 Foundation (implement before any business epics)
+- P1 integrations: Embed integration stories in Epic 02-04 (e.g., "Epic 03: Submit Document" includes "Story: Track document uploads in Segment")
+- P2 integrations: Generate separate Epic N+1 "Enterprise Integrations" after business epics complete
+
+**Session Reference**: Integration prioritization aligns with Session 2a Question 10 (integration timeline priority: MVP required vs Post-MVP vs Enterprise tier)
+
 #### Step 2.5: Generate Epic Structure Rationale
 
 Create an "Epic Structure Rationale" section for BACKLOG.md explaining:
