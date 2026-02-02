@@ -48,6 +48,7 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 
 **`/.claude/agents/`** - Specialized sub-agents for complex operations
 - Agents invoked via Task tool by commands for specific workflows
+- **CRITICAL ARCHITECTURAL PRINCIPLE**: Commands >400 lines MUST decompose into sub-agents with conditional loading (see "Command Size Policy" below)
 - **Context & Utility Agents:**
   - distill-context.md: Condenses .md files to .ctx.md (60-70% token reduction)
   - track-failures.md: Records debugging attempts, detects duplicates, triggers escalation
@@ -564,4 +565,91 @@ Post-cascade extensions are **optional deep-dive commands** that run AFTER core 
 
 ---
 
-**Remember:** Stack-Driven is a generative framework that derives optimal decisions from user journey analysis. Maintain journey-first philosophy, ensure decision traceability, and prioritize specificity over genericity in all outputs.
+## Command Size Policy (Anti-Bloat Architecture)
+
+**CRITICAL**: Stack-Driven follows agentic coding best practices. Commands MUST NOT become monolithic context blobs.
+
+### Rules
+
+**Rule 1: Command Size Limit**
+- Orchestrator commands: **<400 lines** (strict)
+- Sub-agents: **150-400 lines** (one pattern per agent)
+- Violation triggers: Decomposition required (see Epic #167 pattern)
+
+**Rule 2: Conditional Loading**
+- Commands MUST use sub-agents with conditional invocation
+- Load only patterns relevant to user's journey (not encyclopedic dumps)
+- Example: Skip Kubernetes sub-agent if deployment is serverless
+
+**Rule 3: Centralized Examples**
+- NO inline example duplication across sections
+- Centralize in `/examples/[topic]-examples.md`
+- Sub-agents reference by section: "See /examples/compliance-saas.md Section 2.1"
+
+**Rule 4: Enhancement Review**
+- Enhancement PRs adding >400 lines to a command MUST decompose into sub-agents
+- Reviewer MUST flag monolithic additions in PR review
+- See VALIDATION-CHECKLIST.md Category 12 (Command Size)
+
+### Why This Matters
+
+**Research Evidence** (Singh 2025, Anthropic 2024, Google ADK):
+- **Agentic RAG**: Conditional retrieval, not encyclopedic loading (40-60% token waste in monoliths)
+- **Context Engineering**: Isolate and select patterns (not 2,000+ line blobs)
+- **Multi-Agent Architecture**: Specialized sub-agents with clear boundaries
+
+**Framework Impact**:
+- 5 bloated commands identified (11,328 lines total, 46% waste)
+- Epic #167 tracks decomposition: /model-application, /create-test-strategy, /design-database-schema, /generate-api-design, /scaffold-project
+- Post-decomposition: 40-50% API cost reduction, better maintainability
+
+### Decomposition Pattern (from Epic #167)
+
+```
+/.claude/commands/[command-name].md (400 lines max - ORCHESTRATOR)
+  ├── Step 1: Read Context
+  ├── Step 2: Analyze Requirements → Determine which patterns needed
+  ├── Step 3: Conditional Sub-Agent Invocation
+  │   ├── If condition_A: Invoke pattern-a.md
+  │   ├── If condition_B: Invoke pattern-b.md
+  │   ├── If condition_C: Invoke pattern-c.md
+  │   └── Always: Invoke core-pattern.md
+  └── Step 4: Synthesize sub-agent outputs
+
+/.claude/agents/
+  ├── pattern-a.md (150-400 lines, one concern)
+  ├── pattern-b.md (150-400 lines, one concern)
+  └── pattern-c.md (150-400 lines, one concern)
+
+/examples/
+  └── [command-name]-examples.md (centralized, referenced by all)
+```
+
+**Example Conditional Logic**:
+```markdown
+### Step 3.2: Domain Layer Modeling
+Condition: entity_count > 5 AND domain_complexity == "high"
+Agent: /.claude/agents/model-domain-layer.md
+Inputs: {database_entities from Session 7, journey_steps from Session 1}
+Output: Domain entities with business logic methods
+Skip if: Simple CRUD app with <5 entities
+```
+
+### Enforcement
+
+**Pre-PR**: Run command size check
+```bash
+for f in .claude/commands/*.md; do
+  lines=$(wc -l < "$f")
+  if [ $lines -gt 400 ]; then
+    echo "❌ BLOAT: $(basename $f) = $lines lines (>400)"
+  fi
+done
+```
+
+**During PR Review**: Use `/review-pr` with VALIDATION-CHECKLIST.md Category 12
+**Post-Merge**: Epic #167 tracks refactor of existing bloated commands
+
+---
+
+**Remember:** Stack-Driven is a generative framework that derives optimal decisions from user journey analysis. Maintain journey-first philosophy, ensure decision traceability, prioritize specificity over genericity, and **enforce agentic architecture through sub-agent decomposition**.

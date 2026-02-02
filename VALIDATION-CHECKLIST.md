@@ -781,6 +781,124 @@
 
 ---
 
+## Category 12: Command Size Validation (Anti-Bloat Architecture)
+
+### Rule 12.1: Command File Size Limit
+
+**What:** Command files must not exceed 400 lines (orchestrators) or become monolithic context blobs
+
+**Check:**
+- Count lines in all `.claude/commands/*.md` files
+- Flag any command >400 lines as requiring decomposition
+- Verify commands >400 lines have associated decomposition issue
+
+**Enforcement:**
+```bash
+for f in .claude/commands/*.md; do
+  lines=$(wc -l < "$f")
+  if [ $lines -gt 400 ]; then
+    echo "❌ BLOAT: $(basename $f) = $lines lines (>400 limit)"
+  fi
+done
+```
+
+**Failure example:**
+```
+❌ Command size violation
+   /model-application.md: 2,622 lines (>400 line limit)
+   Expected: Orchestrator <400 lines with conditional sub-agent invocation
+   Fix: Decompose into orchestrator + sub-agents (see Epic #167)
+```
+
+**Rationale:** Aligns with agentic coding best practices (Singh 2025, Anthropic 2024, Google ADK):
+- Agentic RAG: Conditional retrieval, not encyclopedic loading (40-60% token waste)
+- Context Engineering: Isolate and select patterns
+- Multi-Agent Architecture: Specialized sub-agents with clear boundaries
+
+**Exemptions:**
+- Commands currently tracked in Epic #167 (5 bloated commands being refactored)
+- Temporary exemption expires after Epic #167 completion
+
+---
+
+### Rule 12.2: Sub-Agent Conditional Loading
+
+**What:** Commands >200 lines should use sub-agents with conditional invocation (not monolithic inline content)
+
+**Check:**
+- If command >200 lines: Verify it invokes sub-agents via Task tool
+- Verify conditional logic: `If condition X: Invoke agent Y`
+- Check that sub-agents are in `/.claude/agents/` directory
+- Verify sub-agents are 150-400 lines each (not mini-monoliths)
+
+**Failure example:**
+```
+❌ Missing conditional sub-agent pattern
+   /plan-deployment.md: 350 lines with inline patterns
+   No sub-agent invocations found
+   Expected: Orchestrator with conditional sub-agent calls
+   Fix: Extract patterns to /.claude/agents/, invoke conditionally
+```
+
+**Good example:**
+```markdown
+## Step 3: Conditional Sub-Agent Invocation
+
+### 3.2: Domain Layer Modeling
+Condition: entity_count > 5 AND domain_complexity == "high"
+Agent: /.claude/agents/model-domain-layer.md
+Inputs: {database_entities, journey_steps}
+Skip if: Simple CRUD app
+```
+
+---
+
+### Rule 12.3: Centralized Examples (No Duplication)
+
+**What:** Examples must be centralized in `/examples/` directory, not duplicated across command sections
+
+**Check:**
+- Search for repeated example patterns (e.g., "Compliance SaaS" mentioned 20+ times)
+- Verify `/examples/[topic]-examples.md` exists for centralized examples
+- Check that commands reference examples by section: "See /examples/X.md Section Y"
+- Flag inline examples >50 lines as requiring centralization
+
+**Failure example:**
+```
+❌ Example duplication detected
+   /model-application.md contains "Compliance SaaS" 24 times
+   Expected: Centralized in /examples/compliance-saas-architecture.md
+   Commands reference: "See /examples/compliance-saas-architecture.md Section 2.1"
+```
+
+**Rationale:** Prevents token waste from repeated examples, easier to update examples once vs 20+ locations
+
+---
+
+### Rule 12.4: Enhancement PR Decomposition Requirement
+
+**What:** PRs adding >400 lines to a command must decompose into sub-agents (not monolithic additions)
+
+**Check:**
+- For PRs modifying `.claude/commands/*.md`:
+  - Calculate line diff: `git diff main --stat | grep commands/`
+  - If additions >400 lines to single command: Require decomposition plan
+- Verify PR description includes sub-agent architecture or justification for exemption
+- Check that reviewer flagged monolithic additions
+
+**Failure example:**
+```
+❌ Enhancement PR violates decomposition requirement
+   PR #150: Adds +913 lines to /model-application.md
+   No sub-agent decomposition plan provided
+   Expected: Either decompose into sub-agents OR justify exemption
+   Action: Add decomposition follow-up issue (see PR #160 pattern)
+```
+
+**Enforcement:** PR reviewer must check VALIDATION-CHECKLIST.md Category 12 and flag violations
+
+---
+
 ## Implementation Priority
 
 ### Tier 1 (Critical - Implement First):
@@ -790,6 +908,8 @@
 - Rule 3.2: Epic Number Consistency
 - Rule 11.1: OWASP Coverage Completeness (NEW - Session 8 security)
 - Rule 11.2: Security Pattern Journey Traceability (NEW - Session 8 security)
+- **Rule 12.1: Command File Size Limit (NEW - Anti-Bloat)**
+- **Rule 12.4: Enhancement PR Decomposition Requirement (NEW - Anti-Bloat)**
 
 ### Tier 2 (Important - Implement Soon):
 - Rule 1.1: File Read References Must Be Creatable
@@ -800,6 +920,8 @@
 - Rule 11.4: Input Validation Strategy Presence (NEW - Session 8 security)
 - Rule 11.5: Security Headers Configuration (NEW - Session 8 security)
 - Rule 11.6: Idempotency and Retry Strategies (NEW - Phase 2: Resilience)
+- **Rule 12.2: Sub-Agent Conditional Loading (NEW - Anti-Bloat)**
+- **Rule 12.3: Centralized Examples (NEW - Anti-Bloat)**
 
 ### Tier 3 (Nice to Have - Implement Later):
 - Rule 5.1: Template Section Alignment
