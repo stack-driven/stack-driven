@@ -228,6 +228,23 @@ For each service method, document transaction scope:
 
 **ORM**: [Prisma/TypeORM/SQLAlchemy from tech stack]
 
+### ORM Pattern Decision
+
+**Pattern Chosen**: [Active Record / Data Mapper]
+
+**Rationale**:
+- Entity count: [X entities from Session 7]
+- Domain complexity: [Simple CRUD / Medium / Complex business rules from Step 0.5]
+- Testing strategy: [Integration tests OK / Heavy unit testing required from Session 9]
+- Clean architecture: [Not enforced / Enforced (Step 6 - Hexagonal Architecture)]
+- Journey connection: [How this pattern serves implementation velocity and quality]
+
+**Trade-offs Accepted**:
+- [Active Record: Faster development, couples entities to database]
+- [Data Mapper: More code, but testable entities without database]
+
+---
+
 ### [Repository Name 1] (e.g., DocumentRepository)
 
 **Entity**: [Database table name from Session 7]
@@ -305,6 +322,13 @@ For each service method, document transaction scope:
 - 400 Bad Request (INVALID_FILE_TYPE, VALIDATION_ERROR)
 - 413 Payload Too Large (FILE_TOO_LARGE)
 - 422 Unprocessable Entity (INSUFFICIENT_STORAGE)
+- 429 Too Many Requests (RATE_LIMIT_EXCEEDED)
+
+**Rate Limiting**:
+- **Algorithm**: [Token Bucket / Sliding Window]
+- **Scope**: [Per-user / Per-IP / Global]
+- **Limits**: [Capacity/refill for Token Bucket OR requests/window for Sliding Window]
+- **Rationale**: [Cost analysis, abuse prevention, journey UX]
 
 **OpenAPI Reference**: POST /api/documents (Session 8)
 
@@ -559,6 +583,42 @@ src/
 - Team grows to [X+] developers
 - [Specific component] requires independent scaling
 - Domain boundaries stabilize for 6+ months
+
+---
+
+### Decision X: Dependency Injection Configuration
+
+**Decision**: [Framework-specific DI container] with constructor injection pattern
+
+**Rationale**:
+- Constructor injection makes dependencies explicit
+- Enables testing (inject mocks)
+- Framework DI container handles lifecycle
+- Journey connection: Clean dependency graph enables Session 12 to generate wiring code
+
+**Framework-Specific Pattern**:
+[Include framework-specific DI setup - NestJS modules, FastAPI Depends, Express container]
+
+**Configuration Management**:
+- **Hierarchy**: Defaults → Environment variables → Secrets
+- **Development**: .env file (gitignored)
+- **Production**: [Vault / AWS Secrets Manager / Kubernetes secrets]
+
+**Secrets Management**:
+- Database credentials: [Secrets provider]
+- API keys (AWS, OpenAI, etc.): [Secrets provider]
+- Journey connection: Secure configuration enables production deployment
+
+**Testability**:
+- Unit tests: Inject mocks
+- Integration tests: Inject real repo, mock external services
+
+**Alternative Rejected**: [Property Injection / Service Locator]
+- [Why doesn't fit this journey]
+
+**Reconsider If**:
+- Framework doesn't support DI (legacy codebase)
+- Circular dependencies force property injection
 
 ---
 

@@ -1057,12 +1057,67 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
       - Repository handles all SQL construction
       - Complex mapping and transaction management
 
-2. What operations does each entity need?
+2. Active Record vs Data Mapper - ORM Pattern Choice:
+
+   **Active Record Pattern**:
+   - Domain entity knows how to save/load itself (entity.save(), entity.find())
+   - Entity is coupled to database (imports ORM, has persistence methods)
+   - Simple, less code (no separate repository layer needed)
+   - Harder to test (entity has database dependencies)
+   - Example ORMs: Active Record (Rails), Eloquent (Laravel), Django ORM
+
+   **Data Mapper Pattern**:
+   - Domain entity is pure (no database knowledge, just business logic)
+   - Repository handles all persistence (entity is passed to repository)
+   - More code (separate entity + repository classes)
+   - Easier to test (entity is just plain object, no database mocking)
+   - Better for complex domains (DDD, clean architecture)
+   - Example ORMs: TypeORM (Data Mapper mode), Doctrine (PHP), Hibernate (Java)
+
+   **Decision Matrix**:
+
+   | Factor | Active Record | Data Mapper |
+   |--------|---------------|-------------|
+   | **Entity count** | < 10 entities | > 10 entities |
+   | **Domain complexity** | Simple CRUD | Complex business rules |
+   | **Testing needs** | Integration tests OK | Heavy unit testing |
+   | **Team familiarity** | Framework default | Explicit architecture |
+   | **Use case** | Simple apps, MVPs | DDD, clean architecture |
+
+   **Recommendation**:
+   - Use **Active Record** if:
+     - Entity count < 10 (simple domain)
+     - Domain is mostly CRUD operations (little business logic in entities)
+     - Team is familiar with framework (Rails, Laravel, Django defaults)
+     - Rapid prototyping/MVP (less code to write)
+
+   - Use **Data Mapper** if:
+     - Entity count > 10 (complex domain)
+     - Rich domain model with business logic in entities (see Step 1.6 Domain Layer)
+     - Clean architecture enforced (see Step 7: Hexagonal Architecture)
+     - Heavy unit testing without database (pure entity tests)
+
+   **For this journey, choose**:
+   ```markdown
+   **ORM Pattern**: [Active Record / Data Mapper]
+
+   **Rationale**:
+   - Entity count: [X entities from Session 7]
+   - Domain complexity: [Simple CRUD / Medium / Complex business rules]
+   - Testing strategy: [Integration tests OK / Heavy unit testing required]
+   - Journey connection: [How this pattern serves implementation velocity and quality]
+
+   **Trade-offs**:
+   - Active Record: Faster development (less code), but couples entities to database (harder to test, violates clean architecture)
+   - Data Mapper: Cleaner separation (testable entities), but more code (entity + repository + mapper)
+   ```
+
+3. What operations does each entity need?
    ├─ Just CRUD → Base repository with findById, create, update, delete
    ├─ Specialized queries → Add custom methods (findByUserIdWithStatus, etc.)
    └─ Complex aggregations → Add reporting methods
 
-3. Should we use a base repository class?
+4. Should we use a base repository class?
    ├─ YES → If many entities share patterns (generic CRUD)
    ├─ NO → If repositories are highly specialized
 ```
@@ -1075,12 +1130,30 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
   - Specialized queries (based on API contracts and journey needs)
   - Query optimizations (references Session 7 indexes)
 
-**Example**:
+**Example (with ORM Pattern Decision)**:
 
 ```markdown
+### ORM Pattern Decision
+
+**Pattern Chosen**: Data Mapper
+
+**Rationale**:
+- Entity count: 8 entities (documents, users, frameworks, assessments, results, audit_logs, sessions, integrations)
+- Domain complexity: Medium - Entities have business rules (Document status transitions, Assessment validation)
+- Testing strategy: Heavy unit testing required (Step 1.6 domain entities have business logic)
+- Clean architecture: Enforced (Step 7 - repository interfaces in domain, implementations in infrastructure)
+- Journey connection: Domain entities model real-world concepts (Document, Assessment) with behavior that needs testing without database
+
+**Trade-offs Accepted**:
+- More code (entity + repository + mapper classes) vs Active Record simplicity
+- Benefit: Domain entities testable without database, supports clean architecture (Step 7)
+
+---
+
 ### DocumentRepository
 **Entity**: documents table (from Session 7)
 **ORM**: Prisma (from Session 3)
+**Pattern**: Data Mapper (entity is pure, repository handles persistence)
 
 **Interface**:
 - create(data: CreateDocumentDto) → Document
@@ -1146,6 +1219,65 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
   - Request validation (references Session 8 schemas)
   - Response format (references Session 8 schemas)
 
+**Rate Limiting Strategy:**
+
+For each endpoint, decide rate limiting configuration to prevent abuse and protect resources:
+
+**Decision Tree - Rate Limiting:**
+
+```
+For each controller endpoint, ask:
+
+1. What's the resource cost of this operation?
+   - High cost (upload, AI processing, bulk operations) → Strict limits (Token Bucket for bursts)
+   - Medium cost (list queries, single record reads) → Moderate limits (Sliding Window for smooth limits)
+   - Low cost (health checks, static content) → Loose limits or no rate limiting
+
+2. What's the scope of rate limiting?
+   - Per-user → Most common (protects per-user resources, prevents single user from overwhelming system)
+   - Per-IP → Anonymous endpoints (prevents DDoS from single IP, signup endpoints)
+   - Global → Shared resources (external API quotas, database connection pool)
+
+3. What algorithm fits the usage pattern?
+   - Bursty operations (file uploads, batch operations) → Token Bucket (allows bursts, refills over time)
+   - Steady operations (API queries, data fetching) → Sliding Window (smooth limits, no burst spikes)
+```
+
+**Rate Limiting Algorithms:**
+
+**Token Bucket Pattern:**
+- Fixed capacity (e.g., 10 tokens)
+- Refill rate (e.g., 1 token per minute)
+- Allows bursts up to capacity
+- Good for: Upload endpoints, batch operations, user actions with natural bursts
+
+**Sliding Window Pattern:**
+- Fixed requests per time window (e.g., 100 requests per 5 minutes)
+- Smooth limiting (no burst allowed)
+- Good for: API queries, list endpoints, steady-state operations
+
+**For each endpoint, document:**
+
+```markdown
+### [Endpoint]: [METHOD /path]
+
+**Rate Limiting**:
+- **Algorithm**: [Token Bucket / Sliding Window]
+- **Scope**: [Per-user / Per-IP / Global]
+- **Limits**: [Capacity/refill for Token Bucket OR requests/window for Sliding Window]
+- **Rationale**: [Why this limit? Cost analysis, abuse prevention, journey UX]
+
+**Example**:
+- Upload endpoint: Token Bucket (10 uploads capacity, refill 1/min), per-user
+  - Allows burst of 10 uploads (user might upload multiple documents)
+  - Prevents spam (refills slowly at 1/min)
+  - Journey: Users typically upload 1-5 documents in burst, then wait
+- List endpoint: Sliding Window (100 req/5min), per-user
+  - Prevents excessive polling (user refreshing page repeatedly)
+  - Allows normal usage (pagination, filtering)
+  - Journey: Users browse documents occasionally, not continuously
+```
+
 **Example**:
 
 ```markdown
@@ -1164,8 +1296,13 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
   - File size (max 100MB from Session 8)
 - Calls: DocumentService.uploadDocument(req.user.id, req.file, req.body)
 - Returns: 201 with document metadata (Session 8 schema)
-- Errors: 400 (invalid file), 413 (too large), 422 (business logic)
+- Errors: 400 (invalid file), 413 (too large), 422 (business logic), 429 (rate limit exceeded)
 - Journey: Implements Step 1 document upload
+- **Rate Limiting**:
+  - Algorithm: Token Bucket
+  - Scope: Per-user
+  - Limits: 10 uploads capacity, refill 1 token per minute
+  - Rationale: High cost operation (storage, processing). Allows burst of 10 documents (user uploading batch), prevents spam with slow refill. Journey: Users upload 1-5 documents in burst, then wait for processing.
 
 #### GET /api/documents (listDocuments)
 - Handler: listDocumentsHandler(req, res)
@@ -1173,6 +1310,11 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
 - Calls: DocumentService.listUserDocuments(req.user.id, req.query)
 - Returns: 200 with paginated list (Session 8 pagination format)
 - Journey: Lists uploaded documents for selection
+- **Rate Limiting**:
+  - Algorithm: Sliding Window
+  - Scope: Per-user
+  - Limits: 100 requests per 5 minutes (20 req/min average)
+  - Rationale: Medium cost (database query with pagination). Prevents excessive polling while allowing normal browsing. Journey: Users check document list occasionally, not continuously.
 
 #### GET /api/documents/:id (getDocument)
 - Handler: getDocumentHandler(req, res)
@@ -1180,6 +1322,11 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
 - Calls: DocumentService.getDocument(req.params.id, req.user.id)
 - Returns: 200 with document, 403 (not owner), 404 (not found)
 - Journey: View document details
+- **Rate Limiting**:
+  - Algorithm: Sliding Window
+  - Scope: Per-user
+  - Limits: 200 requests per 5 minutes (40 req/min average)
+  - Rationale: Low cost (single record fetch by primary key). Generous limit allows viewing details repeatedly. Journey: Users might view same document multiple times during assessment.
 
 #### DELETE /api/documents/:id (deleteDocument)
 - Handler: deleteDocumentHandler(req, res)
@@ -1187,6 +1334,11 @@ async createAssessment(documentId: string, frameworkId: string): Promise<Assessm
 - Calls: DocumentService.deleteDocument(req.params.id, req.user.id)
 - Returns: 204 No Content
 - Journey: Remove document before assessment
+- **Rate Limiting**:
+  - Algorithm: Sliding Window
+  - Scope: Per-user
+  - Limits: 20 requests per 5 minutes (4 req/min average)
+  - Rationale: Destructive operation with compensation cost (S3 cleanup). Lower limit prevents accidental bulk deletion. Journey: Users rarely delete documents (cleanup before uploading corrected version).
 ```
 
 ---
@@ -1882,6 +2034,256 @@ src/
 - Clean architecture enables Session 12 scaffold to generate domain-first code
 - Domain entities model user journey concepts (Document, Assessment from Step 1-4)
 - Testability enables confidence when implementing Session 10 backlog stories
+
+---
+
+### X. Dependency Injection Configuration
+
+**Decision**: Framework-specific DI container with constructor injection pattern
+
+**Rationale**:
+- Constructor injection makes dependencies explicit (service requires repository, adapter)
+- Enables testing (inject mocks instead of real implementations)
+- Framework DI container handles lifecycle (singleton services, scoped repositories)
+- Journey connection: Clean dependency graph enables Session 12 to generate wiring code
+
+**Framework-Specific Patterns**:
+
+**NestJS (TypeScript)**:
+```typescript
+// app.module.ts - DI container setup
+@Module({
+  providers: [
+    DocumentService,  // Auto-wired via @Injectable() decorator
+    {
+      provide: 'IDocumentRepository',  // Interface token
+      useClass: PrismaDocumentRepository  // Implementation
+    },
+    {
+      provide: 'StorageAdapter',
+      useFactory: (config: ConfigService) => {
+        return config.get('STORAGE_PROVIDER') === 's3'
+          ? new S3StorageAdapter(config.get('AWS_CONFIG'))
+          : new LocalStorageAdapter(config.get('LOCAL_STORAGE_PATH'));
+      },
+      inject: [ConfigService]
+    }
+  ]
+})
+export class AppModule {}
+
+// Document service with constructor injection
+@Injectable()
+export class DocumentService {
+  constructor(
+    @Inject('IDocumentRepository') private repo: IDocumentRepository,
+    @Inject('StorageAdapter') private storage: StorageAdapter
+  ) {}
+}
+```
+
+**FastAPI (Python)**:
+```python
+# dependencies.py - DI container setup
+from fastapi import Depends
+from typing import Annotated
+
+def get_document_repo() -> IDocumentRepository:
+    return PrismaDocumentRepository(get_db())
+
+def get_storage_adapter() -> StorageAdapter:
+    if settings.STORAGE_PROVIDER == 's3':
+        return S3StorageAdapter(settings.AWS_CONFIG)
+    return LocalStorageAdapter(settings.LOCAL_STORAGE_PATH)
+
+# Document service with dependency injection
+class DocumentService:
+    def __init__(
+        self,
+        repo: Annotated[IDocumentRepository, Depends(get_document_repo)],
+        storage: Annotated[StorageAdapter, Depends(get_storage_adapter)]
+    ):
+        self.repo = repo
+        self.storage = storage
+
+# Controller using service
+@app.post("/api/documents")
+async def upload_document(
+    file: UploadFile,
+    service: Annotated[DocumentService, Depends()]
+):
+    return await service.upload_document(file)
+```
+
+**Express (TypeScript with tsyringe/InversifyJS)**:
+```typescript
+// container.ts - DI container setup
+import { container } from 'tsyringe';
+
+// Register implementations
+container.register<IDocumentRepository>('IDocumentRepository', {
+  useClass: PrismaDocumentRepository
+});
+
+container.register<StorageAdapter>('StorageAdapter', {
+  useFactory: (c) => {
+    const config = c.resolve<ConfigService>('ConfigService');
+    return config.get('STORAGE_PROVIDER') === 's3'
+      ? new S3StorageAdapter(config.get('AWS_CONFIG'))
+      : new LocalStorageAdapter(config.get('LOCAL_STORAGE_PATH'));
+  }
+});
+
+// Document service with constructor injection
+@injectable()
+class DocumentService {
+  constructor(
+    @inject('IDocumentRepository') private repo: IDocumentRepository,
+    @inject('StorageAdapter') private storage: StorageAdapter
+  ) {}
+}
+
+// Controller using service
+const documentController = container.resolve(DocumentController);
+app.post('/api/documents', documentController.upload.bind(documentController));
+```
+
+**Configuration Management**:
+
+**Hierarchy** (environment-specific overrides):
+1. **Defaults** (hardcoded in code for local development)
+2. **Environment variables** (override defaults, set in .env file or container env)
+3. **Secrets** (override env vars, fetched from vault/secrets manager)
+
+**Configuration Service**:
+```typescript
+@Injectable()
+export class ConfigService {
+  constructor(
+    private defaults: DefaultConfig,
+    private envVars: NodeJS.ProcessEnv,
+    private secretsProvider: SecretsProvider  // Vault, AWS Secrets Manager
+  ) {}
+
+  async get(key: string): Promise<string> {
+    // Priority: Secrets > Env Vars > Defaults
+    const secretValue = await this.secretsProvider.get(key);
+    if (secretValue) return secretValue;
+
+    const envValue = this.envVars[key];
+    if (envValue) return envValue;
+
+    const defaultValue = this.defaults[key];
+    if (defaultValue) return defaultValue;
+
+    throw new Error(`Configuration key not found: ${key}`);
+  }
+}
+```
+
+**Secrets Management**:
+
+**Development**: `.env` file (gitignored, not committed)
+```
+DATABASE_URL=postgresql://localhost:5432/dev
+AWS_ACCESS_KEY_ID=dev_key
+AWS_SECRET_ACCESS_KEY=dev_secret
+```
+
+**Production Options**:
+
+1. **HashiCorp Vault**:
+```typescript
+class VaultSecretsProvider implements SecretsProvider {
+  async get(key: string): Promise<string | null> {
+    const response = await this.vaultClient.read(`secret/data/${key}`);
+    return response.data.data.value;
+  }
+}
+```
+
+2. **AWS Secrets Manager**:
+```typescript
+class AWSSecretsProvider implements SecretsProvider {
+  async get(key: string): Promise<string | null> {
+    const response = await this.secretsManager.getSecretValue({ SecretId: key });
+    return response.SecretString;
+  }
+}
+```
+
+3. **Environment Variables** (Kubernetes secrets, Docker secrets):
+```yaml
+# kubernetes-deployment.yaml
+env:
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: app-secrets
+        key: database-url
+```
+
+**Testability Pattern**:
+
+```typescript
+// Unit test - inject mocks
+describe('DocumentService', () => {
+  it('uploads document', async () => {
+    const mockRepo = createMock<IDocumentRepository>();
+    const mockStorage = createMock<StorageAdapter>();
+    const service = new DocumentService(mockRepo, mockStorage);
+
+    // Test without real database or S3
+    await service.uploadDocument(userId, file);
+
+    expect(mockStorage.uploadFile).toHaveBeenCalled();
+    expect(mockRepo.save).toHaveBeenCalled();
+  });
+});
+
+// Integration test - inject real repo, mock external services
+describe('DocumentService Integration', () => {
+  let service: DocumentService;
+  let repo: IDocumentRepository;
+
+  beforeEach(async () => {
+    repo = new PrismaDocumentRepository(testDb);  // Real repository with test database
+    const mockStorage = createMock<StorageAdapter>();  // Mock S3
+    service = new DocumentService(repo, mockStorage);
+  });
+
+  it('saves document to database', async () => {
+    await service.uploadDocument(userId, file);
+    const saved = await repo.findById(documentId);
+    expect(saved).toBeDefined();
+  });
+});
+```
+
+**Design Decisions**:
+
+**Why Constructor Injection**:
+- Dependencies explicit in constructor signature
+- Compile-time errors if dependencies missing (TypeScript)
+- Easier to test (pass mocks to constructor)
+- Immutable dependencies (set once in constructor, can't change)
+
+**Alternative Rejected**: Property Injection
+- Dependencies hidden (not in constructor signature)
+- Can be changed after construction (mutable state)
+- Runtime errors if dependencies missing
+
+**Alternative Rejected**: Service Locator Pattern
+- Global registry of services (tight coupling)
+- Hard to test (global state)
+- Dependencies hidden (called inside methods, not constructor)
+
+**Reconsider If**:
+- Framework doesn't support DI (legacy codebase)
+- Circular dependencies force property injection
+- Team prefers functional programming over OOP (use function parameters instead)
+
+**Journey Connection**: DI configuration enables Session 12 to generate wiring code that connects services, repositories, and adapters. Clean dependency graph enables Session 10 backlog stories to reference specific service methods.
 
 ---
 
