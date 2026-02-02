@@ -1706,6 +1706,7 @@ Content-Type: application/json
 - Key format: UUIDv4 (client-generated)
 - Response caching: Store full HTTP response (status code, headers, body)
 - Expiry: 24 hours (financial), 1 hour (non-financial), configurable per endpoint
+- **Journey context: MUST cite specific journey steps requiring idempotency protection** (e.g., "Journey Step 4: payment processing") for each protected endpoint
 
 ---
 

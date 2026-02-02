@@ -267,7 +267,7 @@ Every decision must trace back to user journey:
 - `05-brand-strategy.md` + `05-brand-strategy.ctx.md` (65% reduction)
 - `06-design-system.md` + `06-design-system.ctx.md` (60% reduction)
 - `07-database-schema.md` + `07-database-schema.ctx.md` (56% reduction)
-- `08-api-design.md` + `08-api-design.ctx.md` (65% reduction)
+- `08-api-design.md` + `08-api-design.ctx.md` (60-65% reduction, high decision density from security/resilience enhancements)
 - `08b-api-contracts.md` + `08b-api-contracts.ctx.md` (80% reduction)
 - `09-test-strategy.md` + `09-test-strategy.ctx.md` (66% reduction)
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)

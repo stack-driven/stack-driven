@@ -145,9 +145,18 @@ Document the 5-point decision tree analysis:
 
 ## REST Design Patterns
 
-> **Note:** This section is ONLY required if API Paradigm = REST. Skip entirely if paradigm is GraphQL, gRPC, or WebSocket.
+> **Note:** This section applies ONLY if API Paradigm = REST.
 
-**IF** API paradigm = REST, document RESTful design conventions. **SKIP** this section if GraphQL, gRPC, or WebSocket chosen.
+**IF API Paradigm = REST:** Document RESTful design conventions below.
+
+**IF API Paradigm = GraphQL, gRPC, or WebSocket:** Replace this entire section with:
+```
+## REST Design Patterns
+
+**Applicability:** Not applicable - API paradigm chosen = [GraphQL/gRPC/WebSocket]
+
+REST design patterns are not relevant for this paradigm. See paradigm-specific conventions in "Serialization Format" section above.
+```
 
 ### Resource Naming Conventions
 
