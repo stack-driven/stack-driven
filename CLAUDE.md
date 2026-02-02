@@ -531,6 +531,7 @@ Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 0
 Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 9b (application-architecture) [reads: 00.ctx.md, 02.ctx.md, 02b.ctx.md, 04.ctx.md, 07.ctx.md, 08b.ctx.md] → Generates .md + .ctx.md
+  ↓ USES 6 CONDITIONAL SUB-AGENTS: validate-architectural-style (if team>5 OR entities>10), model-domain-layer (if entities>5 AND complex), design-transaction-boundaries (if external_apis OR multi_entity), choose-orm-pattern (if entities>10 OR heavy_testing), design-rate-limiting (if public_endpoints), design-cross-cutting-concerns (always)
   ↓
 Session 10 (backlog) [reads: ALL .ctx.md files from 00-09b] → Generates backlog stories (no .ctx.md)
   ↓
