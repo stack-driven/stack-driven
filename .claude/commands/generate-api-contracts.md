@@ -340,6 +340,90 @@ Server Errors:
 - 429: `RATE_LIMIT_EXCEEDED` (includes limit, remaining, resetAt)
 - 422: `INSUFFICIENT_CREDITS` (business logic error)
 
+**Webhook Endpoint Schema Templates (if webhooks exist from Session 2a/8):**
+
+If Session 8 included webhook endpoint design (Step 5c), add OpenAPI schemas for webhook endpoints:
+
+**Reference**: `/examples/integration-patterns-examples.md` Section 5 (OpenAPI Webhook Schema Templates) for complete webhook schemas including:
+- Stripe webhook endpoint (`/webhooks/stripe`) with Stripe-Signature header, event types enum, and 200 OK response
+- Salesforce CDC webhook endpoint (`/webhooks/salesforce`) with X-Salesforce-Signature header and change event structure
+- SendGrid webhook endpoint (`/webhooks/sendgrid`) with X-Twilio-Email-Event-Webhook-Signature header and email events
+- PayPal webhook endpoint (`/webhooks/paypal`) with PAYPAL-* headers and postback verification pattern
+- Generic HMAC webhook pattern (HubSpot, Twilio) with signature verification headers
+
+**Key Webhook Schema Characteristics**:
+- `security: []` (no bearer token, uses signature verification headers instead)
+- Signature header as required parameter (X-Stripe-Signature, X-Salesforce-Signature, etc.)
+- Event ID property (for idempotency tracking)
+- Event type enum (provider-specific event types like payment_intent.succeeded, contact.updated)
+- 200 OK response with `{received: true, duplicate?: boolean}` format
+- 401 Unauthorized response for invalid signature
+
+**Example** (abbreviated Stripe webhook schema):
+
+```yaml
+/webhooks/stripe:
+  post:
+    summary: Stripe webhook receiver
+    description: Receives payment and subscription events from Stripe
+    tags:
+      - Webhooks
+    security: []  # No bearer token
+    parameters:
+      - name: Stripe-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+        description: HMAC-SHA256 signature (format: t=<timestamp>,v1=<signature>)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [id, type, data, created]
+            properties:
+              id:
+                type: string
+                description: Unique event ID (for idempotency)
+                example: "evt_1NqPNJ2eZvKYlo2C9xQpZ8Vz"
+              type:
+                type: string
+                enum:
+                  - payment_intent.succeeded
+                  - customer.subscription.created
+                  - invoice.payment_failed
+              data:
+                type: object
+              created:
+                type: integer
+    responses:
+      '200':
+        description: Webhook received and queued
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                received:
+                  type: boolean
+                  example: true
+                duplicate:
+                  type: boolean
+                  example: false
+      '401':
+        description: Invalid signature
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+```
+
+**Include webhook schemas for all providers** identified in Session 8 webhook endpoint design. Copy complete schemas from `/examples/integration-patterns-examples.md` Section 5.
+
+**If webhooks do NOT exist**: Skip webhook schema templates.
+
 ---
 
 ### Step 7: Invoke Phase 3 Agent (Performance Optimization) - CONDITIONAL

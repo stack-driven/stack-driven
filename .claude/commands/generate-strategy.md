@@ -302,6 +302,53 @@ Track third-party API rate limits and implement client-side limiting:
 - Alert on: 5+ consecutive failures, rate limit exceeded, credential expiration
 - Dashboard: Integration health metrics per provider
 
+**Vendor-Specific Implementation Notes**:
+
+For each integration in the registry, document known gotchas from production systems to prevent common issues:
+
+**Stripe**:
+- Webhook signature verification requires raw request body BEFORE JSON parsing (use `express.raw()` middleware)
+- Different webhook secrets for test mode vs live mode
+- Events can arrive out of order (use idempotency keys, not timestamps for ordering)
+- PaymentIntent state machine has intermediate states (`requires_action`, `processing`)
+
+**PayPal**:
+- Webhook endpoint must return HTTP 200 within 30 seconds (use async processing, see Session 8)
+- Webhook body must be posted back exactly as received for signature verification
+- Mock simulator events don't support postback verification (test with sandbox webhooks instead)
+- Order IDs expire after 3 hours if not captured
+
+**Salesforce**:
+- Governor limits reset per transaction (bulkify operations: max 150 DML statements per transaction)
+- Mixed DML errors prevent updating setup objects (User, Group) and non-setup objects (Contact, Account) in same transaction
+- Bulk API doesn't support subqueries or aggregate functions (use REST API for complex queries)
+- Change Data Capture (CDC) events limited to 750K/day by default (request increase if needed)
+
+**HubSpot**:
+- Batch contacts limited to 10 per call (other objects: 100 per call)
+- Rate limits shared across all apps in account (coordinate with customer's other integrations)
+- Custom object webhooks require "Expand object support" opt-in via support ticket
+- Property names can't be changed after creation (plan schema carefully)
+
+**Twilio**:
+- 10DLC registration required for US A2P messaging (2-4 week approval time - plan ahead)
+- Error codes 30003-30007 indicate delivery issues requiring different handling
+- SMS delivery callbacks are best-effort, not guaranteed
+- Landline detection: Error 30006 (can't send to landline)
+
+**AWS SES**:
+- Requires sandbox exit approval (24-48 hours) for production sending
+- Complex CloudWatch setup for delivery logs (consider using SendGrid/Postmark for simpler ops)
+- Email authentication (SPF/DKIM/DMARC) critical for deliverability (80%+ emails marked spam without)
+- Suppression list management required to avoid bounce rate issues
+
+**Apple Sign In**:
+- Only sends user's name on FIRST authentication - must store immediately (later logins don't include name)
+- Mandatory for iOS apps with any social login (App Store requirement)
+- Requires server-side validation of identity token (don't trust client-side only)
+
+**Reference**: `/reference-material/third-party-integration-patterns.md` (lines 890-906) for detailed examples and code patterns
+
 ### Step 7: Analytics Implementation Strategy
 
 **Event Taxonomy Design**:
