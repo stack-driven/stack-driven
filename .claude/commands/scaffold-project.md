@@ -186,6 +186,8 @@ If frontend_framework exists:
     apiContracts: Session 8b,
     designSystem: Session 6
   }
+Else:
+  Log: "Skipping frontend scaffold (API-only backend - no frontend framework specified in Session 3)"
 ```
 
 #### 5.3: Database Scaffold (ALWAYS)
@@ -233,6 +235,7 @@ If deployment_strategy == "containers":
     architecture: Session 4
   }
 Else:
+  Log: "Skipping production Docker scaffold (deployment strategy is not containers - using {deployment_strategy} from Session 13/Session 4)"
   Generate docker-compose.yml for local dev only (database, Redis, etc.)
 ```
 
@@ -266,6 +269,8 @@ If Session 2a marks i18n as required:
     constraints: Session 2a,
     architecture: Session 9b
   }
+Else:
+  Log: "Skipping i18n scaffold (internationalization not marked as required in Session 2a constraints)"
 ```
 
 #### 5.8: Integration Adapters Scaffold (CONDITIONAL)
@@ -283,6 +288,8 @@ If third_party_integrations.length > 0:
     architecture: Session 4,
     codingStandards: Session 3b
   }
+Else:
+  Log: "Skipping integration adapters scaffold (no third-party integrations specified in Session 4 architecture)"
 ```
 
 ### Step 6: Synthesize Sub-Agent Outputs
