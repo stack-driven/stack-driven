@@ -350,6 +350,60 @@ paths:
         '404':
           $ref: '#/components/responses/NotFoundError'
 
+  # GDPR Data Export Endpoint (Phase 1 Compliance Example)
+  /api/users/{user_id}/export:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: User ID to export data for
+    get:
+      summary: Export all user data (GDPR Article 20 compliance)
+      description: |
+        Returns all personal data in machine-readable JSON format.
+        Required by GDPR Article 20 (Right to Data Portability).
+
+        **Access Control**: Only the user themselves can export their data.
+        **Data Included**: All PII fields across all tables.
+        **Format**: JSON (machine-readable, structured)
+      tags: [Users, GDPR]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User data export
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataExport'
+              examples:
+                success:
+                  summary: Complete user data export
+                  value:
+                    user:
+                      id: "123e4567-e89b-12d3-a456-426614174000"
+                      email: "user@example.com"
+                      name: "Jane Smith"
+                      role: "user"
+                      created_at: "2024-01-01T00:00:00Z"
+                    documents:
+                      - id: "doc_abc123"
+                        name: "Privacy Policy.pdf"
+                        uploaded_at: "2024-06-15T10:00:00Z"
+                    activity_log:
+                      - action: "login"
+                        timestamp: "2025-01-15T14:30:00Z"
+                        ip_address: "192.0.2.1"
+                    exported_at: "2025-01-15T14:35:00Z"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+          description: User can only export their own data
+
 components:
   securitySchemes:
     bearerAuth:
@@ -493,6 +547,125 @@ components:
         uploaded_at:
           type: string
           format: date-time
+
+    # User Schema with PII Marking and Comprehensive Validation (Phase 1 Example)
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - role
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          minLength: 5
+          maxLength: 255
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: User email address (PII - handle with care)
+          example: "user@example.com"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: '^[a-zA-Z\s\-'']+$'
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: User full name (PII)
+          example: "Jane O'Connor-Smith"
+        phone:
+          type: string
+          pattern: '^\+[1-9]\d{1,14}$'
+          minLength: 10
+          maxLength: 20
+          x-pii: true
+          x-gdpr-category: "direct-identifier"
+          description: Phone number in E.164 format (PII)
+          example: "+12025551234"
+          nullable: true
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+          description: User age in years
+          example: 35
+          nullable: true
+        role:
+          type: string
+          enum: [admin, user, guest]
+          description: User role for authorization
+          example: "user"
+        website:
+          type: string
+          format: uri
+          maxLength: 2048
+          pattern: '^https?://'
+          description: User website URL (only http/https schemes allowed)
+          example: "https://example.com"
+          nullable: true
+        preferences:
+          type: object
+          description: User preferences (dynamic structure, max 10 levels deep)
+          additionalProperties: true
+          example:
+            theme: "dark"
+            language: "en"
+            notifications: true
+        balance:
+          type: string
+          pattern: '^\d+\.\d{2}$'
+          description: Account balance in decimal format (string to preserve precision)
+          example: "1234.56"
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp (ISO 8601 with timezone)
+          example: "2025-01-15T14:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp (ISO 8601 with timezone)
+          example: "2025-01-15T14:35:00Z"
+
+    # GDPR Data Export Response (Phase 1 Compliance Example)
+    UserDataExport:
+      type: object
+      description: Complete user data export per GDPR Article 20 (Right to Data Portability)
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          description: All documents owned by the user
+        activity_log:
+          type: array
+          items:
+            type: object
+            properties:
+              action:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+              ip_address:
+                type: string
+                x-pii: true
+          description: User activity history (includes PII)
+        exported_at:
+          type: string
+          format: date-time
+          description: Export generation timestamp
 
     # Pagination Schemas
     CursorPagination:
