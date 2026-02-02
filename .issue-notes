@@ -1,0 +1,13 @@
+Issue #154: Integration Constraint Propagation
+
+See issue details: https://github.com/stack-driven/stack-driven/issues/154
+Coordination: https://github.com/stack-driven/stack-driven/issues/173
+
+Files to modify:
+- .claude/commands/document-constraints.md
+- .claude/commands/choose-tech-stack.md
+- .claude/commands/generate-api-design.md
+- .claude/commands/generate-api-contracts.md
+
+Merge position: 1st (sets Session 14 pattern)
+

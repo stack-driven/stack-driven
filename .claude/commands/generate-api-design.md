@@ -27,8 +27,9 @@ Make high-level API architectural decisions through a systematic, sub-agent-driv
 4. **HTTP Caching** (conditional) - Cache-Control, ETag, compression (REST/HTTP only)
 5. **Idempotency & Retry** (conditional) - Idempotency-Key, Retry-After, circuit breakers
 6. **i18n Headers** (conditional) - Accept-Language, locale fallback (if constraints require i18n)
-7. **REST Design Patterns** (conditional) - Resource naming, HTTP verbs, query params (REST only)
-8. **Authentication, Rate Limiting, Pagination, Error Handling** - Core patterns
+7. **Webhook Endpoints** (conditional) - Processing patterns, idempotency, signature verification (if integrations exist)
+8. **REST Design Patterns** (conditional) - Resource naming, HTTP verbs, query params (REST only)
+9. **Authentication, Rate Limiting, Pagination, Error Handling** - Core patterns
 
 ---
 
@@ -187,6 +188,26 @@ Use Task tool to invoke `.claude/agents/design-i18n-headers.md`:
 - Localized error messages
 - Content-Language response headers
 
+#### Step 4.5: Webhook Endpoint Design (Conditional)
+
+**Condition**: Session 2a constraints list third-party integrations that send webhooks (Stripe, PayPal, Salesforce, etc.) OR architecture mentions webhook consumption
+**Skip if**: No webhook-based integrations
+
+Use Task tool to invoke `.claude/agents/design-webhook-endpoints.md`:
+
+**Inputs to provide**:
+- Constraints (from Step 1) - integration requirements
+- Architecture (from Step 1) - integration patterns
+- Journey context (from Step 1)
+- Database schema (from Step 1)
+
+**Expected output**:
+- Processing pattern decision (sync <5s vs async)
+- Idempotency strategy (event deduplication via provider event_id)
+- Signature verification patterns per provider (Stripe HMAC-SHA256, PayPal postback, etc.)
+- Scale-forward strategy (single endpoint MVP → dedicated webhook service at scale)
+- Provider-specific implementation notes (Stripe raw body requirement, etc.)
+
 ---
 
 ### Step 5: Define REST Design Patterns (Conditional)
@@ -313,6 +334,7 @@ Write `product-guidelines/08-api-design.md` with:
 - **Idempotency and Retry Strategies** (if applicable): Output from Step 4.2 sub-agent (conditional)
 - **Circuit Breaker Configuration** (if third-party APIs exist): Output from Step 4.3 sub-agent (conditional)
 - **Internationalization Support** (if i18n required): Output from Step 4.4 sub-agent (conditional)
+- **Webhook Endpoint Design** (if webhook integrations exist): Output from Step 4.5 sub-agent (conditional)
 - **Rate Limiting Strategy**: From Step 6.2
 - **Pagination Strategy**: From Step 6.3
 - **Error Handling Philosophy**: From Step 6.4

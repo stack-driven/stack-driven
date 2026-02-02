@@ -323,6 +323,51 @@ Document in tech stack:
 
 If i18n is NOT required: Omit from tech stack output (don't force everyone to think about i18n).
 
+**Integration SDK Selection (if third-party integrations exist):**
+
+Check `02a-constraints.ctx.md` if it exists:
+- Look for third-party integrations identified in Phase 2a (Questions 6-10)
+- Payment processors (Stripe, PayPal, Square)
+- CRM systems (Salesforce, HubSpot, Zoho)
+- Communication services (SendGrid, Twilio, AWS SES)
+- Analytics services (Segment, Mixpanel, Amplitude)
+- Auth providers (Auth0, Clerk, WorkOS)
+- File storage (AWS S3, Cloudinary, Uploadcare)
+- Search services (Algolia, Typesense, Elasticsearch)
+
+If integrations exist, invoke SDK selection sub-agent:
+
+**Sub-Agent Invocation**:
+```
+Use Task tool to invoke:
+  Agent: /.claude/agents/select-integration-sdks.md
+  Inputs:
+    - Integration requirements from 02a-constraints.ctx.md
+    - Backend language selected (Node.js, Python, Ruby, PHP, Java, Go)
+    - Frontend framework selected (if applicable)
+    - Journey requirements for integration use cases
+  Output: Integration SDKs section to append to tech stack file
+```
+
+The sub-agent will:
+1. Analyze integration requirements from Session 2a
+2. Select appropriate SDK/client library per integration
+3. Apply decision criteria: Official SDK > Community SDK (stars >1k, active) > Direct REST
+4. Generate Integration SDKs section with journey-traced reasoning
+5. Document installation commands and version constraints
+
+Examples output:
+- **Stripe**: `stripe` (Node.js official SDK v13.x) - `npm install stripe`
+- **SendGrid**: `@sendgrid/mail` (Node.js official SDK) - `npm install @sendgrid/mail`
+- **Salesforce**: `jsforce` (Node.js community SDK, 1.3k+ stars) - `npm install jsforce`
+- **Segment**: `@segment/analytics-node` (server-side official SDK) - `npm install @segment/analytics-node`
+
+**Why This Matters**: Eliminates 1-2 hours of manual SDK research per integration. Developers get opinionated, journey-traced recommendations that can be immediately installed.
+
+**Reference**: `/examples/integration-patterns-examples.md` Section 1-3 for SDK usage examples
+
+If integrations do NOT exist: Skip SDK selection (don't force everyone to think about integrations).
+
 ### Step 4: Make Recommendations
 
 For each technology choice, provide:
