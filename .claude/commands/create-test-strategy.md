@@ -54,7 +54,7 @@ Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token 
 - `00-user-journey.ctx.md` - Journey steps and critical paths
 - `07-database-schema.ctx.md` (~56% smaller) - Table list, ERD, relationships sufficient for test planning
 - `08-api-design.ctx.md` - API paradigm and auth decisions
-- `08b-api-contracts.ctx.md` (~79% smaller) - Endpoint list organized by journey step, sufficient for test coverage planning
+- `08b-api-contracts.ctx.md` (~80% smaller) - Endpoint list organized by journey step, sufficient for test coverage planning
 
 **Optional inputs (if available):**
 
@@ -275,14 +275,10 @@ Coverage Metrics:
   - Why branch matters: 100% line coverage with no branching logic tests = false confidence
 
 Property-Based Testing (Optional - High Value):
-  - When to use:
-    * Complex algorithms with many edge cases
-    * Document parsers (PDFs, DOCXs with various formats)
-    * Assessment scoring logic (mathematical properties)
-    * Date/time calculations
-    * Currency formatting and conversions
+  - When to use: Complex algorithms, parsers, math operations, date/time calculations
   - Tools: Hypothesis (Python), fast-check (JavaScript)
   - Approach: Define properties that ALWAYS hold, generate random inputs to verify
+  - **For detailed examples and implementation guide:** See `reference-material/property-based-testing-guide.md`
 
 Tools (from tech stack):
   - Backend: Pytest + pytest-asyncio + pytest-cov
@@ -582,6 +578,10 @@ def test_list_documents_shows_only_user_documents(authenticated_user, test_db):
     assert documents[0]["name"] == "User A Doc"
 ```
 
+**Testcontainers Pattern (Industry Standard 2025):**
+
+Use real infrastructure (PostgreSQL, Redis, Kafka) via testcontainers instead of mocks. **For comprehensive examples, database reset strategies, and CI/CD integration:** See `reference-material/integration-testing-patterns.md`
+
 **Example integration test with testcontainers (Python):**
 
 ```python
@@ -689,7 +689,7 @@ describe('Database Integration', () => {
 
 **Contract Testing for Microservices:**
 
-If Session 4 architecture has microservices, use contract testing to prevent integration failures.
+If Session 4 architecture has microservices, use contract testing to prevent integration failures. **For complete Pact workflow, Broker integration, and CI/CD examples:** See `reference-material/integration-testing-patterns.md`
 
 **Pact (Consumer-Driven Contracts):**
 
@@ -966,7 +966,7 @@ test('share report publicly', async ({ page, context }) => {
 
 **Accessibility Testing Automation:**
 
-Integrate axe-core to catch ~57% of WCAG issues automatically. Critical for compliance products, government contracts, and large enterprises.
+Integrate axe-core to catch ~57% of WCAG issues automatically. Critical for compliance products, government contracts, and large enterprises. **For comprehensive guide including WCAG standards, screen reader testing, and CI/CD integration:** See `reference-material/accessibility-testing-guide.md`
 
 **Example accessibility test (Playwright + axe-playwright):**
 
@@ -1303,6 +1303,8 @@ Test Data Cleanup:
 ```yaml
 # Performance Testing (compliance-saas)
 
+**For comprehensive k6 examples, Core Web Vitals guide, and database performance testing:** See `reference-material/performance-testing-guide.md`
+
 Performance Testing Tools:
   Tool      | Best For                    | Key Strength              | Language
   ----------|-----------------------------|---------------------------|----------
@@ -1462,6 +1464,7 @@ Dependency Scanning:
   - Blocking: High/critical vulnerabilities block deploy
 
 SAST (Static Application Security Testing):
+  - **For comprehensive SAST/DAST/IAST guides, CodeQL/Semgrep/Trivy examples, and OWASP Top 10 coverage:** See `reference-material/security-testing-guide.md`
   - Choose tool based on stack and needs:
 
   Tool       | Best For           | Accuracy | Speed        | Cost
