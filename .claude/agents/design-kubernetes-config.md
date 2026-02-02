@@ -22,6 +22,46 @@ This agent expects structured inputs passed from the orchestrator:
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `sla_requirement`: Must be one of ["99.999%", "99.99%", "99.9%", "99%"]
+- `expected_users`: Must be positive number
+- `expected_requests_per_second`: Must be positive number
+- `compliance_requirements`: Must be array (can be empty)
+- `journey_load_pattern`: Must be one of ["steady", "spiky", "unpredictable"]
+- `app_name`: Must be non-empty string (valid Kubernetes label format)
+- `container_image`: Must be non-empty string
+- `app_port`: Must be number between 1-65535
+- `health_check_path`: Must be non-empty string starting with "/"
+
+**Validation Logic**:
+```markdown
+IF any required input is missing OR null:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF sla_requirement not in allowed values:
+  ERROR: "Invalid sla_requirement: {value}. Must be one of: 99.999%, 99.99%, 99.9%, 99%"
+  STOP PROCESSING
+
+IF expected_users <= 0 OR expected_requests_per_second <= 0:
+  ERROR: "Invalid load parameters. expected_users and expected_requests_per_second must be positive."
+  STOP PROCESSING
+
+IF app_port < 1 OR app_port > 65535:
+  ERROR: "Invalid app_port: {value}. Must be between 1-65535."
+  STOP PROCESSING
+
+IF health_check_path does not start with "/":
+  ERROR: "Invalid health_check_path: {value}. Must start with '/' (e.g., '/health')."
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to generate Kubernetes manifests.
+
 ## Decision Tree
 
 ### 1. Replica Count (High Availability)

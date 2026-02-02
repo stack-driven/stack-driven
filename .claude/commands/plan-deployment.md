@@ -287,7 +287,7 @@ Combine sub-agent recommendations into unified deployment plan:
 9. **Cost Estimation**
    - Monthly infrastructure cost breakdown
    - Optimization strategies
-   - Reference: /reference-material/cost-estimation-2025.md (deployment tiers)
+   - [PLACEHOLDER: Reference /reference-material/cost-estimation-2025.md deployment tiers after PR #155 merges]
 
 10. **Pre-Deployment Checklist**
    - Code quality gates

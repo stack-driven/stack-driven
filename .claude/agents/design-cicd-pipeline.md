@@ -24,6 +24,42 @@ You are a specialized sub-agent responsible for selecting CI/CD platforms, desig
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `source_control`: Must be one of ["github", "gitlab", "bitbucket"]
+- `tech_stack`: Must be object with non-empty `frontend`, `backend`, and `build_tool` strings
+- `test_strategy`: Must be object with non-empty command strings and coverage threshold (0-100)
+- `deployment_targets`: Must be non-empty array
+- `container_registry`: Must be one of ["ecr", "gcr", "docker-hub", "acr"]
+
+**Validation Logic**:
+```markdown
+IF any required input is missing OR null:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF source_control not in allowed values:
+  ERROR: "Invalid source_control: {value}. Must be one of: github, gitlab, bitbucket"
+  STOP PROCESSING
+
+IF tech_stack is missing frontend OR backend OR build_tool:
+  ERROR: "Invalid tech_stack. Must include frontend, backend, and build_tool fields."
+  STOP PROCESSING
+
+IF test_strategy.coverage_threshold < 0 OR > 100:
+  ERROR: "Invalid coverage_threshold: {value}. Must be between 0-100."
+  STOP PROCESSING
+
+IF deployment_targets is empty array:
+  ERROR: "deployment_targets cannot be empty. Must include at least one environment."
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to generate pipeline configuration.
+
 ## Decision Tree
 
 ### CI/CD Platform Selection

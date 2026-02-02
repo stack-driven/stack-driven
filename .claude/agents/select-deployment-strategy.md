@@ -20,6 +20,40 @@ This agent expects structured inputs passed from the orchestrator:
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `journey_criticality`: Must be one of ["life-critical", "financial", "productivity", "entertainment"]
+- `sla_requirement`: Must be one of ["99.999%", "99.99%", "99.9%", "99%", "none"]
+- `deployment_frequency_target`: Must be one of ["hourly", "daily", "weekly", "monthly"]
+- `regulated_industry`: Must be boolean (true/false)
+- `journey_downtime_tolerance`: Must be one of ["zero", "seconds", "minutes", "hours"]
+- `team_size`: Must be positive number
+- `product_stage`: Must be one of ["startup", "growth", "scale", "enterprise"]
+
+**Validation Logic**:
+```markdown
+IF any required input is missing OR null:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF journey_criticality not in allowed values:
+  ERROR: "Invalid journey_criticality: {value}. Must be one of: life-critical, financial, productivity, entertainment"
+  STOP PROCESSING
+
+IF sla_requirement not in allowed values:
+  ERROR: "Invalid sla_requirement: {value}. Must be one of: 99.999%, 99.99%, 99.9%, 99%, none"
+  STOP PROCESSING
+
+IF team_size <= 0:
+  ERROR: "Invalid team_size: {value}. Must be positive number"
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to generate recommendations.
+
 ## Decision Tree
 
 ### Primary Decision: Journey Criticality

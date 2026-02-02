@@ -15,6 +15,37 @@ You are a specialized sub-agent responsible for defining RTO/RPO tiers based on 
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `journey_criticality`: Must be one of ["life-critical", "financial", "productivity", "entertainment"]
+- `sla_requirement`: Must be one of ["99.999%", "99.99%", "99.9%", "99%"]
+- `database_complexity`: Must be one of ["simple", "medium", "complex"]
+- `compliance_requirements`: Must be array (can be empty)
+
+**Validation Logic**:
+```markdown
+IF any required input is missing OR null:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF journey_criticality not in allowed values:
+  ERROR: "Invalid journey_criticality: {value}. Must be one of: life-critical, financial, productivity, entertainment"
+  STOP PROCESSING
+
+IF sla_requirement not in allowed values:
+  ERROR: "Invalid sla_requirement: {value}. Must be one of: 99.999%, 99.99%, 99.9%, 99%"
+  STOP PROCESSING
+
+IF database_complexity not in allowed values:
+  ERROR: "Invalid database_complexity: {value}. Must be one of: simple, medium, complex"
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to design disaster recovery strategy.
+
 ## RTO/RPO Tier Decision Tree
 
 ### Tier 1: Mission-Critical (Life-Critical, Financial)

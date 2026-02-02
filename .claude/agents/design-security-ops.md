@@ -15,6 +15,37 @@ You are a specialized sub-agent responsible for selecting secret management solu
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `orchestration_platform`: Must be one of ["kubernetes", "ecs", "cloud-run", "docker-compose"]
+- `cloud_provider`: Must be one of ["aws", "gcp", "azure", "multi-cloud"]
+- `compliance_requirements`: Must be array (can be empty)
+- `secret_types`: Must be non-empty array
+
+**Validation Logic**:
+```markdown
+IF any required input is missing OR null:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF orchestration_platform not in allowed values:
+  ERROR: "Invalid orchestration_platform: {value}. Must be one of: kubernetes, ecs, cloud-run, docker-compose"
+  STOP PROCESSING
+
+IF cloud_provider not in allowed values:
+  ERROR: "Invalid cloud_provider: {value}. Must be one of: aws, gcp, azure, multi-cloud"
+  STOP PROCESSING
+
+IF secret_types is empty array:
+  ERROR: "secret_types cannot be empty. Must include at least one secret type."
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to design security operations.
+
 ## Secret Management Decision Tree
 
 ```markdown

@@ -19,6 +19,38 @@ You are a specialized sub-agent responsible for integrating Session 14 observabi
 }
 ```
 
+## Input Validation
+
+Before processing, verify all required inputs are present and valid:
+
+**Required Inputs**:
+- `session_14_exists`: Must be boolean (true/false)
+- `monitoring_stack`: Can be null (if session_14_exists=false), otherwise must be one of ["datadog", "langfuse-grafana", "grafana-stack"]
+- `sla_requirement`: Must be one of ["99.999%", "99.99%", "99.9%", "99%"]
+- `deployment_pattern`: Must be one of ["rolling", "blue-green", "canary", "feature-flags"]
+- `slis_defined`: Must be array (can be empty if session_14_exists=false)
+
+**Validation Logic**:
+```markdown
+IF any required input is missing:
+  ERROR: "Missing required input: {field_name}. Orchestrator must provide all inputs."
+  STOP PROCESSING
+
+IF session_14_exists == true AND monitoring_stack is null:
+  ERROR: "monitoring_stack cannot be null when session_14_exists is true"
+  STOP PROCESSING
+
+IF sla_requirement not in allowed values:
+  ERROR: "Invalid sla_requirement: {value}. Must be one of: 99.999%, 99.99%, 99.9%, 99%"
+  STOP PROCESSING
+
+IF deployment_pattern not in allowed values:
+  ERROR: "Invalid deployment_pattern: {value}. Must be one of: rolling, blue-green, canary, feature-flags"
+  STOP PROCESSING
+```
+
+**On Validation Failure**: Return error message to orchestrator immediately without attempting to integrate observability.
+
 ## Decision Tree
 
 ### Session 14 Integration
