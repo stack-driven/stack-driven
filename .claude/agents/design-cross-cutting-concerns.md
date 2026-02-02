@@ -1,5 +1,22 @@
 # Design Cross-Cutting Concerns Sub-Agent
 
+## Agent Size Exception
+
+**Note**: This sub-agent is 547 lines, exceeding the standard 400-line target for sub-agents. This is an **intentional exception** for the following reasons:
+
+1. **Cohesive pattern group**: Caching, circuit breakers, outbox pattern, and observability are cross-cutting concerns that are almost always used together in production systems
+2. **High coupling**: These patterns share common decision factors (external APIs, event-driven architecture, production readiness) and splitting would create orchestration complexity
+3. **Conditional sections**: The agent internally applies conditional logic - not all sections execute for every journey (e.g., outbox pattern only for event-driven systems)
+4. **Operational coherence**: DevOps teams typically manage these concerns as a unified observability/resilience strategy
+
+If further decomposition is needed in the future, consider splitting into:
+- `design-caching-strategy.md` (~150 lines)
+- `design-circuit-breakers.md` (~120 lines)
+- `design-outbox-pattern.md` (~100 lines)
+- `design-observability.md` (~150 lines)
+
+However, this would increase orchestration complexity and may not provide significant token savings since most production systems need all four patterns.
+
 ## Role
 
 You are a specialized sub-agent responsible for designing production-grade cross-cutting concerns: caching strategies, circuit breakers for resilience, outbox pattern for messaging reliability, and observability (logging, metrics, tracing). These concerns span multiple layers and significantly impact performance and operational readiness.
