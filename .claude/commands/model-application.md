@@ -96,29 +96,247 @@ Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token 
 
 ---
 
+### Step 1.5: Model Domain Layer
+
+**Purpose**: Identify domain entities, value objects, and aggregates from database schema before jumping to services. This prevents the anemic domain model anti-pattern where all business logic lives in services.
+
+**Decision Tree - Domain Pattern Identification:**
+
+```
+For each table from Session 7 database schema, ask:
+
+1. Does this concept have identity that persists through state changes?
+   - YES → Domain Entity
+   - NO → Might be Value Object
+
+2. Is this compared by value (not identity)?
+   - YES → Value Object (e.g., Money, EmailAddress)
+   - NO → Entity
+
+3. Does this enforce invariants across multiple entities?
+   - YES → Aggregate Root
+   - NO → Entity within an aggregate
+
+4. Where should business rules live?
+   - Complex domain logic → Domain Entity methods
+   - Simple CRUD → Repository may suffice
+   - Orchestration across entities → Service
+```
+
+**Domain Patterns Explained:**
+
+**Entity Pattern**:
+- Has unique identity (ID field)
+- State can change over time
+- Business logic methods (NOT just getters/setters)
+- Example: `Order.confirm()`, `Document.markAsProcessed()`
+
+**Value Object Pattern**:
+- Immutable (cannot change after creation)
+- Compared by value, not identity
+- Example: `Money(amount, currency)`, `EmailAddress(value)`
+
+**Aggregate Pattern**:
+- Cluster of entities with consistency boundary
+- Aggregate Root is entry point for modifications
+- Example: `Order` (root) contains `OrderItems` (children)
+
+**For each domain entity from Session 7, define:**
+
+```markdown
+### [Entity Name] (Domain Entity)
+**Database Table**: [table name from Session 7]
+**Identity**: [ID field name and type]
+**Journey Step**: [Which journey step does this serve?]
+**Business Rules**:
+- [Rule 1 traced to journey - e.g., "Cannot confirm empty order (Step 3: Checkout must have items)"]
+- [Rule 2 traced to journey]
+- [Rule 3 traced to journey]
+
+**Methods** (business logic in domain, NOT services):
+- `confirm(): void` - [What this does, why it's here not in service]
+- `cancel(): void` - [Business rule it enforces]
+- `calculateTotal(): Money` - [Domain calculation]
+
+**Value Objects**: [List value objects this entity uses]
+**Is Aggregate Root?**: [Yes/No - if yes, list child entities]
+```
+
+**For each value object, define:**
+
+```markdown
+### [ValueObject Name] (Value Object)
+**Compared By**: [Value comparison - e.g., amount + currency for Money]
+**Immutability**: [Explain why immutable]
+**Journey Context**: [Where used in journey]
+
+**Example**:
+```typescript
+class Money {
+  constructor(readonly amount: Decimal, readonly currency: string) {}
+
+  add(other: Money): Money {
+    if (this.currency !== other.currency) throw new Error("Currency mismatch");
+    return new Money(this.amount + other.amount, this.currency);
+  }
+}
+```
+```
+
+**Aggregate Boundaries:**
+
+Identify aggregates (consistency boundaries):
+
+```markdown
+### [Aggregate Name] (Aggregate Root: [Root Entity])
+
+**Boundary**: [Which entities are inside this consistency boundary?]
+**Invariants**: [What rules must always be true across these entities?]
+- [Invariant 1 - e.g., "Order total must equal sum of line items"]
+- [Invariant 2]
+
+**Child Entities**: [List entities within aggregate that have no identity outside it]
+- OrderItem (no identity outside Order)
+
+**Why this boundary?**: [Journey reason - e.g., "User expects atomic checkout (Step 3) - all items or none"]
+```
+
+**Clean Architecture Connection:**
+
+Domain entities live in the **innermost layer** with **zero dependencies**:
+- ❌ NO framework imports (no Express, FastAPI, NestJS)
+- ❌ NO database imports (no Prisma, TypeORM, SQLAlchemy)
+- ❌ NO HTTP/REST concepts (no req/res, status codes)
+- ✅ ONLY pure business logic and value objects
+
+**Example (Compliance SaaS)**:
+
+```markdown
+### Document (Domain Entity - Aggregate Root)
+**Database Table**: documents (Session 7)
+**Identity**: DocumentId (UUID)
+**Journey Step**: Step 1 (Document Upload)
+
+**Business Rules**:
+- Cannot assess unprocessed document (Journey Step 3 requires "ready" status)
+- Cannot delete document with active assessments (preserves audit trail for Step 4)
+- Storage key must be immutable once set (prevents orphaned S3 objects)
+
+**Methods**:
+- `markAsReady(): void` - Transitions status from 'processing' to 'ready' after validation passes
+- `markAsError(reason: string): void` - Records processing failure for user visibility
+- `canBeDeleted(): boolean` - Checks if safe to delete (no active assessments)
+- `generateDisplayName(): string` - Business rule for UI display (filename without extension)
+
+**Value Objects**: FileSize, DocumentStatus, StorageKey
+**Is Aggregate Root?**: Yes (no child entities, standalone)
+**Why Not in Service?**: Status transitions have domain rules (can't go from 'error' to 'ready' directly)
+
+### DocumentStatus (Value Object)
+**Values**: 'pending' | 'processing' | 'ready' | 'error' | 'deleted'
+**Compared By**: String value
+**Immutability**: Status changes create new instance, old state preserved in events
+**Journey Context**: Displayed in Step 1 document list, gates Step 3 assessment creation
+
+**Example**:
+```typescript
+class DocumentStatus {
+  private constructor(readonly value: string) {}
+
+  static PENDING = new DocumentStatus('pending');
+  static READY = new DocumentStatus('ready');
+
+  canTransitionTo(newStatus: DocumentStatus): boolean {
+    // Domain rule: status transition validity
+    const validTransitions = {
+      'pending': ['processing', 'error'],
+      'processing': ['ready', 'error'],
+      'ready': ['deleted'],
+      'error': ['deleted']
+    };
+    return validTransitions[this.value]?.includes(newStatus.value) ?? false;
+  }
+}
+```
+
+### Assessment (Domain Entity - Aggregate Root)
+**Database Table**: assessments (Session 7)
+**Identity**: AssessmentId (UUID)
+**Journey Step**: Steps 2-3 (Framework Selection → AI Assessment)
+
+**Business Rules**:
+- Cannot start assessment on unready document (requires Document.status === 'ready')
+- Cannot view results until status === 'completed' (Journey Step 4 dependency)
+- Framework must be active (references framework catalog validity)
+
+**Methods**:
+- `start(): void` - Validates preconditions, transitions to 'running'
+- `complete(results: AssessmentResults): void` - Stores results, transitions to 'completed'
+- `fail(error: ErrorDetails): void` - Records failure for retry logic
+- `isViewable(): boolean` - Checks if results can be shown to user (Step 4)
+
+**Value Objects**: AssessmentStatus, ComplianceScore
+**Is Aggregate Root?**: Yes (Assessment contains AssessmentResults as child value object)
+
+### Aggregates Identified:
+1. **Document Aggregate** (Root: Document) - Boundary: Single document, no children
+2. **Assessment Aggregate** (Root: Assessment) - Boundary: Assessment + Results (stored together, consistency required)
+```
+
+**Design Decisions:**
+
+```markdown
+### Decision: Entity vs Service for Business Logic
+
+**Decision**: Business logic lives in domain entities, not services
+
+**Rationale**:
+- Entities know their own rules (Order knows when it can be confirmed)
+- Services become thin orchestrators (call entity methods, save via repository)
+- Testable without database (entity unit tests don't need ORM)
+- Journey alignment: Domain entities model real-world concepts users understand
+
+**Anti-Pattern Avoided**: Anemic Domain Model
+- Entities with only getters/setters
+- All logic in services (OrderService.calculateTotal, not Order.calculateTotal)
+- Leads to procedural code, not object-oriented
+
+**Reconsider If**:
+- Domain is trivial CRUD (no complex rules)
+- Team prefers functional programming over OOP
+```
+
+---
+
 ### Step 2: Identify Services (Business Logic Layer)
+
+**Purpose**: Services orchestrate domain entities, repositories, and integrations. They do NOT contain business logic—that lives in domain entities (Step 1.5). Services coordinate workflows and manage transactions.
 
 **Decision Tree - Service Identification:**
 
 ```
-For each journey step or major domain entity, ask:
+For each journey step or major domain aggregate, ask:
 
-1. Does this require business logic (not just CRUD)?
+1. Does this require orchestration (not just single entity method)?
    - YES → Create dedicated Service class
-   - NO → Repository methods may be sufficient
+   - NO → Direct repository access may suffice (rare)
 
-2. Does this involve multiple entities or complex workflows?
-   - YES → Service coordinates multiple repositories
-   - NO → Simple service with single repository
+2. Does this involve multiple entities or external systems?
+   - YES → Service coordinates domain entities + repositories + adapters
+   - NO → Simple service calling entity methods + single repository
 
-3. Does this integrate with external systems?
-   - YES → Service uses Integration Adapters
-   - NO → Service handles logic internally
+3. What does the service DO?
+   - ✅ Fetch entities from repositories
+   - ✅ Call domain entity methods (entity.confirm(), entity.calculate())
+   - ✅ Save entities via repositories
+   - ✅ Coordinate integrations (storage, email, AI)
+   - ✅ Manage transactions (Unit of Work pattern)
+   - ❌ NOT contain business rules (those live in domain entities)
 
 4. What's the granularity?
-   - One service per journey step → Clear boundaries, journey-focused
-   - One service per entity → Data-focused, might be too granular
-   - One service per domain aggregate → DDD approach, good for complex domains
+   - One service per journey step → Clear boundaries, journey-focused (RECOMMENDED)
+   - One service per aggregate → DDD approach, good for complex domains
+   - One service per entity → Too granular, avoid unless CRUD-only
 ```
 
 **Service Patterns**:
@@ -149,33 +367,42 @@ For each journey step or major domain entity, ask:
   - Business rules (validations, constraints, transformations)
   - Journey connection (why does this method exist?)
 
-**Example**:
+**Example (showing domain entity orchestration)**:
 
 ```markdown
 ### DocumentService
-**Responsibility**: Document lifecycle management (upload, validation, storage, retrieval)
+**Responsibility**: Orchestrate document lifecycle across repositories and storage
 **Journey Step**: Step 1 (Document Upload)
-**Dependencies**: DocumentRepository, StorageClient, UserService
+**Dependencies**: DocumentRepository, StorageAdapter, Document (domain entity)
 
 **Interface**:
 - uploadDocument(userId, file, metadata) → Document
   - Validates file type and size (from API contracts: max 100MB, PDF/DOCX only)
-  - Uploads to storage (S3/GCS via StorageClient)
-  - Creates database record (via DocumentRepository)
+  - Uploads to storage (S3/GCS via StorageAdapter)
+  - Creates domain entity: document = Document.create(userId, storageKey, fileSize)
+  - Entity business logic: document.markAsProcessing() (validates state transition)
+  - Saves via DocumentRepository.save(document)
   - Returns document with signed download URL
   - Journey: Enables Step 1 "Upload compliance document"
+  - NOTE: File validation is in service (I/O concern), status transition is in entity (business rule)
 
-- getDocument(documentId, userId) → Document | null
-  - Checks ownership (user_id matches or team member)
-  - Retrieves from database
-  - Generates fresh signed URL if needed
-  - Journey: Supports viewing uploaded documents
+- markDocumentReady(documentId, userId) → Document
+  - Fetches: document = await DocumentRepository.findById(documentId)
+  - Checks ownership (service concern, not domain rule)
+  - Entity business logic: document.markAsReady() (enforces 'processing' → 'ready' transition)
+  - Saves via DocumentRepository.save(document)
+  - Journey: Step 1 processing complete, now available for Step 3 assessment
 
 - deleteDocument(documentId, userId) → void
-  - Verifies ownership
-  - Deletes from storage
-  - Soft-deletes database record (status = 'deleted')
+  - Fetches: document = await DocumentRepository.findById(documentId)
+  - Verifies ownership (service concern)
+  - Entity business logic: canDelete = document.canBeDeleted() (checks no active assessments)
+  - If canDelete: Deletes from StorageAdapter, then document.markAsDeleted()
+  - Saves via DocumentRepository.save(document)
   - Journey: Allows cleanup before assessment
+  - NOTE: "Can delete?" logic is in entity (business rule), actual storage deletion is service concern
+
+**Design Note**: This service is THIN—it fetches entities, calls their methods, saves them. Business rules live in Document entity (Step 1.5).
 ```
 
 ---
@@ -505,12 +732,526 @@ class DocumentService {
 
 ---
 
+### Step 6.5: Design Cross-Cutting Concerns
+
+**Purpose**: Add production-grade patterns for caching, resilience, messaging reliability, and observability. These concerns span multiple layers and significantly impact performance and operational readiness.
+
+**Decision Tree - Cross-Cutting Concern Selection:**
+
+```
+For each concern, ask:
+
+1. CACHING - Is this operation read-heavy?
+   - Read/write ratio > 10:1 → Implement caching
+   - Frequently accessed, rarely changed → Cache with TTL
+   - Real-time critical (payment status, never stale) → Skip caching
+
+2. RESILIENCE - Does this call external services?
+   - External API (AI, payment, storage) → Circuit breaker + retry
+   - Third-party SaaS → Timeout configuration + fallback
+   - Internal service → Depends on architecture (microservices need it)
+
+3. MESSAGING RELIABILITY - Do you publish events?
+   - Database write + message publish → Outbox pattern (prevent dual-write problem)
+   - Event ordering matters → Sequence numbers or partitioning
+
+4. OBSERVABILITY - Is this production code?
+   - All production systems → Structured logging, correlation IDs, metrics
+   - Distributed architecture → Distributed tracing (OpenTelemetry)
+```
+
+**For each cached operation, define:**
+
+```markdown
+### Caching: [Operation Name] (Journey Step X)
+
+**Operation**: [Service.method()]
+**Pattern**: [Cache-Aside / Read-Through / Write-Through]
+**Rationale**: [Why cache? Read-heavy? Expensive computation? External API cost?]
+
+**Configuration**:
+- **Cache key strategy**: `[pattern, e.g., "documents:user:{userId}"]`
+- **TTL with jitter**: [Base TTL] ± [jitter %] (prevent thundering herd)
+- **Invalidation strategy**: [Write-through / TTL expiration / Manual purge / Event-driven]
+- **Multi-level** (optional): L1 in-memory (100μs) → L2 Redis (1-5ms) → Database (10-100ms)
+
+**Pseudocode**:
+```typescript
+async function getCachedData(key: string): Promise<Data> {
+  // Check cache
+  const cached = await redis.get(key);
+  if (cached) return JSON.parse(cached);
+
+  // Cache miss - fetch from source
+  const data = await fetchFromDatabase(key);
+
+  // Store with TTL jitter
+  const ttl = 300 + (Math.random() * 60 - 30); // 270-330 seconds
+  await redis.setex(key, ttl, JSON.stringify(data));
+
+  return data;
+}
+```
+
+**Journey Connection**: [Which journey step benefits? How does caching improve UX?]
+```
+
+**For each external integration, define:**
+
+```markdown
+### Circuit Breaker: [Integration Name] (Journey Step X)
+
+**Integration**: [External service - OpenAI API, Stripe, AWS S3]
+**Pattern**: Circuit Breaker + Retry with Exponential Backoff
+**Rationale**: [Why resilience needed? External API can fail, rate limits, outages?]
+
+**Configuration**:
+- **Failure threshold**: [e.g., 50% failure rate over 10 requests]
+- **Wait duration**: [e.g., 60 seconds in OPEN state]
+- **Half-open test**: [e.g., 3 requests before closing circuit]
+- **Retry strategy**:
+  - Max retries: [e.g., 3]
+  - Backoff: [e.g., 100ms, 200ms, 400ms exponential]
+  - Only retry transient failures (network errors, 5xx, rate limits)
+- **Timeout configuration**:
+  - Connection timeout: [e.g., 5 seconds]
+  - Request timeout: [e.g., 30 seconds]
+- **Fallback**: [What happens when circuit is OPEN? Return cached data? Queue for later? Return error?]
+
+**Metrics** (for observability):
+- `[service]_circuit_breaker_state` (closed/open/half-open)
+- `[service]_request_duration_seconds` (p50, p95, p99)
+- `[service]_failure_rate` (percentage)
+
+**Pseudocode**:
+```typescript
+class CircuitBreaker {
+  constructor(
+    private failureThreshold = 0.5,
+    private waitDuration = 60000,
+    private halfOpenRequests = 3
+  ) {}
+
+  async execute<T>(fn: () => Promise<T>): Promise<T> {
+    if (this.state === 'OPEN') {
+      if (Date.now() - this.lastFailureTime >= this.waitDuration) {
+        this.state = 'HALF_OPEN';
+      } else {
+        throw new Error('Circuit breaker OPEN');
+      }
+    }
+
+    try {
+      const result = await this.retryWithBackoff(fn);
+      this.recordSuccess();
+      return result;
+    } catch (error) {
+      this.recordFailure();
+      throw error;
+    }
+  }
+
+  private async retryWithBackoff<T>(fn: () => Promise<T>): Promise<T> {
+    for (let i = 0; i < 3; i++) {
+      try {
+        return await fn();
+      } catch (error) {
+        if (!this.isTransient(error) || i === 2) throw error;
+        await this.delay(100 * Math.pow(2, i)); // 100ms, 200ms, 400ms
+      }
+    }
+  }
+}
+```
+
+**Journey Connection**: [Which journey step depends on this? What user experience is preserved by fallback?]
+```
+
+**For event-driven systems, define:**
+
+```markdown
+### Outbox Pattern: [Event Publishing]
+
+**Problem**: Dual-write problem - database write succeeds, message publish fails → inconsistency
+**Solution**: Outbox pattern - write entity + event to outbox table in same transaction
+
+**Implementation**:
+
+1. **Outbox Table** (add to Session 7 schema if not present):
+```sql
+CREATE TABLE outbox_events (
+  id UUID PRIMARY KEY,
+  aggregate_type VARCHAR(50) NOT NULL,
+  aggregate_id UUID NOT NULL,
+  event_type VARCHAR(100) NOT NULL,
+  payload JSONB NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  processed BOOLEAN DEFAULT FALSE,
+  processed_at TIMESTAMP
+);
+CREATE INDEX idx_outbox_unprocessed ON outbox_events(processed, created_at) WHERE NOT processed;
+```
+
+2. **Service writes to outbox**:
+```typescript
+@Transactional
+async createOrder(orderData: OrderData): Promise<Order> {
+  // Save business entity
+  const order = await this.orderRepo.save(new Order(orderData));
+
+  // Save event to outbox (same transaction)
+  await this.outboxRepo.save({
+    aggregateType: 'Order',
+    aggregateId: order.id,
+    eventType: 'OrderCreated',
+    payload: JSON.stringify(order),
+    processed: false
+  });
+
+  return order;
+}
+```
+
+3. **Background processor publishes from outbox**:
+```typescript
+@Scheduled(fixedDelay = 1000)
+async processOutbox(): Promise<void> {
+  const events = await this.outboxRepo.findUnprocessed();
+
+  for (const event of events) {
+    try {
+      await this.messageBus.publish(event.eventType, event.payload);
+      event.processed = true;
+      event.processedAt = new Date();
+      await this.outboxRepo.save(event);
+    } catch (error) {
+      // Log error, retry on next cycle
+      this.logger.error('Failed to publish event', { event, error });
+    }
+  }
+}
+```
+
+**Journey Connection**: [Which journey flows produce events? Why is reliability critical?]
+```
+
+**For all services, define observability:**
+
+```markdown
+### Observability Strategy
+
+**Structured Logging**:
+- **Format**: JSON logs with timestamp, level, service, correlation_id, user_id, message, context
+- **Levels**: ERROR (failures), WARN (degraded), INFO (key events), DEBUG (development only)
+- **What to log**:
+  - Request start/end with duration
+  - External service calls with latency
+  - Business events (order confirmed, document uploaded)
+  - Errors with stack traces + context
+
+**Example**:
+```typescript
+logger.info('Document uploaded', {
+  correlationId: req.correlationId,
+  userId: req.user.id,
+  documentId: document.id,
+  fileSize: document.fileSize,
+  duration: Date.now() - startTime
+});
+```
+
+**Correlation IDs**:
+- Generate UUID per request (middleware generates, attaches to req object)
+- Propagate through all service layers (pass to repository, adapter calls)
+- Include in all logs (enables trace reconstruction)
+- Pass to external services via HTTP headers (`X-Correlation-ID`)
+
+**Distributed Tracing** (if microservices):
+- Instrument with OpenTelemetry
+- Trace spans: HTTP request → Service method → Repository query → External API call
+- Attributes: service.name, http.method, http.status_code, db.statement
+
+**Metrics** (key metrics for dashboards/alerts):
+- **Cache metrics**: hit rate, miss rate, eviction rate
+- **Circuit breaker metrics**: state (closed/open/half-open), failure rate
+- **Request metrics**: request count, duration (p50, p95, p99), error rate
+- **Business metrics**: documents uploaded, assessments completed (from Session 4 metrics)
+
+**Journey Connection**: [How do metrics map to Session 4 L0/L1/L2/L3 metrics?]
+```
+
+**Example (Compliance SaaS)**:
+
+```markdown
+### Caching: Document List (Journey Step 1)
+
+**Operation**: `DocumentService.listUserDocuments(userId)`
+**Pattern**: Cache-Aside
+**Rationale**: Read-heavy - users view document list 10x more than upload
+
+**Configuration**:
+- Cache key: `documents:user:{userId}:status:{status}`
+- TTL: 300 seconds (5 minutes) ± 30 seconds jitter
+- Invalidation: On document upload/delete, invalidate user's cache
+- Storage: Redis (L2 cache)
+
+**Pseudocode** (shown above)
+
+**Journey Connection**: Step 1 - Users refresh document list frequently while waiting for processing. Caching reduces database load and improves perceived performance.
+
+---
+
+### Circuit Breaker: AI Assessment API (Journey Step 3)
+
+**Integration**: OpenAI API for compliance assessment
+**Pattern**: Circuit Breaker + Retry
+**Rationale**: External API can fail (rate limits, model outages, network issues)
+
+**Configuration**:
+- Failure threshold: 50% over 10 requests
+- Wait duration: 60 seconds
+- Retry: 3 attempts with 100ms, 200ms, 400ms backoff
+- Timeout: 30 seconds per request
+- Fallback: Return "assessment queued" status, process asynchronously
+
+**Metrics**:
+- `ai_api_circuit_breaker_state`
+- `ai_api_request_duration_seconds`
+- `ai_api_failure_rate`
+
+**Journey Connection**: Step 3 - AI assessment is critical but external. Circuit breaker prevents cascading failures. Fallback (queue for later) preserves UX when API is down.
+
+---
+
+### Outbox Pattern: Assessment Events
+
+**Problem**: Assessment completed → publish event for notifications → event lost if publish fails
+**Solution**: Outbox pattern ensures event is eventually published
+
+**Implementation** (shown above)
+
+**Journey Connection**: Step 4 - Users expect notification when assessment completes. Outbox ensures event isn't lost even if notification service is temporarily down.
+
+---
+
+### Observability: All Services
+
+**Structured Logging**: JSON format with correlation IDs
+**Correlation IDs**: Generated per request, propagated through all layers
+**Metrics**:
+- Cache hit rate for document list: target >80%
+- AI API p95 latency: target <5 seconds
+- Document upload success rate: target >99%
+- Maps to Session 4 L2 metrics: "Time to assessment" (performance)
+
+**Journey Connection**: Observability enables tracking Session 4 metrics and debugging production issues without disrupting users.
+```
+
+**Design Decisions:**
+
+```markdown
+### Decision: Caching Strategy
+
+**Decision**: Cache-Aside pattern with Redis for read-heavy operations
+
+**Rationale**:
+- Journey has asymmetric read/write (document list viewed 10x more than updated)
+- Cache-Aside is simple, battle-tested, handles cache failures gracefully
+- Redis provides distributed cache (multiple app instances share cache)
+
+**Alternative Rejected**: Write-Through
+- Higher write latency (sequential write to DB + cache)
+- Journey is read-optimized, write latency less critical
+
+**Reconsider If**: Write latency becomes critical, or need strong read-after-write consistency
+
+---
+
+### Decision: Circuit Breaker for External APIs Only
+
+**Decision**: Implement circuit breakers only for external integrations (AI API, Storage), not internal services
+
+**Rationale**:
+- Monolithic/modular monolith architecture (Session 4) - internal calls are in-process, reliable
+- External APIs have unpredictable failure modes (rate limits, outages)
+- Circuit breakers add complexity - use only where needed
+
+**Alternative Rejected**: Circuit breakers everywhere
+- Over-engineering for in-process calls
+- Adds latency and complexity without benefit
+
+**Reconsider If**: Migrate to microservices - then circuit breakers needed between services
+```
+
+---
+
 ### Step 7: Document Architecture Decisions
 
 **For each major architectural decision, document**:
 
 ```markdown
 ## Architecture Decisions
+
+### 0. Clean Architecture Enforcement (Hexagonal Architecture / Ports & Adapters)
+
+**Decision**: Enforce Hexagonal Architecture with dependency inversion and layer separation
+
+**Rationale**:
+- Domain layer stays pure (no framework/database imports) → testable without infrastructure
+- Application layer (services) orchestrates use cases
+- Infrastructure layer (repositories, adapters) implements technical details
+- Ports (interfaces) defined in domain, adapters (implementations) in infrastructure
+- Enables technology swaps (change database, framework) without changing domain logic
+- Journey connection: Domain entities model real-world concepts users understand (Step 1.5)
+
+**Layer Responsibilities**:
+
+| Layer | Contains | Can Import | Cannot Import |
+|-------|----------|------------|---------------|
+| **Domain** | Entities, Value Objects, Aggregates, Domain Events | Nothing (pure) | Framework, Database, HTTP |
+| **Application** | Services, Use Cases | Domain | Infrastructure, Controllers |
+| **Infrastructure** | Repository Impls, Adapters | Domain, Application | Controllers |
+| **Controllers** | HTTP handlers, GraphQL resolvers | Application | Domain (must go through services) |
+
+**Dependency Rules (Critical)**:
+1. Domain layer has **zero dependencies** - pure business logic
+2. Application depends on domain interfaces
+3. Infrastructure implements domain interfaces (dependency inversion)
+4. Controllers depend on application services (NOT repositories directly)
+5. All dependencies flow INWARD toward domain
+
+**Enforcement Pattern - Repository Interfaces in Domain**:
+
+```typescript
+// domain/repositories/IOrderRepository.ts (INTERFACE in domain)
+export interface IOrderRepository {
+  findById(id: OrderId): Promise<Order | null>;
+  save(order: Order): Promise<void>;
+}
+
+// infrastructure/repositories/PrismaOrderRepository.ts (IMPLEMENTATION in infrastructure)
+import { IOrderRepository } from '@domain/repositories/IOrderRepository';
+import { PrismaClient } from '@prisma/client';
+
+export class PrismaOrderRepository implements IOrderRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async findById(id: OrderId): Promise<Order | null> {
+    const row = await this.prisma.order.findUnique({ where: { id: id.value } });
+    return row ? OrderMapper.toDomain(row) : null;
+  }
+
+  async save(order: Order): Promise<void> {
+    const data = OrderMapper.toPersistence(order);
+    await this.prisma.order.upsert({
+      where: { id: order.id.value },
+      update: data,
+      create: data
+    });
+  }
+}
+```
+
+**Services Depend on Interfaces (Dependency Inversion)**:
+
+```typescript
+// application/services/OrderService.ts
+import { IOrderRepository } from '@domain/repositories/IOrderRepository';
+import { Order } from '@domain/entities/Order';
+
+export class OrderService {
+  constructor(private orderRepo: IOrderRepository) {}  // Interface, not Prisma implementation!
+
+  async confirmOrder(orderId: OrderId): Promise<void> {
+    const order = await this.orderRepo.findById(orderId);
+    if (!order) throw new Error('Order not found');
+
+    order.confirm();  // Business logic in domain entity (Step 1.5)
+
+    await this.orderRepo.save(order);
+  }
+}
+```
+
+**Testing Benefits**:
+
+```typescript
+// tests/services/OrderService.test.ts
+class MockOrderRepository implements IOrderRepository {
+  private orders = new Map<string, Order>();
+
+  async findById(id: OrderId): Promise<Order | null> {
+    return this.orders.get(id.value) ?? null;
+  }
+
+  async save(order: Order): Promise<void> {
+    this.orders.set(order.id.value, order);
+  }
+}
+
+describe('OrderService', () => {
+  it('confirms order and saves', async () => {
+    const mockRepo = new MockOrderRepository();
+    const service = new OrderService(mockRepo);
+
+    // Test without database - just domain logic + mock
+    await service.confirmOrder(orderId);
+    // Assertions...
+  });
+});
+```
+
+**Directory Structure (Hexagonal Architecture)**:
+
+```
+src/
+├── domain/                      # Core business logic (zero dependencies)
+│   ├── entities/
+│   │   ├── Order.ts             # Domain entity with business methods
+│   │   └── Document.ts
+│   ├── value-objects/
+│   │   ├── Money.ts
+│   │   └── DocumentStatus.ts
+│   ├── repositories/            # Repository INTERFACES (ports)
+│   │   ├── IOrderRepository.ts
+│   │   └── IDocumentRepository.ts
+│   └── events/
+│       └── OrderCreatedEvent.ts
+├── application/                 # Use cases and orchestration
+│   └── services/
+│       ├── OrderService.ts      # Depends on domain interfaces
+│       └── DocumentService.ts
+├── infrastructure/              # Technical implementations (adapters)
+│   ├── repositories/
+│   │   ├── PrismaOrderRepository.ts   # Implements IOrderRepository
+│   │   └── PrismaDocumentRepository.ts
+│   ├── integrations/
+│   │   ├── S3StorageAdapter.ts
+│   │   └── OpenAIAdapter.ts
+│   └── mappers/                 # ORM ↔ Domain entity conversion
+│       └── OrderMapper.ts
+└── controllers/                 # HTTP/API layer
+    ├── OrderController.ts       # Depends on OrderService
+    └── DocumentController.ts
+```
+
+**Alternative Rejected**: Direct repository imports in services (no interfaces)
+- Couples application to specific ORM (Prisma, TypeORM)
+- Cannot swap database without changing service code
+- Tests require database or complex mocking
+- Violates dependency inversion principle
+
+**Reconsider If**:
+- Team < 3 developers AND domain is trivial CRUD (over-engineering risk)
+- Framework enforces different architecture (Rails Active Record, Django ORM)
+- Journey has NO complex business rules (pure CRUD operations)
+
+**Journey Connection**:
+- Clean architecture enables Session 12 scaffold to generate domain-first code
+- Domain entities model user journey concepts (Document, Assessment from Step 1-4)
+- Testability enables confidence when implementing Session 10 backlog stories
+
+---
 
 ### 1. Service Granularity
 **Decision**: One service per journey step (not per entity)
