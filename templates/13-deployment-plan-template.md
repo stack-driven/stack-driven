@@ -842,6 +842,221 @@ After deploying:
 
 ---
 
+## Deployment Observability
+
+### DORA Metrics Tracking
+
+**Deployment Frequency**: [Target: X deploys/day]
+- Metric: `deployments_total` counter
+- Dashboard: [Link to Grafana/Datadog dashboard]
+- Current rate: [Tracked via CI/CD pipeline events]
+
+**Lead Time for Changes**: [Target: < X hours]
+- Metric: Time from commit to production deployment
+- Tracked via: GitHub Actions workflow timestamps
+- Calculation: `deployment_time - commit_time`
+
+**Mean Time to Recovery (MTTR)**: [Target: < X minutes]
+- Metric: Time from incident detection to resolution
+- Tracked via: PagerDuty/Opsgenie incident timeline
+- Calculation: `incident_resolved_at - incident_triggered_at`
+
+**Change Failure Rate**: [Target: < X%]
+- Metric: `(failed_deployments / total_deployments) * 100`
+- Threshold: Rollback if > [X]% in 24-hour window
+
+---
+
+### Automated Rollback Triggers
+
+Based on [Session 14 SLOs / default thresholds]:
+
+| SLI | Threshold | Duration | Action |
+|-----|-----------|----------|--------|
+| Error Rate | > [X]% | 2 minutes | Automatic rollback |
+| Latency p99 | > [X]ms | 2 minutes | Automatic rollback |
+| Availability | < [X]% | 1 minute | Automatic rollback |
+
+**Rollback Method**: [Traffic switch / Previous version deploy / Feature flag disable]
+**Expected Duration**: [< 5 minutes]
+
+**Configuration**:
+```yaml
+# [Flagger/Argo Rollouts configuration for automated rollback]
+```
+
+---
+
+### Alert Routing
+
+[Note: If Session 14 exists, integrate alert routing from observability strategy]
+
+| Severity | Condition | Response Time | Notification Channel |
+|----------|-----------|---------------|---------------------|
+| P1 Critical | Error rate > [X]% OR Availability < [X]% | Immediate | Page on-call via [PagerDuty/Opsgenie] |
+| P2 High | Latency p99 > [X]ms for 5 min | 30 minutes | Slack #incidents + page business hours |
+| P3 Medium | Deployment failed | 4 hours | Slack #deployments |
+
+**Escalation Policy**: [Link to PagerDuty/Opsgenie escalation]
+
+---
+
+## Kubernetes Configuration
+
+[Note: Include this section if orchestration platform is Kubernetes]
+
+### Production-Grade Deployment Manifest
+
+```yaml
+# [Generated Kubernetes Deployment with security contexts, topology spread, PDB, HPA]
+# See generated configuration from design-kubernetes-config sub-agent
+```
+
+**Replica Count**: [X replicas]
+- **Journey Traceability**: [SLA requirement] requires [X] replicas for high availability
+
+**Resource Limits**: CPU [X], Memory [Y]
+- **Journey Traceability**: Sized for [expected users] users, [requests/sec] req/sec
+- **QoS Class**: Guaranteed (requests == limits)
+
+**Security Context**:
+- runAsNonRoot: true
+- readOnlyRootFilesystem: true
+- Drop ALL capabilities
+- [Compliance mapping if Session 2a exists]
+
+**Health Probes**:
+- Startup probe: [failureThreshold X, periodSeconds Y]
+- Liveness probe: [detect deadlocks, restart after X failures]
+- Readiness probe: [control traffic routing, dependency checks]
+
+**Autoscaling** (if enabled):
+- Min replicas: [X]
+- Max replicas: [Y]
+- CPU target: 70%
+- Memory target: 80%
+
+**Topology Spread** (if SLA >= 99.9%):
+- Spread across availability zones
+- maxSkew: 1, topology: zone
+
+---
+
+## Disaster Recovery
+
+[Note: Include if SLA >= 99.9% OR journey criticality is life-critical/financial]
+
+### RTO/RPO Tier: [Tier 1 / Tier 2 / Tier 3]
+
+**Recovery Time Objective (RTO)**: [< X minutes/hours]
+**Recovery Point Objective (RPO)**: [< X minutes/hours]
+
+**Journey Traceability**: [Link to journey criticality and SLA requirement]
+
+---
+
+### DR Strategy: [Active-Active / Warm Standby / Daily Backups]
+
+**Architecture**:
+[Describe multi-region setup OR backup strategy]
+
+**Failover Process**:
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+**Failover Testing**: [Monthly/Quarterly DR drills]
+
+---
+
+### Backup Strategy (3-2-1-1-0 Rule)
+
+**3 Copies**:
+1. Production database (primary)
+2. [Secondary copy - e.g., cross-region replica]
+3. [Tertiary copy - e.g., S3 backups]
+
+**2 Media Types**:
+1. Live database (block storage)
+2. Object storage (S3/GCS archive)
+
+**1 Offsite**: [Cross-region backups]
+
+**1 Offline/Immutable**: [S3 Object Lock / WORM mode]
+
+**0 Errors**:
+- Monthly restore drills to test environment
+- Automated backup integrity checks
+- Alert on backup failures within 1 hour
+
+---
+
+### Chaos Engineering
+
+**Tool**: [Chaos Mesh / AWS FIS]
+
+**Experiments**:
+- **Weekly**: Pod failure tests (validate auto-recovery)
+- **Monthly**: Network partition tests (validate circuit breakers)
+- **Quarterly**: Regional failover tests (validate RTO/RPO)
+
+---
+
+## Security Operations
+
+[Note: Include if compliance requirements exist OR SLA >= 99.99%]
+
+### Secret Management: [HashiCorp Vault / AWS Secrets Manager / Google Secret Manager]
+
+**Journey Traceability**: [Session 2a compliance requirements] requires centralized secret management
+
+**Secrets Managed**:
+- Database credentials
+- Third-party API keys ([OpenAI, Stripe, etc.])
+- Encryption keys
+- OAuth client secrets
+
+**Rotation Policy**: [Every 90 days automated]
+
+**Integration**: [Vault sidecar / CSI driver / IRSA]
+
+---
+
+### Network Security
+
+**Kubernetes NetworkPolicy** (if applicable):
+- Default-deny all ingress/egress
+- Explicit allow rules:
+  - App → Database (port 5432)
+  - App → Redis (port 6379)
+  - Ingress → App (port 8080)
+
+**Journey Traceability**: [Session 2a compliance] requires network segmentation
+
+---
+
+### TLS/Certificate Management
+
+**Tool**: cert-manager (automated Let's Encrypt)
+
+**Configuration**:
+- TLS 1.3 enforced
+- Automatic certificate renewal (90-day lifecycle)
+- Wildcard certificate: *.example.com
+
+---
+
+### Compliance Controls
+
+[Note: If Session 2a constraints exist, map compliance requirements]
+
+**[HIPAA / SOC2 / PCI-DSS] Controls**:
+- [Specific control implementation details]
+- [Audit logging requirements]
+- [Access control mechanisms]
+
+---
+
 ## Future Improvements
 
 **Short-term** (next 3 months):
