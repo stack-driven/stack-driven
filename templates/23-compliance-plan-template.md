@@ -166,6 +166,17 @@ This section identifies which regulations apply to this product and why, based o
 
 **Priority**: [Required if handling cards directly / Lower priority if using payment processor]
 
+**WARNING: PCI-DSS 4.0 CRITICAL DEADLINE: March 31, 2025**
+
+All future-dated requirements are now MANDATORY:
+- MFA for ALL CDE access (not just admin)
+- 12-character minimum passwords (up from 7)
+- **Quarterly ASV scans now required for SAQ A merchants**
+- Script management controls for payment pages (Req 6.4.3)
+- Change/tamper detection for payment pages (Req 11.6.1)
+
+**Budget Impact**: Add $500/quarter ($2,000/year) for quarterly ASV scans even for SAQ A.
+
 **Implementation Timeline**:
 - **MVP**: Use payment processor (Stripe, PayPal) to avoid direct card handling → Level 4 SAQ-A
 - **Growth**: Maintain SAQ-A compliance (self-assessment questionnaire)
@@ -174,9 +185,10 @@ This section identifies which regulations apply to this product and why, based o
 **Estimated Costs** (all figures in 2025 USD):
 - **If using payment processor (Stripe/PayPal)**: Minimal costs
   - **SAQ-A self-assessment**: $0-$2,000 (can self-complete or use consultant)
+  - **Quarterly ASV scans**: $2,000/year (NEW PCI-DSS 4.0 requirement)
   - **Implementation**: 1-2 weeks engineering time ($5,000-$10,000 equivalent)
   - **Annual compliance**: $0-$2,000 (re-submit SAQ annually)
-  - **Total Year 1**: $5,000-$12,000
+  - **Total Year 1**: $7,000-$16,000
 
 - **If handling cards directly**: Significantly higher costs
   - **Initial assessment**: $10,000-$30,000 (PCI compliance audit)
@@ -188,7 +200,7 @@ This section identifies which regulations apply to this product and why, based o
 
 **Recommendation**: Use payment processor (Stripe) to minimize PCI scope and costs
 
-**Standard Source**: PCI Security Standards Council
+**Standard Source**: PCI Security Standards Council (PCI-DSS 4.0 effective March 31, 2025)
 
 ---
 
@@ -754,6 +766,55 @@ This section identifies which regulations apply to this product and why, based o
 (For Session 14 Observability Integration)
 
 **Purpose**: Define metrics, alerts, and audit requirements to continuously monitor compliance status
+
+---
+
+### Compliance Automation Strategies
+
+**Policy as Code (Open Policy Agent)**:
+- Evaluate Terraform/CloudFormation against compliance policies in CI/CD
+- Block non-compliant infrastructure before deployment (e.g., prevent unencrypted S3 buckets, non-TLS endpoints)
+- Integration: AWS Config, Azure Policy, GCP Organization Policy
+- Example: OPA Gatekeeper for Kubernetes admission control
+
+**IaC Scanning in CI/CD Pipelines**:
+
+| Tool | License | Built-in Policies | Best For |
+|------|---------|-------------------|----------|
+| Checkov | Apache 2.0 | 2,000+ | Comprehensive coverage |
+| Trivy | Apache 2.0 | 1,500+ | Unified scanning (IaC + containers) |
+| KICS | Apache 2.0 | 1,900+ | Broad platform support |
+| Terrascan | Apache 2.0 | 500+ | Policy-as-code focus |
+| Snyk IaC | Commercial | 400+ | Developer workflow integration |
+
+**Integration Pattern**:
+- Pre-commit hooks: Immediate feedback for developers
+- CI (Pull Requests): Gate merges on high-severity findings
+- CD (Deployment): Block deployment on critical violations
+
+**Cloud Security Posture Management (CSPM)**:
+
+| Platform | Approach | Key Strength | Pricing |
+|----------|----------|--------------|---------|
+| Wiz | Agentless | Security graph, attack path analysis | Enterprise |
+| Prisma Cloud | Agent/Agentless | Full CNAPP coverage | Tiered |
+| Orca Security | SideScanning | Deep agentless scanning | Per asset |
+| Lacework | Agent-based | Behavioral threat detection | Usage-based |
+
+**Automation ROI** (mid-market organization):
+- Audit prep time: 3-6 months → 2-4 weeks (75% reduction)
+- Evidence collection: 40-60 hours → 4-8 hours (85% reduction)
+- Compliance staff hours: 65% reduction per framework
+- Audit findings: 60% reduction
+
+**Financial ROI**:
+- Internal labor savings: $40,000-$80,000/year
+- External audit fee reduction: $20,000-$50,000/year
+- Regulatory fine avoidance: $50,000-$100,000/year
+- Breach risk reduction: $80,000-$250,000/year
+- **Total annual savings**: $190,000-$480,000
+- **Platform cost**: $50,000-$150,000/year
+- **Payback period**: 6-12 months
 
 ---
 
