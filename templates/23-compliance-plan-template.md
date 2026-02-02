@@ -166,14 +166,14 @@ This section identifies which regulations apply to this product and why, based o
 
 **Priority**: [Required if handling cards directly / Lower priority if using payment processor]
 
-**⚠️ PCI-DSS 4.0 CRITICAL DEADLINE: March 31, 2025**
+**WARNING: PCI-DSS 4.0 CRITICAL DEADLINE: March 31, 2025**
 
 All future-dated requirements are now MANDATORY:
-- ✅ MFA for ALL CDE access (not just admin)
-- ✅ 12-character minimum passwords (up from 7)
-- ⚠️ **Quarterly ASV scans now required for SAQ A merchants**
-- ✅ Script management controls for payment pages (Req 6.4.3)
-- ✅ Change/tamper detection for payment pages (Req 11.6.1)
+- MFA for ALL CDE access (not just admin)
+- 12-character minimum passwords (up from 7)
+- **Quarterly ASV scans now required for SAQ A merchants**
+- Script management controls for payment pages (Req 6.4.3)
+- Change/tamper detection for payment pages (Req 11.6.1)
 
 **Budget Impact**: Add $500/quarter ($2,000/year) for quarterly ASV scans even for SAQ A.
 
