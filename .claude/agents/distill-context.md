@@ -295,7 +295,7 @@ Target reduction by session type:
 
 - **Strategy/Vision sessions (1-5)**: 65-70% reduction (heavy rationale content)
 - **Technical sessions (7-9b)**: 60-65% reduction (more decisions, less rationale)
-- **Session 8 (API Design)**: 60-65% reduction (OWASP security patterns, resilience configs, caching strategy - high decision density due to Phases 1-5 enhancements)
+- **Session 8 (API Design)**: 55-65% reduction (OWASP security patterns, resilience configs, caching strategy - exceptionally high decision density due to Phases 1-5 enhancements; prioritize decision preservation over aggressive reduction)
 - **Implementation sessions (12-14)**: 55-60% reduction (already fairly concise)
 
 Always prioritize decision preservation over aggressive reduction. If a session has unusually high decision density (e.g., Session 8 with OWASP patterns + resilience + caching), 55-60% reduction is acceptable.
