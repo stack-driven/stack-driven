@@ -73,6 +73,7 @@ Read: product-guidelines/08-api-design.ctx.md  # (context version for token effi
 **Optional inputs (if available):**
 
 ```
+Read: product-guidelines/02a-constraints.ctx.md (if exists - regulatory requirements)
 Read: product-guidelines/10-backlog/BACKLOG.md (if exists - backlog comes after API contracts in Session 10)
 Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes after in Session 12)
 ```
@@ -107,163 +108,12 @@ Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes afte
 - What relationships need API exposure?
 - What query patterns should be supported?
 
+**Extract from Constraints (if available):**
+- What regulatory requirements apply (GDPR, HIPAA, PCI DSS, SOC 2)?
+- Are there EU users requiring GDPR compliance?
+- What compliance frameworks are in scope?
+
 **Example**: compliance-saas needs document upload, framework selection, assessment results, report sharing → FastAPI REST API with JWT auth, multi-tenant, rate-limited
-
----
-
-### Step 2.5: Identify Security & Compliance Requirements
-
-**CRITICAL - Analyze before generating contracts:**
-
-Before defining schemas, identify security and compliance requirements that affect API design.
-
-**Read Constraints (if available):**
-```
-Read: product-guidelines/02a-constraints.ctx.md (if exists - regulatory requirements)
-```
-
-**PII Field Identification:**
-
-Scan Session 7 database schema for personally identifiable information (PII) fields. Common patterns:
-- **Direct identifiers**: email, name, phone, address, SSN, passport, driver_license
-- **Indirect identifiers**: IP address, device ID, user agent, geolocation
-- **Sensitive data**: health records, financial data, biometric data, political opinions
-
-**For each PII field, mark in API schemas:**
-```yaml
-# OpenAPI example
-components:
-  schemas:
-    User:
-      properties:
-        email:
-          type: string
-          format: email
-          x-pii: true  # Custom extension for tooling
-          x-gdpr-category: "direct-identifier"
-          description: User email address (PII - handle with care)
-```
-
-**GDPR Compliance (if Session 2a indicates EU users or GDPR requirements):**
-
-Add **mandatory** data export endpoint per GDPR Article 20 (Right to Data Portability):
-```yaml
-paths:
-  /api/users/{user_id}/export:
-    get:
-      summary: Export all user data (GDPR Article 20 compliance)
-      description: |
-        Returns all personal data in machine-readable JSON format.
-        Required by GDPR Article 20 (Right to Data Portability).
-
-        **Access Control**: Only the user themselves can export their data.
-        **Data Included**: All PII fields across all tables.
-        **Format**: JSON (machine-readable, structured)
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: User data export
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: '#/components/schemas/User'
-                  documents:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Document'
-                  # Include all user-owned resources
-```
-
-**Input Sanitization Rules:**
-
-Define sanitization requirements per field type to prevent injection attacks:
-
-| Field Type | Max Length | Pattern/Validation | Sanitization |
-|------------|------------|-------------------|--------------|
-| Email | 255 chars | RFC 5322 regex | Lowercase, trim whitespace |
-| Name | 100 chars | Letters, spaces, hyphens, apostrophes | Strip HTML, escape special chars |
-| Phone | 20 chars | E.164 format (+1234567890) | Remove formatting, validate country code |
-| URL | 2048 chars | Valid URL scheme (http/https) | Validate protocol, check allowlist |
-| Text Input | 10,000 chars | No control characters | Strip HTML tags, escape for XSS prevention |
-| Rich Text | 50,000 chars | Allowed HTML tags only | Sanitize with DOMPurify or equivalent |
-
-**DoS Prevention Limits:**
-
-Specify limits to prevent denial-of-service attacks:
-- **Max request body size**: 10 MB (configurable per endpoint, e.g., 50 MB for file uploads)
-- **Max nesting depth**: 10 levels (prevents deeply nested JSON/XML bombs)
-- **Max array length**: 1,000 items (prevents memory exhaustion)
-- **Request timeout**: 30 seconds (prevents long-running requests tying up resources)
-- **Max URL length**: 2,048 characters
-
-**Deserialization Security Warnings:**
-
-**CRITICAL - Avoid unsafe deserialization:**
-
-| Format | Vulnerability | Safe Alternative |
-|--------|---------------|------------------|
-| **Python pickle** | Arbitrary code execution | Use JSON or MessagePack |
-| **YAML** | `yaml.load()` executes code | Use `yaml.safe_load()` |
-| **XML** | XXE (External Entity) attacks | Disable external entity processing |
-| **JavaScript eval** | Code injection | Use `JSON.parse()` only |
-| **Java ObjectInputStream** | Gadget chain attacks | Use JSON with allowlists |
-
-**Never deserialize untrusted data with:**
-- Python: `pickle.loads()`, `yaml.load()` without SafeLoader
-- JavaScript: `eval()`, `Function()` constructor
-- Java: `ObjectInputStream` without filtering
-- Ruby: `Marshal.load()` on user input
-
-**Example warning in API docs:**
-```markdown
-## Security Notice
-
-This API uses JSON for all request/response bodies. **Never** use Python pickle,
-YAML unsafe loading, or XML with external entities for deserialization. These
-formats allow arbitrary code execution when processing untrusted input.
-```
-
-**Decision Tree - Security Requirements:**
-
-```
-1. Does the API handle EU user data?
-   ├─ YES → Add GDPR data export endpoint
-   └─ NO → Skip GDPR requirements
-
-2. Does database schema contain PII fields?
-   ├─ YES → Mark all PII fields in API schemas (x-pii: true)
-   └─ NO → No PII marking needed
-
-3. What regulatory requirements apply (from Session 2a)?
-   ├─ HIPAA → Add audit logging, encryption at rest/transit requirements
-   ├─ PCI DSS → Add credit card data handling requirements (never log/store plaintext)
-   ├─ SOC 2 → Add access control, audit logging requirements
-   └─ None → Standard security best practices suffice
-
-4. Does API accept user-generated content?
-   ├─ YES → Add input sanitization rules, max length limits, HTML escaping
-   └─ NO → Basic validation only
-
-5. Does API handle file uploads?
-   ├─ YES → Add MIME type validation, file size limits, virus scanning requirement
-   └─ NO → Skip file upload security
-```
-
-**Output from this step:**
-- List of PII fields to mark in schemas
-- GDPR export endpoint requirement (if applicable)
-- Input sanitization rules per field type
-- DoS prevention limits
-- Deserialization security warnings
 
 ---
 
@@ -299,295 +149,101 @@ For each entity in database schema or backlog, ask:
 
 **Endpoint Naming Conventions:**
 
-**Decision Tree - REST Resource Design:**
+Follow REST best practices (if using REST):
 
 ```
-1. What type of operation?
-   ├─ CRUD on collection → Use standard REST verbs
-   │  - GET /api/resources (list)
-   │  - POST /api/resources (create)
-   │  - GET /api/resources/:id (read)
-   │  - PUT /api/resources/:id (update)
-   │  - DELETE /api/resources/:id (delete)
-   │
-   ├─ Action on resource → Use POST with action name
-   │  - POST /api/resources/:id/action
-   │  - Example: POST /api/assessments/:id/cancel
-   │
-   └─ Complex query → Use GET with query params
-      - GET /api/resources?filter=value&sort=field
-      - Example: GET /api/documents?status=ready&sort=-created_at
+Pattern: /api/{version}/{resource}/{id?}/{sub-resource?}/{action?}
 
-2. Should endpoints be nested?
-   ├─ Strong parent-child relationship → Nest
-   │  - GET /api/documents/:id/assessments
-   │  - "Get all assessments for this document"
-   │
-   └─ Loose relationship → Flat with filtering
-      - GET /api/assessments?document_id=123
-      - "Get assessments, optionally filtered by document"
+Collection operations:
+GET    /api/v1/documents          - List all (paginated)
+POST   /api/v1/documents          - Create new
+DELETE /api/v1/documents          - Bulk delete (optional)
+
+Single resource operations:
+GET    /api/v1/documents/:id      - Get one
+PUT    /api/v1/documents/:id      - Full update
+PATCH  /api/v1/documents/:id      - Partial update
+DELETE /api/v1/documents/:id      - Delete one
+
+Sub-resources:
+GET    /api/v1/documents/:id/assessments   - List document's assessments
+POST   /api/v1/documents/:id/assessments   - Create assessment for document
+
+Custom actions (non-CRUD):
+POST   /api/v1/documents/:id/process       - Trigger document processing
+POST   /api/v1/assessments/:id/share       - Generate shareable link
+POST   /api/v1/teams/:id/invite            - Invite member to team
+
+Query parameters for filtering, sorting, pagination:
+GET /api/v1/documents?status=pending&sort=created_at&limit=20&cursor=abc123
 ```
 
-**Example**: compliance-saas endpoints:
-- Documents: GET/POST `/api/documents`, GET/DELETE `/api/documents/:id`
-- Frameworks: GET `/api/frameworks`, GET `/api/frameworks/:id`
-- Assessments: GET/POST `/api/assessments`, GET/POST `/api/assessments/:id/{cancel,share}`
-- Public: GET `/public/reports/:token` (no auth)
-- Teams: GET/PATCH `/api/teams/:id`, GET `/api/teams/:id/usage`
+**GraphQL naming** (if using GraphQL):
+- Queries: `document(id: ID!)`, `documents(filter: DocumentFilter, limit: Int)`
+- Mutations: `createDocument(input: CreateDocumentInput!)`, `updateDocument(id: ID!, input: UpdateDocumentInput!)`
+- Subscriptions: `documentProcessed(documentId: ID!)`
+
+**gRPC naming** (if using gRPC):
+- Service: `DocumentService`
+- RPCs: `GetDocument(GetDocumentRequest)`, `ListDocuments(ListDocumentsRequest)`, `CreateDocument(CreateDocumentRequest)`
 
 ---
 
-### Step 4: Define Request and Response Schemas
+### Step 4: Invoke Phase 1 Agent (Security & Data Integrity) - ALWAYS REQUIRED
 
-For EACH endpoint, define:
-- **Request schema** (path params, query params, headers, body)
-- **Response schema** (success and error cases)
-- **Validation rules** (required fields, formats, constraints)
+**Phase 1 is mandatory for ALL API contracts.**
 
-**CRITICAL: Database-to-API Type Mapping**
-
-When mapping database columns to API schema types, use this table to prevent precision loss and data corruption:
-
-| Database Type | JSON Type | Protobuf Type | Precision Notes |
-|---------------|-----------|---------------|-----------------|
-| **NUMERIC/DECIMAL** | `string` | `string` | **CRITICAL**: Never use `float` or `number` - binary floats cannot represent 0.1, 0.01 exactly. Use string to preserve exact decimal values (e.g., "19.99" for money). |
-| **BIGINT** | `string` | `int64` | **CRITICAL**: JavaScript `Number.MAX_SAFE_INTEGER` is 2^53 (9,007,199,254,740,992). IDs/counts beyond this truncate. Use string in JSON for IDs. |
-| **INTEGER/INT** | `number` | `int32` | Safe for values within ±2.1 billion. Use for counts, quantities, ages. |
-| **SMALLINT** | `number` | `int32` | Safe for values within ±32,767. |
-| **BOOLEAN** | `boolean` | `bool` | Direct mapping, no precision issues. |
-| **TIMESTAMP/DATETIME** | `string` (ISO 8601) | `google.protobuf.Timestamp` | Use ISO 8601 format: "2025-01-15T14:30:00Z". Always include timezone. |
-| **DATE** | `string` (ISO 8601 date) | `string` | Format: "2025-01-15" (YYYY-MM-DD). |
-| **TIME** | `string` (ISO 8601 time) | `string` | Format: "14:30:00" or "14:30:00.123Z". |
-| **JSONB/JSON** | `object` | `google.protobuf.Struct` | Dynamic structure. Validate depth/size to prevent bombs. |
-| **UUID** | `string` (uuid format) | `string` | Use OpenAPI `format: uuid` for validation. Example: "123e4567-e89b-12d3-a456-426614174000". |
-| **TEXT/VARCHAR** | `string` | `string` | Add `maxLength` constraint from DB. Sanitize for XSS if user-generated. |
-| **BYTEA/BLOB** | `string` (base64) | `bytes` | Use base64 encoding in JSON. Protobuf has native bytes type. |
-| **ARRAY (PostgreSQL)** | `array` | `repeated` | Map array element type recursively. |
-| **ENUM** | `string` (enum) | `enum` | Define enum values in schema. OpenAPI: `enum: [value1, value2]`. |
-
-**Why This Matters - Common Bugs Prevented:**
-
-**Bug 1: Money Precision Loss**
-```javascript
-// Database: NUMERIC(10,2) storing $19.99
-// WRONG - loses precision:
-{"price": 19.99}  // Becomes 19.990000000000002 in binary float
-
-// CORRECT - preserves exact value:
-{"price": "19.99"}  // String preserves decimal precision
-```
-
-**Bug 2: JavaScript ID Truncation**
-```javascript
-// Database: BIGINT storing ID 9007199254740993
-// WRONG - truncates in JavaScript:
-{"user_id": 9007199254740993}  // Becomes 9007199254740992 (loses 1)
-
-// CORRECT - no truncation:
-{"user_id": "9007199254740993"}  // String preserves full value
-```
-
-**Bug 3: Timezone Loss**
-```sql
--- Database: TIMESTAMP WITH TIME ZONE '2025-01-15 14:30:00+00'
--- WRONG - loses timezone:
-{"created_at": "2025-01-15 14:30:00"}  // Ambiguous timezone
-
-// CORRECT - includes timezone:
-{"created_at": "2025-01-15T14:30:00Z"}  // ISO 8601 with UTC indicator
-```
-
-**Implementation Guidance:**
-
-1. **Read Session 7 database schema** and identify column types
-2. **For each API schema property**, apply type mapping from table above
-3. **Add OpenAPI format constraints** where applicable (uuid, email, date-time, uri)
-4. **Document precision requirements** in schema descriptions
-5. **Propagate DB constraints**:
-   - `NOT NULL` → `required: true` in schema
-   - `CHECK (age >= 0)` → `minimum: 0` in validation
-   - `UNIQUE` → document uniqueness constraint (enforced server-side)
-   - `VARCHAR(255)` → `maxLength: 255` in validation
-
-**Validation Rules Enforcement:**
-
-**MANDATORY: Every request/response schema MUST include validation constraints.**
-
-For JSON APIs (OpenAPI), use JSON Schema validation:
-
-```yaml
-# Comprehensive validation example
-components:
-  schemas:
-    User:
-      type: object
-      required:
-        - email
-        - name
-        - role
-      properties:
-        email:
-          type: string
-          format: email  # RFC 5322 email validation
-          minLength: 5
-          maxLength: 255
-          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-          description: User email address (PII)
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-          pattern: '^[a-zA-Z\s\-\']+$'  # Letters, spaces, hyphens, apostrophes
-          description: User full name (PII)
-        age:
-          type: integer
-          minimum: 0
-          maximum: 150
-          description: User age in years
-        role:
-          type: string
-          enum: [admin, user, guest]
-          description: User role for authorization
-        website:
-          type: string
-          format: uri
-          maxLength: 2048
-          pattern: '^https?://'  # Only http/https schemes
-          description: User website URL
-        phone:
-          type: string
-          pattern: '^\+[1-9]\d{1,14}$'  # E.164 format
-          minLength: 10
-          maxLength: 20
-          description: Phone number in E.164 format (PII)
-        created_at:
-          type: string
-          format: date-time  # ISO 8601
-          description: Account creation timestamp
-```
-
-For Protobuf APIs, use protoc-gen-validate:
-
-```protobuf
-syntax = "proto3";
-import "validate/validate.proto";
-
-message CreateUserRequest {
-  string email = 1 [(validate.rules).string = {
-    email: true,
-    min_len: 5,
-    max_len: 255
-  }];
-
-  string name = 2 [(validate.rules).string = {
-    min_len: 1,
-    max_len: 100,
-    pattern: "^[a-zA-Z\\s\\-']+$"
-  }];
-
-  int32 age = 3 [(validate.rules).int32 = {
-    gte: 0,
-    lte: 150
-  }];
-
-  Role role = 4;  // enum validation automatic
-
-  string website = 5 [(validate.rules).string = {
-    uri: true,
-    max_len: 2048
-  }];
-
-  string phone = 6 [(validate.rules).string = {
-    pattern: "^\\+[1-9]\\d{1,14}$"
-  }];
-}
-
-enum Role {
-  ROLE_UNSPECIFIED = 0;  // Always include zero value
-  ROLE_ADMIN = 1;
-  ROLE_USER = 2;
-  ROLE_GUEST = 3;
-}
-```
-
-**Validation Checklist (MUST include for ALL endpoints):**
-
-For **request schemas**, validate:
-- [ ] **Required fields**: Mark all non-optional fields as `required`
-- [ ] **String length**: `minLength` and `maxLength` for all string fields
-- [ ] **Number ranges**: `minimum` and `maximum` for integers/numbers
-- [ ] **Formats**: Use `format` for email, uri, uuid, date-time, etc.
-- [ ] **Patterns**: Add `pattern` regex for structured strings (phone, SSN, etc.)
-- [ ] **Enums**: Define allowed values for categorical fields
-- [ ] **Array constraints**: `minItems`, `maxItems` for arrays
-- [ ] **Cross-field validation**: Document dependencies in descriptions
-
-For **file upload endpoints**, validate:
-- [ ] **File size**: Max 50 MB default, specify per endpoint
-- [ ] **MIME types**: Allowlist only (e.g., `["image/png", "image/jpeg", "application/pdf"]`)
-- [ ] **Filename**: Sanitize for directory traversal (no `../`, absolute paths)
-- [ ] **File content**: Consider virus scanning requirement for user uploads
-
-**Validation Failure Response:**
-
-All validation errors return 400 Bad Request with this format:
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Request validation failed",
-    "details": {
-      "field": "email",
-      "constraint": "format",
-      "message": "Invalid email format",
-      "value": "notanemail"
-    }
-  }
-}
-```
-
-**Decision Tree - Schema Design:**
+**Read Phase 1 agent for comprehensive guidance:**
 
 ```
-1. What data format?
-   ├─ Simple CRUD → JSON request/response
-   ├─ File upload → multipart/form-data (add file validation)
-   ├─ Bulk operations → JSON array or newline-delimited JSON
-   └─ Real-time updates → WebSocket or Server-Sent Events
-
-2. What validation is needed? (ALWAYS ALL OF THESE)
-   ├─ Required fields → Mark as required in schema
-   ├─ Format validation → Use JSON Schema formats (email, url, uuid, date-time)
-   ├─ Length/range validation → minLength, maxLength, minimum, maximum
-   ├─ Pattern validation → regex for structured fields (phone, SSN, custom IDs)
-   ├─ Enum validation → Define allowed values for categorical fields
-   └─ Cross-field validation → Note dependencies in schema description
-
-3. How to handle pagination?
-   ├─ Offset-based → ?page=1&limit=20
-   ├─ Cursor-based → ?cursor=xyz&limit=20 (better for large datasets)
-   └─ Default: Cursor-based if >10K records expected, else offset
-
-4. How to handle errors?
-   ├─ Use standard HTTP status codes
-   ├─ Consistent error response format (see above)
-   └─ Include actionable error messages with field names
+Read: .claude/agents/api-contracts-phase1-security.md
 ```
 
-**Example schemas:**
+**Apply Phase 1 patterns** (see agent for complete details):
 
-```yaml
-# Document Upload
-POST /api/documents (multipart/form-data)
-→ 201: {id, name, fileSize, status, uploadedAt, userId, frameworks}
-→ 400: {error: {code: "INVALID_FILE_TYPE", message, field}}
-→ 413: {error: {code: "FILE_TOO_LARGE", message, limit, received}}
+**1. PII Field Identification and Marking:**
+- Scan Session 7 database schema for PII fields (email, name, phone, address, SSN, etc.)
+- Mark all PII fields in API schemas with `x-pii: true` extension
+- Add `x-gdpr-category` for classification (direct-identifier, indirect-identifier, sensitive-data)
 
-# Assessment Status
-GET /api/assessments/:id
-→ 200: {id, documentId, status, progress, frameworks, results: {score, findings[], summary}, timing}
-→ 404: {error: {code: "ASSESSMENT_NOT_FOUND", message}}
-```
+**2. GDPR Export Endpoint (Conditional):**
+- **IF** Session 2a indicates EU users or GDPR requirements
+- **THEN** add mandatory `/api/users/{user_id}/export` endpoint
+- Returns all personal data in machine-readable JSON format (Article 20 compliance)
+
+**3. Database-to-API Type Mapping:**
+- `NUMERIC/DECIMAL` (money) → `string` (not float, prevents precision loss)
+- `BIGINT` → `string` in JSON (JavaScript safety, no truncation)
+- `TIMESTAMP` → ISO 8601 with timezone (`2024-01-15T10:30:00Z`)
+- `UUID` → `string` with `format: uuid`
+
+**4. Validation Rules Enforcement:**
+- Propagate all DB constraints to API validation
+- `NOT NULL` → `required: true`
+- `VARCHAR(255)` → `maxLength: 255`
+- `CHECK` constraints → regex patterns or enums
+- Add input sanitization rules per field type (see Phase 1 agent)
+
+**5. DoS Prevention Limits:**
+- Max request body size: 10 MB (50 MB for file uploads)
+- Max nesting depth: 10 levels
+- Max array length: 1,000 items
+- Request timeout: 30 seconds
+- Max URL length: 2,048 characters
+
+**6. Deserialization Security Warnings:**
+- Never use Python pickle, `yaml.load()` without SafeLoader, `eval()`
+- Always use `JSON.parse()`, `yaml.safe_load()`, XML with disabled external entities
+- Document safe deserialization practices in API spec
+
+**Why Phase 1 matters**: Prevents money precision loss ($1.99 becomes $1.9899999), JavaScript ID truncation (large integers corrupted), timezone ambiguity, GDPR violations, and security vulnerabilities.
+
+**Output from Phase 1:**
+- PII fields marked in all schemas
+- GDPR export endpoint (if applicable)
+- Type mappings applied to all schemas
+- Validation rules on all request schemas
+- Security warnings in API documentation
 
 ---
 
@@ -686,1015 +342,128 @@ Server Errors:
 
 ---
 
-### Step 7: Define Rate Limiting, Pagination, and Performance Optimization
+### Step 7: Invoke Phase 3 Agent (Performance Optimization) - CONDITIONAL
 
-**Rate Limiting Strategy:**
-
-**Decision Tree - Rate Limiting:**
+**Conditional Invocation Decision:**
 
 ```
-1. What's the pricing model?
-   ├─ Free tier → Aggressive limits (10 req/min)
-   ├─ Paid tier → Generous limits (100-1000 req/min)
-   └─ Enterprise → Custom limits or no limits
+Does the journey have ANY of:
+1. Mobile users (bandwidth constraints)?
+2. High-volume traffic (>10K requests/day)?
+3. Large payloads (lists, nested data)?
+4. Real-time requirements?
 
-2. What's the limiting strategy?
-   ├─ Per user → Limit by user_id
-   ├─ Per team → Limit by team_id (better for multi-user teams)
-   ├─ Per IP → Limit by IP (for unauthenticated endpoints)
-   └─ Sliding window → More accurate than fixed window
-
-3. What endpoints need stricter limits?
-   ├─ Expensive operations (AI, file processing) → Lower limit
-   ├─ Read operations (GET) → Higher limit
-   └─ Public endpoints → Strictest limit (prevent abuse)
+├─ YES → Invoke Phase 3 (performance critical)
+└─ NO → Skip Phase 3 (performance not critical)
 ```
 
-**Example**: Headers `X-RateLimit-{Limit,Remaining,Reset}` on all responses. Limits by tier: Free (100 req/min), Pro (1000 req/min), Enterprise (unlimited). Expensive ops (uploads, assessments) have stricter per-hour/day limits.
-
-**Pagination Strategy:**
-
-**Decision Tree - Pagination:**
+**If Phase 3 invoked, read the agent:**
 
 ```
-1. How many total records?
-   ├─ <1K records → Simple offset pagination
-   ├─ 1K-100K records → Cursor pagination (recommended)
-   └─ >100K records → Cursor + search optimization
-
-2. Do results change frequently?
-   ├─ YES → Cursor pagination (stable)
-   ├─ NO → Offset pagination (simpler)
-
-3. Do users need random page access?
-   ├─ YES → Offset pagination (supports page=5)
-   ├─ NO → Cursor pagination (next/previous only)
+Read: .claude/agents/api-contracts-phase3-performance.md
 ```
 
-**Example**: Cursor-based for large datasets (`?cursor=abc&limit=20` → `{data[], pagination: {nextCursor, prevCursor, hasMore}}`), offset-based for small datasets (`?page=1&limit=20` → `{data[], pagination: {page, limit, total, totalPages}}`)
+**Apply Phase 3 patterns** (see agent for complete details):
+
+**1. Response Size Limits:**
+- Default list limit: 100 items
+- Maximum list limit: 1000 items
+- Enforce via `limit` query parameter with validation
+
+**2. Compression Strategy:**
+- JSON: gzip (default), Brotli (higher compression, slower)
+- Protobuf: LZ4 (fast, low CPU), Snappy (balanced), or no compression (if already small)
+- Configure `Accept-Encoding` header support
+
+**3. Field Selection Patterns:**
+- REST: Sparse fieldsets (`?fields=id,name,email` excludes other fields)
+- GraphQL: Native field selection (query only needed fields)
+- gRPC: `google.protobuf.FieldMask` for partial responses
+
+**4. HTTP Caching:**
+- GET endpoints: `Cache-Control: max-age=3600` for static data
+- Conditional requests: `ETag` / `If-None-Match` (304 Not Modified)
+- `Last-Modified` / `If-Modified-Since` for time-based caching
+
+**5. Protobuf Varint Optimization:**
+- Use `int32`/`int64` (varint encoding) for small numbers
+- Use `fixed32`/`fixed64` for large numbers (> 2^28)
+
+**Why Phase 3 matters**: Reduces bandwidth usage by 60-80%, improves mobile performance, lowers server costs, prevents DoS from large payloads.
+
+**If Phase 3 skipped**: Document that performance optimization was deferred. Can be added later if needed.
 
 ---
 
-**Performance Optimization Patterns (Phase 3):**
+### Step 8: Invoke Phase 2 Agent (API Versioning & Evolution) - ALWAYS REQUIRED
 
-**CRITICAL - Optimize for scalability and efficiency:**
+**Phase 2 is mandatory for ALL API contracts.**
 
-After defining pagination and rate limiting, apply performance optimization patterns to prevent bandwidth waste, slow mobile apps, and server overload.
-
-**1. Response Size Limits**
-
-Specify maximum response sizes per endpoint type to prevent memory exhaustion and bandwidth abuse:
-
-**Size Limit Decision Tree:**
+**Read Phase 2 agent for comprehensive guidance:**
 
 ```
-1. What's the endpoint type?
-   ├─ List endpoint (collection) → Default max 100 items, absolute max 1000 items
-   ├─ Single resource (GET /api/resources/:id) → No item limit (single item)
-   ├─ Search/filter endpoint → Default max 100 results, absolute max 500 results
-   └─ Bulk operation → Max 1000 items per request
-
-2. What's the resource size?
-   ├─ Small (<1 KB each) → Higher limits (1000 items)
-   ├─ Medium (1-10 KB each) → Standard limits (100 items)
-   └─ Large (>10 KB each) → Lower limits (20-50 items)
-
-3. Should clients control limit?
-   ├─ YES → Accept ?limit query param (default: 20, max: 100)
-   └─ NO → Fixed server-side limit
+Read: .claude/agents/api-contracts-phase2-versioning.md
 ```
 
-**Implementation Guidance:**
-
-For OpenAPI specs, document limits in endpoint descriptions:
-
-```yaml
-paths:
-  /api/documents:
-    get:
-      summary: List documents
-      description: |
-        Returns paginated list of documents.
-
-        **Performance Limits:**
-        - Default: 20 items per page
-        - Maximum: 100 items per page (enforce server-side)
-        - Total response size: <1 MB (approximate 100 items × 10 KB each)
-      parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Number of items to return (max 100)
-```
-
-**For Protobuf APIs, add size limits to RPC comments:**
-
-```protobuf
-service DocumentService {
-  // Lists documents (max 100 per request, default 20)
-  // Response size limit: 1 MB
-  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
-}
-
-message ListDocumentsRequest {
-  int32 page_size = 1;  // Max 100, default 20
-  string page_token = 2;
-}
-```
-
-**Why This Matters:**
-- Prevents clients from requesting 10,000 items and causing memory exhaustion
-- Mobile clients can request smaller page sizes (20) for bandwidth savings
-- Server protects itself from DoS via excessive pagination
-
-**2. Compression Decision Matrix**
-
-Specify when to compress responses for optimal bandwidth/CPU trade-off:
-
-**Compression Decision Tree:**
-
-```
-1. What's the serialization format?
-   ├─ JSON (text) → Always compress (70-90% size reduction)
-   ├─ Protobuf (binary) → Compress for large responses (>1 KB), diminishing returns
-   ├─ MessagePack (binary) → Compress for large responses, already compact
-   └─ GraphQL → Always compress (text format)
-
-2. What's the response size?
-   ├─ <1 KB → Don't compress (overhead > savings)
-   ├─ 1-10 KB → Compress if text format
-   └─ >10 KB → Always compress
-
-3. What's the latency requirement?
-   ├─ Real-time (<10ms SLA) → Don't compress (CPU overhead matters)
-   ├─ Interactive (<100ms SLA) → Use fast compression (LZ4, Snappy)
-   └─ Batch/background → Use maximum compression (gzip, ZSTD)
-
-4. What's the network condition?
-   ├─ LAN (high bandwidth) → Don't compress (CPU waste)
-   ├─ Internet (variable) → Compress (bandwidth savings)
-   └─ Mobile (bandwidth-constrained) → Always compress (battery + cost savings)
-```
-
-**Compression Algorithm Selection:**
-
-| Algorithm | Speed | Compression Ratio | Use Case |
-|-----------|-------|-------------------|----------|
-| **gzip** (level 6) | Medium | ~3× (70% reduction) | HTTP default, universal support |
-| **brotli** (level 4) | Slow | ~4× (75% reduction) | Modern browsers, pre-compress static content |
-| **ZSTD** (level 3) | Fast | ~3× (70% reduction) | Modern default, balanced speed/size |
-| **LZ4** | Fastest | ~2× (50% reduction) | Real-time, latency-critical |
-| **Snappy** | Very Fast | ~2× (50% reduction) | Internal services, gRPC |
-
-**Implementation Guidance:**
-
-For REST APIs, document compression in OpenAPI:
-
-```yaml
-paths:
-  /api/documents:
-    get:
-      summary: List documents
-      description: |
-        Returns paginated list of documents.
-
-        **Compression:**
-        - Supports gzip and brotli (via Accept-Encoding header)
-        - Responses >1 KB are automatically compressed
-        - Typical compression: 400 bytes (JSON) → 100 bytes (gzip)
-      responses:
-        '200':
-          description: Successful response
-          headers:
-            Content-Encoding:
-              description: Compression algorithm used
-              schema:
-                type: string
-                enum: [gzip, br, identity]
-              example: gzip
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentList'
-```
-
-**Compression Impact Example:**
-
-```yaml
-# Example in API documentation
-x-compression-examples:
-  list_endpoint:
-    uncompressed_json: 2400 bytes  # 20 items × 120 bytes each
-    gzip_compressed: 600 bytes     # 75% reduction
-    bandwidth_saved: 1800 bytes    # Per request
-    monthly_savings:
-      requests_per_month: 1000000
-      uncompressed: 2.4 GB
-      compressed: 0.6 GB
-      savings: 1.8 GB/month
-```
-
-**For gRPC APIs, specify compression in service definition:**
-
-```protobuf
-service DocumentService {
-  // Uses gzip compression for responses >1 KB
-  // Enable with grpc.Compression(grpc.Gzip) client option
-  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
-}
-```
-
-**Why This Matters:**
-- JSON list of 20 documents: 2.4 KB uncompressed → 600 bytes with gzip (4× smaller)
-- 1 million API calls/month: 2.4 GB uncompressed → 600 MB compressed (1.8 GB savings)
-- Mobile users save bandwidth costs and battery life
-
-**3. Partial Response Patterns (Field Selection)**
-
-Allow clients to request only needed fields for bandwidth optimization:
-
-**Field Selection Decision Tree:**
-
-```
-1. What's the API paradigm?
-   ├─ GraphQL → Built-in field selection (no additional work)
-   ├─ REST → Implement sparse fieldsets or field filtering
-   └─ gRPC → Use FieldMask (google.protobuf.FieldMask)
-
-2. What's the typical use case?
-   ├─ Mobile app (bandwidth-constrained) → Field selection critical
-   ├─ Web app (desktop) → Nice to have
-   └─ Server-to-server → Less important (LAN bandwidth)
-
-3. What's the response size variation?
-   ├─ Large variation (full: 10 KB, minimal: 1 KB) → High value field selection
-   ├─ Medium variation (full: 5 KB, minimal: 3 KB) → Medium value
-   └─ Low variation (full: 2 KB, minimal: 1.5 KB) → Low value, skip
-```
-
-**REST API Pattern - Sparse Fieldsets (JSON:API style):**
-
-```yaml
-paths:
-  /api/users:
-    get:
-      summary: List users
-      description: |
-        Returns list of users. Use `fields` parameter to request specific fields only.
-
-        **Field Selection Examples:**
-        - Minimal: `?fields[users]=id,name` (200 bytes per user)
-        - Full: No fields param (1200 bytes per user)
-        - Custom: `?fields[users]=id,name,email,created_at` (400 bytes)
-      parameters:
-        - name: fields[users]
-          in: query
-          schema:
-            type: string
-          description: |
-            Comma-separated list of fields to include.
-            Available fields: id, name, email, phone, age, role, created_at, updated_at, preferences
-            Example: ?fields[users]=id,name,email
-          example: "id,name,email"
-      responses:
-        '200':
-          description: User list (fields vary based on request)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      description: User object with requested fields only
-```
-
-**GraphQL Pattern (Native Field Selection):**
-
-```graphql
-# Client specifies exact fields needed
-query GetUsers {
-  users {
-    id
-    name
-    email
-  }
-}
-
-# vs full object
-query GetUsersDetailed {
-  users {
-    id
-    name
-    email
-    phone
-    age
-    role
-    preferences {
-      theme
-      language
-      notifications
-    }
-    created_at
-    updated_at
-  }
-}
-```
-
-**gRPC Pattern - FieldMask:**
-
-```protobuf
-import "google/protobuf/field_mask.proto";
-
-message GetUserRequest {
-  string user_id = 1;
-  google.protobuf.FieldMask field_mask = 2;  // Specify fields to return
-}
-
-// Client request example:
-// field_mask: {paths: ["id", "name", "email"]}
-```
-
-**Implementation Guidance:**
-
-Document field selection impact:
-
-```yaml
-x-field-selection-examples:
-  full_user_object:
-    fields: "all"
-    size: 1200 bytes
-    use_case: "Admin dashboard, detailed view"
-
-  minimal_user_object:
-    fields: "id,name"
-    size: 200 bytes
-    use_case: "Autocomplete, user picker"
-    bandwidth_saved: 1000 bytes per user
-
-  list_comparison:
-    scenario: "List 100 users"
-    full: 120 KB
-    minimal: 20 KB
-    savings: 100 KB per request (83% reduction)
-```
-
-**Why This Matters:**
-- Mobile autocomplete: Full user (1.2 KB) vs minimal (200 bytes) = 6× bandwidth savings
-- List of 100 users: 120 KB full vs 20 KB minimal = 100 KB saved per request
-- Faster page loads, lower mobile data costs, better UX
-
-**4. HTTP Caching Headers**
-
-Specify caching strategy for GET endpoints to reduce server load and improve response times:
-
-**Caching Decision Tree:**
-
-```
-1. What's the data volatility?
-   ├─ Static (never changes) → Cache-Control: public, max-age=31536000, immutable
-   ├─ Rarely changes (days) → Cache-Control: public, max-age=86400, must-revalidate
-   ├─ Frequently changes (minutes) → Cache-Control: private, max-age=300, must-revalidate
-   └─ Real-time (always fresh) → Cache-Control: no-store, no-cache
-
-2. Is data user-specific?
-   ├─ YES → Cache-Control: private (don't cache in CDN)
-   └─ NO → Cache-Control: public (CDN-friendly)
-
-3. Should clients revalidate?
-   ├─ Critical data (auth, payments) → must-revalidate, ETag for conditional requests
-   ├─ Important data (user profiles) → ETag for 304 Not Modified optimization
-   └─ Less critical (public content) → max-age only, skip ETag overhead
-```
-
-**Cache-Control Patterns:**
-
-| Endpoint Type | Cache-Control Header | ETag | Use Case |
-|---------------|---------------------|------|----------|
-| **Static assets** (images, fonts) | `public, max-age=31536000, immutable` | No | CDN, never changes |
-| **Public content** (blog posts) | `public, max-age=3600` | Yes | CDN, hourly updates |
-| **User resources** (profile) | `private, max-age=300, must-revalidate` | Yes | Expires 5min, user-specific |
-| **Lists** (search results) | `private, max-age=60` | Optional | Short-lived, user-specific |
-| **Real-time data** (stock prices) | `no-store, no-cache` | No | Always fetch fresh |
-
-**Implementation Guidance:**
-
-For OpenAPI, document caching per endpoint:
-
-```yaml
-paths:
-  /api/users/{id}:
-    get:
-      summary: Get user by ID
-      description: |
-        Returns user profile. Response is cached for 5 minutes.
-
-        **Caching Strategy:**
-        - Cache-Control: private, max-age=300, must-revalidate
-        - ETag: Computed from (user_id, updated_at timestamp)
-        - Conditional requests: Send If-None-Match header with ETag
-          - Match → 304 Not Modified (no body, instant response)
-          - No match → 200 OK with full body
-      responses:
-        '200':
-          description: User profile
-          headers:
-            Cache-Control:
-              description: Caching policy
-              schema:
-                type: string
-              example: "private, max-age=300, must-revalidate"
-            ETag:
-              description: Entity tag for conditional requests
-              schema:
-                type: string
-              example: '"user_123_1704124800"'
-            Last-Modified:
-              description: Last modification timestamp
-              schema:
-                type: string
-                format: date-time
-              example: "2025-01-15T14:30:00Z"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
-        '304':
-          description: Not Modified (cached version still valid)
-          headers:
-            Cache-Control:
-              schema:
-                type: string
-            ETag:
-              schema:
-                type: string
-```
-
-**ETag Generation Strategies:**
-
-```yaml
-x-etag-strategies:
-  content_hash:
-    description: "Hash of response body (strong validator)"
-    example: 'ETag: "5d41402abc4b2a76b9719d911017c592"'
-    pros: "Accurate, detects any change"
-    cons: "Requires full serialization before hashing (CPU cost)"
-
-  timestamp_based:
-    description: "Based on last modification time (weak validator)"
-    example: 'ETag: W/"user_123_1704124800"'
-    pros: "Fast, no serialization needed"
-    cons: "May miss changes within same second"
-
-  version_based:
-    description: "Based on resource version number"
-    example: 'ETag: "v42"'
-    pros: "Simplest, fast"
-    cons: "Requires version tracking in database"
-```
-
-**Conditional Request Flow:**
-
-```
-1. Initial Request
-   GET /api/users/123
-   → 200 OK, ETag: "abc123", Cache-Control: max-age=300
-   → Client caches response for 5 minutes
-
-2. Cache Expired (after 5 minutes)
-   GET /api/users/123
-   If-None-Match: "abc123"
-
-   Server checks: Has user 123 changed since ETag "abc123"?
-   ├─ NO → 304 Not Modified (no body, ~100 bytes response)
-   └─ YES → 200 OK with new ETag (full body, ~1200 bytes)
-```
-
-**Caching Impact Example:**
-
-```yaml
-x-caching-examples:
-  scenario: "User profile endpoint, 1000 requests/minute"
-
-  without_caching:
-    requests_to_server: 1000/min
-    avg_response_size: 1200 bytes
-    bandwidth: 1.2 MB/min = 72 MB/hour = 1.7 GB/day
-
-  with_cache_control_5min:
-    cache_hit_ratio: 80%  # Most requests served from cache
-    requests_to_server: 200/min (20% cache misses)
-    bandwidth: 0.24 MB/min = 14.4 MB/hour = 346 MB/day
-    savings: 1.35 GB/day (80% reduction)
-
-  with_etag_304:
-    cache_expired_requests: 200/min
-    etag_match_rate: 70%  # User unchanged
-    304_responses: 140/min × 100 bytes = 14 KB/min
-    200_responses: 60/min × 1200 bytes = 72 KB/min
-    total_bandwidth: 86 KB/min vs 240 KB/min without ETag
-    additional_savings: 154 KB/min (64% reduction on cache misses)
-```
-
-**Why This Matters:**
-- Reduces server load by 80% (requests served from client/CDN cache)
-- 304 Not Modified responses are 10× smaller than full responses (100 bytes vs 1200 bytes)
-- Faster response times (cached responses instant, 304 responses <10ms vs 50ms for full fetch)
-- Lower bandwidth costs (1.7 GB/day → 346 MB/day for 1000 req/min endpoint)
-
-**5. Protobuf Varint Optimization (if using gRPC/Protobuf)**
-
-Optimize integer field encoding for space efficiency:
-
-**Varint Explanation:**
-
-Protocol Buffers use variable-length encoding (varint) for integers:
-- Small numbers (0-127): 1 byte
-- Medium numbers (128-16,383): 2 bytes
-- Large numbers (>16,383): 3+ bytes
-
-**Fixed-width integers (fixed32/fixed64) always use 4/8 bytes regardless of value.**
-
-**When to Use Varint (int32/int64/sint32/sint64):**
-- IDs with small values (user_id: 1, 2, 3, ...)
-- Counts and quantities (count: 0-10,000)
-- Timestamps (Unix seconds: ~1.7 billion, but varint saves space)
-- Enums (0-100 values)
-
-**When to Use Fixed-width (fixed32/fixed64):**
-- Large numbers always (floating-point bits, hashes)
-- Uniformly distributed (random IDs, UUIDs as integers)
-- Performance-critical (fixed-width is faster to encode/decode)
-
-**Decision Tree:**
-
-```
-1. What's the typical value range?
-   ├─ 0-127 (1 byte varint) → Use int32/int64
-   ├─ 128-16,383 (2 bytes varint) → Use int32/int64
-   ├─ >16,383 but often small → Use int32/int64 (saves space most of the time)
-   └─ Always large (>2^28) → Use fixed32/fixed64 (simpler, faster)
-
-2. What's the value distribution?
-   ├─ Mostly small numbers → Varint (int32/int64)
-   ├─ Uniformly distributed → Fixed-width (fixed32/fixed64)
-   └─ Unknown → Default to varint (more common)
-
-3. Is this a signed number?
-   ├─ Always positive → Use int32/int64 (0-127 = 1 byte)
-   ├─ Can be negative → Use sint32/sint64 (zigzag encoding, efficient for small negatives)
-   └─ Large negatives → Use fixed32/fixed64
-```
-
-**Example Protobuf Type Selection:**
-
-```protobuf
-message User {
-  // Small IDs (1-10,000) → 1-2 bytes with varint
-  int64 user_id = 1;  // NOT fixed64
-
-  // Small counts (0-1000) → 1-2 bytes
-  int32 document_count = 2;  // NOT fixed32
-
-  // Timestamps (Unix seconds ~1.7B) → 4 bytes varint vs 4 bytes fixed32
-  int64 created_at = 3;  // Use int64 (same size, more consistent)
-
-  // Large always (UUID as 128-bit int) → fixed64 faster
-  fixed64 uuid_high = 4;
-  fixed64 uuid_low = 5;
-
-  // Can be negative, small range → zigzag encoding
-  sint32 balance_delta = 6;  // -100 to +100 → 1-2 bytes
-
-  // Floating-point → always fixed32/fixed64
-  float price = 7;  // 4 bytes fixed
-  double balance = 8;  // 8 bytes fixed
-}
-```
-
-**Varint Space Savings Example:**
-
-```yaml
-x-protobuf-varint-examples:
-  scenario: "100 user records"
-
-  using_fixed64_for_user_id:
-    field: "fixed64 user_id"
-    values: "1-100"
-    bytes_per_field: 8 bytes (always)
-    total: 800 bytes
-
-  using_varint_int64:
-    field: "int64 user_id"
-    values: "1-100"
-    bytes_per_field: 1 byte (values 0-127)
-    total: 100 bytes
-    savings: 700 bytes (87% reduction)
-
-  large_user_ids:
-    scenario: "User IDs in millions (1,000,000-9,999,999)"
-    varint_bytes: 3-4 bytes
-    fixed64_bytes: 8 bytes
-    savings: 4-5 bytes per field (50%+ reduction)
-```
-
-**Why This Matters:**
-- Small IDs (1-1000): 1 byte varint vs 8 bytes fixed64 = 87% space savings
-- 1 million user records: 8 MB (fixed64) vs 1-3 MB (varint) = 5-7 MB saved
-- Faster transmission over network (less data to send)
+**Apply Phase 2 patterns** (see agent for complete details):
+
+**1. Breaking Change Matrix:**
+- Document what changes break clients (removed fields, type changes, renamed endpoints)
+- Document safe changes (new optional fields, new endpoints, new enum values with fallback)
+
+**2. Versioning Strategy Selection:**
+- URL versioning: `/api/v1/resources`, `/api/v2/resources` (most common, visible)
+- Header versioning: `X-API-Version: 2` or `Accept: application/vnd.api+json; version=2`
+- Media type versioning: `Accept: application/vnd.myapi.v2+json`
+- Choose ONE strategy, document in API design spec
+
+**3. Protobuf Reserved Fields:**
+- When removing/renaming fields, add to `reserved` statement
+- Prevents field number reuse, ensures backward compatibility
+- Example: `reserved 2, 15, 9 to 11; reserved "foo", "bar";`
+
+**4. OpenAPI Deprecation Annotations:**
+- Mark deprecated endpoints: `deprecated: true`
+- Add sunset date: `x-sunset-date: "2025-12-31"`
+- Add replacement: `x-replacement-endpoint: "/api/v2/resources"`
+
+**5. Migration Strategies:**
+- **Dual-write**: Write to both v1 and v2 schemas during transition
+- **Feature flags**: Gradual rollout of breaking changes
+- **Adapter pattern**: v1 endpoints wrap v2 with translation layer
+
+**6. Deprecation Timeline:**
+- Announce deprecation: 6-12 months before removal (public APIs)
+- Monitor usage: Track deprecated endpoint traffic
+- Sunset date: Hard deadline for removal
+- Communication: Email notifications, API headers (`Sunset: Sat, 31 Dec 2025 23:59:59 GMT`)
+
+**Why Phase 2 matters**: Prevents breaking existing clients, enables evolution without disruption, maintains API contract trust.
+
+**Output from Phase 2:**
+- Breaking change matrix documented
+- Versioning strategy chosen and documented
+- Protobuf reserved fields (if gRPC)
+- OpenAPI deprecation annotations (if REST)
+- Migration timeline for future changes
 
 ---
 
----
+### Step 9: Webhook Endpoints (If Applicable)
 
-### Step 6.5: API Versioning & Evolution
-
-**CRITICAL - Plan for safe API evolution:**
-
-APIs evolve over time as requirements change. This section provides comprehensive guidance for safe API evolution without breaking existing clients.
-
-**Breaking vs Non-Breaking Changes:**
-
-Understand which changes break existing clients and which are safe:
-
-| Change Type | Breaking? | Migration Required? | Examples |
-|-------------|-----------|---------------------|----------|
-| **Add optional field** | ✅ Safe | No | Add `middle_name` to User schema |
-| **Add new endpoint** | ✅ Safe | No | Add `POST /api/users/{id}/verify` |
-| **Add new enum value** | ⚠️ Maybe | Maybe | Add `premium_plus` to role enum (clients may reject unknown values) |
-| **Add optional query param** | ✅ Safe | No | Add `?include=metadata` to GET requests |
-| **Make required field optional** | ✅ Safe | No | Change `phone` from required to optional |
-| **Make optional field required** | ❌ Breaking | Yes | Change `name` from optional to required |
-| **Remove field** | ❌ Breaking | Yes | Remove `deprecated_field` from response |
-| **Rename field** | ❌ Breaking | Yes | Rename `userId` to `user_id` |
-| **Change field type** | ❌ Breaking | Yes | Change `age` from string to number |
-| **Remove endpoint** | ❌ Breaking | Yes | Remove `DELETE /api/users/{id}` |
-| **Change URL path** | ❌ Breaking | Yes | `/api/documents` → `/api/files` |
-| **Change HTTP method** | ❌ Breaking | Yes | POST → PUT for same endpoint |
-| **Change status code** | ⚠️ Maybe | Maybe | 200 → 201 (usually safe, but clients may check exact code) |
-| **Change error format** | ❌ Breaking | Yes | `{error: "msg"}` → `{errors: [{code, msg}]}` |
-| **Tighten validation** | ❌ Breaking | Yes | Add max length constraint to previously unlimited field |
-| **Relax validation** | ✅ Safe | No | Remove max length constraint |
-
-**Backward Compatibility Rules:**
-
-Follow these rules to maintain backward compatibility:
-
-**OpenAPI/REST:**
-1. ✅ **DO** add new optional fields to responses (clients ignore unknown fields)
-2. ✅ **DO** add new optional fields to requests (server provides defaults)
-3. ✅ **DO** add new endpoints (existing endpoints unchanged)
-4. ❌ **DON'T** remove fields from responses (breaks clients expecting them)
-5. ❌ **DON'T** add required fields to requests (breaks old clients)
-6. ❌ **DON'T** change field types (breaks type assumptions)
-7. ❌ **DON'T** reuse field names with different meanings
-
-**Protobuf:**
-1. ✅ **DO** use `reserved` for deleted fields (prevents field number reuse)
-2. ✅ **DO** add new fields with new field numbers
-3. ✅ **DO** use default values for new fields
-4. ❌ **DON'T** change field numbers (causes data corruption)
-5. ❌ **DON'T** change field types (unless compatible: int32 ↔ int64, sint32 ↔ sint64)
-6. ❌ **DON'T** reuse reserved field numbers
-7. ❌ **DON'T** change message/field names if using JSON mapping
-
-**Protobuf Reserved Fields Pattern:**
-
-When removing or renaming fields in Protobuf, ALWAYS mark them as reserved:
-
-```protobuf
-// Version 1
-message User {
-  string name = 1;
-  string email = 2;
-  string status = 3;  // DEPRECATED - to be removed
-}
-
-// Version 2 (safe evolution)
-message User {
-  string name = 1;
-  string email = 2;
-  reserved 3;  // CRITICAL: Mark field 3 as reserved
-  reserved "status";  // Also reserve field name
-
-  UserStatus status_v2 = 4;  // Replacement field gets NEW number
-  string middle_name = 5;  // New optional field
-}
-
-enum UserStatus {
-  USER_STATUS_UNSPECIFIED = 0;  // Always include zero value
-  USER_STATUS_ACTIVE = 1;
-  USER_STATUS_INACTIVE = 2;
-  USER_STATUS_SUSPENDED = 3;
-}
-```
-
-**Why reserved fields matter:**
-- Reusing field number 3 causes data corruption when old clients read new messages
-- Old client sees field 3 as string, new message has enum → type mismatch
-- Reserved prevents accidental reuse, forcing new field numbers
-
-**OpenAPI Deprecation Pattern:**
-
-Mark fields and endpoints as deprecated before removal:
-
-```yaml
-components:
-  schemas:
-    User:
-      properties:
-        user_id:
-          type: string
-          description: User identifier (use 'id' instead)
-          deprecated: true
-          x-sunset-date: "2026-06-01"
-          x-replacement-field: "id"
-        id:
-          type: string
-          description: User identifier (replaces deprecated user_id)
-
-paths:
-  /api/v1/users:
-    get:
-      deprecated: true
-      description: |
-        **DEPRECATED:** This endpoint will be removed on 2026-06-01.
-        Use `/api/v2/users` instead.
-      x-sunset-date: "2026-06-01"
-      x-replacement-endpoint: "/api/v2/users"
-```
-
-**Deprecation Timeline Pattern:**
-1. **Announce deprecation** (release notes, documentation, deprecation warnings)
-2. **Deprecation period** (6-12 months minimum for public APIs)
-3. **Sunset date** (specific date after which endpoint/field removed)
-4. **Removal** (breaking change, requires major version bump)
-
-**API Versioning Strategies:**
-
-Choose versioning strategy based on API usage and team coordination:
-
-**Strategy 1: URL Versioning (Recommended for REST)**
-```
-/api/v1/users  (stable, v1 schema)
-/api/v2/users  (breaking changes, v2 schema)
-```
-
-**Pros:**
-- Explicit version in URL (easy to see which version client uses)
-- Simple routing (different controllers per version)
-- Easy testing (can test both versions simultaneously)
-- Clear deprecation (remove v1 routes when sunset)
-
-**Cons:**
-- URL changes (clients must update URLs)
-- Code duplication (v1 and v2 controllers)
-
-**When to use:** Public APIs, external clients, major breaking changes
-
-**Strategy 2: Header Versioning**
-```
-GET /api/users
-Accept: application/vnd.company.v2+json
-```
-
-**Pros:**
-- URL unchanged (same endpoint, different versions)
-- Clean URLs (no /v1, /v2 clutter)
-- Gradual migration (clients specify version in header)
-
-**Cons:**
-- Less visible (version hidden in headers)
-- More complex routing (check header to determine version)
-- Harder to test (need to set headers)
-
-**When to use:** Internal APIs, microservices, gradual rollout
-
-**Strategy 3: Query Parameter Versioning**
-```
-/api/users?version=2
-```
-
-**Pros:**
-- Simple to implement (check query param)
-- Easy to test (just change URL param)
-
-**Cons:**
-- Pollutes query parameters (conflicts with other params)
-- Easy to forget (no forcing function)
-- Looks ugly in URLs
-
-**When to use:** Quick prototyping, internal tools (avoid for production)
-
-**Strategy 4: Content Negotiation (Media Type Versioning)**
-```
-GET /api/users
-Accept: application/vnd.company.user.v2+json
-```
-
-**Pros:**
-- RESTful standard (uses HTTP content negotiation)
-- Granular versioning (per resource type)
-
-**Cons:**
-- Complex to implement (parsing media types)
-- Hard to debug (non-obvious version source)
-- Poor tooling support
-
-**When to use:** Strict REST APIs, resource-specific versioning needs
-
-**Migration Strategies:**
-
-When making breaking changes, provide migration path for clients:
-
-**Pattern 1: Dual-Write (Recommended for Most Breaking Changes)**
-
-When changing field types or structures:
-
-```javascript
-// Server writes both old and new formats during transition period
-const user = await createUser(data);
-
-// Old format (deprecated)
-response.user_id = user.id;  // For v1 clients
-
-// New format (current)
-response.id = user.id;  // For v2 clients
-```
-
-**Timeline:**
-1. **Phase 1 (Release N)**: Add new field, write both formats (6 months)
-2. **Phase 2 (Release N+1)**: Mark old field deprecated (6 months)
-3. **Phase 3 (Release N+2)**: Remove old field (breaking change)
-
-**Pattern 2: Version Field (Envelope Pattern)**
-
-Include version in response for client detection:
-
-```json
-{
-  "version": "2.0",
-  "data": {
-    "id": "user_123",
-    "name": "Alice"
-  }
-}
-```
-
-**When to use:** Complex schema changes, need client-side branching logic
-
-**Pattern 3: Feature Flags (Gradual Rollout)**
-
-Use feature flags to enable new behavior per client:
-
-```javascript
-// Server checks feature flag per client
-if (client.features.includes('new_user_schema')) {
-  return newSchemaResponse(user);
-} else {
-  return legacySchemaResponse(user);
-}
-```
-
-**When to use:** A/B testing, gradual migration, rollback capability
-
-**Pattern 4: Proxy/Adapter Layer**
-
-Create adapter that translates between versions:
+**Decision Tree - Webhook Requirements:**
 
 ```
-Client (v1) → Adapter (v1→v2) → Server (v2)
+Does the journey require event notifications to external systems?
+├─ YES → Define webhook endpoints
+└─ NO → Skip webhooks
 ```
 
-**When to use:** Major rewrites, supporting many legacy clients, gradual server migration
-
-**Decision Tree - Which Migration Strategy?**
-
-```
-1. How many clients need migration?
-   ├─ <10 clients → Coordinate manual migration (direct communication)
-   ├─ 10-100 clients → Dual-write with deprecation timeline (6-12 months)
-   └─ >100 clients → Version URL with long support (12-24 months)
-
-2. How critical is the API?
-   ├─ High (payment, auth) → Dual-write + extensive testing + rollback plan
-   ├─ Medium (features) → Feature flags + gradual rollout
-   └─ Low (internal) → Direct migration with notification
-
-3. Can you coordinate with clients?
-   ├─ Yes (internal API) → Coordinated migration, shorter timeline
-   └─ No (public API) → Long deprecation period, clear docs, version headers
-
-4. How complex is the change?
-   ├─ Simple (add field) → No migration needed (backward compatible)
-   ├─ Medium (rename field) → Dual-write for 6-12 months
-   └─ Complex (restructure) → New version URL, parallel maintenance
-```
-
-**Version Negotiation Example (OpenAPI):**
-
-```yaml
-openapi: 3.1.0
-info:
-  title: Example API
-  version: 2.0.0
-  description: |
-    ## Version History
-    - **v2.0** (current): User schema restructured, new endpoints
-    - **v1.0** (deprecated, sunset: 2026-06-01): Legacy schema
-
-servers:
-  - url: https://api.example.com/v2
-    description: Current version (v2)
-  - url: https://api.example.com/v1
-    description: Deprecated (v1, removes 2026-06-01)
-
-paths:
-  /users:
-    get:
-      summary: List users (v2)
-      description: Returns users in v2 schema format
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserV2'
-
-components:
-  schemas:
-    UserV2:
-      type: object
-      properties:
-        id:
-          type: string
-          description: User identifier (replaced deprecated user_id)
-        profile:
-          type: object
-          description: Nested profile (v2 structure)
-          properties:
-            name:
-              type: string
-            email:
-              type: string
-```
-
-**Testing Strategy for API Evolution:**
-
-Test both old and new versions during migration:
-
-```yaml
-# Contract testing (Pact, Dredd)
-tests:
-  - name: v1_client_reads_v2_response
-    description: Ensure v2 API doesn't break v1 clients
-    client_version: v1
-    server_version: v2
-    expect: success  # v2 includes all v1 fields
-
-  - name: v2_client_reads_v1_response
-    description: Ensure v2 client handles v1 responses gracefully
-    client_version: v2
-    server_version: v1
-    expect: success  # v2 client provides defaults for missing fields
-```
-
-**Output from this step:**
-
-For OpenAPI specs, include:
-- Breaking change matrix (documented above)
-- Deprecation annotations (`deprecated: true`, `x-sunset-date`, `x-replacement-*`)
-- Version strategy (URL versioning recommended for REST)
-- Migration timeline for deprecated endpoints/fields
-
-For Protobuf specs, include:
-- Reserved field guidance (all removed fields documented)
-- Field numbering best practices (never reuse, always increment)
-- Backward compatibility rules (optional fields, default values)
-- Enum evolution (always include zero value, never remove values)
-
-For all APIs, document:
-- Supported versions (which versions currently active)
-- Deprecation timeline (sunset dates for deprecated features)
-- Migration guide (how to upgrade from v1 to v2)
-- Breaking change log (what changed between versions)
-
----
-
-### Webhook Endpoints (Inbound)
-
-When generating `product-guidelines/08b-api-contracts.md`, if Session 2a identifies integrations that send webhooks, include webhook endpoint specifications:
+**If webhooks needed**, define inbound webhook endpoints for third-party integrations:
 
 **Endpoint Pattern**: `/webhooks/{provider}`
 
-**For each provider that sends webhooks, create an endpoint specification**:
+**For each provider that sends webhooks, create specification:**
 
 ```yaml
 paths:
@@ -1744,39 +513,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-  /webhooks/sendgrid:
-    post:
-      summary: SendGrid webhook handler
-      description: |
-        Receives email event webhooks from SendGrid (delivered, bounced, opened, etc.).
-
-        **Security**: ECDSA signature verification via X-Twilio-Email-Event-Webhook-Signature header.
-        **Fallback**: Validate sending IP against SendGrid's IP ranges if signature verification unavailable.
-      operationId: handleSendGridWebhook
-      tags: [Webhooks]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  email:
-                    type: string
-                  event:
-                    type: string
-                    enum: [delivered, bounce, open, click]
-                  timestamp:
-                    type: integer
-      responses:
-        '200':
-          description: Webhook received
 ```
 
-**Key Elements for Each Webhook Endpoint**:
+**Key Elements for Each Webhook Endpoint:**
 - Request body schema (provider-specific)
 - Signature verification method (if applicable)
 - Idempotency strategy (how duplicate events are handled)
@@ -1785,7 +524,119 @@ paths:
 
 ---
 
-### Step 8: Generate API Specification
+### Step 10: Invoke Phase 5 Agent (Format Coverage) - CONDITIONAL
+
+**Conditional Invocation Decision:**
+
+```
+What API paradigm and format was chosen in Session 8?
+
+├─ REST + JSON only → Skip Phase 5 (OpenAPI 3.1 sufficient)
+├─ GraphQL → Invoke Phase 5 (GraphQL SDL generation)
+├─ gRPC/Protobuf → Already covered in Phase 1-4 (Protobuf patterns)
+├─ MessagePack → Invoke Phase 5 (MessagePack contract structure)
+├─ CBOR → Invoke Phase 5 (CBOR contract structure)
+└─ Hybrid (REST+gRPC, REST+GraphQL) → Invoke Phase 5 (mapping between formats)
+```
+
+**If Phase 5 invoked, read the agent:**
+
+```
+Read: .claude/agents/api-contracts-phase5-formats.md
+```
+
+**Apply Phase 5 patterns** (see agent for complete details):
+
+**1. GraphQL SDL Schema Generation:**
+- Define types for all resources
+- Define queries, mutations, subscriptions
+- Add directives for auth, caching, deprecation
+- Validate against journey requirements (no over-fetching)
+
+**2. MessagePack Contract Structure:**
+- Define message schemas (similar to JSON, but binary-efficient)
+- Document type mappings (map keys, arrays, integers, strings)
+- Add validation rules (manual, no schema validation like JSON Schema)
+
+**3. CBOR Contract Structure:**
+- Define CDDL (Concise Data Definition Language) schemas
+- Document CBOR tags for typed data (timestamps, bigints, URIs)
+- Add validation rules using CDDL
+
+**4. Hybrid Architecture Mapping:**
+- Document translation between REST and gRPC
+- Define gateway layer (Envoy, custom REST gateway)
+- Map error codes (gRPC status → HTTP status)
+- Map timestamps (ISO 8601 → google.protobuf.Timestamp)
+
+**Why Phase 5 matters**: Ensures format-specific best practices, prevents over-fetching (GraphQL), optimizes bandwidth (MessagePack/CBOR), enables hybrid architectures.
+
+**If Phase 5 skipped**: Only OpenAPI 3.1 spec needed for REST+JSON (default case).
+
+---
+
+### Step 11: Invoke Phase 4 Agent (Code Generation & Contract Testing) - ALWAYS REQUIRED
+
+**Phase 4 is mandatory for ALL API contracts.**
+
+**Read Phase 4 agent for comprehensive guidance:**
+
+```
+Read: .claude/agents/api-contracts-phase4-codegen.md
+```
+
+**Apply Phase 4 patterns** (see agent for complete details):
+
+**1. OpenAPI Client SDK Generation:**
+- TypeScript: `openapi-generator-cli generate -g typescript-axios`
+- Python: `openapi-generator-cli generate -g python`
+- Go: `oapi-codegen` (better than openapi-generator)
+- Document commands, output paths, configuration options
+
+**2. Protobuf Client SDK Generation:**
+- Define `protoc` commands with language-specific plugins
+- TypeScript: `protoc --plugin=protoc-gen-ts_proto --ts_proto_out=./src/api`
+- Python: `python -m grpc_tools.protoc --python_out=. --grpc_python_out=.`
+- Go: `protoc --go_out=. --go-grpc_out=.`
+
+**3. Session 12 Scaffold Integration:**
+- Document WHERE generated code should be placed:
+  - Frontend: `src/api-client/` or `lib/api/`
+  - Backend: `internal/api/` or `src/generated/`
+- Add generation scripts to `package.json` / `Makefile`
+- Define `npm run generate:api` or `make generate-api` commands
+
+**4. Contract Testing Tool Selection:**
+- **REST APIs**: Dredd (OpenAPI contract testing), Pact (consumer-driven)
+- **gRPC APIs**: grpc-testing, protoc-gen-validate
+- **GraphQL APIs**: Apollo Client devtools, GraphQL Inspector
+- Document configuration (dredd.yml, authentication hooks)
+
+**5. Type Consistency Validation:**
+- Create validation script template that checks:
+  - Database schema types → API response types
+  - API request types → Client SDK types
+  - Ensures no type drift across layers
+
+**6. CI/CD Pipeline Integration:**
+- Add contract testing to `.github/workflows/test.yml`
+- Run on every PR, block merge if contracts violated
+- Generate and publish HTML reports
+
+**Why Phase 4 matters**: Eliminates manual client SDK creation, prevents type drift, catches API breaking changes before deployment, ensures client-server compatibility.
+
+**Output from Phase 4:**
+- Client SDK generation commands for all tech stack languages
+- Session 12 integration guidance (where to place generated code)
+- Contract testing tool configuration
+- Type consistency validation script template
+- CI/CD pipeline integration examples
+
+---
+
+### Step 12: Generate API Specification
+
+**Based on paradigm from Session 8, generate the appropriate specification:**
 
 #### For REST APIs (JSON serialization):
 
@@ -1811,682 +662,80 @@ Create complete **OpenAPI 3.1** specification. Use template at `/templates/08b-a
 - Use JSON Schema 2020-12 validation (formats, min/max, enums, patterns)
 - Document all error responses (4xx, 5xx)
 
-**OpenAPI 3.1 Example:**
-```yaml
-openapi: 3.1.0
-info:
-  title: ComplianceHub API
-  version: 1.0.0
-  description: REST API for document compliance assessment
-
-paths:
-  /api/documents:
-    post:
-      summary: Upload document for assessment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [name, frameworkIds]
-              properties:
-                name:
-                  type: string
-                  minLength: 1
-                  maxLength: 255
-                frameworkIds:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: string
-                    format: uuid
-              unevaluatedProperties: false  # Reject unknown fields
-      responses:
-        '201':
-          description: Document uploaded successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Document'
-```
-
----
-
 #### For GraphQL APIs:
 
-Create **GraphQL SDL (Schema Definition Language)** with type definitions, queries, mutations, and subscriptions.
+Create **GraphQL SDL schema** with types, queries, mutations, subscriptions. See Phase 5 agent for complete guidance.
 
-**GraphQL Schema Structure:**
-```graphql
-# schema.graphql
+#### For gRPC APIs:
 
-"""
-ComplianceHub GraphQL API
-Version: 1.0.0
-"""
+Create **Protocol Buffers `.proto` files** with service definitions, message types, and field options. Apply patterns from Phases 1-4.
 
-# ============================================================================
-# Core Types (Entity Definitions)
-# ============================================================================
+#### For Hybrid APIs:
 
-"""
-A document uploaded for compliance assessment
-"""
-type Document {
-  id: ID!
-  name: String!
-  fileSize: Int!
-  mimeType: String!
-  status: DocumentStatus!
-  uploadedAt: DateTime!
-  userId: ID!
-  frameworks: [Framework!]!
-  assessments: [Assessment!]!
-}
-
-"""
-Document processing status
-"""
-enum DocumentStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
-}
-
-"""
-A compliance framework for assessment
-"""
-type Framework {
-  id: ID!
-  name: String!
-  description: String
-  controls: [Control!]!
-}
-
-"""
-An assessment result for a document against frameworks
-"""
-type Assessment {
-  id: ID!
-  documentId: ID!
-  status: AssessmentStatus!
-  progress: Float!
-  results: AssessmentResults
-  createdAt: DateTime!
-  completedAt: DateTime
-}
-
-enum AssessmentStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  FAILED
-}
-
-"""
-Assessment findings and score
-"""
-type AssessmentResults {
-  score: Float!
-  findings: [Finding!]!
-  summary: String!
-}
-
-type Finding {
-  id: ID!
-  controlId: ID!
-  severity: Severity!
-  description: String!
-  recommendation: String
-}
-
-enum Severity {
-  CRITICAL
-  HIGH
-  MEDIUM
-  LOW
-  INFO
-}
-
-# ============================================================================
-# Input Types (for Mutations)
-# ============================================================================
-
-input CreateDocumentInput {
-  name: String!
-  frameworkIds: [ID!]!
-}
-
-input UpdateDocumentInput {
-  name: String
-  frameworkIds: [ID!]
-}
-
-input CreateAssessmentInput {
-  documentId: ID!
-  frameworkIds: [ID!]!
-}
-
-# ============================================================================
-# Query Operations
-# ============================================================================
-
-"""
-Root query type
-"""
-type Query {
-  """
-  Get document by ID
-  """
-  document(id: ID!): Document
-
-  """
-  List documents with pagination
-  """
-  documents(
-    first: Int = 20
-    after: String
-    filter: DocumentFilter
-  ): DocumentConnection!
-
-  """
-  Get assessment by ID
-  """
-  assessment(id: ID!): Assessment
-
-  """
-  List frameworks
-  """
-  frameworks: [Framework!]!
-}
-
-input DocumentFilter {
-  status: DocumentStatus
-  frameworkIds: [ID!]
-  uploadedAfter: DateTime
-}
-
-"""
-Paginated document results (Relay-style cursor pagination)
-"""
-type DocumentConnection {
-  edges: [DocumentEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type DocumentEdge {
-  cursor: String!
-  node: Document!
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-# ============================================================================
-# Mutation Operations
-# ============================================================================
-
-"""
-Root mutation type
-"""
-type Mutation {
-  """
-  Upload a new document for assessment
-  """
-  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
-
-  """
-  Update document metadata
-  """
-  updateDocument(id: ID!, input: UpdateDocumentInput!): UpdateDocumentPayload!
-
-  """
-  Delete a document
-  """
-  deleteDocument(id: ID!): DeleteDocumentPayload!
-
-  """
-  Start a new assessment for a document
-  """
-  createAssessment(input: CreateAssessmentInput!): CreateAssessmentPayload!
-}
-
-type CreateDocumentPayload {
-  document: Document
-  errors: [UserError!]
-}
-
-type UpdateDocumentPayload {
-  document: Document
-  errors: [UserError!]
-}
-
-type DeleteDocumentPayload {
-  deletedDocumentId: ID
-  errors: [UserError!]
-}
-
-type CreateAssessmentPayload {
-  assessment: Assessment
-  errors: [UserError!]
-}
-
-"""
-User-facing error (validation, authorization, not found)
-"""
-type UserError {
-  message: String!
-  field: String
-  code: String!
-}
-
-# ============================================================================
-# Subscription Operations (Real-time Updates)
-# ============================================================================
-
-"""
-Root subscription type
-"""
-type Subscription {
-  """
-  Subscribe to assessment progress updates
-  """
-  assessmentUpdated(assessmentId: ID!): Assessment!
-
-  """
-  Subscribe to document status changes
-  """
-  documentStatusChanged(documentId: ID!): Document!
-}
-
-# ============================================================================
-# Custom Scalars
-# ============================================================================
-
-"""
-ISO 8601 DateTime string (e.g., "2025-01-15T10:30:00Z")
-"""
-scalar DateTime
-```
-
-**GraphQL Best Practices:**
-- Use descriptive type names and field names
-- Add documentation strings (""") for all types and fields
-- Use `!` to mark non-nullable fields
-- Implement Relay-style cursor pagination for lists
-- Use input types for mutations
-- Return payload types with errors field for validation
-- Use enums for categorical values
-- Define custom scalars for complex types (DateTime, JSON, URL)
+Generate both OpenAPI and Protobuf specs with mapping documentation. See Phase 5 agent for translation layer guidance.
 
 ---
 
-#### For gRPC APIs (Protobuf serialization):
-
-Create Protocol Buffer `.proto` files with service definitions, message types, and RPC methods.
-
-**Protobuf Example:**
-```protobuf
-syntax = "proto3";
-import "google/protobuf/timestamp.proto";
-import "validate/validate.proto";
-
-package compliancehub.v1;
-
-service DocumentService {
-  rpc CreateDocument(CreateDocumentRequest) returns (CreateDocumentResponse);
-  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
-  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
-  rpc UpdateDocument(UpdateDocumentRequest) returns (UpdateDocumentResponse);
-  rpc DeleteDocument(DeleteDocumentRequest) returns (DeleteDocumentResponse);
-}
-
-message Document {
-  string id = 1;
-  string name = 2;
-  int64 file_size = 3;
-  string mime_type = 4;
-  DocumentStatus status = 5;
-  google.protobuf.Timestamp uploaded_at = 6;
-  string user_id = 7;
-  repeated string framework_ids = 8;
-}
-
-enum DocumentStatus {
-  DOCUMENT_STATUS_UNSPECIFIED = 0;
-  DOCUMENT_STATUS_PENDING = 1;
-  DOCUMENT_STATUS_PROCESSING = 2;
-  DOCUMENT_STATUS_COMPLETED = 3;
-  DOCUMENT_STATUS_FAILED = 4;
-}
-
-message CreateDocumentRequest {
-  string name = 1 [(validate.rules).string = {
-    min_len: 1,
-    max_len: 255
-  }];
-  repeated string framework_ids = 2 [(validate.rules).repeated = {
-    min_items: 1
-  }];
-}
-
-message CreateDocumentResponse {
-  Document document = 1;
-}
-```
-
----
-
-#### For MessagePack APIs (Binary JSON-like):
-
-**MessagePack** is a schemaless binary format compatible with JSON. It doesn't require a separate schema definition—use the same logical structure as JSON but serialize to binary.
-
-**MessagePack Contract Structure:**
-
-Since MessagePack is schemaless, document the **data structure** (not a schema file) and **binary encoding notes**:
-
-```markdown
-## MessagePack Contract
-
-**Format**: MessagePack (binary, schemaless, JSON-compatible)
-**Library**: msgpack (Python), @msgpack/msgpack (Node.js), encoding/msgpack (Go)
-**Content-Type**: `application/msgpack` or `application/x-msgpack`
-
-### Endpoint: POST /api/documents
-
-**Request Structure** (logical JSON, serialized to MessagePack binary):
-```json
-{
-  "name": "Compliance Report 2025",
-  "frameworkIds": ["uuid-1", "uuid-2"]
-}
-```
-
-**MessagePack Binary Encoding Notes:**
-- `name`: string type (str format, variable length)
-- `frameworkIds`: array type (array format with fixarray/array16/array32 depending on length)
-- Integers use varint encoding (small numbers = 1 byte)
-- Binary data uses bin format (avoids base64 overhead)
-
-**Response Structure** (201 Created):
-```json
-{
-  "id": "doc-uuid",
-  "name": "Compliance Report 2025",
-  "fileSize": 2048576,
-  "status": "PENDING",
-  "uploadedAt": "2025-01-15T10:30:00Z",
-  "userId": "user-uuid",
-  "frameworkIds": ["uuid-1", "uuid-2"]
-}
-```
-
-**Type Mapping (MessagePack Extension Types):**
-
-MessagePack supports **Extension Types** for custom serialization:
-- **DateTime**: Use Extension Type -1 with Unix timestamp (int64) or ISO 8601 string
-- **Binary Data**: Use bin8/bin16/bin32 format (native binary, no base64 overhead)
-- **UUIDs**: Use string format or bin16 (128-bit binary)
-
-**Validation**: Same validation rules as JSON (min/max lengths, required fields, enums)
-**Error Format**: Same error structure as JSON, serialized to MessagePack
-
-**Size Comparison** (typical document object):
-- JSON: ~400 bytes
-- MessagePack: ~250 bytes (40% smaller)
-```
-
-**When to Use MessagePack:**
-- Mobile apps (bandwidth-sensitive)
-- High-throughput APIs (lower serialization overhead than JSON)
-- Redis caching (faster than JSON)
-- IoT devices (compact binary format)
-
----
-
-#### For CBOR APIs (IETF RFC 8949):
-
-**CBOR** (Concise Binary Object Representation) is an IETF-standard binary format similar to MessagePack but with deterministic encoding support.
-
-**CBOR Contract Structure:**
-
-```markdown
-## CBOR Contract
-
-**Format**: CBOR (binary, schemaless, IETF RFC 8949)
-**Library**: cbor2 (Python), cbor (Node.js), fxamacker/cbor (Go)
-**Content-Type**: `application/cbor`
-
-### Endpoint: POST /api/documents
-
-**Request Structure** (logical JSON, serialized to CBOR binary):
-```json
-{
-  "name": "Compliance Report 2025",
-  "frameworkIds": ["uuid-1", "uuid-2"]
-}
-```
-
-**CBOR Binary Encoding Notes:**
-- Deterministic encoding available (canonical ordering for signatures)
-- Tags support: Tag 0 (date/time string), Tag 1 (Unix timestamp), Tag 37 (UUID binary)
-- Major types: unsigned int, negative int, byte string, text string, array, map
-- Self-describing CBOR option (tag 55799 prefix for format detection)
-
-**Type Mapping (CBOR Tags):**
-
-| Type | CBOR Encoding | Tag | Example |
-|------|--------------|-----|---------|
-| DateTime | Tag 0 + text string | 0 | Tag 0 "2025-01-15T10:30:00Z" |
-| Unix Timestamp | Tag 1 + integer | 1 | Tag 1 1736938200 |
-| UUID | Tag 37 + 16-byte binary | 37 | Tag 37 0x123e4567e89b12d3... |
-| Binary Data | Byte string (major type 2) | — | h'48656C6C6F' |
-
-**Response Structure** (201 Created):
-```json
-{
-  "id": "doc-uuid",
-  "name": "Compliance Report 2025",
-  "fileSize": 2048576,
-  "status": "PENDING",
-  "uploadedAt": "2025-01-15T10:30:00Z",  // Encoded as Tag 0 (ISO 8601)
-  "userId": "user-uuid",
-  "frameworkIds": ["uuid-1", "uuid-2"]
-}
-```
-
-**Deterministic Encoding** (for digital signatures):
-When signatures are required (e.g., webhook payloads, audit logs):
-- Map keys sorted lexicographically
-- Shortest encoding preferred (e.g., int 23 uses 1 byte, not 2)
-- No duplicate keys allowed
-- Floating-point uses smallest representation
-
-**Validation**: Same validation rules as JSON
-**Error Format**: Same error structure as JSON, serialized to CBOR
-
-**Size Comparison** (typical document object):
-- JSON: ~400 bytes
-- CBOR: ~260 bytes (35% smaller)
-```
-
-**When to Use CBOR:**
-- IoT devices (IETF standard matters for compliance)
-- Constrained environments (embedded systems)
-- When deterministic encoding needed (digital signatures)
-- Cross-platform binary data (no endianness issues)
-
----
-
-#### For Hybrid Architectures:
-
-**Hybrid Pattern: gRPC Internal + REST External**
-
-When Session 8 chose hybrid architecture (gRPC for microservice-to-microservice, REST for external clients):
-
-**1. Generate Protobuf Schemas for Internal Services:**
-
-```protobuf
-// internal-api.proto (gRPC service definitions)
-syntax = "proto3";
-
-package compliancehub.internal.v1;
-
-// Internal service (not exposed publicly)
-service DocumentProcessingService {
-  rpc ProcessDocument(ProcessDocumentRequest) returns (ProcessDocumentResponse);
-  rpc GetProcessingStatus(GetProcessingStatusRequest) returns (GetProcessingStatusResponse);
-}
-
-message ProcessDocumentRequest {
-  string document_id = 1;
-  repeated string framework_ids = 2;
-  ProcessingOptions options = 3;
-}
-
-message ProcessingOptions {
-  int32 max_concurrent_assessments = 1;
-  int32 timeout_seconds = 2;
-  bool enable_caching = 3;
-}
-
-message ProcessDocumentResponse {
-  string job_id = 1;
-  ProcessingStatus status = 2;
-}
-
-enum ProcessingStatus {
-  PROCESSING_STATUS_UNSPECIFIED = 0;
-  PROCESSING_STATUS_QUEUED = 1;
-  PROCESSING_STATUS_RUNNING = 2;
-  PROCESSING_STATUS_COMPLETED = 3;
-  PROCESSING_STATUS_FAILED = 4;
-}
-```
-
-**2. Generate OpenAPI 3.1 Spec for External REST API:**
-
-```yaml
-openapi: 3.1.0
-info:
-  title: ComplianceHub Public API
-  version: 1.0.0
-
-paths:
-  /api/documents/{id}/process:
-    post:
-      summary: Start document processing
-      description: |
-        Triggers document assessment (internally calls gRPC ProcessDocument).
-        This is the public REST endpoint that abstracts internal gRPC complexity.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [frameworkIds]
-              properties:
-                frameworkIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-      responses:
-        '202':
-          description: Processing started (async)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  jobId:
-                    type: string
-                  status:
-                    type: string
-                    enum: [QUEUED, RUNNING]
-```
-
-**3. Document Mapping Strategy:**
-
-```markdown
-## Hybrid Architecture: Internal gRPC + External REST
-
-### Mapping Between Protocols
-
-| REST Endpoint | Internal gRPC Service | Notes |
-|---------------|---------------------|-------|
-| `POST /api/documents/{id}/process` | `DocumentProcessingService.ProcessDocument` | REST gateway translates JSON → Protobuf |
-| `GET /api/documents/{id}/status` | `DocumentProcessingService.GetProcessingStatus` | Protobuf → JSON translation |
-
-### Gateway Implementation
-
-**Technology**: Envoy Proxy with gRPC-JSON transcoding OR custom REST gateway (FastAPI/Express)
-
-**Translation Rules**:
-- REST snake_case → gRPC snake_case (field names match)
-- REST ISO 8601 timestamps → Protobuf google.protobuf.Timestamp
-- REST enums (strings) → Protobuf enums (integers with name mapping)
-- REST errors (JSON) → gRPC status codes (Unavailable → 503, NotFound → 404)
-
-**Why Hybrid?**:
-- Internal services: gRPC for performance, type safety, streaming
-- External API: REST for ease of use, browser compatibility, widespread tooling
-- Gateway abstracts complexity from external clients
-```
-
----
-
-#### Format Selection Validation
-
-After generating contracts, **validate format choice** against Session 8 decisions:
-
-**Decision Validation Checklist:**
-- [ ] If Session 8 chose REST → OpenAPI 3.1 spec generated
-- [ ] If Session 8 chose GraphQL → GraphQL SDL schema generated
-- [ ] If Session 8 chose gRPC → Protobuf `.proto` files generated
-- [ ] If Session 8 chose MessagePack → MessagePack contract structure documented
-- [ ] If Session 8 chose CBOR → CBOR contract structure documented
-- [ ] If Session 8 chose hybrid → Both OpenAPI and Protobuf generated with mapping docs
-- [ ] If mobile app in journey → Consider bandwidth-efficient format (Protobuf, MessagePack, CBOR)
-- [ ] If browser-based app → JSON via REST or GraphQL (native browser support)
-- [ ] If IoT devices → CBOR (IETF standard) or MessagePack (compact)
-- [ ] If real-time requirements → Consider GraphQL subscriptions or WebSocket
-
-**If mismatch detected**, document the issue and recommend re-running `/generate-api-design` with updated analysis.
-
----
-
-### Step 9: Document API Technical Implementation
+### Step 13: Document API Technical Implementation
 
 Write `product-guidelines/08b-api-contracts.md` with:
-- **Overview**: Link to `08-api-design.md` for paradigm/serialization decisions, endpoint count
-- **Core Resources**: For each resource: purpose (journey connection), endpoints table
-- **OpenAPI Spec**: Complete specification or link to `openapi.yaml` file
-- **Protobuf Schemas**: (if gRPC) Complete `.proto` files or links
-- **Request/Response Examples**: Sample payloads for key endpoints
-- **Validation Rules**: Field constraints, required fields, formats
-- **Testing**: Example curl/httpie/grpcurl commands
 
-**Note**: High-level design decisions (paradigm, serialization, auth strategy, rate limiting, pagination) are in `08-api-design.md` (Session 8). This file focuses on technical implementation.
+**Structure:**
+1. **Overview**
+   - Link to `08-api-design.md` for paradigm/serialization decisions
+   - Endpoint count, resource count
+   - Applied phases summary (Phase 1: Security, Phase 2: Versioning, Phase 3: Performance if applicable, Phase 4: Code Generation, Phase 5: Format Coverage if applicable)
+
+2. **Core Resources**
+   - For each resource: purpose (journey connection), endpoints table
+
+3. **API Specification**
+   - OpenAPI 3.1 spec (complete or link to `openapi.yaml`)
+   - GraphQL SDL (if GraphQL)
+   - Protobuf schemas (if gRPC, link to `.proto` files)
+
+4. **Phase 1: Security & Data Integrity**
+   - PII fields marked in schemas
+   - GDPR export endpoint (if applicable)
+   - Type mappings applied (NUMERIC→string, BIGINT→string, etc.)
+   - Validation rules summary
+   - Deserialization security warnings
+
+5. **Phase 2: API Versioning & Evolution**
+   - Breaking change matrix
+   - Versioning strategy chosen
+   - Deprecation timeline template
+   - Migration strategies
+
+6. **Phase 3: Performance Optimization** (if applicable)
+   - Response size limits
+   - Compression strategy
+   - Field selection patterns
+   - HTTP caching rules
+
+7. **Phase 4: Code Generation & Contract Testing**
+   - Client SDK generation commands (TypeScript, Python, Go, etc.)
+   - Session 12 integration (where generated code goes)
+   - Contract testing tool configuration
+   - Type consistency validation script
+
+8. **Phase 5: Format Coverage** (if applicable)
+   - GraphQL SDL schema (if GraphQL)
+   - MessagePack contract structure (if MessagePack)
+   - Hybrid architecture mapping (if hybrid)
+
+9. **Request/Response Examples**
+   - Sample payloads for key endpoints
+
+10. **Testing**
+    - Example curl/httpie/grpcurl commands
+    - Dredd/Pact configuration
+
+**Note**: High-level design decisions (paradigm, serialization, auth strategy, rate limiting, pagination) are in `08-api-design.md` (Session 8). This file focuses on technical implementation with all 5 phases applied.
 
 ---
 
-### Step 10: Create Context Version for Scaffold Generation
+### Step 14: Create Context Version for Scaffold Generation
 
 **IMPORTANT**: After writing the full contracts file, invoke the distillation sub-agent:
 
@@ -2497,54 +746,35 @@ Task tool with:
 - Output file: product-guidelines/08b-api-contracts.ctx.md
 ```
 
-The distillation agent will create a condensed version optimized for Session 12 (scaffold generation).
+**Distillation instructions** (for the sub-agent):
 
-**What to include** (target: 100-150 lines):
-- API configuration (reference to 08-api-design.md for decisions)
-- Endpoint lists organized by journey step
-- Brief description for each endpoint (one line)
-- Common patterns (pagination params, response codes)
-- Implementation guidance for scaffold generation
+```
+Create token-optimized context file from Session 8b API contracts.
 
-**What to EXCLUDE** (these belong in full `08b-api-contracts.md`):
-- Complete OpenAPI 3.1 specification
-- GraphQL SDL schema definitions
-- Protobuf message definitions
-- Request/response schemas
-- Error response definitions
-- Component schemas
-- Example requests/responses
-- Validation rules
-- Rate limit headers
+Target: 80% token reduction (API contracts are highly structured, mostly endpoint lists).
 
-**Why**: Session 12 (scaffold generation) only needs the endpoint list to create controller/route stubs. Loading the full OpenAPI spec, GraphQL schema, or Protobuf definitions bloats context when only endpoint lists (~280 tokens) are needed.
+KEEP:
+- Endpoint list with methods and paths
+- Core resource list
+- Applied phases summary (Phases 1, 2, 3 if applicable, 4, 5 if applicable)
+- Journey-to-endpoint mapping
+- Client SDK generation commands summary
+- Contract testing tool chosen
 
-**Format**:
-```markdown
-# API Contracts Context (For Backlog Generation)
+REMOVE:
+- Full OpenAPI/Protobuf/GraphQL schemas (Session 12 reads full file for code gen)
+- Request/response examples
+- Detailed validation rules
+- Testing curl commands
+- Webhook endpoint details
+- Detailed phase explanations
 
-> See `08-api-contracts.md` for complete API specifications (OpenAPI/GraphQL/Protobuf)
-
-## API Configuration
-- API Style: [REST/GraphQL]
-- Authentication: [JWT/OAuth]
-...
-
-## Endpoints by Journey Step
-
-### Authentication (Journey Step 0)
-- `POST /api/auth/login` - User login
-...
-
-### [Resource] Endpoints (Journey Step X)
-- `POST /api/[resource]` - Create [resource]
-- `GET /api/[resource]` - List [resource] (paginated)
-...
+Session 12 (scaffold) will read .ctx.md for endpoint overview, then read full .md for complete schemas and generation commands.
 ```
 
 ---
 
-### Step 11: Validate API Design
+### Step 15: Validate API Design
 
 **Quality Checklist:**
 
@@ -2574,7 +804,7 @@ The distillation agent will create a condensed version optimized for Session 12 
 - [ ] Framework-specific features leveraged
 - [ ] OpenAPI format compatible with chosen tools
 
-**Security & Compliance (Phase 1):**
+**Phase 1: Security & Data Integrity (ALWAYS REQUIRED):**
 - [ ] PII fields marked with x-pii: true in schemas
 - [ ] GDPR data export endpoint included (if EU users in Session 2a)
 - [ ] Input sanitization rules documented per field type
@@ -2583,39 +813,24 @@ The distillation agent will create a condensed version optimized for Session 12 
 - [ ] Authentication required on protected endpoints
 - [ ] Authorization checks documented
 - [ ] Sensitive data not exposed in URLs
-- [ ] Rate limiting prevents abuse
-- [ ] CORS policy considered
-- [ ] HTTPS enforced in production
-
-**Type Safety (Phase 1):**
 - [ ] Database NUMERIC/DECIMAL mapped to string (not float) for money
 - [ ] Database BIGINT mapped to string in JSON (JavaScript safety)
 - [ ] Timestamps use ISO 8601 format with timezone
 - [ ] UUIDs use string type with format: uuid
 - [ ] All DB constraints propagated to API validation (NOT NULL, CHECK, VARCHAR length)
 
-**Versioning & Evolution (Phase 2):**
+**Phase 2: API Versioning & Evolution (ALWAYS REQUIRED):**
 - [ ] Breaking change matrix documented (what changes break vs safe)
-- [ ] Protobuf reserved fields documented for deleted/renamed fields
-- [ ] OpenAPI deprecation annotations present (deprecated: true, x-sunset-date, x-replacement-*)
+- [ ] Protobuf reserved fields documented for deleted/renamed fields (if gRPC)
+- [ ] OpenAPI deprecation annotations present (deprecated: true, x-sunset-date, x-replacement-*) (if REST)
 - [ ] API versioning strategy chosen (URL/header/query param versioning)
 - [ ] Migration strategies documented for breaking changes (dual-write, feature flags, adapter)
 - [ ] Deprecation timeline defined (6-12 months minimum for public APIs)
 - [ ] Version history documented (what changed between versions)
 - [ ] Backward compatibility rules followed (no removed fields, no type changes)
-- [ ] Protobuf field numbers never reused (reserved statement present)
-- [ ] Contract testing covers version compatibility (v1 client reads v2 response)
 
-**Validation (Phase 1):**
-- [ ] All request schemas have required field markers
-- [ ] String fields have minLength and maxLength constraints
-- [ ] Number fields have minimum and maximum constraints
-- [ ] Structured fields have pattern regex (email, phone, URLs)
-- [ ] Enum fields define all allowed values
-- [ ] File uploads have size limits and MIME type allowlists
-- [ ] Validation error responses use consistent format with field names
-
-**Performance (Phase 3):**
+**Phase 3: Performance Optimization (CONDITIONAL):**
+- [ ] If mobile users OR >10K requests/day OR large payloads → Phase 3 applied
 - [ ] Response size limits specified per endpoint type (default 100, max 1000 for lists)
 - [ ] Compression strategy documented per format (gzip for JSON, LZ4/Snappy for Protobuf)
 - [ ] Field selection patterns documented (sparse fieldsets, FieldMask, GraphQL fields)
@@ -2623,24 +838,23 @@ The distillation agent will create a condensed version optimized for Session 12 
 - [ ] Protobuf varint guidance provided for integer fields (int32/int64 vs fixed32/fixed64)
 - [ ] Pagination prevents large payloads
 - [ ] Heavy operations are async (return 202 Accepted)
-- [ ] File uploads support chunking/resumable uploads
 
-**Code Generation & Type Safety (Phase 4):**
+**Phase 4: Code Generation & Contract Testing (ALWAYS REQUIRED):**
 - [ ] Client SDK generation commands documented for all tech stack languages (TypeScript, Python, Go, etc.)
 - [ ] OpenAPI generator configuration specified (typescript-axios, python/httpx, oapi-codegen for Go)
-- [ ] Protobuf/gRPC code generation commands documented (protoc plugins for each language)
+- [ ] Protobuf/gRPC code generation commands documented (protoc plugins for each language) (if gRPC)
 - [ ] Session 12 integration documented (where generated code should be placed)
 - [ ] Build scripts specified (package.json scripts, Makefile targets)
 - [ ] Type consistency validation script template provided (DB → API → Client type checking)
-- [ ] Framework-specific patterns documented (FastAPI Pydantic, Express Zod, etc.)
-
-**Contract Testing (Phase 4):**
 - [ ] Contract testing tool selection documented (Dredd for REST, grpc-testing for gRPC, Pact for consumer-driven)
-- [ ] Dredd/Pact configuration examples provided (dredd.yml with authentication hooks)
-- [ ] Contract testing story template included for Session 10 backlog
+- [ ] Contract testing configuration examples provided (dredd.yml with authentication hooks)
 - [ ] CI/CD pipeline integration examples provided (.github/workflows/test.yml)
-- [ ] Test hooks for authentication documented (Bearer token injection)
-- [ ] Test result artifact collection specified (HTML reports, JUnit XML)
+
+**Phase 5: Format Coverage (CONDITIONAL):**
+- [ ] If GraphQL → GraphQL SDL schema generated with journey validation
+- [ ] If MessagePack → MessagePack contract structure documented
+- [ ] If CBOR → CBOR CDDL schema documented
+- [ ] If hybrid (REST+gRPC, REST+GraphQL) → Mapping between formats documented
 
 ---
 
@@ -2663,67 +877,14 @@ If you discover that the chosen paradigm doesn't fit specific endpoints during i
 
 ## Output Files
 
-1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, examples, testing)
-2. **`product-guidelines/08b-api-contracts.ctx.md`**: Condensed version for Session 12 (scaffold generation) - endpoint lists only (~150 lines)
+1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, all phases, examples, testing)
+2. **`product-guidelines/08b-api-contracts.ctx.md`**: Condensed version for Session 9b/10 (~80% reduction) - endpoint lists, phases summary, no detailed schemas
 3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST): Complete OpenAPI 3.1 spec (all endpoints, schemas, security)
 4. **`product-guidelines/08b-api-contracts/schema.graphql`** (if GraphQL): GraphQL SDL schema with types, queries, mutations, subscriptions
 5. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
 6. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
----
-
-## Quality Checklist
-
-Before completing this session, verify:
-
-**Journey Alignment:**
-- [ ] All user actions from journey have API endpoints
-- [ ] Critical path (journey steps 1-3) fully supported
-- [ ] No endpoints exist that don't serve a journey step
-- [ ] API enables all features in backlog
-
-**Completeness:**
-- [ ] All CRUD operations defined where needed
-- [ ] Request and response schemas complete
-- [ ] Validation rules specified
-- [ ] Error cases documented
-- [ ] Authentication and authorization clear
-- [ ] Rate limiting and pagination specified
-
-**Technical Quality:**
-- [ ] OpenAPI 3.1 specification valid (use openapi-spec-validator or Swagger Editor)
-- [ ] GraphQL schema valid (use graphql-schema-linter or Apollo Studio)
-- [ ] Protobuf schemas compile without errors (use protoc compiler)
-- [ ] Consistent naming conventions
-- [ ] Consistent error format
-- [ ] HTTP status codes used correctly
-- [ ] Security best practices followed (HTTPS, auth, rate limits)
-
-**API Design Alignment (Session 8):**
-- [ ] Paradigm matches `08-api-design.md` decision (REST/GraphQL/gRPC/hybrid)
-- [ ] Serialization format matches decision (JSON/Protobuf/MessagePack)
-- [ ] Auth method from `08-api-design.md` implemented
-- [ ] Rate limiting strategy from `08-api-design.md` applied
-- [ ] Pagination approach from `08-api-design.md` used
-- [ ] Error format from `08-api-design.md` followed
-
-**Tech Stack Alignment:**
-- [ ] Framework-specific patterns leveraged
-- [ ] Documentation tool compatible with stack
-
-**Documentation:**
-- [ ] Each endpoint has purpose explanation
-- [ ] Endpoints reference journey steps
-- [ ] Testing examples provided (curl/httpie/grpcurl)
-- [ ] Setup instructions clear
-- [ ] Link to `08-api-design.md` for high-level decisions
-
-**Context Version (for scaffold generation):**
-- [ ] Context file created at `08b-api-contracts.ctx.md`
-- [ ] All endpoints listed with journey step mapping
-- [ ] File is 100-200 lines (not bloated with schemas)
-- [ ] Includes API config references to `08-api-design.md`
-- [ ] References full file for complete specification
+**Note**: Session 12 (scaffold) will read full `.md` file to access complete schemas and generation commands for code generation. Context file is for Session 9b/10 only.
 
 ---
 
@@ -2731,13 +892,15 @@ Before completing this session, verify:
 
 **Next steps**:
 - Run `/create-test-strategy` (Session 9) to define testing approach
-- Session 10 (`/generate-backlog`) will use `08-api-design.ctx.md` for API-driven stories
-  - **NEW (Phase 4):** Adds "API Contract Testing" story to backlog (Dredd setup, CI/CD integration)
-- Session 12 (`/scaffold-project`) will use `08b-api-contracts.ctx.md` to generate endpoint stubs
-  - **NEW (Phase 4):** Auto-generates type-safe client SDKs from contracts
-  - Places generated code in project structure (frontend/src/api-client/, backend/internal/api/)
-  - Adds generation scripts to package.json/Makefile
-  - Validates type consistency (DB → API → Client)
+- Session 9b (`/model-application`) will use `08b-api-contracts.ctx.md` for controller/service modeling
+- Session 10 (`/generate-backlog`) will use `08b-api-contracts.ctx.md` for API-driven stories
+  - Adds "API Contract Testing" story to backlog (Dredd/Pact setup, CI/CD integration) from Phase 4
+- Session 12 (`/scaffold-project`) will use full `08b-api-contracts.md` to:
+  - Auto-generate type-safe client SDKs from contracts (Phase 4)
+  - Generate endpoint stubs/controllers
+  - Place generated code in project structure (frontend/src/api-client/, backend/internal/api/)
+  - Add generation scripts to package.json/Makefile
+  - Validate type consistency (DB → API → Client)
 
 **Use contracts for**:
 - Backend implementation (controllers, routes, handlers)
@@ -2752,11 +915,20 @@ Before completing this session, verify:
 
 **Implement the decisions from Session 8 (API Design).**
 
-This session focuses on technical implementation. Don't make new architectural decisions here. Instead:
+This session focuses on technical implementation with 5-phase enhancement:
+1. **Phase 1** (Always): Security & Data Integrity (PII marking, type mapping, validation)
+2. **Phase 2** (Always): API Versioning & Evolution (breaking changes, deprecation)
+3. **Phase 3** (Conditional): Performance Optimization (compression, caching, field selection)
+4. **Phase 4** (Always): Code Generation & Contract Testing (SDK gen, contract tests)
+5. **Phase 5** (Conditional): Format Coverage (GraphQL, MessagePack, CBOR, hybrid)
+
+Don't make new architectural decisions here. Instead:
 1. Read `08-api-design.ctx.md` for paradigm, serialization, auth, rate limiting, pagination decisions
-2. Create technical specs (OpenAPI/Protobuf) that implement those decisions
-3. Define endpoints, schemas, and validation rules
-4. Provide examples and testing guidance
+2. Conditionally invoke phase agents based on requirements
+3. Create technical specs (OpenAPI/Protobuf/GraphQL) that implement those decisions
+4. Apply all relevant phase patterns
+5. Define endpoints, schemas, and validation rules
+6. Provide examples and testing guidance
 
 If you find the API design decisions don't work for a specific endpoint, note it but don't override Session 8. Discuss with the user and potentially re-run Session 8 with updated analysis.
 
@@ -2766,811 +938,15 @@ If you find the API design decisions don't work for a specific endpoint, note it
 - Tech stack: `product-guidelines/02-tech-stack.ctx.md`
 - Architecture: `product-guidelines/04-architecture.ctx.md`
 - Database schema: `product-guidelines/07-database-schema.ctx.md`
+- Constraints: `product-guidelines/02a-constraints.ctx.md` (if exists)
+
+**Phase agents:**
+- **Phase 1**: `.claude/agents/api-contracts-phase1-security.md` (always invoke)
+- **Phase 2**: `.claude/agents/api-contracts-phase2-versioning.md` (always invoke)
+- **Phase 3**: `.claude/agents/api-contracts-phase3-performance.md` (conditional: mobile/high-volume/large-payloads)
+- **Phase 4**: `.claude/agents/api-contracts-phase4-codegen.md` (always invoke)
+- **Phase 5**: `.claude/agents/api-contracts-phase5-formats.md` (conditional: GraphQL/MessagePack/CBOR/hybrid)
 
 ---
 
-**Now, read API design decisions (Session 8) and create technical API contracts!**
-
-### Step 10.5: Code Generation Integration
-
-**CRITICAL - Connect API contracts to Session 12 scaffold for automated client SDK generation:**
-
-API contracts are not just documentation—they're the source of truth for auto-generating type-safe client SDKs, server stubs, and contract tests. This section defines how Session 12 (scaffold generation) should use contracts from Session 8b.
-
-**Why This Matters:**
-
-Manual client SDK creation leads to:
-- **Type mismatches** discovered at runtime instead of compile-time
-- **Outdated clients** when API changes (forgotten manual updates)
-- **Duplication** of validation logic (server validates, client doesn't)
-- **Errors** from typos in endpoint URLs, field names, or types
-
-**Auto-generation from contracts prevents all of these issues.**
-
----
-
-#### OpenAPI Client SDK Generation
-
-**Decision Tree - Which OpenAPI Generator?**
-
-```
-1. What's the client language?
-   ├─ TypeScript/JavaScript → openapi-generator-cli with typescript-axios or typescript-fetch
-   ├─ Python → openapi-generator-cli with python or dataclasses-json
-   ├─ Java → openapi-generator-cli with java or spring
-   ├─ Go → oapi-codegen (better than openapi-generator for Go)
-   └─ Other → openapi-generator-cli (supports 50+ languages)
-
-2. What's the HTTP client preference?
-   ├─ TypeScript: axios (most popular), fetch (native), node-fetch
-   ├─ Python: httpx (async), requests (sync), aiohttp
-   ├─ Java: okhttp, java.net.http, retrofit
-   └─ Go: net/http (native)
-
-3. Should client be published?
-   ├─ YES (npm, PyPI, Maven) → Add packaging config, versioning
-   └─ NO (internal use) → Generate directly into project src/
-```
-
-**TypeScript Client Generation (Most Common):**
-
-```bash
-# Install generator
-npm install -g @openapitools/openapi-generator-cli
-
-# Generate TypeScript client with axios
-openapi-generator-cli generate \
-  -i product-guidelines/08b-api-contracts/openapi.yaml \
-  -g typescript-axios \
-  -o src/api-client \
-  --additional-properties=supportsES6=true,withInterfaces=true,useSingleRequestParameter=true
-
-# Generated structure:
-# src/api-client/
-#   api/
-#     documents-api.ts       # DocumentsApi class with type-safe methods
-#     users-api.ts           # UsersApi class
-#   models/
-#     document.ts            # Document interface
-#     user.ts                # User interface
-#     error.ts               # Error interface
-#   configuration.ts         # API config (base URL, auth)
-#   index.ts                 # Exports
-```
-
-**Usage Example:**
-
-```typescript
-// Type-safe API client usage
-import { DocumentsApi, Configuration } from './api-client';
-
-const config = new Configuration({
-  basePath: 'https://api.example.com',
-  accessToken: 'Bearer eyJhbGc...'
-});
-
-const documentsApi = new DocumentsApi(config);
-
-// Type-safe method call (TypeScript knows return type)
-const response = await documentsApi.listDocuments({
-  limit: 20,
-  status: 'active'  // TypeScript validates enum values
-});
-
-// Type-safe response access
-response.data.data.forEach(doc => {
-  console.log(doc.name);  // TypeScript knows Document shape
-  console.log(doc.invalid);  // ❌ TypeScript compile error
-});
-```
-
-**Python Client Generation:**
-
-```bash
-# Generate Python client with httpx
-openapi-generator-cli generate \
-  -i product-guidelines/08b-api-contracts/openapi.yaml \
-  -g python \
-  -o python-client \
-  --additional-properties=packageName=api_client,library=httpx
-
-# Generated structure:
-# python-client/
-#   api_client/
-#     api/
-#       documents_api.py     # DocumentsApi class
-#     models/
-#       document.py          # Document dataclass
-#     configuration.py       # Config class
-```
-
-**Usage Example:**
-
-```python
-from api_client import ApiClient, Configuration, DocumentsApi
-from api_client.models import DocumentCreate
-
-config = Configuration(
-    host='https://api.example.com',
-    access_token='Bearer eyJhbGc...'
-)
-
-with ApiClient(config) as api_client:
-    documents_api = DocumentsApi(api_client)
-
-    # Type-safe method call (IDE knows types)
-    response = documents_api.list_documents(limit=20, status='active')
-
-    for doc in response.data:
-        print(doc.name)  # IDE autocompletes Document fields
-```
-
-**Alternative Generator - oapi-codegen (Go):**
-
-```bash
-# For Go projects, use oapi-codegen (better than openapi-generator)
-go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
-
-# Generate Go client
-oapi-codegen -package api -generate types,client \
-  product-guidelines/08b-api-contracts/openapi.yaml > internal/api/client.go
-
-# Usage
-client, _ := api.NewClientWithResponses("https://api.example.com")
-resp, _ := client.ListDocumentsWithResponse(ctx, &api.ListDocumentsParams{
-    Limit: api.PtrInt32(20),
-})
-```
-
----
-
-#### Protobuf Client SDK Generation (gRPC)
-
-**Decision Tree - Which Protobuf Plugin?**
-
-```
-1. What's the client language?
-   ├─ Go → protoc-gen-go + protoc-gen-go-grpc
-   ├─ Python → protoc-gen-python + protoc-gen-grpc_python
-   ├─ TypeScript/JavaScript → protoc-gen-ts or grpc-tools
-   ├─ Java → protoc-gen-java + protoc-gen-grpc-java
-   └─ Other → protoc plugins available for 20+ languages
-
-2. What's the gRPC library?
-   ├─ Go: google.golang.org/grpc (official)
-   ├─ Python: grpcio (official)
-   ├─ TypeScript: @grpc/grpc-js (official Node), grpc-web (browser)
-   └─ Java: grpc-java (official)
-```
-
-**Go gRPC Client Generation:**
-
-```bash
-# Install protoc plugins
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
-# Generate Go client from .proto files
-protoc \
-  --go_out=. \
-  --go_opt=paths=source_relative \
-  --go-grpc_out=. \
-  --go-grpc_opt=paths=source_relative \
-  product-guidelines/08b-api-contracts/*.proto
-
-# Generated structure:
-# internal/api/
-#   documents.pb.go       # Message types
-#   documents_grpc.pb.go  # Service client and server interfaces
-```
-
-**Usage Example:**
-
-```go
-// Type-safe gRPC client usage
-import pb "github.com/example/api"
-
-conn, _ := grpc.Dial("api.example.com:443", grpc.WithTransportCredentials(creds))
-client := pb.NewDocumentServiceClient(conn)
-
-// Type-safe RPC call (Go knows types from .proto)
-resp, err := client.ListDocuments(ctx, &pb.ListDocumentsRequest{
-    PageSize: 20,
-    Filter:   "status:active",
-})
-
-for _, doc := range resp.Documents {
-    fmt.Println(doc.Name)  // IDE knows Document fields
-    fmt.Println(doc.Invalid)  // ❌ Compile error
-}
-```
-
-**TypeScript gRPC Client Generation:**
-
-```bash
-# Install protoc-gen-ts
-npm install -g protoc-gen-ts grpc-tools
-
-# Generate TypeScript client
-grpc_tools_node_protoc \
-  --js_out=import_style=commonjs,binary:src/api-client \
-  --grpc_out=grpc_js:src/api-client \
-  --ts_out=grpc_js:src/api-client \
-  product-guidelines/08b-api-contracts/*.proto
-
-# Usage (Node.js)
-import * as grpc from '@grpc/grpc-js';
-import { DocumentServiceClient } from './api-client/documents_grpc_pb';
-import { ListDocumentsRequest } from './api-client/documents_pb';
-
-const client = new DocumentServiceClient(
-  'api.example.com:443',
-  grpc.credentials.createSsl()
-);
-
-const request = new ListDocumentsRequest();
-request.setPageSize(20);
-
-client.listDocuments(request, (err, response) => {
-  response.getDocumentsList().forEach(doc => {
-    console.log(doc.getName());  // Type-safe access
-  });
-});
-```
-
----
-
-#### Session 12 Scaffold Integration
-
-**CRITICAL: Session 12 should auto-generate clients from contracts.**
-
-When generating `product-guidelines/12-project-scaffold.md`, Session 12 should:
-
-1. **Read API contracts** from `product-guidelines/08b-api-contracts/openapi.yaml` or `.proto` files
-2. **Detect serialization format** from Session 8 (`08-api-design.ctx.md`)
-3. **Generate client SDK** using appropriate generator:
-   - REST/JSON → openapi-generator-cli
-   - gRPC/Protobuf → protoc with language plugins
-4. **Place generated code** in project structure:
-   - Frontend: `frontend/src/api-client/` (TypeScript)
-   - Backend: `backend/internal/api/` (Go), `backend/api_client/` (Python)
-   - Monorepo: `packages/api-client/` (shared)
-5. **Add generation script** to package.json or Makefile:
-
-```json
-// package.json (frontend)
-{
-  "scripts": {
-    "generate:api": "openapi-generator-cli generate -i ../product-guidelines/08b-api-contracts/openapi.yaml -g typescript-axios -o src/api-client",
-    "build": "npm run generate:api && vite build"
-  }
-}
-```
-
-```makefile
-# Makefile (Go backend)
-.PHONY: generate-api
-generate-api:
-	protoc --go_out=. --go-grpc_out=. product-guidelines/08b-api-contracts/*.proto
-
-.PHONY: build
-build: generate-api
-	go build -o bin/server cmd/server/main.go
-```
-
-**Scaffold Output Example:**
-
-```
-project-root/
-├─ frontend/
-│  ├─ src/
-│  │  ├─ api-client/          # ← GENERATED by openapi-generator
-│  │  │  ├─ api/
-│  │  │  │  ├─ documents-api.ts
-│  │  │  │  └─ users-api.ts
-│  │  │  ├─ models/
-│  │  │  │  ├─ document.ts
-│  │  │  │  └─ user.ts
-│  │  │  └─ configuration.ts
-│  │  └─ components/
-│  └─ package.json
-│
-├─ backend/
-│  ├─ internal/
-│  │  └─ api/
-│  │     ├─ documents.pb.go   # ← GENERATED by protoc (if gRPC)
-│  │     └─ documents_grpc.pb.go
-│  └─ Makefile
-│
-└─ product-guidelines/
-   └─ 08b-api-contracts/
-      ├─ openapi.yaml          # ← Source of truth for REST
-      └─ documents.proto       # ← Source of truth for gRPC
-```
-
-**Why This Integration Matters:**
-
-- **Type safety:** Compile-time errors for API mismatches (not runtime)
-- **Auto-sync:** Regenerate clients when contracts change (no manual updates)
-- **Consistency:** Server and client use same contract definitions
-- **Documentation:** Generated code includes JSDoc/docstrings from OpenAPI
-- **Validation:** Client validates request before sending (saves roundtrip)
-
----
-
-#### Type Consistency Validation
-
-**Problem:** Ensure DB type → API type → Client type alignment.
-
-**Example Issue:**
-
-```
-Database:     NUMERIC(10,2) for price
-API Contract: string (correct, preserves precision)
-Client Type:  number (WRONG, loses precision)
-
-User inputs: $19.99
-Database:    19.99 (exact)
-Client:      19.990000000000002 (float rounding error)
-```
-
-**Solution: Add validation script to Session 12 scaffold:**
-
-```typescript
-// scripts/validate-type-consistency.ts
-import { readFileSync } from 'fs';
-import { parse } from 'yaml';
-
-// Read database schema (from Session 7)
-const dbSchema = readFileSync('product-guidelines/07-database-schema.md', 'utf8');
-
-// Read API contracts (from Session 8b)
-const apiContracts = parse(readFileSync('product-guidelines/08b-api-contracts/openapi.yaml', 'utf8'));
-
-// Validate type mappings
-const errors = [];
-
-// Check: Database NUMERIC → API string (not number)
-if (dbSchema.includes('NUMERIC') && apiContracts.components.schemas.User.properties.balance.type === 'number') {
-  errors.push('CRITICAL: NUMERIC database type mapped to number in API (should be string for precision)');
-}
-
-// Check: Database BIGINT → API string in JSON (JavaScript safety)
-if (dbSchema.includes('BIGINT') && apiContracts.components.schemas.User.properties.id.type === 'number') {
-  errors.push('CRITICAL: BIGINT database type mapped to number in API (should be string for JS safety)');
-}
-
-if (errors.length > 0) {
-  console.error('Type consistency validation FAILED:');
-  errors.forEach(err => console.error(`  ❌ ${err}`));
-  process.exit(1);
-}
-
-console.log('✅ Type consistency validation passed');
-```
-
-**Add to CI/CD pipeline:**
-
-```yaml
-# .github/workflows/validate-contracts.yml
-name: Validate API Contracts
-on: [push, pull_request]
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - name: Validate type consistency
-        run: npm run validate:types
-      - name: Validate OpenAPI spec
-        run: |
-          npm install -g @stoplight/spectral-cli
-          spectral lint product-guidelines/08b-api-contracts/openapi.yaml
-```
-
----
-
-#### Contract Testing Integration
-
-**CRITICAL: Add contract tests to Session 10 backlog.**
-
-Contract tests ensure API implementation matches contract specification.
-
-**Decision Tree - Which Contract Testing Tool?**
-
-```
-1. What's the API type?
-   ├─ REST API → Dredd, Portman, Pact
-   ├─ gRPC API → grpc-testing, gRPC health checks
-   └─ GraphQL → GraphQL Inspector, Pact
-
-2. What's the testing approach?
-   ├─ Consumer-driven (Pact) → Frontend defines contract, backend must satisfy
-   ├─ Specification-driven (Dredd) → OpenAPI spec is source of truth
-   └─ Integration tests → Both sides tested together
-
-3. When to run tests?
-   ├─ Pre-commit → Fast smoke tests (1-2 endpoints)
-   ├─ CI/CD → Full contract test suite
-   └─ Pre-deployment → Smoke test against staging
-```
-
-**Dredd (REST/OpenAPI Contract Testing):**
-
-```bash
-# Install Dredd
-npm install -g dredd
-
-# Test API implementation against OpenAPI spec
-dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
-
-# Example output:
-# pass: GET /api/users -> 200 OK
-# pass: POST /api/users -> 201 Created
-# fail: GET /api/users/123 -> 500 (expected 200)
-#   Response body doesn't match schema: 'email' is required
-```
-
-**Dredd Configuration:**
-
-```yaml
-# dredd.yml
-reporter: ['html']
-output: ['test-results/contract-tests.html']
-hookfiles: 'test/hooks/*.ts'
-language: typescript
-hooks-worker-timeout: 5000
-hooks-worker-connect-timeout: 1500
-
-# Add authentication hooks
-# test/hooks/auth.ts
-import hooks from 'hooks';
-
-hooks.beforeEach((transaction, done) => {
-  transaction.request.headers['Authorization'] = 'Bearer test-token';
-  done();
-});
-```
-
-**Pact (Consumer-Driven Contract Testing):**
-
-```typescript
-// Frontend defines expected API behavior (contract)
-import { PactV3 } from '@pact-foundation/pact';
-
-const provider = new PactV3({
-  consumer: 'frontend-app',
-  provider: 'backend-api',
-  dir: './pacts'
-});
-
-describe('User API', () => {
-  it('should list users', async () => {
-    await provider
-      .given('users exist')
-      .uponReceiving('a request for users')
-      .withRequest({
-        method: 'GET',
-        path: '/api/users',
-        headers: { Authorization: 'Bearer token' }
-      })
-      .willRespondWith({
-        status: 200,
-        body: {
-          data: [{ id: '1', name: 'Alice' }],
-          pagination: { has_more: false }
-        }
-      });
-
-    // Frontend test uses this contract
-    const response = await usersApi.listUsers();
-    expect(response.data[0].name).toBe('Alice');
-  });
-});
-
-// Backend must satisfy this contract (verified separately)
-```
-
-**gRPC Contract Testing:**
-
-```go
-// test/contract_test.go
-import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    pb "github.com/example/api"
-)
-
-func TestDocumentService_Contract(t *testing.T) {
-    // Test that server implements contract correctly
-    conn, _ := grpc.Dial("localhost:50051", grpc.WithInsecure())
-    client := pb.NewDocumentServiceClient(conn)
-
-    // Verify ListDocuments returns expected structure
-    resp, err := client.ListDocuments(ctx, &pb.ListDocumentsRequest{PageSize: 10})
-    assert.NoError(t, err)
-    assert.NotNil(t, resp.Documents)
-    assert.LessOrEqual(t, len(resp.Documents), 10)
-
-    // Verify schema compliance (generated from .proto)
-    if len(resp.Documents) > 0 {
-        doc := resp.Documents[0]
-        assert.NotEmpty(t, doc.Id)
-        assert.NotEmpty(t, doc.Name)
-    }
-}
-```
-
-**Session 10 Backlog - Add Contract Testing Stories:**
-
-When generating `product-guidelines/10-backlog/`, include these stories:
-
-```markdown
-### Story: API Contract Testing (Technical Enabler)
-
-**User Story:** As a developer, I want contract tests to run in CI so that API changes don't break clients.
-
-**Description:** Implement Dredd contract testing to validate backend API matches OpenAPI spec.
-
-**Acceptance Criteria:**
-- [ ] Dredd installed and configured
-- [ ] All endpoints in `08b-api-contracts/openapi.yaml` tested
-- [ ] Tests run in CI/CD pipeline (GitHub Actions)
-- [ ] Authentication hooks implemented (test tokens)
-- [ ] Test report generated (HTML format)
-- [ ] Failures block deployment
-
-**Technical Details:**
-- Install: `npm install -g dredd`
-- Config: `dredd.yml` with hooks
-- Run: `dredd openapi.yaml http://localhost:3000`
-- CI: Add to `.github/workflows/test.yml`
-
-**Effort:** 3 points (Medium)
-**Priority:** High (prevents breaking changes)
-```
-
-**Add to CI/CD Pipeline:**
-
-```yaml
-# .github/workflows/test.yml
-name: Test
-
-on: [push, pull_request]
-
-jobs:
-  contract-tests:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: test
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-
-      - name: Start backend server
-        run: |
-          npm install
-          npm run migrate:test
-          npm run start:test &
-          sleep 5  # Wait for server ready
-
-      - name: Run contract tests
-        run: |
-          npm install -g dredd
-          dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: contract-test-results
-          path: test-results/
-```
-
----
-
-#### Framework-Specific Patterns
-
-**FastAPI (Python) - Auto-validation from OpenAPI:**
-
-FastAPI automatically validates requests using Pydantic models:
-
-```python
-# FastAPI leverages OpenAPI contract for auto-validation
-from fastapi import FastAPI
-from pydantic import BaseModel, Field, validator
-
-# Pydantic model matches OpenAPI schema (Session 8b)
-class UserCreate(BaseModel):
-    email: str = Field(..., min_length=5, max_length=255, regex=r'^[a-zA-Z0-9._%+-]+@')
-    name: str = Field(..., min_length=1, max_length=100)
-    age: int = Field(..., ge=0, le=150)
-
-    @validator('email')
-    def email_must_be_lowercase(cls, v):
-        return v.lower()
-
-app = FastAPI()
-
-@app.post("/api/users", response_model=User)
-async def create_user(user: UserCreate):
-    # FastAPI auto-validates request against UserCreate schema
-    # If validation fails, returns 422 with detailed errors
-    return create_user_in_db(user)
-```
-
-**Session 12 should generate Pydantic models from OpenAPI schemas:**
-
-```bash
-# Generate Pydantic models from OpenAPI
-pip install datamodel-code-generator
-
-datamodel-codegen \
-  --input product-guidelines/08b-api-contracts/openapi.yaml \
-  --output backend/models/generated.py \
-  --input-file-type openapi \
-  --output-model-type pydantic_v2.BaseModel
-```
-
-**Express (TypeScript) - Runtime validation with Zod:**
-
-```typescript
-// Session 12 generates Zod schemas from OpenAPI
-import { z } from 'zod';
-import { generateSchema } from 'openapi-zod-client';
-
-// Auto-generated from OpenAPI
-const UserCreateSchema = z.object({
-  email: z.string().email().min(5).max(255),
-  name: z.string().min(1).max(100),
-  age: z.number().int().min(0).max(150)
-});
-
-// Express middleware for validation
-app.post('/api/users', validateRequest(UserCreateSchema), async (req, res) => {
-  // Request body validated before handler runs
-  const user = req.body;  // Type-safe (validated)
-  const created = await createUser(user);
-  res.status(201).json(created);
-});
-
-// Validation middleware
-function validateRequest(schema: z.ZodSchema) {
-  return (req, res, next) => {
-    const result = schema.safeParse(req.body);
-    if (!result.success) {
-      return res.status(400).json({
-        error: {
-          code: 'VALIDATION_ERROR',
-          message: 'Request validation failed',
-          details: result.error.flatten()
-        }
-      });
-    }
-    next();
-  };
-}
-```
-
----
-
-#### Output from Step 10.5
-
-**Document in `product-guidelines/08b-api-contracts.md`:**
-
-Add new section after endpoint definitions:
-
-```markdown
-## Code Generation
-
-### Client SDK Generation
-
-**TypeScript/JavaScript:**
-```bash
-openapi-generator-cli generate \
-  -i product-guidelines/08b-api-contracts/openapi.yaml \
-  -g typescript-axios \
-  -o src/api-client
-```
-
-**Python:**
-```bash
-openapi-generator-cli generate \
-  -i product-guidelines/08b-api-contracts/openapi.yaml \
-  -g python \
-  -o python-client \
-  --additional-properties=packageName=api_client,library=httpx
-```
-
-[Include language-specific examples for all tech stack languages]
-
-### Session 12 Integration
-
-Session 12 scaffold generation will:
-1. Auto-generate client SDK from these contracts
-2. Place generated code in appropriate directories:
-   - Frontend: `frontend/src/api-client/`
-   - Backend (gRPC): `backend/internal/api/`
-3. Add generation scripts to build process (package.json, Makefile)
-4. Validate type consistency (DB → API → Client types)
-
-### Contract Testing
-
-**Dredd Configuration:**
-```yaml
-# dredd.yml (placed by Session 12)
-reporter: ['html']
-output: ['test-results/contract-tests.html']
-hookfiles: 'test/hooks/*.ts'
-```
-
-**Run Tests:**
-```bash
-dredd product-guidelines/08b-api-contracts/openapi.yaml http://localhost:3000
-```
-
-**Session 10 Backlog Integration:**
-A "API Contract Testing" story will be added to the backlog with:
-- Dredd setup and configuration
-- CI/CD pipeline integration
-- Authentication hooks for testing
-```
-
-**Update Session 12 Connection Note:**
-
-Replace existing "After This Session" section note about Session 12 with:
-
-```markdown
-## After This Session
-
-**Next steps**:
-- Run `/create-test-strategy` (Session 9) to define testing approach
-- Session 10 (`/generate-backlog`) will use `08-api-design.ctx.md` for API-driven stories
-  - **NEW:** Adds "API Contract Testing" story to backlog (Dredd setup, CI/CD integration)
-- Session 12 (`/scaffold-project`) will use `08b-api-contracts.ctx.md` to generate endpoint stubs
-  - **NEW:** Auto-generates type-safe client SDKs from contracts
-  - Places generated code in project structure (frontend/src/api-client/, backend/internal/api/)
-  - Adds generation scripts to package.json/Makefile
-  - Validates type consistency (DB → API → Client)
-
-**Use contracts for**:
-- Backend implementation (controllers, routes, handlers)
-- Frontend development (auto-generated type-safe API client)
-- API documentation (Swagger UI, Redoc, grpcui)
-- Client SDK generation (openapi-generator, protoc plugins) - **AUTOMATED in Session 12**
-- Contract testing (Dredd, Pact, grpc-testing) - **Story added to Session 10 backlog**
-```
-
----
-
-## After Generating API Contracts Document
-
-Once you've written `product-guidelines/08b-api-contracts.md`, invoke the distillation agent to create a context file:
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Generate API contracts context file`
-- **prompt**:
-  ```
-  Invoke the context distillation agent to create token-optimized context file.
-
-  Source file: product-guidelines/08b-api-contracts.md
-  Output file: product-guidelines/08b-api-contracts.ctx.md
-
-  Follow the distillation agent specification in .claude/agents/distill-context.md to:
-  1. Extract ALL endpoint definitions, schemas, and validation rules (CRITICAL)
-  2. Extract component schemas and request/response formats
-  3. Remove example requests/responses, testing guidance, detailed explanations
-  4. Preserve section structure from source file
-  5. Achieve 60-70% token reduction
-  6. Add source reference header
-  7. Write to output file path
-  ```
-
-## Output Format
-
-IMPORTANT: Do not use emojis in generated outputs. Use plain text for all communication.
+**Now, read API design decisions (Session 8), conditionally invoke phase agents, and create technical API contracts!**
