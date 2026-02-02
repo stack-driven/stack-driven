@@ -69,43 +69,196 @@
 
 ---
 
-## Prompt Engineering Strategy
+## Prompt Engineering Strategy (always included)
 
-**System Prompt Approach**:
-[Template-based / Dynamic / Fixed - explain approach]
+### Six-Component Prompt Framework
 
-**Few-Shot Examples**:
-[Static examples / Dynamic retrieval / None - explain strategy]
+**1. Task Definition** (Role/Persona):
+```
+[Define what the AI is and what it does]
+Example: "You are a compliance analyst with expertise in GDPR..."
+```
 
-**Output Format**:
-[JSON schema / Plain text / Structured fields - show example]
+**2. Tone and Style Context**:
+```
+Tone: [professional/friendly/technical/concise]
+Style: [formal/conversational/bullet-points/detailed]
+Audience: [end-users/developers/executives]
+```
 
-**Chain-of-Thought**:
-[Using reasoning tags / Direct output / Step-by-step - when and why]
+**3. Background Data and Context**:
+```
+[Relevant background information, user-specific data, domain knowledge]
+Example: "User tier: Premium, Previous issues: 2 billing problems"
+```
+
+**4. Detailed Instructions** (Step-by-Step for complex tasks):
+```
+Instructions:
+1. [First action]
+2. [Second action]
+3. [Third action]
+```
+
+**5. Few-Shot Examples** (2-3 examples):
+```
+Example 1:
+Input: [Example input]
+Output: [Expected output]
+
+Example 2:
+Input: [Example input]
+Output: [Expected output]
+```
+
+**6. Explicit Output Format**:
+```
+Output format:
+{
+  "field1": "type (constraints)",
+  "field2": "type (constraints)"
+}
+Do not include any text outside the JSON object.
+```
+
+### Advanced Patterns
+
+**Chain-of-Thought (CoT)**:
+[Using / Not using]
+- **Use for**: [Complex reasoning tasks - e.g., compliance analysis, code generation]
+- **Pattern**:
+  ```
+  Think through your analysis step-by-step within <thinking> tags:
+  <thinking>
+  1. [Step 1]
+  2. [Step 2]
+  </thinking>
+
+  <answer>
+  [Final output]
+  </answer>
+  ```
+- **Benefits**: [+15-30% accuracy for complex tasks]
+- **Costs**: [+50-200 tokens per query]
+
+**Prefilling** (for consistent output structure):
+[Using / Not using]
+- **Use for**: [Force JSON structure, prevent preambles]
+- **Pattern**:
+  ```python
+  messages = [
+      {"role": "user", "content": "Classify this ticket..."},
+      {"role": "assistant", "content": '{"category": "'}  # Prefill
+  ]
+  # Model completes: billing", "confidence": 0.95}
+  ```
+- **Benefits**: [Near-100% format consistency]
+
+**Prompt Chaining** (multi-step workflows):
+[Using / Not using]
+- **Use for**: [Complex workflows requiring iterative refinement]
+- **Example**: Analysis → Prioritization → Recommendations → Executive summary
+- **Costs**: [4x LLM calls, only use for high-value tasks]
+
+### Prompt Versioning & A/B Testing
+
+**Version Control Strategy**:
+- Store prompts in Git with semantic versioning (v1.0, v1.1, v1.2)
+- Document changes: "v1.2: Added CoT for 15% accuracy improvement"
+- Track: prompt_version → accuracy, latency, cost, user satisfaction
+
+**A/B Testing Plan**:
+- Test: [50% control, 50% treatment]
+- Metrics: [Accuracy, latency, cost, user feedback]
+- Decision criteria: [>5% accuracy improvement OR >20% cost reduction]
+
+**Performance Tracking**:
+- Log: prompt_version, input_hash, output_hash, latency, cost, feedback
+- Aggregate weekly: Which prompts perform best?
+- Alert: If new prompt degrades accuracy >5%
+
+### Token Optimization
+
+**System Prompt Caching**:
+- Move repeated instructions to system prompt (cached after first call)
+- **Savings**: [50-70%] on input tokens for instruction-heavy prompts
+
+**Prompt Compression**:
+- Remove: "please", "kindly", "thank you", filler words
+- Use imperative voice: "Classify" not "Please classify"
+- **Savings**: [10-15%] token reduction
+
+**Variable Extraction**:
+- Extract repeated data to variables
+- **Savings**: [20-30%] for repetitive data
 
 ---
 
-## Context Management (if RAG applicable)
+## RAG Architecture (if RAG sub-agent invoked)
 
 [If not using RAG, write: "Not applicable - AI tasks don't require document retrieval"]
 
 [If using RAG:]
 
-**Vector Database**: [pgvector / Pinecone / Chroma / Qdrant]
+### RAG Pattern Selection
+
+**Chosen Pattern**: [Naive RAG / Modular RAG / Agentic RAG / Hybrid RAG]
+
+**Rationale**:
+[Explain why this RAG variant fits the journey requirements. Reference document types, query patterns, quality requirements.]
+
+**Architecture Flow**:
+[Describe the RAG pipeline: Indexing → Query → Retrieval → Generation]
+
+**Alternatives Considered**:
+- [x] [Pattern not chosen]: [Why it doesn't fit]
+- [✓] [Chosen pattern]: [Why this is the best fit]
+
+### Vector Database Selection
+
+**Vector Database**: [pgvector / Pinecone / Chroma / Qdrant / Weaviate]
+
+**Decision Criteria**:
+- [Key factor 1 from tech stack - e.g., "Already using PostgreSQL"]
+- [Key factor 2 from scale/budget - e.g., "MVP stage, need low cost"]
+
 **Rationale**: [Why this choice given tech stack and scale]
 
-**Chunking Strategy**:
-- Chunk size: [256-512 tokens / 1024 tokens]
-- Overlap: [50-100 tokens]
-- Rationale: [Why this fits document type and query pattern]
+**Cost**: $[X]/month (or $0 if pgvector/Chroma embedded)
 
-**Retrieval Approach**:
-- Top-k: [3-5 chunks typical]
-- Similarity threshold: [0.7-0.8]
-- Hybrid search: [Vector + keyword / Pure vector]
+### Chunking Strategy
+
+- **Chunk size**: [256-512 tokens / 1024 tokens / 2048 tokens]
+- **Approach**: [Fixed-size / Semantic / Sliding window]
+- **Overlap**: [0 / 100 tokens] if sliding window
+- **Rationale**: [Why this fits document type and query pattern from journey]
+
+**Example**:
+```
+Document: 100-page compliance PDF
+Chunks: ~200 chunks of 1,024 tokens each
+Overlap: 100 tokens (prevent context loss at boundaries)
+```
+
+### Retrieval Optimization
+
+**Reranking**: [Yes / No]
+- If Yes: [Cohere Rerank / Jina Reranker]
+- Cost: $[X] per 1K searches
+- Benefit: [X%] precision improvement
+
+**Lost-in-the-Middle Mitigation**: [Yes / No]
+- Strategy: [Reorder chunks, most relevant at start/end]
+
+**Hybrid Search (Vector + BM25)**: [Yes / No]
+- If Yes: Rationale: [Need exact term matching for regulations/product names]
+- Implementation: [Weaviate built-in / Custom RRF fusion]
+
+**Top-k**: [3-5 chunks typical]
+**Similarity threshold**: [0.7-0.8]
 
 **Embedding Model**: [text-embedding-3-small / bge-m3 / etc.]
-**Cost**: $[X] per million tokens
+**Embedding Cost**: $[X] per million tokens
 
 ---
 
@@ -138,87 +291,360 @@
 
 ---
 
-## Cost Management
+## Cost Optimization Strategy (if Cost Optimization sub-agent invoked)
 
-**Caching Strategy**:
+### Baseline Cost Analysis
+
+**Current Projected Cost**: $[X]/month (without optimization)
+- Usage: [Y users/day × Z interactions/user × N tokens/interaction]
+- Model: [Model name] at $[price]/1M tokens
+- **Journey Context**: [Reference usage patterns from journey]
+
+### Semantic Caching Strategy
 
 [If caching applicable:]
 **Semantic Caching**: Yes
-- Cache targets: [FAQ queries / Classifications / Summaries]
-- Similarity threshold: [0.95+ for cache hit]
-- TTL: [7-30 days depending on content]
-- Expected savings: [60-73% cost reduction]
-- Implementation: [Redis + vector similarity]
+
+**Multi-Layer Architecture**:
+1. **Exact Key Matching** (Redis/Memcached, <5ms latency)
+2. **Semantic Similarity Search** (Vector DB, 20-50ms latency, similarity >0.95)
+3. **LLM Inference** (Cloud API, 500ms-2s latency)
+
+**Safe to Cache** (from journey analysis):
+- ✅ [Specific query types from journey - e.g., FAQ-style questions]
+- ✅ [e.g., Classification tasks]
+- ✅ [e.g., Summarization of static content]
+
+**Never Cache** (risk analysis):
+- ❌ [Specific risks for this product - e.g., Personalized responses]
+- ❌ [e.g., Time-sensitive information]
+- ❌ [e.g., Transactional confirmations]
+
+**Expected Hit Rate**: [67-73%] (based on query pattern analysis)
+
+**Cost Savings**:
+- Before caching: $[X]/month
+- After caching ([Y%] hit rate): $[Z]/month
+- **Net Savings**: $[X-Z]/month ([%] reduction)
+- Infrastructure cost: $[Redis/cache cost]/month
+- **Total Savings**: $[net savings after infrastructure]/month
+
+**Implementation**: [Helicone built-in / LangChain SemanticCache / Custom pgvector]
 
 [If not applicable:]
 **Semantic Caching**: No
-- Rationale: [Why caching doesn't apply]
+- Rationale: [Why caching doesn't apply - e.g., "All queries are unique, no repetition"]
+
+### Model Routing Strategy
+
+[If routing applicable:]
+**Model Routing**: Yes
+
+**Routing Logic**:
+- **Simple queries** ([X%] of volume): [Cheap model - e.g., GPT-4o mini]
+  - Criteria: [Length <100 chars, no technical keywords]
+- **Complex queries** ([Y%] of volume): [Expensive model - e.g., Claude Sonnet]
+  - Criteria: [Length >100 chars OR technical keywords OR low confidence]
+
+**Cost Savings**:
+- Without routing (all → expensive model): $[A]/month
+- With routing ([X%] → cheap, [Y%] → expensive): $[B]/month
+- **Savings**: $[A-B]/month ([%] reduction)
+
+**Quality Impact**: 95% of expensive model quality maintained (RouteLLM benchmark)
+
+**Implementation**: [RouteLLM / Manual rule-based / Amazon Bedrock Intelligent Routing]
+
+[If not applicable:]
+**Model Routing**: No
+- Rationale: [Why routing doesn't apply - e.g., "All tasks require highest accuracy, no room for cheaper models"]
+
+### Combined Strategy: Caching + Routing
+
+[If both applicable:]
+**Maximum Cost Optimization**:
+- Baseline: $[X]/month
+- After caching: $[Y]/month ([Z%] reduction)
+- After routing (on cache misses): $[W]/month
+- **Total Savings**: $[X-W]/month ([%] reduction)
+
+**ROI**: $[annual savings] saved annually for [X weeks] implementation effort
+
+### Token Optimization
+
+**System Prompt Caching**:
+- Move repeated instructions to system prompt (cached by providers after first call)
+- **Savings**: [20-30%] token reduction on repeated instructions
+
+**Prompt Compression**:
+- Remove filler words ("please", "kindly", redundancy)
+- Use imperative voice
+- **Savings**: [10-15%] token reduction
+
+**Output Token Limiting**:
+- Classification: 50 tokens max
+- Short answers: 100-200 tokens
+- Summaries: 300-500 tokens
+- **Savings**: [X%] on output tokens (often most expensive)
+
+### Cost Monitoring & Alerting
+
+**Budget Thresholds**:
+- Daily budget: $[X] (alert at 120% = $[1.2X])
+- Monthly budget: $[Y] (alert at 110% = $[1.1Y])
+- Emergency threshold: $[Z] (alert at 200%, trigger rate limiting)
+
+**Anomaly Detection**:
+- Request volume: Alert if >150% of 7-day average
+- Cost per request: Alert if >130% of 7-day average
+- Model usage drift: Alert if expensive model usage >50% (should be ~[X%])
+
+**Per-User Caps**:
+- Daily: [X] requests per user
+- Monthly: [Y] requests per user
 
 **Rate Limiting**:
 - Per-user: [X requests/minute, Y tokens/hour]
 - Per-feature: [Z requests/day]
 - Rationale: [Prevent abuse, manage costs]
 
-**Token Optimization**:
-- Prompt compression: [Remove redundancy]
-- Output limits: [Max tokens per response]
-- Streaming cutoff: [Stop when satisfied]
-
-**Monthly Budget**:
-- Target: $[X]/month
-- Alert: $[1.5X]/month
-- Circuit breaker: $[2X]/month
-
 ---
 
-## Security & Guardrails
+## Security & Compliance Guardrails (if Security/Compliance sub-agent invoked)
+
+[If not regulated industry, write: "Basic security only - no regulated data"]
+
+[If regulated industry or sensitive data:]
+
+### OWASP LLM Top 10 2025 Mitigation
+
+**Priority Risks for This Product** (top 3-5 applicable):
+
+**1. Prompt Injection** (Priority: CRITICAL)
+- **Mitigation**:
+  - Privilege separation (XML tags: `<instructions>` vs `<user_input>`)
+  - Input sanitization (blocklist injection patterns)
+  - Output validation (ensure expected format only)
+- **Implementation**: [Code snippet or reference]
+
+**2. Sensitive Information Disclosure** (Priority: [CRITICAL for regulated | HIGH for others])
+- **Mitigation**:
+  - PII filtering before LLM (regex + NER for names)
+  - Zero data retention (BAA/DPA with providers)
+  - Output scanning (detect accidental PII in responses)
+- **Implementation**: [PII filter patterns for this industry]
+
+**3. [Other relevant risk]** (Priority: [CRITICAL/HIGH/MEDIUM])
+- **Mitigation**: [Specific mitigations for this risk]
+- **Implementation**: [Code or framework reference]
+
+[Continue for top 3-5 risks applicable to this product]
+
+### PII Filtering Strategy
+
+[If handling sensitive data:]
+**Applicable Regulations**: [HIPAA / GDPR / Both]
+
+**Filtering Patterns**:
+```python
+# Patterns to filter before sending to LLM
+- SSN: r'\d{3}-\d{2}-\d{4}'
+- Credit cards: r'\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}'
+- Emails: r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+- [Industry-specific: Medical record numbers, case numbers, etc.]
+```
+
+**When to Apply**:
+- ✅ Before sending to LLM (primary defense)
+- ✅ After receiving from LLM (defense in depth)
+
+**Implementation**: [spaCy NER for names + regex for structured data]
+
+### API Key Management
+
+**Secrets Manager**: [AWS Secrets Manager / HashiCorp Vault / 1Password]
+
+**Rotation Policy**:
+- Frequency: Every [30 | 14 | 7] days
+- Automated: [Yes | Planned for Phase 2]
+
+**Scope Separation**:
+- Separate keys per environment (dev/staging/prod)
+- Separate keys per service (if multiple AI features)
+
+**Monitoring**:
+- Alert if usage >200% of baseline
+- Alert on geographic anomalies
+
+### Audit Logging
+
+**What to Log**:
+- Timestamp, request_id, user_id, feature, model
+- Input/output hashes (NOT actual content - PII risk)
+- Tokens, cost, latency, confidence
+- Human review flag, errors
+
+**What NOT to Log**:
+- ❌ Actual user input (PII risk)
+- ❌ Actual LLM output (PII risk)
+
+**Retention**: [6 years (HIPAA) | As required by GDPR | 2 years (SOC2)]
+
+**Access Controls**:
+- Compliance/security team only
+- Append-only (cannot modify or delete)
+- Audit log access itself is logged
+
+### Input/Output Validation
 
 **Input Validation**:
-- Max length: [X tokens / Y characters]
-- Filtering: [Regex patterns, PII detection]
-- Sanitization: [Remove dangerous patterns]
+- Max length: [10,000 characters]
+- Encoding: UTF-8 only
+- Injection pattern detection
 
 **Output Validation**:
-- Schema: [JSON structure enforcement]
-- Content filter: [Harmful content detection]
-- Length limit: [Max output tokens]
-
-**Prompt Injection Prevention**:
-- System constraints: [Clear boundaries]
-- Input separation: [User vs instructions]
-- Role enforcement: [Maintain roles]
-
-**API Key Management**:
-- Storage: [AWS Secrets Manager / Vault / etc.]
-- Rotation: [Every 24-48 hours]
-- Scope: [Environment-specific]
-
-**Compliance** (if applicable):
-- Data type: [HIPAA / SOC2 / GDPR]
-- Requirements: [Specific compliance needs]
+- Format check (JSON schema validation)
+- PII detection (scan outputs)
+- System prompt leakage detection
 
 ---
 
-## Testing & Evaluation Strategy
+## Testing & Evaluation Strategy (if Evaluation sub-agent invoked)
 
-**Evaluation Metrics**:
-- Accuracy: [How measured - test set / human eval]
-- Hallucination rate: [Target <2%]
-- Latency p95: [Target <2s]
-- User satisfaction: [Thumbs up/down >70%]
+[If quality requirements are not mission-critical, write: "Basic monitoring only - use observability metrics"]
 
-**Regression Testing**:
-- Golden test set: [X examples]
-- Run on: [Prompt changes, model upgrades]
-- Alert if: [Accuracy drops >5%]
+[If mission-critical or A/B testing planned:]
 
-**A/B Testing**:
-- Strategy: [Test prompt variations, models]
-- Metrics: [What to measure]
+### Testing Framework Selection
 
-**Continuous Evaluation**:
-- Real-time monitoring: [Quality metrics]
-- Automated alerts: [Thresholds]
+**Recommended Framework**: [DeepEval / Promptfoo / RAGAS]
+
+**Rationale**: [Why this framework fits the use case]
+- **DeepEval**: For regression testing LLM outputs like unit tests (CI/CD integration)
+- **Promptfoo**: For rapid prompt iteration and side-by-side comparison
+- **RAGAS**: For RAG pipeline evaluation (retrieval + generation quality)
+
+**Use Cases**:
+- [Specific task 1 from journey - e.g., "Ticket classification regression tests"]
+- [Specific task 2 - e.g., "Prompt A/B testing before launch"]
+
+### Evaluation Metrics
+
+**Business Metrics** (Primary):
+- [Metric 1 from journey - e.g., "Conversion rate with AI feature"]
+- [Metric 2 - e.g., "Time to task completion"]
+- [Metric 3 - e.g., "Revenue per user (AI vs non-AI)"]
+
+**Learning Metrics** (Product Health):
+- Feature adoption: Target >[X%]
+- Repeat usage: Target >[Y%]
+- NPS impact: [Before AI vs After AI]
+
+**AI-Specific Metrics** (Quality):
+- **Accuracy**: Target >[X%] on eval set (how measured: [test set / human eval])
+- **Latency**: P50 <[Y]s, P95 <[Z]s
+- **User Satisfaction**: Target >[70%] thumbs up
+- **Fallback Rate**: Target <[10%] (graceful degradation triggers)
+
+### Labeled Evaluation Set
+
+**Size**: [100-200 examples (MVP) | 500+ examples (production)]
+
+**Creation Process**:
+1. Sample real user queries ([N] diverse examples)
+2. Human experts label ground truth outputs
+3. Store in version control (eval_set_v1.json)
+
+**Frequency**:
+- Before launch: Establish baseline accuracy
+- After prompt changes: Regression test (did quality improve or degrade?)
+- Weekly: Track quality trends over time
+
+### Regression Testing
+
+**Golden Test Set**: [X examples]
+
+**Run On**:
+- Every prompt change (CI/CD integration)
+- Model upgrades
+- Weekly trend tracking
+
+**Alert If**:
+- Accuracy drops >5%
+- Latency increases >20%
+- Fallback rate increases >5%
+
+**Regression Test Automation**:
+```bash
+# Run on every deploy
+pytest tests/llm_tests.py
+
+# Block deployment if accuracy <threshold
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    echo "LLM tests failed - blocking deployment"
+    exit 1
+fi
+```
+
+### A/B Testing Strategy
+
+**Test Framework**:
+- 50% control (baseline prompt/model)
+- 50% treatment (new variant)
+- Minimum [1,000] samples per group
+- Run for [1-2 weeks]
+
+**Metrics to Track**:
+- Accuracy: [Target >+5% improvement]
+- Latency: [Acceptable if <+20% increase]
+- Cost: [Acceptable if <+20% increase]
+- User satisfaction: [Target >+10% thumbs up]
+
+**Decision Criteria**:
+- Deploy if: Accuracy improves >5% AND cost increase <20%
+- Revert if: Accuracy degrades >5% OR user satisfaction drops >10%
+
+### Human-in-the-Loop Patterns
+
+[If high-stakes decisions:]
+
+**Confidence-Based Routing**:
+```python
+if confidence > 0.9:
+    auto_apply()  # High confidence
+elif confidence > 0.7:
+    show_for_approval()  # Medium confidence
+else:
+    route_to_human()  # Low confidence
+```
+
+**Approval Flows** (for high-stakes):
+- [List specific decisions requiring human approval based on journey]
+- Example: "Medical advice always requires physician approval"
+- Example: "Code deployment requires developer approval before execution"
+
+**Feedback Collection**:
+- Thumbs up/down on every AI response
+- Track task completion (did user accept suggestion?)
+- Use feedback for prompt tuning and confidence calibration
+
+### Continuous Evaluation
+
+**Daily Monitoring**:
+- Sample [100] requests/day
+- Human label sample
+- Calculate daily accuracy
+- Alert if accuracy drops >5%
+
+**Weekly Review**:
+- Aggregate: Accuracy, latency, cost, user satisfaction by prompt version
+- Decide: Keep, iterate, or revert
+
+**Quarterly Deep Dive**:
+- Analyze thumbs-down examples (what's failing?)
+- Update eval set with new edge cases
+- Consider fine-tuning if >10K labeled examples
 
 ---
 
