@@ -222,6 +222,10 @@ Return your analysis as a structured markdown section:
 [Journey-specific example - e.g., component rendering logic]
 ```
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 1**: Unit testing examples (backend fixtures, mocking, assertions)
+- **Section 4**: Test data factories (FactoryBoy/Fishery patterns)
+
 ### Property-Based Testing
 
 [If applicable]

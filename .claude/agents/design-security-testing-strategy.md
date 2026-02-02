@@ -299,6 +299,9 @@ If handles PII, define test data security:
 **Weekly**: DAST scan (30-60 min)
 **Before Deploy**: All security tests pass (SAST, Container, DAST)
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 6**: Security testing examples (auth/authz tests, input validation, OWASP coverage)
+
 ### Reference
 
 For comprehensive SAST/DAST/IAST guides, CodeQL/Semgrep/Trivy examples, and OWASP Top 10 coverage:

@@ -202,6 +202,9 @@ Define query performance requirements:
 **Before Deploy**: Run load tests
 **After Optimization**: Run benchmarks
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 5**: Performance testing examples (k6 load scenarios, Core Web Vitals budgets)
+
 ### Reference
 
 For comprehensive k6 examples, Core Web Vitals guide, and database performance testing:

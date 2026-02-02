@@ -213,6 +213,9 @@ From journey steps 1-3, these flows MUST work reliably:
 [Complete E2E test for journey step 1→2→3]
 ```
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 3**: E2E testing examples (complete user flows with Playwright/Cypress)
+
 ### [Accessibility Testing]
 
 (If compliance/government/enterprise customers)

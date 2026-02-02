@@ -245,6 +245,9 @@ Property testing frameworks automatically shrink failing inputs to minimal repro
 - Edge case discovery
 - Invariant verification
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 1**: Unit testing examples (includes property-based testing with Hypothesis/fast-check)
+
 ### Reference
 
 For detailed property-based testing examples, shrinking strategies, and implementation guide:

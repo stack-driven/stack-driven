@@ -296,6 +296,10 @@ Return your analysis as a structured markdown section:
 [Async processing test with Kafka/RabbitMQ]
 ```
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 2**: Integration testing examples (API tests, database tests, multi-tenant isolation)
+- **Section 4**: Test data factories (creating test data for integration tests)
+
 ### Reference
 
 For comprehensive Testcontainers examples, database reset strategies, Pact workflow, and message queue testing:

@@ -220,6 +220,9 @@ Handle breaking vs non-breaking changes:
 [CI/CD check before deployment]
 ```
 
+**For journey-specific examples**, see `examples/compliance-saas-testing.md`:
+- **Section 2**: Integration testing examples (includes Pact consumer/provider patterns)
+
 ### Reference
 
 For comprehensive Pact workflow, Broker integration, and CI/CD examples:
