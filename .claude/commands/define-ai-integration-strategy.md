@@ -47,18 +47,18 @@ Analyze for:
 Read the template to understand output structure:
 - `/templates/02c-ai-integration-strategy-template.md` - Strategy template
 
-### Step 3: Apply AI Decision Frameworks
+### Step 3: Apply AI Decision Frameworks & Invoke Sub-Agents
 
-Based on their specific requirements, determine:
+Based on their specific requirements, analyze journey and conditionally invoke specialized sub-agents:
 
-#### A. Implementation Pattern
+#### A. Implementation Pattern (Basic Decision)
 - **Direct API**: Simple generation/classification tasks
 - **RAG Architecture**: Document-based Q&A or search
 - **Function Calling**: Structured API interactions
 - **Agent Framework**: Complex multi-step reasoning (only if team has ML expertise)
 - **Hybrid**: Different patterns for different features
 
-#### B. Model Selection
+#### B. Model Selection (Basic Decision)
 Apply cost/quality trade-offs based on tasks:
 - Classification → Smaller, cheaper models (GPT-4o mini, Claude Haiku)
 - Code generation → Claude Sonnet (best SWE-bench scores)
@@ -66,54 +66,170 @@ Apply cost/quality trade-offs based on tasks:
 - Creative writing → GPT-4o or Claude Opus
 - Multi-modal → GPT-4o or Gemini
 
-#### C. Cost Projection
-Calculate actual monthly costs:
+#### C. Conditional Sub-Agent Invocation
+
+Now analyze requirements and **conditionally invoke** specialized sub-agents for detailed guidance:
+
+**Summary: Sub-Agent Invocation Matrix**
+
+| Sub-Agent | Invocation | Condition |
+|-----------|------------|-----------|
+| Prompt Engineering | Always | Fundamental to all AI |
+| Observability | Always | Essential for production |
+| RAG Architecture | Conditional | Document retrieval required |
+| Cost Optimization | Conditional | >100 users/day OR budget concerns |
+| Security/Compliance | Conditional | Regulated industry OR sensitive data |
+| Evaluation | Conditional | Mission-critical quality OR A/B testing |
+
+**1. RAG Architecture Sub-Agent** (Conditional):
+```
+Condition: Journey requires document retrieval, search, or Q&A over documents
+           OR "RAG" mentioned in tech stack
+           OR journey mentions "knowledge base", "document analysis", or "semantic search"
+
+If condition TRUE:
+  Invoke: .claude/agents/ai-pattern-rag-architecture.md
+  Provides: RAG variant selection (Naive/Modular/Agentic/Hybrid)
+            Vector DB recommendation (pgvector/Pinecone/Chroma/Qdrant/Weaviate)
+            Chunking strategy (size, approach, overlap)
+            Retrieval optimization (hybrid search, reranking, lost-in-the-middle)
+```
+
+**2. Cost Optimization Sub-Agent** (Conditional):
+```
+Condition: (Usage > 100 users/day × 10 interactions/day)
+           OR budget concerns flagged in strategy
+           OR baseline cost projection exceeds budget by >2x
+
+If condition TRUE:
+  Invoke: .claude/agents/ai-pattern-cost-optimization.md
+  Provides: Semantic caching strategy (67-73% cost reduction)
+            Model routing architecture (30-85% savings)
+            Token optimization techniques
+            Cost monitoring and alerting thresholds
+```
+
+**3. Prompt Engineering Sub-Agent** (Always Invoke):
+```
+Condition: ALWAYS (fundamental to all AI implementations)
+
+Invoke: .claude/agents/ai-pattern-prompt-engineering.md
+Provides: Six-component prompt framework
+          Advanced patterns (chain-of-thought, prefilling, chaining)
+          Prompt versioning and A/B testing strategy
+          Token optimization (system prompt caching, compression)
+```
+
+**4. Observability Sub-Agent** (Always Invoke):
+```
+Condition: ALWAYS (essential for production AI)
+
+Invoke: .claude/agents/ai-pattern-observability.md
+Provides: Platform selection (Helicone/Langfuse/LangSmith/Datadog)
+          AI-specific metrics (latency, tokens, cost, quality)
+          Streaming performance targets (if applicable)
+          Cost spike alerting and anomaly detection
+
+Session 14 Coordination: See /reference-material/observability-platform-strategy.md
+                          for detailed platform comparison and decision tree.
+```
+
+**5. Security/Compliance Sub-Agent** (Conditional):
+```
+Condition: Regulated industry (healthcare, finance, legal, enterprise SaaS)
+           OR sensitive data handling (PII, PHI, financial data)
+           OR HIPAA/GDPR/SOC2 mentioned in strategy or constraints
+
+If condition TRUE:
+  Invoke: .claude/agents/ai-pattern-security-compliance.md
+  Provides: OWASP LLM Top 10 2025 mitigation strategies
+            PII/PHI filtering patterns
+            API key management and rotation policies
+            Audit logging requirements
+            Input/output validation patterns
+```
+
+**6. Evaluation Sub-Agent** (Conditional):
+```
+Condition: Quality bar = "mission-critical" or "high" in journey
+           OR A/B testing mentioned in strategy
+           OR regulated industry (accuracy requirements)
+
+If condition TRUE:
+  Invoke: .claude/agents/ai-pattern-evaluation.md
+  Provides: Testing framework selection (DeepEval/Promptfoo/RAGAS)
+            A/B testing strategy (business, learning, AI metrics)
+            Human-in-the-loop patterns (confidence-based routing)
+            Feedback loops and continuous evaluation
+```
+
+#### D. Cost Projection (Basic Formula)
+Calculate baseline monthly costs:
 ```
 users_per_day × interactions_per_user × (avg_input_tokens + avg_output_tokens) × 30 = monthly_tokens
 monthly_cost = monthly_tokens × model_price_per_token
-with_caching = monthly_cost × 0.35 (if semantic caching applicable)
 ```
+
+**Note**: Cost optimization sub-agent will provide detailed savings calculations (caching, routing) if invoked.
 
 Validate against implied budget from monetization strategy.
 
-#### D. Latency Feasibility
+#### E. Latency Feasibility
 - API calls: 500ms-2s typical
 - If <500ms required: Consider streaming, caching, or smaller models
 - If <200ms required: Flag as potentially infeasible with LLMs
 
-#### E. Compliance Approach
+#### F. Compliance Approach
 For regulated data:
 - **Recommend**: APIs with appropriate agreements (BAA for HIPAA, DPA for GDPR)
 - **Don't recommend**: Self-hosting by default (costs $200K+/year)
 - List specific providers and their compliance offerings
+- **Note**: Security/compliance sub-agent provides detailed mitigation patterns if invoked
 
-### Step 4: Generate Comprehensive Strategy
+### Step 4: Synthesize Sub-Agent Outputs & Generate Comprehensive Strategy
+
+After invoking relevant sub-agents, synthesize their recommendations into a cohesive strategy document.
 
 Write to `product-guidelines/02c-ai-integration-strategy.md`:
 
-Structure the document with:
+Structure the document with sections (include only relevant sections based on which sub-agents were invoked):
+
 1. **AI Feature Requirements** - Map to each journey step
 2. **Strategic Context** - From product strategy
 3. **Implementation Pattern Decision** - With rationale
 4. **Model Selection & Routing** - Specific models and why
-5. **Cost Projections** - Detailed calculations with tables
-6. **Prompt Engineering Strategy** - Approach to prompts
-7. **Context Management** (if RAG) - Vector DB, chunking, retrieval
-8. **Error Handling & Fallbacks** - Graceful degradation
-9. **Cost Management** - Caching, rate limiting, optimization
-10. **Security & Guardrails** - Input/output validation
-11. **Testing & Evaluation** - Quality metrics
-12. **Monitoring & Observability** - Platforms and metrics
-13. **MVP Implementation Plan** - Phased approach
-14. **Compliance Approach** (if applicable)
-15. **What We DIDN'T Choose** - Alternatives and why not
-16. **Scaling Triggers** - When to revisit strategy
+5. **Cost Projections** - Baseline costs (from Step 3D formula)
+
+**IF RAG sub-agent invoked:**
+6. **RAG Architecture** - Variant, vector DB, chunking strategy, retrieval optimization
+
+**IF Cost Optimization sub-agent invoked:**
+7. **Cost Optimization Strategy** - Semantic caching, model routing, token optimization, projected savings
+
+**ALWAYS (Prompt Engineering sub-agent invoked):**
+8. **Prompt Engineering Strategy** - Six-component framework, advanced patterns, versioning
+
+**IF Security/Compliance sub-agent invoked:**
+9. **Security & Compliance Guardrails** - OWASP LLM Top 10 mitigation, PII filtering, audit logging
+
+**ALWAYS (Observability sub-agent invoked):**
+10. **Monitoring & Observability** - Platform selection, AI-specific metrics, alerting thresholds
+
+**IF Evaluation sub-agent invoked:**
+11. **Testing & Evaluation** - Testing framework, A/B testing strategy, HITL patterns
+
+**ALWAYS:**
+12. **Error Handling & Fallbacks** - Graceful degradation patterns
+13. **MVP Implementation Plan** - Phased approach (what to build first)
+14. **What We DIDN'T Choose** - Alternatives and why not
+15. **Scaling Triggers** - When to revisit strategy (usage thresholds, cost triggers)
 
 Every recommendation must:
 - Reference specific journey requirements
-- Show cost calculations
+- Show cost calculations (baseline + optimized if cost sub-agent invoked)
 - Be realistic about constraints
 - Distinguish MVP from future optimizations
+- Trace decisions to sub-agent recommendations where applicable
 
 ### Step 5: Generate Context Version
 
