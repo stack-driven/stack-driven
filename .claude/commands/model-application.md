@@ -96,7 +96,369 @@ Read: product-guidelines/08b-api-contracts.ctx.md  # (context version for token 
 
 ---
 
-### Step 1.5: Model Domain Layer
+### Step 1.5: Validate Architectural Style
+
+**Purpose**: Validate the architectural style choice from Session 4 against concrete journey requirements. Prevents premature adoption of microservices (distributed monolith anti-pattern) and identifies when modular monolith boundaries provide benefits without distribution costs.
+
+**Decision Framework - Architectural Style Selection:**
+
+```
+Extract from context:
+1. Team size → Read from Session 2a constraints (if exists) or Session 4 architecture
+2. Entity count → Count tables from Session 7 database schema
+3. Deployment frequency → Read from Session 4 architecture or Session 13 deployment plan (if exists)
+4. Domain boundaries → Analyze journey steps - are there clear clusters of functionality?
+
+Apply decision matrix:
+
+| Factor | Monolith | Modular Monolith | Microservices |
+|--------|----------|------------------|---------------|
+| **Team size** | 1-15 engineers | 10-50 engineers | 50+ engineers |
+| **Entity count** | < 10 entities | 10-30 entities | > 30 entities |
+| **Deployment frequency** | Weekly/monthly | Daily/weekly | Multiple per day |
+| **Bounded contexts** | Unclear | Evolving | Stable (3+ months) |
+| **Operational maturity** | Low | Moderate | High (CI/CD, observability) |
+
+Recommendation based on majority alignment:
+- 3+ factors align with Monolith → Recommend Monolith
+- 3+ factors align with Modular Monolith → Recommend Modular Monolith
+- 4+ factors align with Microservices AND team has distributed systems expertise → Recommend Microservices
+- Otherwise → Recommend Modular Monolith (safe default with evolution path)
+```
+
+**For the journey, document:**
+
+```markdown
+### Architectural Style Validation
+
+**Journey Analysis:**
+- Journey steps: [Count from Session 1]
+- Database entities: [Count from Session 7]
+- Team size: [From Session 2a constraints or Session 4]
+- Deployment frequency: [From Session 4 or Session 13, or estimate: "Weekly releases"]
+- Bounded contexts identified: [Analyze journey for clear clusters]
+  - Example: Documents module, Assessments module, Reports module
+
+**Decision Matrix Application:**
+[Show table with actual values filled in]
+
+**Recommendation**: **[Monolith / Modular Monolith / Microservices]**
+
+**Rationale**:
+- Team size ([X]) suits [single deployment / module boundaries / independent services]
+- Entity count ([Y]) [manageable in one codebase / benefits from modules / requires service boundaries]
+- Deployment: [Weekly / Daily] releases [don't justify / benefit from / require] [microservices / module isolation]
+- Bounded contexts: [Clear/Unclear/Stable] → [Monolith / Modular Monolith / Microservices]
+- Journey connection: [Explain how architectural choice serves user experience]
+```
+
+**If Monolith (simplest):**
+
+```markdown
+**Structure**: Single deployable, shared codebase, no enforced boundaries
+
+**Directory Structure**:
+```
+src/
+├── services/        # All services together
+├── repositories/    # All repositories together
+├── controllers/     # All controllers together
+└── models/          # All domain models together
+```
+
+**Pros**:
+- Simplest to build and deploy
+- No distributed system complexity
+- Easiest debugging (single process, single database transaction)
+
+**Cons**:
+- No enforced module boundaries (risk of tight coupling)
+- Must deploy entire application for any change
+- Shared database limits independent scaling
+
+**Evolution Path**: Refactor to Modular Monolith when team > 10 or entities > 15
+```
+
+**If Modular Monolith (recommended default):**
+
+```markdown
+**Structure**: Single deployable with enforced module boundaries (Packwerk/ArchUnit style)
+
+**Module Identification** (from journey step clusters):
+```
+/src
+  /modules
+    /[module-1]       # Journey Step X
+      /domain         # Domain entities, value objects
+      /services       # Business logic
+      /repositories   # Data access
+      /controllers    # HTTP handlers
+      index.ts        # Public API - ONLY this exported to other modules
+    /[module-2]       # Journey Step Y
+      ...
+    /shared
+      /domain         # Shared value objects (Money, Email, etc.)
+      /middleware     # Shared HTTP middleware
+```
+
+**Boundary Enforcement**:
+- Modules communicate ONLY through public APIs (exported from index.ts)
+- No direct imports of internal classes (service, repository, controller)
+- Enforce with dependency-cruiser (TypeScript), ArchUnit (Java), Packwerk (Ruby)
+
+**Example Public API**:
+```typescript
+// /src/modules/documents/index.ts (PUBLIC API)
+export { uploadDocument, getDocument, deleteDocument } from './services/DocumentService';
+
+// /src/modules/assessments/controller.ts
+import { getDocument } from '@modules/documents'; // ✅ Public API
+// import { DocumentRepository } from '@modules/documents/repositories/DocumentRepository'; // ❌ FORBIDDEN - internal implementation
+```
+
+**Boundary Enforcement Config** (TypeScript example with dependency-cruiser):
+```javascript
+// .dependency-cruiser.js
+module.exports = {
+  forbidden: [
+    {
+      name: 'no-cross-module-internal-imports',
+      severity: 'error',
+      from: { path: '^src/modules/([^/]+)' },
+      to: {
+        path: '^src/modules/(?!\\1)[^/]+/(?!index\\.ts)',
+        pathNot: '^src/modules/shared'
+      }
+    }
+  ]
+};
+```
+
+**Pros**:
+- Enforced boundaries prevent tight coupling
+- Single deployment (no distributed complexity)
+- Clear ownership (team can own module)
+- Can extract to microservice later (module already isolated)
+
+**Cons**:
+- More complex than simple monolith (tooling, discipline needed)
+- Shared database (modules can't scale independently)
+- Must coordinate schema changes across modules
+
+**Evolution Path**:
+1. **Start**: Modular Monolith with 2-4 modules (journey step clusters)
+2. **Evolve**: Add modules as journey grows, keep boundaries enforced
+3. **Extract**: Selective microservices only when needed (independent scaling, different tech stack)
+
+**Microservices Extraction Criteria** (Future):
+- Module has 10x different scaling needs (AI processing vs document upload)
+- Module needs different tech stack (Python for ML, Node for API)
+- Module team is 15+ developers (organizational boundary)
+- Module domain is stable 6+ months (won't change frequently)
+```
+
+**If Microservices (rare for new journeys):**
+
+```markdown
+**⚠️ WARNING: Microservices Anti-Patterns**
+
+Before choosing microservices, validate you're NOT building a **Distributed Monolith**:
+
+**Distributed Monolith Anti-Patterns** (Worst of Both Worlds):
+- ❌ Services share database tables (can't deploy independently)
+- ❌ Synchronous request chains: Service A → B → C → D (cascading failures)
+- ❌ Services require coordinated deployments ("deploy A then B then C")
+- ❌ Tight coupling via shared libraries with business logic
+- ❌ No bounded contexts - services organized by layers not domains
+
+**If 2+ anti-patterns apply → Choose Modular Monolith instead**
+
+**Structure** (Only if criteria met):
+```
+services/
+├── document-service/
+│   ├── src/
+│   ├── database/ (dedicated DB)
+│   └── Dockerfile
+├── assessment-service/
+│   ├── src/
+│   ├── database/ (dedicated DB)
+│   └── Dockerfile
+└── report-service/
+    └── ...
+```
+
+**Microservices Requirements**:
+- Operational maturity: Kubernetes, service mesh, distributed tracing, centralized logging
+- Team expertise: Distributed systems, eventual consistency, saga patterns
+- Observability: OpenTelemetry, metrics aggregation, distributed debugging tools
+- Resilience: Circuit breakers, timeouts, retries, bulkheads between services
+
+**Pros**:
+- Independent scaling (scale AI service 100x, not entire app)
+- Independent deployment (ship document service without assessment service)
+- Technology heterogeneity (Python for AI, Go for document processing)
+
+**Cons**:
+- Operational complexity (10x harder to debug, deploy, monitor)
+- Distributed transactions (saga patterns, eventual consistency)
+- Network latency (in-process call → HTTP call adds 10-100ms)
+- Data consistency challenges (no ACID across services)
+
+**Journey Connection**: [Explain which journey steps justify distribution costs]
+```
+
+**Example (Compliance SaaS)**:
+
+```markdown
+### Architectural Style Validation
+
+**Journey Analysis:**
+- Journey steps: 4 main steps (Upload → Select Framework → Assess → View Results)
+- Database entities: 8 tables (documents, users, frameworks, assessments, results, audit_logs, sessions, integrations)
+- Team size: 3 developers (from Session 2a constraints)
+- Deployment frequency: Weekly releases (from Session 4 architecture)
+- Bounded contexts identified:
+  - **Documents Module**: Upload, storage, metadata (Journey Step 1)
+  - **Assessments Module**: Framework selection, AI analysis, results (Journey Steps 2-4)
+  - **Shared**: User auth, audit logging (cross-cutting)
+
+**Decision Matrix Application:**
+
+| Factor | This Journey | Monolith | Modular Monolith | Microservices |
+|--------|--------------|----------|------------------|---------------|
+| Team size | 3 engineers | ✅ | ✅ | ❌ |
+| Entity count | 8 entities | ✅ | ✅ | ❌ |
+| Deployment | Weekly | ✅ | ✅ | ❌ |
+| Contexts | 2 clear (Documents, Assessments) | ❌ | ✅ | ~ |
+| Ops maturity | Low (new team) | ✅ | ✅ | ❌ |
+
+**Scores**: Monolith (4/5), Modular Monolith (5/5), Microservices (0/5)
+
+**Recommendation**: **Modular Monolith**
+
+**Rationale**:
+- Team size (3) suits single deployment - no need for distributed coordination or multiple on-call rotations
+- Entity count (8) manageable in one codebase - not overwhelming complexity
+- Weekly releases don't justify microservices deployment complexity
+- **Key insight**: 2 clear bounded contexts (Documents, Assessments) benefit from module boundaries
+  - Documents module isolates file upload/storage concerns
+  - Assessments module isolates AI integration complexity
+  - Boundaries prevent tight coupling as journey evolves
+- Operational maturity is low - team learning product, can't handle distributed systems yet
+- **Journey connection**: Users experience simple linear flow (Step 1 → 4), don't need distributed benefits
+- **Evolution path**: If AI assessment (Step 3) requires 100x scaling vs upload, extract as microservice later
+
+**Module Structure**:
+```
+/src
+  /modules
+    /documents       # Journey Step 1: Upload
+      /domain
+        Document.ts  # Domain entity
+        DocumentStatus.ts  # Value object
+      /services
+        DocumentService.ts
+      /repositories
+        DocumentRepository.ts
+      /controllers
+        DocumentController.ts
+      index.ts       # Public API: uploadDocument(), getDocument(), deleteDocument()
+
+    /assessments     # Journey Steps 2-4: Assess
+      /domain
+        Assessment.ts  # Domain entity
+        ComplianceScore.ts  # Value object
+      /services
+        AssessmentService.ts
+      /repositories
+        AssessmentRepository.ts
+      /controllers
+        AssessmentController.ts
+      index.ts       # Public API: createAssessment(), getResults()
+
+    /shared
+      /domain        # Shared value objects
+        UserId.ts
+        Email.ts
+        Money.ts
+      /middleware    # Shared HTTP middleware
+        authenticate.ts
+        rateLimiter.ts
+```
+
+**Boundary Enforcement**:
+- Documents module cannot import AssessmentService directly
+- Must use public API: `import { createAssessment } from '@modules/assessments'`
+- Enforced via dependency-cruiser with .dependency-cruiser.js config
+- CI/CD fails if boundary violations detected
+
+**Public API Example**:
+```typescript
+// documents/index.ts (Public API)
+export { uploadDocument, getDocument } from './services/DocumentService';
+
+// assessments/services/AssessmentService.ts
+import { getDocument } from '@modules/documents'; // ✅ Allowed (public API)
+// import { DocumentRepository } from '@modules/documents/repositories/DocumentRepository'; // ❌ FORBIDDEN (internal)
+
+async createAssessment(documentId: string, frameworkId: string): Promise<Assessment> {
+  // Fetch document via public API (enforces boundary)
+  const document = await getDocument(documentId);
+  if (document.status !== 'ready') throw new Error('Document not ready');
+
+  // Assessment logic here...
+}
+```
+
+**Evolution Path**:
+1. **Now**: Modular Monolith (2 modules: Documents, Assessments)
+2. **If team grows to 15+**: Consider splitting modules into separate repositories (still monolith, clearer ownership)
+3. **If AI assessment becomes bottleneck**: Extract Assessments module as microservice (Python service for ML, Node for API)
+4. **If compliance frameworks become marketplace**: Extract Frameworks module as separate service (different scaling, different team)
+
+**What We DIDN'T Choose**:
+- **Simple Monolith**: Lost opportunity for module boundaries - as team grows, tight coupling will slow development
+- **Microservices**: Massive over-engineering - 3 developers can't manage distributed system, 8 entities don't need distribution
+```
+
+**Design Decision:**
+
+```markdown
+### Decision: Modular Monolith with Enforced Boundaries
+
+**Decision**: Use Modular Monolith architecture with dependency-cruiser enforcement
+
+**Rationale**:
+- Journey has clear bounded contexts (Documents, Assessments) that benefit from isolation
+- Team is small (3 developers) - doesn't need distributed system complexity
+- Single deployment simplifies operations (no Kubernetes, service mesh)
+- Enforced boundaries prevent coupling as journey evolves
+- Can extract to microservices later if scaling requires it (modules already isolated)
+
+**Alternative Rejected**: Simple Monolith (no enforced boundaries)
+- Risk: Tight coupling emerges as team adds features (DocumentService imports AssessmentRepository directly)
+- Cost: Refactoring later is expensive (untangle spaghetti)
+- Journey Impact: No immediate user benefit, but technical debt slows future features
+
+**Alternative Rejected**: Microservices
+- Over-engineering: 3 developers managing distributed system is unsustainable
+- Operational cost: Kubernetes, service mesh, distributed tracing, saga patterns
+- Journey Impact: Users don't benefit from distribution (simple linear flow)
+- Premature optimization: Extract services later if/when scaling demands it
+
+**Reconsider If**:
+- Team grows to 15+ developers (organizational boundaries justify microservices)
+- AI assessment requires 100x scaling vs other components
+- Different modules need different tech stacks (Python for ML, Go for document processing)
+- Bounded contexts stabilize 6+ months (safe to commit to service boundaries)
+
+**Journey Connection**: Modular monolith enables fast iteration (single deployment) while maintaining clean architecture (enforced boundaries) - users benefit from velocity without distribution costs.
+```
+
+---
+
+### Step 1.6: Model Domain Layer
 
 **Purpose**: Identify domain entities, value objects, and aggregates from database schema before jumping to services. This prevents the anemic domain model anti-pattern where all business logic lives in services.
 
@@ -310,7 +672,7 @@ class DocumentStatus {
 
 ### Step 2: Identify Services (Business Logic Layer)
 
-**Purpose**: Services orchestrate domain entities, repositories, and integrations. They do NOT contain business logic—that lives in domain entities (Step 1.5). Services coordinate workflows and manage transactions.
+**Purpose**: Services orchestrate domain entities, repositories, and integrations. They do NOT contain business logic—that lives in domain entities (Step 1.6). Services coordinate workflows and manage transactions.
 
 **Decision Tree - Service Identification:**
 
@@ -402,7 +764,277 @@ For each journey step or major domain aggregate, ask:
   - Journey: Allows cleanup before assessment
   - NOTE: "Can delete?" logic is in entity (business rule), actual storage deletion is service concern
 
-**Design Note**: This service is THIN—it fetches entities, calls their methods, saves them. Business rules live in Document entity (Step 1.5).
+**Design Note**: This service is THIN—it fetches entities, calls their methods, saves them. Business rules live in Document entity (Step 1.6).
+```
+
+**Transaction Boundaries:**
+
+For each service method, decide transaction scope to ensure data consistency:
+
+**Decision Tree - Transaction Scope:**
+
+```
+For each service method, ask:
+
+1. How many entities/tables are modified?
+   - Single entity, single repository → Repository handles transaction (automatic)
+   - Multiple entities, same aggregate → Service-level transaction
+   - Multiple aggregates, strong consistency needed → Unit of Work pattern
+   - Multiple aggregates, eventual consistency OK → Saga pattern or domain events
+
+2. Are there external calls (storage, API, email)?
+   - NO external calls → Standard database transaction
+   - External call BEFORE database → Simple try/catch, no compensation needed
+   - External call AFTER database → Use compensation (rollback external if DB fails)
+   - External call DURING database → Use Unit of Work + compensation
+
+3. What happens if operation fails midway?
+   - User retries manually → Idempotency required
+   - System retries automatically → Compensating actions required
+   - Failure is acceptable → No special handling
+```
+
+**Transaction Scope Patterns:**
+
+**Pattern 1: Single Repository (Automatic Transaction)**
+```typescript
+// Simple case - repository handles transaction
+async markDocumentReady(documentId: string): Promise<Document> {
+  const document = await this.documentRepo.findById(documentId);
+  document.markAsReady(); // Domain entity method
+  await this.documentRepo.save(document); // Repository transaction
+  return document;
+}
+```
+
+**Pattern 2: Multi-Repository (Unit of Work)**
+```typescript
+// Multiple entities must be updated atomically
+async uploadDocumentAndCreateAssessment(
+  userId: string,
+  file: Buffer,
+  frameworkId: string
+): Promise<{ document: Document; assessment: Assessment }> {
+  const uow = new UnitOfWork(this.dataSource);
+
+  try {
+    await uow.beginTransaction();
+
+    // Step 1: Create document (IN transaction)
+    const document = Document.create(userId, file.name, file.size);
+    await uow.documentRepository.save(document);
+
+    // Step 2: Create assessment (IN transaction)
+    const assessment = Assessment.create(document.id, frameworkId);
+    await uow.assessmentRepository.save(assessment);
+
+    await uow.commit();
+
+    return { document, assessment };
+  } catch (error) {
+    await uow.rollback();
+    throw new Error('Failed to create document and assessment');
+  }
+}
+```
+
+**Pattern 3: External Call + Database (Compensation)**
+```typescript
+// External call (S3) + database write requires compensation
+async uploadDocument(userId: string, file: Buffer): Promise<Document> {
+  let storageKey: string | null = null;
+
+  try {
+    // Step 1: External call (S3 upload) - OUTSIDE transaction, cannot rollback
+    const storageObj = await this.storageAdapter.uploadFile(file, generateKey());
+    storageKey = storageObj.key;
+
+    // Step 2: Database write (IN transaction)
+    const document = Document.create(userId, storageKey, storageObj.size);
+    await this.documentRepo.save(document);
+
+    return document;
+
+  } catch (error) {
+    // Compensate: Clean up uploaded file if database failed
+    if (storageKey) {
+      await this.storageAdapter.deleteFile(storageKey).catch(err =>
+        this.logger.error('Failed to delete orphaned file', { storageKey, error: err })
+      );
+    }
+    throw error;
+  }
+}
+```
+
+**Pattern 4: Saga Pattern (Eventual Consistency)**
+```typescript
+// Long-running workflow across multiple aggregates
+async processDocumentWorkflow(documentId: string): Promise<void> {
+  // Step 1: Mark document as processing
+  await this.documentService.markDocumentProcessing(documentId);
+
+  try {
+    // Step 2: Extract text (long-running, can fail)
+    const text = await this.textExtractionService.extractText(documentId);
+
+    // Step 3: Store extracted text
+    await this.documentService.updateDocumentText(documentId, text);
+
+    // Step 4: Create assessment (eventual consistency OK)
+    await this.assessmentService.createAssessmentAsync(documentId);
+
+  } catch (error) {
+    // Compensate: Mark document as error state
+    await this.documentService.markDocumentError(documentId, error.message);
+    throw error;
+  }
+}
+```
+
+**For each service method, document:**
+
+```markdown
+### [ServiceMethod]
+
+**Transaction Scope**: [Single repository / Multi-repository / External + DB / Saga]
+**Consistency Requirement**: [Strong (atomic) / Eventual]
+**Compensating Actions**: [What to do if transaction fails after external call]
+**Journey Impact**: [What user sees if this operation fails]
+
+**Implementation**:
+```typescript
+[Pseudocode showing transaction handling]
+```
+
+**Failure Scenarios**:
+- [Scenario 1]: [What fails] → [User experience]
+- [Scenario 2]: [What fails] → [Compensation action]
+```
+
+**Example (Compliance SaaS)**:
+
+```markdown
+### DocumentService.uploadDocument()
+
+**Transaction Scope**: External + DB with compensation
+**Consistency Requirement**: Strong (atomic from user perspective)
+
+**Steps**:
+1. Upload file to S3 (external, cannot rollback)
+2. Create document record in database (transactional)
+
+**Failure Scenarios**:
+- S3 upload fails → Return error to user, no database write occurs
+- Database insert fails → Delete file from S3 (compensation), return error to user
+- S3 delete compensation fails → Log error for manual cleanup, still return error to user
+
+**Implementation**:
+```typescript
+async uploadDocument(userId: string, file: Buffer): Promise<Document> {
+  let storageKey: string | null = null;
+
+  try {
+    // Step 1: External call (no transaction)
+    const storageObj = await this.storageAdapter.uploadFile(file, generateKey());
+    storageKey = storageObj.key;
+
+    // Step 2: Database write (transactional)
+    const document = Document.create(userId, storageKey, storageObj.size);
+    document.markAsProcessing(); // Domain logic
+    await this.documentRepo.save(document);
+
+    return document;
+
+  } catch (error) {
+    // Compensate: Clean up orphaned file
+    if (storageKey) {
+      await this.storageAdapter.deleteFile(storageKey).catch(err =>
+        this.logger.error('Failed to delete orphaned file', { storageKey, error: err })
+      );
+    }
+    throw new Error('Upload failed - no data saved');
+  }
+}
+```
+
+**Journey Impact**: User sees upload failure immediately. Can retry without orphaned files in S3. Clean error message: "Upload failed, please try again."
+
+---
+
+### AssessmentService.createAssessmentWithDocument()
+
+**Transaction Scope**: Multi-repository (Unit of Work)
+**Consistency Requirement**: Strong (assessment must reference valid document)
+
+**Steps**:
+1. Fetch document (validate it exists and is ready)
+2. Create assessment record (atomic with document status update)
+
+**Failure Scenarios**:
+- Document not found → Return 404, no assessment created
+- Document not ready → Return 422 "Document still processing", user can retry
+- Assessment create fails → No database changes (rolled back)
+
+**Implementation**:
+```typescript
+async createAssessment(documentId: string, frameworkId: string): Promise<Assessment> {
+  const uow = new UnitOfWork(this.dataSource);
+
+  try {
+    await uow.beginTransaction();
+
+    // Fetch and validate document
+    const document = await uow.documentRepository.findById(documentId);
+    if (!document) throw new Error('Document not found');
+    if (!document.canBeAssessed()) throw new Error('Document not ready');
+
+    // Create assessment
+    const assessment = Assessment.create(documentId, frameworkId);
+    await uow.assessmentRepository.save(assessment);
+
+    await uow.commit();
+
+    return assessment;
+
+  } catch (error) {
+    await uow.rollback();
+    throw error;
+  }
+}
+```
+
+**Journey Impact**: User in Step 3 (Assessment Creation) sees immediate feedback if document isn't ready. Atomic operation ensures no orphaned assessments.
+```
+
+**Design Decision:**
+
+```markdown
+### Decision: Compensation Over Distributed Transactions
+
+**Decision**: Use compensating actions for external calls (S3, AI API), not distributed transactions (2PC)
+
+**Rationale**:
+- External services (S3, OpenAI) don't support 2PC (two-phase commit)
+- Compensating actions are simpler (delete S3 file if DB fails)
+- Journey tolerates brief inconsistency (file uploaded but not recorded → cleaned up asynchronously)
+- User sees atomic behavior (either upload succeeds completely or fails cleanly)
+
+**Alternative Rejected**: Two-Phase Commit (2PC)
+- Not supported by S3, OpenAI, most third-party APIs
+- Performance overhead (locks held during network calls)
+- Brittle (coordinator failure = deadlock)
+
+**Alternative Rejected**: No Compensation
+- Orphaned files in S3 (cost accumulation, confuses operations)
+- User might retry, see duplicate uploads
+- Manual cleanup required
+
+**Reconsider If**:
+- All integrations support 2PC (rare)
+- Journey can tolerate inconsistency (eventual consistency acceptable)
+
+**Journey Connection**: Users expect upload to be all-or-nothing (Step 1). Compensation ensures clean failures that users can retry safely.
 ```
 
 ---
@@ -1102,7 +1734,7 @@ logger.info('Document uploaded', {
 - Infrastructure layer (repositories, adapters) implements technical details
 - Ports (interfaces) defined in domain, adapters (implementations) in infrastructure
 - Enables technology swaps (change database, framework) without changing domain logic
-- Journey connection: Domain entities model real-world concepts users understand (Step 1.5)
+- Journey connection: Domain entities model real-world concepts users understand (Step 1.6)
 
 **Layer Responsibilities**:
 
@@ -1166,7 +1798,7 @@ export class OrderService {
     const order = await this.orderRepo.findById(orderId);
     if (!order) throw new Error('Order not found');
 
-    order.confirm();  // Business logic in domain entity (Step 1.5)
+    order.confirm();  // Business logic in domain entity (Step 1.6)
 
     await this.orderRepo.save(order);
   }
