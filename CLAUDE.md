@@ -112,7 +112,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 - Session 3c (ai-integration-strategy) reads 00-journey + 01-strategy + 02-tech-stack (optional: only if "AI Integration: Required" in tech stack); **makes ALL AI decisions** (provider, model, pattern) and **updates tech stack file**
 - Session 4 (generate-strategy) reads 00-02a (if exists) + 02b + (02c if it exists); generates mission, metrics (with L0→L1→L2→L3 hierarchy), monetization, architecture, and analytics implementation strategy
 - **Session 7 (database-schema)** checks 02a-constraints for i18n requirement → generates translation tables and locale columns if needed
-- **Session 8 (api-design)** checks 02a-constraints for i18n requirement → adds Accept-Language header support and locale fallback strategy if needed; **NEW in 2025**: Integrates OWASP API Security Top 10 2023 protection patterns (BOLA, property-level auth, BFLA, business flow abuse, SSRF, security misconfiguration, unsafe third-party consumption), input validation strategy, HTTP caching strategy (ETag, Cache-Control, compression), idempotency/retry patterns, and circuit breakers
+- **Session 8 (api-design)** uses **agentic sub-agent architecture** (decomposed from 2,160 → 416 lines orchestrator + 7 specialized sub-agents, issue #165); invokes sub-agents conditionally based on journey requirements: (1) select-api-paradigm.md (always), (2) design-owasp-security-patterns.md (always, OWASP API Top 10 2023: BOLA, property-level auth, BFLA, business flows, SSRF, security misconfiguration, unsafe third-party consumption), (3) design-input-validation.md (always), (4) design-http-caching.md (if REST/HTTP paradigm), (5) design-idempotency-retry.md (if financial ops or high traffic), (6) design-circuit-breakers.md (if third-party APIs exist), (7) design-i18n-headers.md (if Session 2a requires i18n); achieves 30-50% token reduction through conditional loading
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards.ctx.md + 04-architecture + 07-database-schema.ctx.md + 08b-api-contracts.ctx.md
 - **Session 10 (backlog)** checks 02a-constraints for i18n requirement → generates i18n infrastructure stories (translation setup, locale switching UI, string extraction) if needed
@@ -531,6 +531,7 @@ Session 8b (api-contracts) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md, 0
 Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
   ↓
 Session 9b (application-architecture) [reads: 00.ctx.md, 02.ctx.md, 02b.ctx.md, 04.ctx.md, 07.ctx.md, 08b.ctx.md] → Generates .md + .ctx.md
+  ↓ USES 6 CONDITIONAL SUB-AGENTS: validate-architectural-style (if team>5 OR entities>10), model-domain-layer (if entities>5 AND complex), design-transaction-boundaries (if external_apis OR multi_entity), choose-orm-pattern (if entities>10 OR heavy_testing), design-rate-limiting (if public_endpoints), design-cross-cutting-concerns (always)
   ↓
 Session 10 (backlog) [reads: ALL .ctx.md files from 00-09b] → Generates backlog stories (no .ctx.md)
   ↓
@@ -603,6 +604,22 @@ Post-cascade extensions are **optional deep-dive commands** that run AFTER core 
 - Epic #167 tracks decomposition: /model-application, /create-test-strategy, /design-database-schema, /generate-api-design, /scaffold-project
 - Post-decomposition: 40-50% API cost reduction, better maintainability
 
+### Completed Decompositions
+
+**Session 7 (/design-database-schema) - COMPLETED**
+- **Orchestrator:** `design-database-schema.md` (418 lines)
+- **Sub-agents:** 7 specialized agents (2,954 lines total)
+  - `design-core-tables.md` (335 lines) - ALWAYS: Core entity tables from journey
+  - `design-relationships.md` (370 lines) - ALWAYS: Foreign keys, junction tables, constraints
+  - `design-indexes.md` (391 lines) - ALWAYS: Performance indexes based on query patterns
+  - `design-i18n-tables.md` (454 lines) - CONDITIONAL: Translation tables (IF i18n required in Session 2a)
+  - `design-integration-tables.md` (530 lines) - CONDITIONAL: Integration infrastructure (IF third-party integrations in Session 2a)
+  - `design-multi-tenancy.md` (366 lines) - CONDITIONAL: Tenant isolation patterns (IF multi-tenant architecture in Session 4)
+  - `design-audit-logging.md` (508 lines) - CONDITIONAL: Compliance audit tables (IF compliance requirements in Session 2a)
+- **Token efficiency:** 30% reduction for simple journeys (1,514 vs 2,170 lines), 13% for typical journeys (~1,900 lines)
+- **Conditional logic:** Explicit IF/SKIP gates in orchestrator Step 3 (lines 67-107)
+- **PR:** #169
+
 ### Decomposition Pattern (from Epic #167)
 
 ```
@@ -634,6 +651,16 @@ Inputs: {database_entities from Session 7, journey_steps from Session 1}
 Output: Domain entities with business logic methods
 Skip if: Simple CRUD app with <5 entities
 ```
+
+### Documented Exceptions
+
+**Agent Size Exceptions** (with explicit justification):
+
+- **`design-cross-cutting-concerns.md` (564 lines)**: Cohesive cross-cutting pattern group (caching, circuit breakers, outbox pattern, observability) with high operational coupling. Production systems typically need all four patterns together, so splitting into separate agents would increase orchestration complexity without significant token savings. Patterns share common implementation concerns (error handling, monitoring, resource management) that benefit from unified presentation. Exception approved in PR #171 (Epic #167).
+
+- **`design-transaction-boundaries.md` (432 lines)**: Single-pattern agent with 8% overage due to comprehensive distributed transaction guidance (saga patterns, compensation logic, event sourcing). Tight coupling between transaction types makes splitting counterproductive. Minor overage accepted in PR #171 (Epic #167).
+
+- **`design-webhook-endpoints.md` (434 lines)**: Single-pattern agent for webhook endpoint architecture with 8% overage due to comprehensive decision trees (sync vs async, idempotency, signature verification, versioning, scale-forward). Tight coupling between webhook design aspects (processing pattern affects idempotency strategy, which affects scale-forward plan) makes splitting counterproductive. Minor overage accepted in PR #175 (Epic #154).
 
 ### Enforcement
 

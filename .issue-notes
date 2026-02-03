@@ -1,0 +1,21 @@
+Issue #151: Enhance /plan-deployment
+
+See issue details: https://github.com/stack-driven/stack-driven/issues/151
+Coordination: https://github.com/stack-driven/stack-driven/issues/173
+
+Files to modify:
+- .claude/commands/plan-deployment.md
+- /templates/13-deployment-plan-template.md
+
+Merge position: 4th (benefits from all others)
+
+Issue #152: Enhance /define-ai-integration-strategy
+
+See issue details: https://github.com/stack-driven/stack-driven/issues/152
+Coordination: https://github.com/stack-driven/stack-driven/issues/173
+
+Files to modify:
+- .claude/commands/define-ai-integration-strategy.md
+- /templates/02c-ai-integration-strategy-template.md
+
+Merge position: 3rd (independent)
