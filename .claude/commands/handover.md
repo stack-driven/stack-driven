@@ -154,7 +154,7 @@ rm -f .claude/commands/scaffold-project.md
 rm -f .claude/commands/plan-deployment.md
 rm -f .claude/commands/design-observability.md
 rm -f .claude/commands/cascade-status.md
-rm -f .claude/commands/run-cascade.md
+rm -f .claude/commands/run.md
 rm -f .claude/commands/validate-outputs.md
 rm -f .claude/commands/discover-naming.md
 rm -f .claude/commands/design-user-experience.md

@@ -47,17 +47,17 @@ mkdir -p /tmp/stack-driven-update
 cd /tmp/stack-driven-update
 
 # Download new slash commands
-curl -o post-plan.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/.claude/commands/post-plan.md
-curl -o post-plan-and-implement.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/.claude/commands/post-plan-and-implement.md
+curl -o post-plan.md https://raw.githubusercontent.com/stack-driven/stack-driven/main/.claude/commands/post-plan.md
+curl -o post-plan-and-implement.md https://raw.githubusercontent.com/stack-driven/stack-driven/main/.claude/commands/post-plan-and-implement.md
 
 # Download new workflow
-curl -o claude-fix-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-fix-review.yml
+curl -o claude-fix-review.yml https://raw.githubusercontent.com/stack-driven/stack-driven/main/.github/workflows/claude-fix-review.yml
 
 # Download updated workflow
-curl -o claude-code-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-code-review.yml
+curl -o claude-code-review.yml https://raw.githubusercontent.com/stack-driven/stack-driven/main/.github/workflows/claude-code-review.yml
 
 # Download updated documentation section (for manual merge)
-curl -o HOWTO-new-section.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/HOWTO.md
+curl -o HOWTO-new-section.md https://raw.githubusercontent.com/stack-driven/stack-driven/main/HOWTO.md
 ```
 
 ### Step 3: Copy Files to Your Project
@@ -359,10 +359,10 @@ code .github/workflows/claude-code-review.yml /tmp/stack-driven-update/claude-co
 
 ```bash
 # Download all files at once
-curl -o /tmp/post-plan.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/.claude/commands/post-plan.md && \
-curl -o /tmp/post-plan-and-implement.md https://raw.githubusercontent.com/bru-digital/stack-driven/main/.claude/commands/post-plan-and-implement.md && \
-curl -o /tmp/claude-fix-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-fix-review.yml && \
-curl -o /tmp/claude-code-review.yml https://raw.githubusercontent.com/bru-digital/stack-driven/main/.github/workflows/claude-code-review.yml && \
+curl -o /tmp/post-plan.md https://raw.githubusercontent.com/stack-driven/stack-driven/main/.claude/commands/post-plan.md && \
+curl -o /tmp/post-plan-and-implement.md https://raw.githubusercontent.com/stack-driven/stack-driven/main/.claude/commands/post-plan-and-implement.md && \
+curl -o /tmp/claude-fix-review.yml https://raw.githubusercontent.com/stack-driven/stack-driven/main/.github/workflows/claude-fix-review.yml && \
+curl -o /tmp/claude-code-review.yml https://raw.githubusercontent.com/stack-driven/stack-driven/main/.github/workflows/claude-code-review.yml && \
 echo "(✓) All files downloaded to /tmp/"
 
 # Copy all files at once (from your project root)
@@ -381,8 +381,8 @@ git status && gh workflow list
 ## Support
 
 **Questions or issues?**
-- Check Stack-Driven repo: https://github.com/bru-digital/stack-driven
-- Review PR #78: https://github.com/bru-digital/stack-driven/pull/78
+- Check Stack-Driven repo: https://github.com/stack-driven/stack-driven
+- Review PR #78: https://github.com/stack-driven/stack-driven/pull/78
 - Consult HOWTO.md section "Multi-Round Automation Workflows"
 
 ---

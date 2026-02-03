@@ -183,7 +183,7 @@ Created:
 ```
 Continue to next session? (yes/no/status)
 - yes: Continue to Session [X+1]
-- no: Stop here (you can resume later with /run-cascade)
+- no: Stop here (you can resume later with /run)
 - status: Show full cascade status
 ```
 
@@ -204,7 +204,7 @@ Continue to next session? (yes/no/status)
 ```
 [PAUSED] Cascade paused after Session X
 
-You can resume anytime by running /run-cascade again.
+You can resume anytime by running /run again.
 It will pick up right where you left off.
 
 Current status:
@@ -212,7 +212,7 @@ Current status:
 [x] Sessions [X+1]-14 remaining
 
 To see full status: /cascade-status
-To continue: /run-cascade
+To continue: /run
 ```
 
 **If session encounters an error:**
@@ -222,7 +222,7 @@ To continue: /run-cascade
 Error: [Describe what happened]
 
 Options:
-1. Fix the issue and re-run /run-cascade (it will retry Session X)
+1. Fix the issue and re-run /run (it will retry Session X)
 2. Run the session manually: /[session-command]
 3. Stop here: Check /cascade-status for current state
 ```
@@ -257,7 +257,7 @@ What would you like to do?
 ## Execution Modes
 
 ### Default Mode (Sequential from Current Point)
-When user runs `/run-cascade` with no arguments:
+When user runs `/run` with no arguments:
 - Check current progress
 - Start from next incomplete session
 - Execute sessions one by one with confirmations
@@ -271,7 +271,7 @@ If user says "run sessions X to Y" or "complete the cascade":
 - Show consolidated progress
 
 ### Resume Mode (Auto-detect)
-When `/run-cascade` is run after a pause:
+When `/run` is run after a pause:
 - Detect where user left off
 - Offer to resume
 - Continue from that point
@@ -394,7 +394,7 @@ Continue? (yes/no)
 
 **Key Differences from /cascade-status:**
 - `/cascade-status` = SHOWS progress, recommends next step
-- `/run-cascade` = EXECUTES sessions automatically in sequence
+- `/run` = EXECUTES sessions automatically in sequence
 
 **Use SlashCommand tool:**
 When executing a session, use: `SlashCommand` tool with the command name

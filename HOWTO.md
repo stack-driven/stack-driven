@@ -12,12 +12,12 @@ This guide explains the **practical workflow** for using Stack-Driven to build y
 
 ```bash
 # Option A: Fork Stack-Driven (keeps connection for updates)
-# Fork https://github.com/bru-digital/stack-driven on GitHub
+# Fork https://github.com/stack-driven/stack-driven on GitHub
 git clone https://github.com/YOUR-USERNAME/stack-driven.git my-product
 cd my-product
 
 # Option B: Clone directly (clean start)
-git clone https://github.com/bru-digital/stack-driven.git my-product
+git clone https://github.com/stack-driven/stack-driven.git my-product
 cd my-product
 rm -rf .git
 git init

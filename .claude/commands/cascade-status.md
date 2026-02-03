@@ -510,7 +510,7 @@ Dev-time:
 
 **Meta**:
 - `/cascade-status` - Show this status (what you're running now!)
-- `/run-cascade` - Execute sessions automatically from current progress
+- `/run` - Execute sessions automatically from current progress
 
 ## Reference Files
 

@@ -42,7 +42,7 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 **`/.claude/commands/`** - The slash commands that power the framework (38 total)
 - Core cascade: 19 session commands (refine-journey → design-observability, including optional sessions)
 - Post-cascade extensions: 9 optional deep-dive commands (naming, UX, analytics, growth, compliance)
-- Meta commands: cascade-status, run-cascade
+- Meta commands: cascade-status, run
 - Dev commands: validate-outputs, review-code, implement-issue, plan-issue, update-claudemd, fix-bug, address-review, distill-logs
 - Each command is a markdown file with detailed prompts for Claude
 
@@ -179,7 +179,7 @@ Each command follows this pattern:
 - Recommends exactly which command to run next
 - Explains inputs, outputs, and estimated time
 
-**`/run-cascade`** - Automated sequential execution
+**`/run`** - Automated sequential execution
 - Detects current progress
 - Executes sessions automatically in sequence
 - Pauses at major milestones for user confirmation
