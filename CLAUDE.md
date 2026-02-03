@@ -125,6 +125,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 - **i18n/l10n** (when Session 2a marks required): S3 selects library → S7 adds locale columns/translation tables → S8 adds Accept-Language headers → S10 generates i18n stories → S12 generates `/locales/` structure
 - **Third-party integrations** (when Session 2a specifies): S3 selects SDKs → S4 includes integration patterns → S7 generates integration tables (`integration_credentials`, `sync_jobs`, `webhook_events`) → S8/8b designs webhook endpoints → S10 generates integration stories → S12 generates adapter skeletons
 - **AI integration** (when Session 3 detects): S3c makes ALL AI decisions (provider, model, pattern) and updates tech stack → propagates through S4 (architecture), S7 (vector storage if needed), S10 (AI stories)
+- **Compliance requirements** (when Session 2a marks required): Post-cascade `/create-compliance-plan` reads 00-02a, 07-10 → conditionally invokes sub-agents (GDPR, HIPAA, SOC2, PCI-DSS based on applicability) + always invokes cost estimation & automation → generates 23-compliance-plan.md → integrates with S10 backlog (Foundation epic: Compliance & Legal stories)
 
 ### Checkpoint System (Critical Decision Validation)
 
