@@ -47,3 +47,6 @@ issue-*-evaluation.md
 
 # Debugging memory (user-specific tracking state)
 .claude/memory/*.json
+
+# Ephemeral artifacts (generated during cascade, not committed)
+.github/ISSUE-PLAN.json
