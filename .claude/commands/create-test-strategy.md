@@ -84,88 +84,150 @@ From architecture/API contracts, count:
 
 ### Step 3: Conditional Sub-Agent Invocation
 
-Based on analysis, invoke sub-agents using Task tool. **Critical**: Only load agents relevant to journey.
+Based on analysis, invoke applicable sub-agents using Task tool. **Critical**: Only load agents relevant to journey.
 
-**3.1 Unit Testing (ALWAYS)**
-```
-Condition: ALWAYS (every codebase needs unit tests)
-Agent: .claude/agents/design-unit-testing-strategy.md
-Inputs: journey, tech stack, architecture, risk level
-Output: Unit testing scope, framework selection, coverage targets, patterns
-```
+#### Step 3.1: Unit Testing Strategy (ALWAYS)
 
-**3.2 Integration Testing**
-```
-Condition: external_integrations > 0 OR database EXISTS
-Agent: .claude/agents/design-integration-testing-strategy.md
-Inputs: architecture, database schema, API contracts, tech stack
-Output: Integration strategy (real vs mocks), Testcontainers config, API tests
-Skip if: Frontend-only app with no backend
-```
+**Condition**: ALWAYS (every codebase needs unit tests)
 
-**3.3 E2E Testing**
-```
-Condition: frontend_framework != null
-Agent: .claude/agents/design-e2e-testing-strategy.md
-Inputs: user journey, tech stack, architecture
-Output: Critical journeys, Playwright/Cypress config, execution strategy
-Skip if: Backend API-only (no UI to test)
-```
+Use Task tool to invoke `.claude/agents/design-unit-testing-strategy.md`:
 
-**3.4 Performance Testing**
-```
-Condition: slos_defined (Session 14 or 04) OR expected_traffic == "high"
-Agent: .claude/agents/design-performance-testing-strategy.md
-Inputs: architecture SLOs, journey operations, tech stack
-Output: Load testing (k6), Core Web Vitals budgets, N+1 prevention
-Skip if: MVP, internal tools, low traffic
-```
+**Inputs to provide**:
+- Journey context: [from 00-user-journey.ctx.md]
+- Tech stack: [from 02-tech-stack.ctx.md]
+- Architecture: [from 04-architecture.ctx.md]
+- Risk level: [detected in Step 2]
 
-**3.5 Security Testing**
-```
-Condition: handles_pii OR handles_financial_data OR authentication_required
-Agent: .claude/agents/design-security-testing-strategy.md
-Inputs: constraints (PII/compliance), API design, architecture, tech stack
-Output: Auth tests, OWASP coverage, SAST/DAST config, Trivy setup
-Skip if: Public read-only app with no auth or sensitive data
-```
+**Expected output**:
+- Testing philosophy (TDD/BDD/Pragmatic) based on risk level
+- Unit test scope (what gets tested vs not tested)
+- Framework selection matching tech stack
+- Coverage targets by component
+- Mocking strategy
+- Test organization patterns
 
-**3.6 Contract Testing**
-```
-Condition: architectural_style == "Microservices"
-Agent: .claude/agents/design-contract-testing-strategy.md
-Inputs: architecture, application architecture, tech stack
-Output: Pact workflow, service boundaries, Broker config
-Skip if: Monolith or Modular Monolith (use integration tests instead)
-```
+#### Step 3.2: Integration Testing Strategy (CONDITIONAL)
 
-**3.7 Property-Based Testing**
-```
-Condition: domain_complexity == "high" OR complex_business_rules EXISTS
-Agent: .claude/agents/design-property-based-testing-strategy.md
-Inputs: user journey, database schema, application architecture, tech stack
-Output: Property definitions, Hypothesis/fast-check config, generators
-Skip if: Simple CRUD, no complex algorithms
-```
+**Condition**: `external_integrations > 0 OR database EXISTS`
+**Skip if**: Frontend-only app with no backend
 
-**Invocation Pattern:**
-Use Task tool with:
-```
-subagent_type: general-purpose
-description: [Sub-agent name]
-prompt: |
-  Invoke the [agent name] sub-agent to generate [output type].
+Use Task tool to invoke `.claude/agents/design-integration-testing-strategy.md`:
 
-  Agent: .claude/agents/[agent-file-name].md
+**Inputs to provide**:
+- Architecture: [from 04-architecture.ctx.md]
+- Database schema: [from 07-database-schema.ctx.md]
+- API contracts: [from 08b-api-contracts.ctx.md]
+- Tech stack: [from 02-tech-stack.ctx.md]
 
-  Context provided:
-  - Journey: [summary from 00-user-journey.ctx.md]
-  - Tech stack: [summary from 02-tech-stack.ctx.md]
-  - Architecture: [summary from 04-architecture.ctx.md]
-  - [Additional context for this agent]
+**Expected output**:
+- Integration strategy (real dependencies vs mocks)
+- Testcontainers configuration (if Docker used)
+- API contract tests
+- Database migration tests
 
-  Expected output: [What this agent should return]
-```
+**If condition NOT met**: Skip this agent. Document: "Skipping integration testing (frontend-only app with no backend)"
+
+#### Step 3.3: E2E Testing Strategy (CONDITIONAL)
+
+**Condition**: `frontend_framework != null`
+**Skip if**: Backend API-only (no UI to test)
+
+Use Task tool to invoke `.claude/agents/design-e2e-testing-strategy.md`:
+
+**Inputs to provide**:
+- User journey: [from 00-user-journey.ctx.md]
+- Tech stack: [from 02-tech-stack.ctx.md]
+- Architecture: [from 04-architecture.ctx.md]
+
+**Expected output**:
+- Critical user journeys to test end-to-end
+- Playwright/Cypress configuration
+- Test execution strategy (local/CI)
+- Visual regression testing approach
+
+**If condition NOT met**: Skip this agent. Document: "Skipping E2E testing (backend API-only, no UI to test)"
+
+#### Step 3.4: Performance Testing Strategy (CONDITIONAL)
+
+**Condition**: `slos_defined (Session 4 or 14) OR expected_traffic == "high"`
+**Skip if**: MVP, internal tools, or low traffic
+
+Use Task tool to invoke `.claude/agents/design-performance-testing-strategy.md`:
+
+**Inputs to provide**:
+- Architecture SLOs: [from 04-architecture.ctx.md or 14-observability-strategy.ctx.md if exists]
+- Journey operations: [from 00-user-journey.ctx.md]
+- Tech stack: [from 02-tech-stack.ctx.md]
+
+**Expected output**:
+- Load testing strategy (k6, Locust, or Artillery)
+- Core Web Vitals performance budgets
+- N+1 query prevention strategies
+- Database query performance tests
+
+**If condition NOT met**: Skip this agent. Document: "Skipping performance testing (MVP/internal tools/low traffic)"
+
+#### Step 3.5: Security Testing Strategy (CONDITIONAL)
+
+**Condition**: `handles_pii OR handles_financial_data OR authentication_required`
+**Skip if**: Public read-only app with no auth or sensitive data
+
+Use Task tool to invoke `.claude/agents/design-security-testing-strategy.md`:
+
+**Inputs to provide**:
+- Constraints (PII/compliance): [from 02a-constraints.ctx.md if exists]
+- API design: [from 08-api-design.ctx.md]
+- Architecture: [from 04-architecture.ctx.md]
+- Tech stack: [from 02-tech-stack.ctx.md]
+
+**Expected output**:
+- Authentication and authorization test suite
+- OWASP Top 10 coverage (injection, XSS, CSRF, etc.)
+- SAST/DAST tool configuration
+- Trivy container scanning setup
+
+**If condition NOT met**: Skip this agent. Document: "Skipping security testing (public read-only app with no sensitive data)"
+
+#### Step 3.6: Contract Testing Strategy (CONDITIONAL)
+
+**Condition**: `architectural_style == "Microservices"`
+**Skip if**: Monolith or Modular Monolith (use integration tests instead)
+
+Use Task tool to invoke `.claude/agents/design-contract-testing-strategy.md`:
+
+**Inputs to provide**:
+- Architecture: [from 04-architecture.ctx.md]
+- Application architecture: [from 09b-application-architecture.ctx.md if exists]
+- Tech stack: [from 02-tech-stack.ctx.md]
+
+**Expected output**:
+- Pact workflow (consumer-driven contracts)
+- Service boundary definitions
+- Pact Broker configuration
+- Contract versioning strategy
+
+**If condition NOT met**: Skip this agent. Document: "Skipping contract testing (monolith/modular monolith - using integration tests instead)"
+
+#### Step 3.7: Property-Based Testing Strategy (CONDITIONAL)
+
+**Condition**: `domain_complexity == "high" OR complex_business_rules EXISTS`
+**Skip if**: Simple CRUD with no complex algorithms
+
+Use Task tool to invoke `.claude/agents/design-property-based-testing-strategy.md`:
+
+**Inputs to provide**:
+- User journey: [from 00-user-journey.ctx.md]
+- Database schema: [from 07-database-schema.ctx.md]
+- Application architecture: [from 09b-application-architecture.ctx.md if exists]
+- Tech stack: [from 02-tech-stack.ctx.md]
+
+**Expected output**:
+- Property definitions for complex algorithms
+- Hypothesis/fast-check configuration
+- Custom generator implementations
+- Shrinking strategies
+
+**If condition NOT met**: Skip this agent. Document: "Skipping property-based testing (simple CRUD with no complex algorithms)"
 
 ---
 
