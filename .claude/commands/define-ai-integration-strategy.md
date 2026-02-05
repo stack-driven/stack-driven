@@ -373,28 +373,33 @@ For regulated data:
 - List specific providers and their compliance offerings
 - **Note**: Security/compliance sub-agent provides detailed mitigation patterns if invoked
 
-### Step 4: Synthesize Sub-Agent Outputs & Generate Comprehensive Strategy
+### Step 4: Incrementally Synthesize Sub-Agent Outputs Into Comprehensive Strategy
 
 **CRITICAL**: Process sub-agent outputs ONE AT A TIME to prevent context exhaustion (Issue #191 pattern).
 
-For each invoked sub-agent:
-1. Extract structured JSON output
-2. Integrate decisions into comprehensive strategy
-3. Release that agent's output from context before processing next agent
-
 **Incremental Synthesis Process**:
 
-```
-FOR EACH invoked sub-agent IN ORDER:
-  1. Parse JSON output from agent
-  2. Extract key decisions and recommendations
-  3. Add to appropriate section in strategy document
-  4. Clear agent output from working memory
-  5. Move to next agent
+Process sub-agent outputs one at a time to prevent context exhaustion:
 
-AFTER all agents processed:
-  Generate final sections (Error Handling, MVP Plan, What We DIDN'T Choose, Scaling Triggers)
-```
+1. **For each invoked sub-agent (in order):**
+   a. Parse JSON output from agent
+   b. **Validate output format:**
+      - Check output is <5000 tokens (approximate via length check)
+      - Check output is valid JSON (parse test)
+      - If validation fails: Log warning, request structured summary from agent
+   c. Extract key decisions and recommendations
+   d. Add to appropriate section in strategy document
+   e. **Critical:** Do not hold full agent output in context. Once extracted and integrated, reference only the structured data added to the document.
+
+2. **After all agents processed:**
+   Generate final sections (Error Handling, MVP Plan, What We DIDN'T Choose, Scaling Triggers)
+
+**Example incremental workflow:**
+- Invoke RAG agent → receive JSON → validate format → extract pattern/vectorDB/chunking → write to Section 6 → continue
+- Invoke Cost agent → receive JSON → validate format → extract caching/routing/savings → write to Section 7 → continue
+- (Do NOT keep all 6 agent outputs in context simultaneously)
+
+**Defense-in-depth pattern:** Validation step prevents context exhaustion if sub-agents produce verbose outputs despite format constraints.
 
 Write to `product-guidelines/02c-ai-integration-strategy.md`:
 
