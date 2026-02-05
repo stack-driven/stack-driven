@@ -248,15 +248,23 @@ Follow the create-github-issues agent specification in .claude/agents/create-git
 5. Report created issue URLs"
 ```
 
-**Progress Display**: After each batch, show:
+**Progress Display**: After each batch, show context usage from sub-agent responses:
 ```
-[Batch 1/6] Created 7 epics (https://github.com/org/repo/issues/1, ..., /issues/7)
-[Batch 2/6] Created Epic 01 stories 001-010 (10 issues, /issues/8-17)
-[Batch 3/6] Created Epic 01 stories 011-015 (5 issues, /issues/18-22)
+[Batch 1/6] Created 7 epics (7 issues created, 22% context usage)
+[Batch 2/6] Created Epic 01 stories 001-010 (10 issues created, 28% context usage)
+[Batch 3/6] Created Epic 01 stories 011-015 (5 issues created, 18% context usage)
 ...
 ```
 
+**Note**: Context usage validates <30% target (prevents exhaustion reoccurrence).
+
 **Rate Limit Handling**: Sleep 2 seconds between batch invocations (stays under 30 req/min GitHub limit).
+
+**Error Handling**: If sub-agent invocation fails mid-batch:
+- Log batch failure (which batch, which issue IDs)
+- Continue with next batch (don't abort entire issue creation)
+- Report all failures at end with issue IDs that need manual creation
+- User can manually create missing issues or re-run /create-gh-issues for failed batches
 
 #### Step 10: Report Completion
 

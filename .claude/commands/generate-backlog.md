@@ -195,6 +195,8 @@ If you approve this plan, I will generate 50 story markdown files in batches.
 
 ROLLBACK:
 If you find issues, run /generate-backlog again to regenerate.
+This will OVERWRITE product-guidelines/10-backlog/PLAN.md (previous version lost).
+To preserve, copy PLAN.md to PLAN-backup.md before re-running.
 
 Type "continue" to proceed with story file generation, or "stop" to review plan first.
 ```
@@ -243,13 +245,21 @@ Follow the write-story-files agent specification in .claude/agents/write-story-f
 5. Report written file paths"
 ```
 
-**Progress Display**: After each batch, show:
+**Progress Display**: After each batch, show context usage from sub-agent responses:
 ```
-[Batch 1/5] Generated Epic 01 stories 001-010 (10 files written)
-[Batch 2/5] Generated Epic 01 stories 011-015 (5 files written)
-[Batch 3/5] Generated Epic 02 stories 016-025 (10 files written)
+[Batch 1/5] Generated Epic 01 stories 001-010 (10 files written, 42% context usage)
+[Batch 2/5] Generated Epic 01 stories 011-015 (5 files written, 28% context usage)
+[Batch 3/5] Generated Epic 02 stories 016-025 (10 files written, 45% context usage)
 ...
 ```
+
+**Note**: Context usage validates <50% target (prevents exhaustion reoccurrence).
+
+**Error Handling**: If sub-agent invocation fails mid-batch:
+- Log batch failure (which batch, which story IDs)
+- Continue with next batch (don't abort entire backlog)
+- Report all failures at end with story IDs that need regeneration
+- User can re-run /generate-backlog to retry failed batches only
 
 #### Step 10: Generate BACKLOG.md Summary
 
