@@ -421,6 +421,55 @@ Provide structured recommendations with journey traceability:
 - [Skills needed]
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or detailed rationale
+- ❌ Comprehensive tutorials or examples
+- ❌ Alternative approaches not recommended
+
+**Required JSON Structure**:
+```json
+{
+  "ragPattern": {
+    "selected": "string (Naive|Modular|Agentic|Hybrid)",
+    "journeyRequirement": "string (specific journey step)",
+    "rationale": "string (1-2 sentences)",
+    "architecture": "string (brief flow description)"
+  },
+  "vectorDatabase": {
+    "selected": "string (pgvector|Chroma|Pinecone|Weaviate|Qdrant)",
+    "decisionCriteria": ["string (factor1)", "string (factor2)"],
+    "rationale": "string (1-2 sentences)",
+    "estimatedCost": "number (dollars/month)"
+  },
+  "chunkingStrategy": {
+    "chunkSize": "number (tokens)",
+    "approach": "string (fixed-size|semantic|sliding-window)",
+    "overlap": "number (tokens, if sliding)",
+    "rationale": "string (matches query patterns)"
+  },
+  "retrievalOptimization": {
+    "reranking": {
+      "enabled": boolean,
+      "details": "string (if enabled)"
+    },
+    "lostInMiddle": {
+      "enabled": boolean,
+      "details": "string (if enabled)"
+    },
+    "hybridSearch": {
+      "enabled": boolean,
+      "details": "string (if enabled)"
+    }
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:

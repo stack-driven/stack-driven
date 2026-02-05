@@ -498,6 +498,73 @@ Provide structured cost optimization recommendations with clear ROI:
 **Phase 3 (Optimization)**: [Advanced techniques]
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or detailed rationale
+- ❌ Comprehensive tutorials or code examples
+- ❌ Alternative approaches not recommended
+
+**Required JSON Structure**:
+```json
+{
+  "baselineCost": {
+    "monthlyProjection": "number (dollars)",
+    "usersPerDay": "number",
+    "interactionsPerUser": "number",
+    "tokensPerInteraction": "number",
+    "model": "string (name and pricing)"
+  },
+  "semanticCaching": {
+    "applicability": "string (High|Medium|Low)",
+    "architecture": "string (multi-layer description)",
+    "safeToCache": ["string (query type1)", "string (query type2)"],
+    "neverCache": ["string (risk1)", "string (risk2)"],
+    "expectedHitRate": "number (percentage)",
+    "costSavings": {
+      "before": "number (dollars/month)",
+      "after": "number (dollars/month)",
+      "netSavings": "number (dollars/month)",
+      "percentReduction": "number (percentage)"
+    }
+  },
+  "modelRouting": {
+    "applicability": "string (High|Medium|Low)",
+    "strategy": "string (RouteLLM|Manual|Bedrock)",
+    "routingLogic": {
+      "simpleQueries": {"percentage": "number", "model": "string"},
+      "complexQueries": {"percentage": "number", "model": "string"}
+    },
+    "costSavings": {
+      "before": "number (dollars/month)",
+      "after": "number (dollars/month)",
+      "netSavings": "number (dollars/month)",
+      "percentReduction": "number (percentage)"
+    }
+  },
+  "combinedStrategy": {
+    "baseline": "number (dollars/month)",
+    "afterOptimization": "number (dollars/month)",
+    "totalSavings": "number (dollars/month)",
+    "percentReduction": "number (percentage)"
+  },
+  "costMonitoring": {
+    "budgetAlerts": {
+      "dailyThreshold": "number (dollars)",
+      "emergencyThreshold": "number (dollars)"
+    },
+    "perUserCaps": {
+      "daily": "number (requests)",
+      "monthly": "number (requests)"
+    }
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:
