@@ -735,6 +735,63 @@ Provide structured prompt engineering guidance:
 - [ ] Token limits set per task type
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or rationale
+- ❌ Detailed examples or tutorials
+- ❌ Alternative approaches not recommended
+- ❌ Implementation code beyond brief snippets
+
+**Required JSON Structure**:
+```json
+{
+  "promptFramework": {
+    "taskDefinition": "string (role and task)",
+    "toneAndStyle": "string (communication style)",
+    "backgroundContext": "string (what AI needs to know)",
+    "instructions": "string (step-by-step process)",
+    "fewShotExamples": "string (2-3 examples)",
+    "outputFormat": "string (exact structure and constraints)"
+  },
+  "advancedPatterns": {
+    "chainOfThought": {
+      "recommended": boolean,
+      "useCases": "string (specific journey tasks)",
+      "expectedImprovement": "string (X% accuracy gain)",
+      "costImpact": "string (+X tokens per query)"
+    },
+    "prefilling": {
+      "recommended": boolean,
+      "useCases": "string (tasks requiring format)",
+      "benefit": "string"
+    },
+    "promptChaining": {
+      "recommended": boolean,
+      "workflow": "string (step1 → step2 → step3)"
+    }
+  },
+  "versioningStrategy": {
+    "versionControl": "string (Git with semantic versioning)",
+    "abTestingPlan": "string (X% traffic, metrics, rollout criteria)",
+    "performanceTracking": "string (log fields, aggregate metrics)"
+  },
+  "tokenOptimization": {
+    "systemPromptCaching": "string (savings estimate)",
+    "promptCompression": "string (savings estimate)",
+    "outputTokenLimiting": {
+      "classification": "number (max tokens)",
+      "shortAnswers": "number (max tokens)",
+      "summaries": "number (max tokens)"
+    }
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:

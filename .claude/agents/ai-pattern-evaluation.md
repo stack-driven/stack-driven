@@ -658,6 +658,70 @@ else:
 - Consider fine-tuning if >10K labeled examples
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or detailed rationale
+- ❌ Comprehensive tutorials or code examples
+- ❌ Alternative approaches not recommended
+
+**Required JSON Structure**:
+```json
+{
+  "testingFramework": {
+    "recommended": "string (DeepEval|Promptfoo|RAGAS)",
+    "rationale": "string (1-2 sentences)",
+    "useCases": ["string (use case1)", "string (use case2)"]
+  },
+  "abTestingStrategy": {
+    "businessMetrics": [
+      {"metric": "string (conversion rate)", "target": "string (>XX%)"}
+    ],
+    "learningMetrics": [
+      {"metric": "string (feature adoption)", "target": "string (>XX%)"}
+    ],
+    "aiMetrics": [
+      {"metric": "string (accuracy)", "target": "string (>XX%)"}
+    ],
+    "testFramework": {
+      "controlPercentage": "number (50)",
+      "treatmentPercentage": "number (50)",
+      "minimumSamples": "number (1000)",
+      "duration": "string (1-2 weeks)",
+      "decisionCriteria": "string (+X% accuracy justifies +Y% cost)"
+    }
+  },
+  "hitlPatterns": {
+    "confidenceBasedRouting": {
+      "highConfidence": {"threshold": "number (>0.9)", "action": "auto_apply"},
+      "mediumConfidence": {"threshold": "number (>0.7)", "action": "show_for_approval"},
+      "lowConfidence": {"threshold": "number (<0.7)", "action": "route_to_human"}
+    },
+    "approvalFlows": ["string (medical advice)", "string (financial transactions)"],
+    "feedbackCollection": {
+      "explicit": "string (thumbs up/down)",
+      "implicit": "string (task completion tracking)"
+    }
+  },
+  "qualityMeasurement": {
+    "evaluationSetSize": "number (100-200 MVP, 500+ production)",
+    "regressionTesting": {
+      "baseline": "string (XX% accuracy)",
+      "deployCriteria": "string (>5% improvement)",
+      "blockCriteria": "string (>5% degradation)"
+    },
+    "dailyMonitoring": {
+      "sampleSize": "number (100 requests/day)",
+      "alertThreshold": "string (accuracy drops >5%)"
+    }
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:

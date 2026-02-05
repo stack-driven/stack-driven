@@ -521,6 +521,74 @@ Model usage drift: Alert if expensive model >50% (should be ~30%)
 See `/reference-material/observability-platform-strategy.md` for platform comparison details.
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or rationale
+- ❌ Detailed platform comparisons beyond decision
+- ❌ Alternative approaches not recommended
+- ❌ Tutorial content or setup guides
+
+**Required JSON Structure**:
+```json
+{
+  "platformSelection": {
+    "recommended": "string (Helicone|Langfuse|LangSmith|Datadog)",
+    "decisionCriteria": ["string (factor1)", "string (factor2)", "string (factor3)"],
+    "rationale": "string (1-2 sentences)",
+    "cost": {
+      "freeTier": "string (limits)",
+      "paidTier": "string (pricing at scale)",
+      "estimatedMonthly": "number (dollars)"
+    },
+    "setupEffort": "string (hours/days)"
+  },
+  "aiMetrics": {
+    "latency": {
+      "p50Target": "number (ms)",
+      "p95Target": "number (ms)",
+      "p99Target": "number (ms)",
+      "ttftTarget": "number (ms, if streaming)"
+    },
+    "cost": {
+      "tokensPerRequest": "track input/output separately",
+      "costPerRequest": "actual $ per API call",
+      "costPerUserPerDay": "business-aligned metric",
+      "costPerFeature": "attribute costs to features"
+    },
+    "quality": {
+      "errorRateTarget": "number (percentage)",
+      "userFeedbackTarget": "number (percentage positive)",
+      "taskCompletionTarget": "number (percentage)",
+      "fallbackRateTarget": "number (percentage)"
+    }
+  },
+  "alertingThresholds": {
+    "cost": {
+      "dailyBudget": "number (dollars)",
+      "emergencyThreshold": "number (dollars, triggers rate limiting)"
+    },
+    "performance": {
+      "p95Latency": "number (ms)",
+      "errorRate": "number (percentage)",
+      "ttft": "number (ms, if streaming)"
+    },
+    "quality": {
+      "thumbsDownRate": "number (percentage)",
+      "fallbackRate": "number (percentage)"
+    }
+  },
+  "session14Integration": {
+    "inputs": ["string (input1)", "string (input2)"],
+    "session14Defines": ["string (SLOs)", "string (dashboards)", "string (runbooks)"]
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:

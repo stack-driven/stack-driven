@@ -650,6 +650,54 @@ Provide structured security/compliance recommendations:
 - Incident response for security events
 ```
 
+## Output Format (CRITICAL)
+
+**MAXIMUM TOKEN LIMIT**: 5000 tokens
+
+Your output MUST be structured JSON data only. Do NOT include:
+- ❌ Prose explanations or detailed rationale
+- ❌ Comprehensive code tutorials
+- ❌ Alternative approaches not recommended
+
+**Required JSON Structure**:
+```json
+{
+  "owaspTop10Mitigation": [
+    {
+      "risk": "string (risk name)",
+      "priority": "string (CRITICAL|HIGH|MEDIUM|LOW)",
+      "mitigations": ["string (mitigation1)", "string (mitigation2)"],
+      "implementationApproach": "string (brief code pattern)"
+    }
+  ],
+  "piiFiltering": {
+    "applicable": "string (HIPAA|GDPR|Both|N/A)",
+    "filteringPatterns": ["string (SSN)", "string (credit cards)", "string (emails)"],
+    "whenToApply": ["string (before LLM)", "string (after LLM)"]
+  },
+  "apiKeyManagement": {
+    "secretsManager": "string (AWS|HashiCorp|1Password)",
+    "rotationPolicy": {
+      "frequency": "string (30|14|7 days)",
+      "automated": boolean
+    },
+    "scopeSeparation": ["string (per environment)", "string (per service)"]
+  },
+  "auditLogging": {
+    "whatToLog": ["string (field1)", "string (field2)"],
+    "whatNotToLog": ["string (actual input)", "string (actual output)"],
+    "retention": "string (6 years HIPAA | varies GDPR | 2 years SOC2)",
+    "accessControls": "string (compliance/security team only)"
+  },
+  "inputOutputValidation": {
+    "inputValidation": ["string (max length)", "string (encoding)", "string (injection detection)"],
+    "outputValidation": ["string (format check)", "string (PII detection)", "string (prompt leakage)"]
+  }
+}
+```
+
+The orchestrator will synthesize this structured data into comprehensive strategy documentation.
+
 ## Quality Standards
 
 Your recommendations must:
