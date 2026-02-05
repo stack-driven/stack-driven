@@ -151,117 +151,156 @@ Before invoking sub-agents, extract decision factors from context:
 #### 3.1: Architectural Style Validation
 
 **Condition**: `team_size > 5 OR entity_count > 10 OR bounded_contexts > 1`
+**Skip if**: Small team (<= 5), simple app with <= 10 entities, no bounded contexts
 
-**Agent**: `.claude/agents/validate-architectural-style.md`
+Use Task tool to invoke `.claude/agents/validate-architectural-style.md`:
+
+**Prompt for agent**:
+"""
+You are an architectural style validation expert. Analyze the provided context and determine the optimal architectural style (Simple Monolith / Modular Monolith / Microservices) for this application.
 
 **Inputs**:
-```json
-{
-  "journey_steps": [count from Session 1],
-  "entity_count": [count from Session 7],
-  "team_size": [from Session 2a or 4],
-  "deployment_frequency": [from Session 4],
-  "bounded_contexts": [identified from journey clustering],
-  "ops_maturity": [from Session 2a or inferred],
-  "journey_context": [brief description]
-}
-```
+- Journey steps: [count from Session 1]
+- Entity count: [count from Session 7]
+- Team size: [from Session 2a or 4, default 3-5 if unspecified]
+- Deployment frequency: [from Session 4, default "weekly" if unspecified]
+- Bounded contexts: [identified clusters from journey steps]
+- Operational maturity: [from Session 2a or inferred from team size, default "low" for new teams]
+- Journey context: [brief description of user journey]
 
-**Output**: architectural_style (Monolith/Modular Monolith/Microservices), module_structure (if applicable), boundary_enforcement_config
+**Expected Output**:
+- Architectural style: (Simple Monolith / Modular Monolith / Microservices)
+- Module structure: (if Modular Monolith chosen, define modules)
+- Boundary enforcement config: (if applicable, tooling/patterns to enforce boundaries)
+- Journey-based rationale: Trace decision to journey scale, team size, deployment needs
+"""
 
-**If condition NOT met**: Skip this sub-agent. Default to simple monolith (no module boundaries needed for small scale).
+**Store result** for synthesis in Step 4.
+
+**If condition NOT met**: Skip this agent. Document: "Simple Monolith (team size [X], entities [Y], no module boundaries needed)"
 
 ---
 
 #### 3.2: Domain Layer Modeling
 
 **Condition**: `entity_count > 5 AND (domain_complexity == "medium" OR domain_complexity == "high")`
+**Skip if**: Simple CRUD domain with <= 5 entities or low complexity
 
-**Agent**: `.claude/agents/model-domain-layer.md`
+Use Task tool to invoke `.claude/agents/model-domain-layer.md`:
+
+**Prompt for agent**:
+"""
+You are a domain modeling expert specializing in Domain-Driven Design (DDD). Analyze the database entities and journey steps to determine if rich domain entities are needed, and if so, design them.
 
 **Inputs**:
-```json
-{
-  "database_entities": [entities from Session 7 with columns/relationships],
-  "journey_steps": [from Session 1],
-  "domain_complexity": [assessed from business rules]
-}
-```
+- Database entities: [list entities from Session 7 with columns, relationships]
+- Journey steps: [from Session 1, highlighting business logic requirements]
+- Domain complexity: [assessed from Step 2: low/medium/high]
 
-**Output**: domain_entities[] with methods, value_objects[], aggregates[], anemic_domain_model_prevention
+**Expected Output**:
+- Domain entities: List of entities that need business logic methods (beyond CRUD)
+- Value objects: Immutable value objects for domain concepts
+- Aggregates: Aggregate roots and their boundaries
+- Anemic domain model prevention: How to avoid anemic entities
+- Journey-based rationale: Trace domain design to journey steps requiring business logic
+"""
 
-**If condition NOT met**: Skip this sub-agent. Domain is simple CRUD - services can handle logic without rich domain entities.
+**Store result** for synthesis in Step 4.
+
+**If condition NOT met**: Skip this agent. Document: "Simple CRUD domain - services handle business logic without rich domain entities"
 
 ---
 
 #### 3.3: Transaction Boundaries
 
 **Condition**: `multi_entity_workflows == true OR external_integrations.length > 0`
+**Skip if**: Simple single-entity workflows with no external integrations
 
-**Agent**: `.claude/agents/design-transaction-boundaries.md`
+Use Task tool to invoke `.claude/agents/design-transaction-boundaries.md`:
+
+**Prompt for agent**:
+"""
+You are a transaction boundary design expert. Analyze service methods and workflows to determine transaction scopes, compensation patterns, and saga requirements.
 
 **Inputs**:
-```json
-{
-  "service_methods": [list from journey steps + API endpoints],
-  "external_integrations": [from Session 4],
-  "journey_steps": [for user impact analysis]
-}
-```
+- Service methods: [list derived from journey steps + API endpoints from Session 8b]
+- External integrations: [from Session 4 architecture, e.g., S3, OpenAI API, payment gateways]
+- Journey steps: [from Session 1, for user impact analysis of transaction failures]
 
-**Output**: transaction_scopes[] (single repo/multi-repo/external+DB/saga), compensation_patterns[], journey_impact
+**Expected Output**:
+- Transaction scopes: Classify each service method (single repository / multi-repository / external+DB / saga pattern)
+- Compensation patterns: For multi-step workflows, define rollback/compensation logic
+- Journey impact: How transaction failures affect user journey steps
+- Journey-based rationale: Trace transaction design to workflow complexity and failure scenarios
+"""
 
-**If condition NOT met**: Skip this sub-agent. Simple workflows with single-entity operations don't need complex transaction patterns.
+**Store result** for synthesis in Step 4.
+
+**If condition NOT met**: Skip this agent. Document: "Simple single-entity workflows - standard database transactions sufficient"
 
 ---
 
 #### 3.4: ORM Pattern Selection
 
 **Condition**: `entity_count > 10 OR domain_complexity == "high" OR testing_requirements == "heavy_unit_testing"`
+**Skip if**: <= 10 entities AND low/medium complexity AND light testing requirements
 
-**Agent**: `.claude/agents/choose-orm-pattern.md`
+Use Task tool to invoke `.claude/agents/choose-orm-pattern.md`:
+
+**Prompt for agent**:
+"""
+You are an ORM pattern selection expert. Analyze the entity count, domain complexity, and testing requirements to choose between Active Record and Data Mapper patterns.
 
 **Inputs**:
-```json
-{
-  "entity_count": [from Session 7],
-  "domain_complexity": [assessed],
-  "testing_requirements": [from Session 9],
-  "team_familiarity": [framework_default or explicit_architecture],
-  "use_case": [mvp/production/enterprise],
-  "domain_entities_with_logic": [from Step 3.2 output or false],
-  "clean_architecture_enforced": [from Session 4]
-}
-```
+- Entity count: [from Session 7 database schema]
+- Domain complexity: [from Step 2 assessment: low/medium/high]
+- Testing requirements: [from Session 9 test strategy: light/moderate/heavy unit testing]
+- Team familiarity: [framework_default or explicit_architecture from Session 2a/4]
+- Use case: [mvp/production/enterprise from journey maturity]
+- Domain entities with logic: [true if Step 3.2 invoked, false otherwise]
+- Clean architecture enforced: [from Session 4 architecture decisions]
 
-**Output**: orm_pattern (Active Record/Data Mapper), rationale, integration_with_domain_layer
+**Expected Output**:
+- ORM pattern: Active Record OR Data Mapper
+- Rationale: Why this pattern fits the entity count, domain complexity, testing needs
+- Integration with domain layer: How ORM pattern aligns with domain entities (if Step 3.2 invoked)
+- Journey-based rationale: Trace ORM choice to testing needs, domain richness, team constraints
+"""
 
-**If condition NOT met**: Skip this sub-agent. Default to framework default (usually Active Record for simplicity).
+**Store result** for synthesis in Step 4.
+
+**If condition NOT met**: Skip this agent. Document: "Framework default (Active Record for simplicity with <= 10 entities)"
 
 ---
 
 #### 3.5: Rate Limiting Strategy
 
 **Condition**: `public_api_endpoints.length > 0`
+**Skip if**: Internal/admin-only APIs with no public endpoints
 
-**Agent**: `.claude/agents/design-rate-limiting.md`
+Use Task tool to invoke `.claude/agents/design-rate-limiting.md`:
+
+**Prompt for agent**:
+"""
+You are a rate limiting strategy expert. Analyze API endpoints and their resource costs to design appropriate rate limiting configurations.
 
 **Inputs**:
-```json
-{
-  "api_endpoints": [from Session 8b with resource cost],
-  "resource_costs": {
-    "storage_operations": "high",
-    "ai_processing": "high",
-    "database_queries": "medium",
-    "simple_reads": "low"
-  }
-}
-```
+- API endpoints: [from Session 8b with auth requirements to identify public vs authenticated endpoints]
+- Resource costs: Map each endpoint type to cost level:
+  - Storage operations (uploads, file operations): high
+  - AI processing (inference, embeddings): high
+  - Database queries (complex joins, aggregations): medium
+  - Simple reads (cached data, single-row lookups): low
 
-**Output**: rate_limit_configs[] with algorithm (Token Bucket/Sliding Window), scope, limits, journey_integration
+**Expected Output**:
+- Rate limit configs: For each public endpoint, specify algorithm (Token Bucket / Sliding Window), scope (per user / per IP / per team), limits (requests per minute/hour)
+- Journey integration: How rate limits align with expected user behavior from journey steps
+- Journey-based rationale: Trace rate limiting decisions to resource costs, pricing tiers, abuse prevention
+"""
 
-**If condition NOT met**: Skip this sub-agent. Internal/admin-only APIs may not need rate limiting.
+**Store result** for synthesis in Step 4.
+
+**If condition NOT met**: Skip this agent. Document: "Internal/admin-only APIs - no rate limiting needed"
 
 ---
 
@@ -269,19 +308,27 @@ Before invoking sub-agents, extract decision factors from context:
 
 **Condition**: ALWAYS (production-grade concerns needed for all systems)
 
-**Agent**: `.claude/agents/design-cross-cutting-concerns.md`
+Use Task tool to invoke `.claude/agents/design-cross-cutting-concerns.md`:
+
+**Prompt for agent**:
+"""
+You are a cross-cutting concerns expert. Design caching, circuit breakers, outbox pattern (if event-driven), and observability for production-grade systems.
 
 **Inputs**:
-```json
-{
-  "third_party_apis": [from Session 4],
-  "cache_candidates": [operations with read/write ratio > 10:1],
-  "event_driven": [true/false from Step 2],
-  "architectural_style": [from Step 3.1 or default "monolith"]
-}
-```
+- Third-party APIs: [list from Session 4 architecture, e.g., S3, OpenAI API, payment gateways]
+- Cache candidates: [list operations with read/write ratio > 10:1 from journey steps and API endpoints]
+- Event-driven: [true if Session 4 mentions events/messaging/notifications, false otherwise]
+- Architectural style: [from Step 3.1 output if invoked, otherwise default to "Simple Monolith"]
 
-**Output**: caching_strategy, circuit_breakers[], outbox_pattern (if event-driven), observability_config
+**Expected Output**:
+- Caching strategy: Cache layers (in-memory, Redis), cache keys, TTL, invalidation patterns for read-heavy operations
+- Circuit breakers: For each third-party API, specify timeout, failure threshold, fallback behavior
+- Outbox pattern: (if event-driven=true) Event storage, publishing mechanism, retry logic
+- Observability config: Logging patterns, metrics to track, distributed tracing (if applicable)
+- Journey-based rationale: Trace cross-cutting concerns to reliability requirements, performance needs, debugging needs
+"""
+
+**Store result** for synthesis in Step 4.
 
 **This sub-agent is ALWAYS invoked** - all production systems need caching, resilience, and observability.
 
@@ -289,14 +336,16 @@ Before invoking sub-agents, extract decision factors from context:
 
 ### Step 4: Synthesize Sub-Agent Outputs
 
-After sub-agents complete, synthesize their outputs into unified architecture document:
+After sub-agents complete via Task tool invocations in Step 3, synthesize their outputs into unified architecture document:
 
 **Synthesis Strategy**:
 
-1. **Combine architectural decisions**: Integrate output from Step 3.1 (style), 3.2 (domain), 3.4 (ORM) into coherent architecture
-2. **Integrate transaction patterns**: Merge output from Step 3.3 with service method definitions
-3. **Add rate limiting to controllers**: Annotate controller endpoints with Step 3.5 configurations
-4. **Overlay cross-cutting concerns**: Add caching/circuit breakers from Step 3.6 to relevant service methods
+1. **Combine architectural decisions**: Integrate outputs from Task tool results for Step 3.1 (style), 3.2 (domain), 3.4 (ORM) into coherent architecture
+2. **Integrate transaction patterns**: Merge outputs from Task tool result for Step 3.3 with service method definitions
+3. **Add rate limiting to controllers**: Annotate controller endpoints with configurations from Task tool result for Step 3.5
+4. **Overlay cross-cutting concerns**: Add caching/circuit breakers from Task tool result for Step 3.6 to relevant service methods
+
+**Important**: Only synthesize outputs from sub-agents that were actually invoked. If a sub-agent was skipped (condition not met), use the documented default behavior instead.
 
 **Output Sections** (based on what was conditionally loaded):
 
