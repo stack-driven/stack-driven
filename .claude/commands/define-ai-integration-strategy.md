@@ -381,15 +381,16 @@ For regulated data:
 
 Process sub-agent outputs one at a time to prevent context exhaustion:
 
-1. **For each invoked sub-agent (in order):**
-   a. Parse JSON output from agent
+1. **For each invoked sub-agent (process in this explicit order: RAG → Cost → Prompt → Observability → Security → Evaluation):**
+   a. Take current sub-agent's JSON output
    b. **Validate output format:**
       - Check output is <5000 tokens (approximate via length check)
       - Check output is valid JSON (parse test)
       - If validation fails: Log warning, request structured summary from agent
    c. Extract key decisions and recommendations
-   d. Add to appropriate section in strategy document
-   e. **Critical:** Do not hold full agent output in context. Once extracted and integrated, reference only the structured data added to the document.
+   d. Integrate into corresponding strategy section
+   e. **RELEASE from context:** Do NOT keep all sub-agent outputs in memory. Once extracted and integrated, reference only the structured data added to the document.
+   f. Move to next invoked sub-agent (skip any that were not invoked)
 
 2. **After all agents processed:**
    Generate final sections (Error Handling, MVP Plan, What We DIDN'T Choose, Scaling Triggers)
