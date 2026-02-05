@@ -231,39 +231,27 @@ Use Task tool to invoke `.claude/agents/design-property-based-testing-strategy.m
 
 ---
 
-### Step 4: Synthesize Sub-Agent Outputs
+### Step 4: Synthesize Sub-Agent Outputs (INCREMENTAL APPROACH)
 
-Combine all sub-agent outputs into unified test strategy document following template:
+**CRITICAL**: Do NOT load all sub-agent outputs into context simultaneously. Process ONE AT A TIME to prevent context explosion (sub-agents return 60-90k tokens each = 400k+ total if loaded together).
 
 **Template**: `/templates/09-test-strategy-template.md`
 
-**Synthesis Process:**
-1. **Overview Section**: Combine architecture classification, risk level, coverage goals
-2. **Testing Philosophy**: Extract from unit testing agent philosophy
-3. **Unit Testing**: Insert unit testing agent output
-4. **Integration Testing**: Insert integration testing agent output (if invoked)
-5. **E2E Testing**: Insert E2E testing agent output (if invoked)
-6. **Test Coverage & Quality Gates**: Combine coverage targets from all agents
-7. **Test Data Management**: Extract from integration testing agent
-8. **Performance Testing**: Insert performance agent output (if invoked)
-9. **Security Testing**: Insert security agent output (if invoked)
-10. **Testing Workflows**: Add TDD/BDD/Regression patterns
-11. **CI/CD Integration**: Combine execution strategies from all agents
-12. **What We DIDN'T Choose**: Document alternatives not selected (4+ items)
+**Incremental Synthesis Pattern** (process sequentially, not simultaneously):
 
-**Example Synthesis (Compliance SaaS)**:
-```markdown
-## Overview
-Architecture: Hybrid full-stack (Modified Trophy: 30% unit, 45% integration, 25% E2E)
-Risk Level: HIGH (customer compliance decisions)
-Coverage Goal: 70% overall, 95% for assessment algorithms
+1. **Write Header + Overview** → Include architecture classification (Pyramid/Trophy/Diamond), risk level, coverage goals, sub-agents invoked from Step 2
+2. **Write Philosophy** → Testing approach based on risk level (2-3 paragraphs)
+3. **For each invoked agent** (3.1 through 3.7):
+   - Extract ONLY that agent's output from Task result
+   - Append section to file (use Edit tool to append, NOT re-read entire file)
+   - **Clear context** before next section
+   - Sections: Unit Testing (always), Integration (if 3.2), E2E (if 3.3), Performance (if 3.4), Security (if 3.5), Contract (if 3.6), Property-Based (if 3.7)
+4. **Write Closing Sections** (orchestrator-generated):
+   - Test Coverage & Quality Gates (targets from Step 2, CI blocking criteria)
+   - CI/CD Integration (execution workflow, environments)
+   - What We DIDN'T Choose (4+ alternatives NOT selected with rationales)
 
-[Unit testing section from unit agent]
-[Integration testing section from integration agent]
-[E2E testing section from E2E agent]
-[Performance testing section from performance agent]
-[Security testing section from security agent]
-```
+**Token Efficiency**: Max 90k tokens per step (vs 400k+ if all loaded together). Only ONE sub-agent output in context at a time.
 
 ---
 
@@ -299,7 +287,9 @@ Tell user what was generated and next steps:
 ```
 ## Session 9 Complete!
 
-I've created your comprehensive testing strategy with conditional sub-agent loading.
+I've created your comprehensive testing strategy using:
+- ✓ Conditional sub-agent loading (only patterns relevant to your journey)
+- ✓ Incremental synthesis (processed outputs one-at-a-time to prevent context explosion)
 
 **Sub-Agents Invoked:**
 - ✓ Unit testing (always)
@@ -321,11 +311,12 @@ I've created your comprehensive testing strategy with conditional sub-agent load
 - Quality gates: [What blocks CI/CD]
 
 **Token Efficiency:**
-- Loaded [X] lines instead of 2,387 ([Y]% reduction)
+- Conditional loading: [X] of 7 agents invoked ([Y]% pattern reduction)
+- Incremental synthesis: Max 90k tokens per step (vs 400k+ if loaded together)
 - Only relevant testing patterns for your journey
 
 **Next Step:**
-Run `/generate-backlog` (Session 10) to create implementation stories with test requirements.
+Run `/model-application` (Session 9b) to design application architecture layer.
 ```
 
 ---
@@ -334,92 +325,26 @@ Run `/generate-backlog` (Session 10) to create implementation stories with test 
 
 1. **Always invoke unit testing** - Universal requirement
 2. **Conditional loading only** - Don't load agents for patterns not in journey
-3. **Journey-specific synthesis** - Outputs must reference actual features, not generic examples
-4. **Token efficiency** - Track and report token savings vs monolithic approach
-5. **Template compliance** - Follow `/templates/09-test-strategy-template.md` structure exactly
-6. **Context file generation** - Always create .ctx.md for Session 10
-7. **Centralized examples** - Reference `/examples/compliance-saas-testing.md`, don't duplicate
+3. **Incremental synthesis (CRITICAL)** - Process sub-agent outputs ONE AT A TIME in Step 4, never load all simultaneously (prevents 400k+ token context explosion)
+4. **Journey-specific synthesis** - Outputs must reference actual features, not generic examples
+5. **Token efficiency** - Track and report token savings vs monolithic approach
+6. **Template compliance** - Follow `/templates/09-test-strategy-template.md` structure exactly
+7. **Context file generation** - Always create .ctx.md for Session 10
+8. **Centralized examples** - Reference `/examples/compliance-saas-testing.md`, don't duplicate
 
 ---
 
-## Decision Trees (Quick Reference)
+## Quick Reference
 
-**Integration Testing?**
-```
-IF external_integrations > 0 OR database EXISTS → YES
-ELSE → NO (frontend-only)
-```
+**Conditional Loading Logic** (from Step 3):
+- Integration: IF external_integrations > 0 OR database EXISTS
+- E2E: IF frontend_framework != null
+- Performance: IF slos_defined OR expected_traffic == "high"
+- Security: IF handles_pii OR handles_financial_data OR auth_required
+- Contract: IF architectural_style == "Microservices"
+- Property-Based: IF domain_complexity == "high" OR complex_algorithms EXISTS
 
-**E2E Testing?**
-```
-IF frontend_framework != null → YES
-ELSE → NO (backend API-only)
-```
-
-**Performance Testing?**
-```
-IF slos_defined OR expected_traffic == "high" → YES
-ELSE → NO (MVP/internal tools)
-```
-
-**Security Testing?**
-```
-IF handles_pii OR handles_financial_data OR auth_required → YES
-ELSE → NO (public read-only)
-```
-
-**Contract Testing?**
-```
-IF architectural_style == "Microservices" → YES
-ELSE → NO (monolith uses integration tests)
-```
-
-**Property-Based Testing?**
-```
-IF domain_complexity == "high" OR complex_algorithms EXISTS → YES
-ELSE → NO (simple CRUD)
-```
-
----
-
-## Example Orchestrator Execution
-
-**Journey**: Compliance SaaS
-**Analysis**:
-- Architecture: Hybrid full-stack
-- Risk: HIGH (PII, customer decisions)
-- Frontend: React (yes)
-- External integrations: 2 (AI API, S3)
-- Database: PostgreSQL (multi-tenant)
-- Architectural style: Modular Monolith
-- Complex logic: YES (assessment scoring)
-
-**Sub-Agents Invoked**:
-1. ✓ Unit testing (always)
-2. ✓ Integration testing (database + external APIs)
-3. ✓ E2E testing (React frontend)
-4. ✓ Performance testing (B2B SaaS, high traffic)
-5. ✓ Security testing (handles PII, multi-tenant)
-6. ✗ Contract testing (not microservices)
-7. ✓ Property-based testing (complex scoring algorithm)
-
-**Token Usage**: 1,500 lines (37% reduction from 2,387)
-
----
-
-## Output Files
-
-1. **Full Testing Strategy** (`product-guidelines/09-test-strategy.md`):
-   - All sub-agent outputs synthesized
-   - Complete with examples, setup instructions
-   - "What We DIDN'T Choose" section
-   - 8-12 pages of detailed strategy
-
-2. **Context Documentation** (`product-guidelines/09-test-strategy.ctx.md`):
-   - Condensed version (66% reduction)
-   - Coverage targets, test types, tools
-   - Quality gates for Session 10 backlog
-   - 3-4 pages optimized for AI consumption
+**Outputs**: `09-test-strategy.md` (full strategy, 8-12 pages) + `09-test-strategy.ctx.md` (condensed, 66% reduction for Session 10)
 
 ---
 

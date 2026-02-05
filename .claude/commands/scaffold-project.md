@@ -153,148 +153,213 @@ Generate core configuration files:
 **IMPORTANT**: Sub-agents generate code skeletons and configurations. Invoke them conditionally based on requirements.
 
 #### 5.1: Backend Scaffold (ALWAYS)
-**Agent**: `.claude/agents/scaffold-backend.md`
-**Inputs**: Tech stack, coding standards, Session 9b architecture
-**Outputs**: Service classes, repository classes, controller classes, DI container
-**Why Always**: Every project has backend logic
 
-```
-Invoke sub-agent: scaffold-backend.md
-Provide inputs: {
-  techStack: Session 3,
-  codingStandards: Session 3b,
-  architecture: Session 9b,
-  apiContracts: Session 8b,
-  databaseSchema: Session 7
-}
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate backend scaffold`
+- **prompt**:
+  ```
+  Invoke the scaffold-backend sub-agent to generate backend code skeletons.
+
+  Agent path: .claude/agents/scaffold-backend.md
+
+  Inputs:
+  - Tech stack: [From 02-tech-stack.ctx.md - backend framework, language, ORM]
+  - Coding standards: [From 02b-coding-standards.ctx.md - directory structure, naming conventions]
+  - Architecture: [From 09b-application-architecture.ctx.md - service layer, repository layer, controller layer patterns]
+  - API contracts: [From 08b-api-contracts.ctx.md - endpoint definitions, DTOs]
+  - Database schema: [From 07-database-schema.ctx.md - table definitions, ORM models]
+
+  Follow the agent specification to:
+  1. Generate service classes (business logic layer)
+  2. Generate repository classes (data access layer)
+  3. Generate controller classes (API endpoint handlers)
+  4. Set up dependency injection container
+  5. Add TODO comments for implementation (referencing Session 10 stories)
+
+  Return structured output with:
+  - Generated file paths
+  - Service class skeletons
+  - Repository class skeletons
+  - Controller class skeletons
+  - DI container configuration
+  ```
 
 #### 5.2: Frontend Scaffold (CONDITIONAL)
+
 **Condition**: `frontend_framework != null` (from Session 3 tech stack)
-**Agent**: `.claude/agents/scaffold-frontend.md`
-**Inputs**: Tech stack, coding standards, Session 9b architecture
-**Outputs**: Component skeletons, routing, state management, API client
 **Skip if**: API-only backend with no frontend
 
-```
-If frontend_framework exists:
-  Invoke sub-agent: scaffold-frontend.md
-  Provide inputs: {
-    techStack: Session 3,
-    codingStandards: Session 3b,
-    architecture: Session 9b,
-    apiContracts: Session 8b,
-    designSystem: Session 6
-  }
-Else:
-  Log: "Skipping frontend scaffold (API-only backend - no frontend framework specified in Session 3)"
-```
+Use Task tool to invoke `.claude/agents/scaffold-frontend.md`:
+
+**Inputs to provide**:
+- Tech stack: [From 02-tech-stack.ctx.md - frontend framework, state management, routing]
+- Coding standards: [From 02b-coding-standards.ctx.md - component structure, naming conventions]
+- Architecture: [From 09b-application-architecture.ctx.md - frontend patterns, data fetching]
+- API contracts: [From 08b-api-contracts.ctx.md - endpoint definitions for type-safe client]
+- Design system: [From 06-design-system.ctx.md - component library, styling approach]
+
+**Expected output**:
+- Component skeletons (React/Vue/Svelte based on tech stack)
+- Routing configuration
+- State management setup
+- API client with type-safe contracts
+- TODO comments referencing Session 10 stories
+
+**If condition NOT met**: Skip this agent. Document: "Skipping frontend scaffold (API-only backend - no frontend framework specified in Session 3)"
 
 #### 5.3: Database Scaffold (ALWAYS)
-**Agent**: `.claude/agents/scaffold-database.md`
-**Inputs**: Tech stack, database schema (Session 7), Session 9b ORM pattern
-**Outputs**: Migration files, ORM models, seed scripts, connection config
-**Why Always**: Every project has database setup
 
-```
-Invoke sub-agent: scaffold-database.md
-Provide inputs: {
-  techStack: Session 3,
-  databaseSchema: Session 7,
-  architecture: Session 9b
-}
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate database scaffold`
+- **prompt**:
+  ```
+  Invoke the scaffold-database sub-agent to generate database setup files.
+
+  Agent path: .claude/agents/scaffold-database.md
+
+  Inputs:
+  - Tech stack: [From 02-tech-stack.ctx.md - database choice, ORM, migration tool]
+  - Database schema: [From 07-database-schema.ctx.md - table definitions, relationships, indexes]
+  - Architecture: [From 09b-application-architecture.ctx.md - ORM pattern, data access patterns]
+
+  Follow the agent specification to:
+  1. Generate migration files (initial schema creation)
+  2. Generate ORM models (mapping to database tables)
+  3. Generate seed scripts (initial data for development)
+  4. Set up connection configuration
+  5. Add TODO comments for custom migrations
+
+  Return structured output with:
+  - Generated migration file paths
+  - ORM model file paths
+  - Seed script paths
+  - Connection configuration
+  ```
 
 #### 5.4: CI/CD Scaffold (ALWAYS)
-**Agent**: `.claude/agents/scaffold-cicd.md`
-**Inputs**: Tech stack, test strategy (Session 9), deployment plan (Session 13 if exists)
-**Outputs**: GitHub Actions workflows (lint, test, build, deploy)
-**Why Always**: Every project needs automated testing
 
-```
-Invoke sub-agent: scaffold-cicd.md
-Provide inputs: {
-  techStack: Session 3,
-  testStrategy: Session 9,
-  deploymentPlan: Session 13 (if exists)
-}
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate CI/CD scaffold`
+- **prompt**:
+  ```
+  Invoke the scaffold-cicd sub-agent to generate CI/CD pipeline configuration.
+
+  Agent path: .claude/agents/scaffold-cicd.md
+
+  Inputs:
+  - Tech stack: [From 02-tech-stack.ctx.md - languages, frameworks, build tools]
+  - Test strategy: [From 09-test-strategy.ctx.md - unit tests, integration tests, coverage requirements]
+  - Deployment plan: [From 13-deployment-plan.md if exists - deployment strategy, environments]
+
+  Follow the agent specification to:
+  1. Generate GitHub Actions workflows (lint, test, build)
+  2. Add deployment workflow if Session 13 exists
+  3. Configure test coverage reporting
+  4. Set up branch protection recommendations
+  5. Add status badge instructions
+
+  Return structured output with:
+  - Generated workflow file paths
+  - Workflow configurations (YAML)
+  - Branch protection settings
+  - Setup instructions
+  ```
 
 #### 5.5: Docker Scaffold (CONDITIONAL)
+
 **Condition**: `deployment_strategy == "containers"` (from Session 13 if exists, or Session 4 architecture)
-**Agent**: `.claude/agents/scaffold-docker.md`
-**Inputs**: Tech stack, architecture (Session 4)
-**Outputs**: docker-compose.yml, Dockerfile (production)
 **Skip if**: Serverless deployment, managed platforms (Vercel, Railway)
 
-```
-If deployment_strategy == "containers":
-  Invoke sub-agent: scaffold-docker.md
-  Provide inputs: {
-    techStack: Session 3,
-    architecture: Session 4
-  }
-Else:
-  Log: "Skipping production Docker scaffold (deployment strategy is not containers - using {deployment_strategy} from Session 13/Session 4)"
-  Generate docker-compose.yml for local dev only (database, Redis, etc.)
-```
+Use Task tool to invoke `.claude/agents/scaffold-docker.md`:
+
+**Inputs to provide**:
+- Tech stack: [From 02-tech-stack.ctx.md - languages, frameworks, dependencies]
+- Architecture: [From 04-architecture.ctx.md - services, deployment strategy]
+
+**Expected output**:
+- docker-compose.yml for local development (database, Redis, etc.)
+- Production Dockerfile(s) if container deployment
+- Docker build configuration
+- Container orchestration recommendations
+
+**If condition NOT met**: Skip production Docker scaffold. Document: "Skipping production Docker scaffold (deployment strategy is not containers - using {deployment_strategy} from Session 13/Session 4)". Still generate docker-compose.yml for local dev only (database, Redis, etc.).
 
 #### 5.6: Testing Scaffold (ALWAYS)
-**Agent**: `.claude/agents/scaffold-testing.md`
-**Inputs**: Tech stack, test strategy (Session 9), Session 9b architecture
-**Outputs**: Unit test stubs, integration test stubs, test configuration
-**Why Always**: Testing is critical for all projects
 
-```
-Invoke sub-agent: scaffold-testing.md
-Provide inputs: {
-  techStack: Session 3,
-  testStrategy: Session 9,
-  architecture: Session 9b
-}
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate testing scaffold`
+- **prompt**:
+  ```
+  Invoke the scaffold-testing sub-agent to generate test setup and stubs.
+
+  Agent path: .claude/agents/scaffold-testing.md
+
+  Inputs:
+  - Tech stack: [From 02-tech-stack.ctx.md - testing frameworks, test runners]
+  - Test strategy: [From 09-test-strategy.ctx.md - unit tests, integration tests, coverage requirements]
+  - Architecture: [From 09b-application-architecture.ctx.md - layers to test, patterns]
+
+  Follow the agent specification to:
+  1. Generate unit test stubs for services and repositories
+  2. Generate integration test stubs for API endpoints
+  3. Set up test configuration (jest, pytest, etc.)
+  4. Configure coverage reporting
+  5. Add test helpers and fixtures
+
+  Return structured output with:
+  - Generated test file paths
+  - Test configuration files
+  - Coverage thresholds
+  - Test running instructions
+  ```
 
 #### 5.7: i18n Scaffold (CONDITIONAL)
+
 **Condition**: Session 2a constraints mark i18n as required
-**Agent**: `.claude/agents/scaffold-i18n.md`
-**Inputs**: Tech stack, constraints (Session 2a), supported locales
-**Outputs**: `/locales/` folder structure, translation files, i18n config
 **Skip if**: i18n NOT marked as required in Session 2a
 
-```
-If Session 2a marks i18n as required:
-  Invoke sub-agent: scaffold-i18n.md
-  Provide inputs: {
-    techStack: Session 3,
-    constraints: Session 2a,
-    architecture: Session 9b
-  }
-Else:
-  Log: "Skipping i18n scaffold (internationalization not marked as required in Session 2a constraints)"
-```
+Use Task tool to invoke `.claude/agents/scaffold-i18n.md`:
+
+**Inputs to provide**:
+- Tech stack: [From 02-tech-stack.ctx.md - i18n library chosen in Session 3]
+- Constraints: [From 02a-constraints.ctx.md - supported locales, default locale]
+- Architecture: [From 09b-application-architecture.ctx.md - i18n integration patterns]
+
+**Expected output**:
+- `/locales/` folder structure with translation files (en.json, fr.json, etc.)
+- i18n configuration file
+- Locale detection setup
+- Translation key extraction instructions
+
+**If condition NOT met**: Skip this agent. Document: "Skipping i18n scaffold (internationalization not marked as required in Session 2a constraints)"
 
 #### 5.8: Integration Adapters Scaffold (CONDITIONAL)
+
 **Condition**: `third_party_integrations.length > 0` (from Session 4 architecture)
-**Agent**: `.claude/agents/scaffold-integrations.md`
-**Inputs**: Tech stack, architecture (Session 4), integration list
-**Outputs**: Adapter skeletons for third-party APIs, configuration placeholders
 **Skip if**: No third-party integrations listed
 
-```
-If third_party_integrations.length > 0:
-  Invoke sub-agent: scaffold-integrations.md
-  Provide inputs: {
-    techStack: Session 3,
-    architecture: Session 4,
-    codingStandards: Session 3b
-  }
-Else:
-  Log: "Skipping integration adapters scaffold (no third-party integrations specified in Session 4 architecture)"
-```
+Use Task tool to invoke `.claude/agents/scaffold-integrations.md`:
+
+**Inputs to provide**:
+- Tech stack: [From 02-tech-stack.ctx.md - languages, HTTP clients, SDKs]
+- Architecture: [From 04-architecture.ctx.md - integration patterns, third-party services list]
+- Coding standards: [From 02b-coding-standards.ctx.md - adapter patterns, error handling conventions]
+
+**Expected output**:
+- Adapter class skeletons for each third-party integration (Stripe, S3, SendGrid, etc.)
+- Configuration placeholders (.env variables)
+- Error handling and retry logic
+- Integration test stubs
+
+**If condition NOT met**: Skip this agent. Document: "Skipping integration adapters scaffold (no third-party integrations specified in Session 4 architecture)"
 
 ### Step 6: Synthesize Sub-Agent Outputs
 
-Collect outputs from all invoked sub-agents and place files in repository root:
+Collect outputs from all INVOKED sub-agents (not skipped) and place files in repository root:
 - Backend code in appropriate directories (e.g., `src/services/`, `src/repositories/`, `src/controllers/`)
 - Frontend code in appropriate directories (e.g., `src/components/`, `src/pages/`, `src/store/`)
 - Database migrations in ORM-specific locations (e.g., `prisma/migrations/`, `alembic/versions/`)
