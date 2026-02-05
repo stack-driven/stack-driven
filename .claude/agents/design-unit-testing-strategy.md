@@ -152,6 +152,30 @@ If domain complexity is HIGH or complex business rules exist:
 
 ## Output Format
 
+**CRITICAL - Token Efficiency Requirements**:
+
+Return **structured data only** (max 5000 tokens). NO prose, NO rationale, NO examples beyond minimal templates.
+
+**Format**: Structured markdown following the template below (not JSON, but terse markdown)
+
+**DO NOT include**:
+- Journey analysis (orchestrator already has this)
+- Lengthy rationale explanations (keep to 1-2 lines per decision)
+- Multiple alternative approaches (orchestrator made decisions in Step 2)
+- Full code examples (use minimal pseudo-code only)
+- Detailed framework comparisons (orchestrator selected frameworks)
+
+**DO include**:
+- Decisions: Framework, coverage targets, test scope
+- Specifications: Test organization, mocking strategy, quality gates
+- Essential patterns: Naming conventions, AAA structure
+- Integration points: How this fits with other testing layers
+
+**Token target**: 3000-5000 tokens (not 12000+)
+**Validation**: Before returning, verify no prose explanations, no duplicate examples
+
+---
+
 Return your analysis as a structured markdown section:
 
 ```markdown
