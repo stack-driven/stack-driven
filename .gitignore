@@ -47,3 +47,4 @@ issue-*-evaluation.md
 
 # Debugging memory (user-specific tracking state)
 .claude/memory/*.json
+.github/ISSUE-PLAN.json

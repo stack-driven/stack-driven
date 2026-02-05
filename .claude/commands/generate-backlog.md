@@ -8,11 +8,24 @@ This is **Session 10** of the cascade. You'll create a production-ready backlog 
 
 ## Your Role
 
-You're a technical product manager creating a systematic backlog from all cascade outputs.
+You're a technical product manager creating a systematic backlog from all cascade outputs using a **two-phase approach**: Planning (synthesize decisions ONCE) → Execution (generate story files in batches).
+
+## Critical Philosophy
+
+**Research Foundation**: This command implements the research-validated embedded artifacts pattern from `reference-material/agentic-context-injection-reference-guide.md` (Lines 73-98, Grade A+):
+- Planning phase: Read ALL guidelines ONCE, synthesize decisions into PLAN.md
+- Human checkpoint: User reviews PLAN.md before execution
+- Execution phase: Read ONLY PLAN.md (NO guideline re-reading), generate stories in batches
+
+**Why this works**: 5,744 lines loaded ONCE (planning) → synthesized to ~1,000 lines → execution agents read 1,000 lines (not 5,744), achieving 100% completion for 50+ story backlogs.
 
 ## Process
 
-### Step 1: Read ALL Previous Outputs
+### PHASE 1: PLANNING (Synthesize Decisions)
+
+#### Step 1: Read ALL Previous Outputs (Context Loading)
+
+Read all 14 .ctx.md files ONCE to load cascade context:
 
 ```
 Read: product-guidelines/00-user-journey.ctx.md
@@ -40,657 +53,231 @@ Read: product-guidelines/09-test-strategy.ctx.md
 Read: product-guidelines/09b-application-architecture.ctx.md
 ```
 
-**Context Optimization**: We read .ctx.md files for significant context reduction:
-- `01-product-strategy.ctx.md` (not `01-product-strategy.md`) - 65% reduction: Contains vision, positioning, goals, principles, and roadmap themes—without market analysis and competitive landscape.
-- `02a-constraints.ctx.md` (if exists) - 70% reduction: Contains critical technical, organizational, and compliance constraints with trade-off decisions—without detailed constraint explanations and validation checklists.
-- `02b-coding-standards.ctx.md` (not `02b-coding-standards.md`) - 70% reduction: Contains framework-specific patterns, file organization, and naming conventions—without detailed implementation examples and migration guides.
-- `02c-ai-integration-strategy.ctx.md` (if exists) - 60% reduction: Contains AI implementation patterns, model choices, cost projections, and MVP phasing—without detailed compliance documentation and fallback strategies.
-- `07-database-schema.ctx.md` (not `07-database-schema.md`) - 56% reduction: Contains table list, ERD, relationships, and data access patterns—without column details, indexes, migrations, and scaling considerations.
-- `08-api-design.ctx.md` (Session 8) - Condensed: Contains API paradigm (REST/GraphQL/gRPC), serialization format (JSON/Protobuf/MessagePack), auth method, rate limiting, pagination approach, and error format—without decision trees, journey analysis, and alternatives.
-- `08b-api-contracts.ctx.md` (Session 8b) - 80% reduction: Contains endpoint list organized by journey step with brief descriptions—without OpenAPI schemas, request/response definitions, error schemas, and authentication flow details.
-- `09-test-strategy.ctx.md` (not `09-test-strategy.md`) - 66% reduction: Contains coverage targets, test types, testing tools, and quality gates—without testing philosophy, detailed examples, test data management, performance testing, security testing, and TDD/BDD workflows.
-- `09b-application-architecture.ctx.md` (not `09b-application-architecture.md`) - ~60% reduction: Contains service list with method signatures, repository methods, controller endpoint mappings, and component hierarchy—without business rules, implementation details, design decisions, and architecture rationale.
+**Context Loaded**: ~5,744 lines total across 14 files.
 
-Note: Brand strategy (formerly 07) and design system (formerly 08) are now POST-CASCADE extensions if needed, not required for backlog generation.
+#### Step 2: Generate Epic Structure
 
-### Step 2: Generate Epic Structure (Activity-Based, Journey-Driven)
+Extract activities/goals from journey and convert to epics following the existing algorithm (see original command Lines 56-312). This step is unchanged from the original command.
 
-**IMPORTANT**: Epic structure is generative, NOT prescriptive. Extract ACTIVITIES/GOALS from journey, not step counts.
+**Output**: Epic structure with 2-10 epics (1 Foundation + 1-9 Business + 0-5 Conditional Enablers).
 
-#### Step 2.1: Extract Activities (User Goals) from Journey
+#### Step 3: Generate Story Outlines (NOT Full Files Yet)
 
-Read `product-guidelines/00-user-journey.ctx.md`:
+For each journey step and foundation requirement, generate story OUTLINES with ALL decisions embedded:
 
-**For each journey step, identify the high-level USER GOAL:**
-- What is the user trying to ACHIEVE? (not what are they doing)
-- Group consecutive steps that serve the same goal into ONE activity
-- Abstract from features/tasks to goals
-
-**Process:**
-1. Read journey step descriptions carefully
-2. For each step, ask: "What user goal does this serve?"
-3. Group steps by shared goal/purpose
-4. Name each activity using goal-based naming
-
-**Activity naming examples:**
-- "Get Access" (goal: enter the system)
-- "Provide Input" (goal: submit data for processing)
-- "Receive Value" (goal: get core product value)
-- "Act on Results" (goal: use insights/outputs)
-
-**Result:** 2-5 activities (depends on journey goal complexity, NOT step count)
-
-**Example:**
-
-Journey (7 steps):
-1. Sign up for account
-2. Verify email
-3. Upload compliance document
-4. AI analyzes document
-5. Review assessment results
-6. Generate compliance report
-7. Share report with team
-
-Activities extracted:
-- Activity 1: Get Access (Steps 1-2) → Goal: "Get into the system"
-- Activity 2: Submit Document (Step 3) → Goal: "Provide input for analysis"
-- Activity 3: Receive AI Assessment (Step 4) → Goal: "Get automated analysis"
-- Activity 4: Act on Results (Steps 5-7) → Goal: "Use insights from analysis"
-
-Result: 7 steps → 4 activities
-
-#### Step 2.2: Validate Activity Size
-
-For each activity, estimate implementation scope:
-
-**Each activity should:**
-- Take weeks/months to implement (not days)
-- Span 2-6 sprints
-- Contain 5-20+ user stories
-
-**Adjustments:**
-- If activity too small (1-4 stories): Merge with related activity
-- If activity too large (25+ stories): Split into sub-activities with distinct goals
-
-**Validation questions:**
-- Does this activity represent a distinct user goal?
-- Can this be implemented in 2-6 sprints?
-- Does this group have 5-20+ stories?
-
-**Edge Case Guidance:**
-
-**Minimum Epic Count:**
-- **Minimum: 2 business epics** - If journey analysis yields only 1 activity, reconsider activity grouping. Look for sub-goals that could be separate epics.
-- **Solo activity edge case**: Valid for MVPs focused on single core feature, but plan for future expansion. Document in Epic Structure Rationale that additional epics will emerge as product matures.
-
-**Maximum Epic Count:**
-- **Maximum: 10 business epics** - If journey analysis yields >10 activities, consider merging related goals. Too many epics dilutes focus and complicates prioritization.
-- **Over-fragmentation warning**: If you have >10 activities, you're likely splitting too granularly. Group related sub-goals under broader activity umbrellas.
-
-**Unusual Journey Structures:**
-- **Linear journey (no branching)**: Still extract distinct goals, not just sequential steps
-- **Circular/recurring journey**: Group by goal type, not iteration (e.g., "Submit Document" epic handles all submissions, not "First Submission" and "Second Submission")
-- **Multi-persona journey**: Create epics by shared goals across personas, not separate epics per persona
-
-#### Step 2.3: Convert Activities → Business Epics
-
-Each validated activity = One business epic
-
-**Epic naming format:**
-- ✅ "Get Access" (goal-based)
-- ✅ "Submit for Assessment" (goal-based)
-- ✅ "Receive AI Analysis" (goal-based)
-- ❌ "Onboarding (Steps 1-2)" (step-range, FORBIDDEN)
-- ❌ "Epic 01: User Journey Start" (generic, FORBIDDEN)
-
-**Business epics will be numbered Epic 02+ (Foundation/Enabler is always Epic 01)**
-
-#### Step 2.4: Add Enabler Epics
-
-**CRITICAL: Epic numbering follows implementation order**
-
-**Epic 01: Foundation (Always First)**
-
-This enabler epic ALWAYS comes first (blocks all business epics):
-- Authentication & authorization
-- Database setup & migrations
-- Infrastructure (CI/CD, deployment)
-- Legal/compliance (Terms of Service, Privacy Policy, Cookie Policy, DPA)
-- Integration infrastructure (if third-party APIs exist)
-- Error handling & logging baseline
-
-**Epic 02 through Epic N: Business Epics (Journey Activities)**
-
-Number business epics in journey chronological order:
-- Epic 02: [First Activity] (e.g., "Get Access")
-- Epic 03: [Second Activity] (e.g., "Submit Document")
-- Epic 04: [Third Activity] (e.g., "Receive Assessment")
-- ...
-
-**Epic N+1 onwards: Conditional Enabler Epics**
-
-Add these ONLY if criteria met:
-
-**Epic: Design System**
-- **Detection**: Read `product-guidelines/06-design-system.ctx.md` if exists
-- **Criteria**: Add if >20 components OR design-heavy product
-  - Design-heavy heuristics:
-    - Journey mentions visual appeal, aesthetics, design quality as critical
-    - Multi-platform requirements (3+ device types)
-    - Design-sensitive personas (designers, marketers, content creators)
-    - Brand-critical products (trust through visual consistency)
-    - Consumer-facing B2C (vs. B2B functionality-focused)
-- **Alternative**: If <20 components AND not design-heavy, embed design stories in journey epics
-
-**Epic: Metrics & Analytics**
-- **Detection**: Read `product-guidelines/03b-metrics.ctx.md`
-- **Criteria**: Add if complex funnel tracking needed:
-  - Multi-stage conversion funnel with 4+ tracked steps
-  - A/B testing planned for 3+ journey steps
-  - Advanced analytics (cohort analysis, retention curves, attribution)
-- **Alternative**: If simple metrics, add instrumentation as acceptance criteria in journey stories
-
-**Epic: AI/ML Features**
-- **Detection**: Check if `product-guidelines/02c-ai-integration-strategy.ctx.md` exists
-- **Criteria**: Add if AI is core to value delivery (not peripheral)
-- **Contains**: Prompt engineering, RAG setup, model routing, cost monitoring
-- **Alternative**: If AI is peripheral feature, embed in journey epics
-
-**Epic: i18n/l10n**
-- **Detection**: Read `product-guidelines/02a-constraints.ctx.md`
-- **Criteria**: Add if "Internationalization requirements (i18n, l10n)" marked as required
-- **Alternative**: If single market MVP, skip or embed i18n infrastructure in Foundation epic
-
-**Epic: Third-Party Integrations**
-- **Detection**: Read `product-guidelines/02a-constraints.ctx.md`
-- **Criteria**: Add if 3+ third-party APIs (Stripe, SendGrid, Salesforce, etc.)
-- **Alternative**: If 0-2 integrations, embed integration stories in journey epics
-
-**Integration Epic Prioritization (if third-party integrations exist):**
-
-When integrations are identified in Session 2a, prioritize them based on journey criticality and MVP requirements:
-
-**P0 Integrations (Epic 01: Foundation)**:
-Integrations marked as "MVP required" in Session 2a MUST be in Foundation epic:
-- Payment processing (blocks monetization, journey Step 5+ revenue)
-- Authentication providers (blocks all journey steps requiring login)
-- Critical communication (transactional email for signup verification, password reset)
-- Compliance-required integrations (audit logging, DLP tools for HIPAA/SOC2)
-
-**Why**: These integrations are **launch blockers**. Product cannot go live without them. Implement first, test thoroughly before building business epics.
-
-**P1 Integrations (Parallel with Business Epics)**:
-Integrations that enhance but don't block journey steps can run parallel with Epic 02-04:
-- Analytics integrations (Segment, Mixpanel) - add during Epic 02-04 for early funnel data
-- Marketing automation (Mailchimp, ConvertKit) - add during Epic 03-05 for lead nurturing
-- CRM sync (Salesforce, HubSpot) - add after core journey validated (Epic 04+)
-- Secondary communication (SMS, push notifications) - add after email working
-
-**Why**: These integrations **improve** the product but aren't required for MVP validation. Can be added incrementally as business epics progress.
-
-**P2 Integrations (Post-MVP - Separate Epic)**:
-Integrations marked "Enterprise tier" or "Post-MVP" in Session 2a should be separate epic after business epics:
-- Advanced integrations (SSO providers, SCIM directory sync)
-- White-label/partner APIs (embeddable widgets, reseller integrations)
-- Compliance integrations (enterprise audit logging, data warehouse connectors)
-- Advanced analytics (data warehouse exports, BI tool integrations)
-
-**Why**: These integrations **unlock new markets** (enterprise tier, B2B partnerships) but aren't needed for initial customer validation.
-
-**Epic Dependency Example**:
-
-```
-Epic 01: Foundation (includes Stripe, SendGrid - P0 integrations)
-  ↓ blocks
-Epic 02: Get Access (requires SendGrid for email verification)
-  ↓ blocks
-Epic 03: Submit Document (can run parallel with Segment analytics integration - P1)
-  ↓ blocks
-Epic 04: Receive Assessment (requires Stripe for paid tier - already in Epic 01)
-  ↓
-Epic 05: Enterprise Integrations (SSO, SCIM, audit logging - P2, post-MVP)
-```
-
-**Integration Complexity Heuristics**:
-
-When deciding P0 vs P1 priority:
-- **P0 if**: Journey cannot progress without it (e.g., payment required for Step 5 "Receive Results")
-- **P0 if**: Legal/compliance requirement (e.g., GDPR data export via API)
-- **P1 if**: Journey works without it but user experience degraded (e.g., no email notifications)
-- **P2 if**: Only needed for specific customer tier (e.g., enterprise SSO)
-
-**Backlog Story Implications**:
-
-- P0 integrations: Generate stories in Epic 01 Foundation (implement before any business epics)
-- P1 integrations: Embed integration stories in Epic 02-04 (e.g., "Epic 03: Submit Document" includes "Story: Track document uploads in Segment")
-- P2 integrations: Generate separate Epic N+1 "Enterprise Integrations" after business epics complete
-
-**Session Reference**: Integration prioritization aligns with Session 2a Question 10 (integration timeline priority: MVP required vs Post-MVP vs Enterprise tier)
-
-#### Step 2.5: Generate Epic Structure Rationale
-
-Create an "Epic Structure Rationale" section for BACKLOG.md explaining:
-
-**Required content:**
-- Total epic count and breakdown (1 foundation + X business + Y conditional enabler)
-- List of activities extracted from journey with step mappings
-- Explanation of why activities were grouped this way
-- Which conditional epics were included and why
-- Note: "Epic numbering follows implementation order: Foundation (Epic 01) → Business (Epic 02+) → Conditional Enablers"
-
-**Example Epic Structure Rationale:**
-
+**Story Outline Structure** (condensed, for PLAN.md):
 ```markdown
-## Epic Structure Rationale
-
-Generated 5 epics by extracting 3 user goals from 5-step journey:
-
-**Epic 01: Foundation (Enabler)**
-- Auth, database, infrastructure, legal/compliance
-- Blocks all business epics (must implement first)
-
-**Business Epics (3 epics from journey activities):**
-- Epic 02: Get Access (Journey Steps 1-2)
-  - User goal: "Get into the system"
-  - Estimated: 8 stories, 2 sprints
-- Epic 03: Submit Document (Journey Step 3)
-  - User goal: "Provide input for analysis"
-  - Estimated: 12 stories, 3 sprints
-- Epic 04: Receive Assessment (Journey Steps 4-5)
-  - User goal: "Get AI insights and act on results"
-  - Estimated: 15 stories, 3 sprints
-
-**Conditional Enabler Epics (1 epic):**
-- Epic 05: Design System
-  - Criteria met: 24 components detected in Session 6, design-heavy product (consumer-facing, visual trust critical)
-  - Estimated: 18 stories, 4 sprints
-
-**Total:** 5 epics (1 foundation + 3 business + 1 conditional)
-
-This structure aligns with Stack-Driven's generative philosophy: epic count emerges from journey goal analysis, not prescriptive step-counting formulas.
+### STORY-XXX: [Title]
+- Epic: [Epic ID]
+- Priority: [P0/P1/P2]
+- RICE: [Score] (R:[X] × I:[X] × C:[X]% ÷ E:[X])
+- User Value: [1-2 sentences]
+- Tech Approach: [From Session 3 - frameworks, libraries]
+- Database: [From Session 7 - tables, columns]
+- API: [From Session 8 - endpoints, methods]
+- Design: [From Session 6 - components if exists]
+- Acceptance Criteria: [3-5 bullets]
+- Dependencies: [Blocked by which stories]
+- Estimation: [X person-days]
+- Journey Traceability: [Which journey step, why valuable]
 ```
 
-### Step 3: Generate User Stories (30-50 total)
+**CRITICAL**: Story outlines must embed ALL technical decisions from sessions 3-9b. No external references like "see Session 7 for schema" - embed the actual table names, endpoints, components directly in outlines.
 
-For EACH journey step, create stories that:
+**Output**: 30-60 story outlines (depends on journey complexity).
 
-1. **Enable that step's user value**
-2. **Use specified tech stack**
-3. **Implement designed components**
-4. **Track defined metrics**
-5. **If AI integration exists, implement AI features** (prompt engineering, RAG setup, model routing, etc.)
+#### Step 4: Embed Tech Stack Decisions
 
-**Story Format** (use `/templates/issue-template.md`):
+For each story outline, extract and embed relevant decisions from cascade:
+
+**From Session 3 (Tech Stack)**:
+- Frontend framework + version
+- Backend framework + version
+- Database + version
+- Auth provider
+- AI provider (if Session 3c exists)
+- i18n library (if Session 2a marks i18n required)
+
+**From Session 7 (Database Schema)**:
+- Table names relevant to this story
+- Key columns (e.g., user_id, created_at)
+- Indexes if performance-critical
+- Foreign keys if relationships matter
+
+**From Session 8 (API Design)**:
+- API paradigm (REST/GraphQL/gRPC)
+- Endpoints this story will implement (paths + methods)
+- Auth strategy (JWT, OAuth, etc.)
+- OWASP protection patterns if applicable
+
+**From Session 8b (API Contracts)**:
+- Request/response schemas (condensed)
+- Error codes
+
+**From Session 9b (Application Architecture)**:
+- Services/repositories/controllers this story touches
+
+#### Step 5: Synthesize PLAN.md
+
+Create comprehensive plan file embedding ALL decisions:
+
+**PLAN.md Structure** (~1,000 lines):
 ```markdown
-# [STORY-001] OAuth-based signup with Google
+# Backlog Generation Plan
 
-Type: Story
-Journey Step: Step 1 (Onboarding)
-Priority: P0
+## Tech Stack Decisions (Embedded from Session 3)
+- Frontend: [Framework]
+- Backend: [Framework]
+- Database: [Database + version]
+- Auth: [Provider]
+- AI: [Provider] (if exists)
+- i18n: [Library] (if required)
 
-## User Value
-When a compliance officer wants to try the product, they want frictionless signup, so they can reach value quickly.
+## Database Schema Summary (Embedded from Session 7)
+- Users: id, email, preferred_locale, created_at
+- [Other tables]: [Key columns]
 
-Value: Reduces signup friction, improves activation rate (key metric).
+## API Patterns (Embedded from Session 8)
+- Paradigm: [REST/GraphQL/gRPC]
+- Serialization: [JSON/Protobuf]
+- Auth: [Strategy]
+- Rate Limiting: [Strategy]
+- OWASP Patterns: [Key protections]
 
-## Acceptance Criteria
-- [ ] User clicks "Sign up with Google"
-- [ ] OAuth flow completes, creates user in PostgreSQL
-- [ ] User lands in empty dashboard (ready for Step 2)
+## Epic Structure
+[List of epics with IDs, titles, descriptions]
 
-## Technical Approach
-Tech Stack: Clerk for auth, PostgreSQL for user storage, Next.js frontend
+## Story Outlines (50+ stories, ALL decisions embedded)
 
-## Dependencies
-Blocked By: EPIC-04 (Database schema setup)
+### STORY-001: Database Schema Setup
+- Epic: Epic 01 (Foundation)
+- Priority: P0 (RICE: 500.0 = R:1000 × I:2 × C:100% ÷ E:4)
+- User Value: Enable data persistence for all features
+- Tech Approach: Alembic migrations, PostgreSQL 15+
+- Database: users(id, email, preferred_locale), products(id, title, awin_id), feeds(id, user_id, llm_score)
+- API: No endpoints (foundation)
+- Acceptance Criteria:
+  - [ ] Users table with preferred_locale column (for i18n)
+  - [ ] Products table with awin_id, price columns
+  - [ ] Feeds table with llm_score, generated_at
+  - [ ] Indexes: users(email), products(awin_id), feeds(user_id, generated_at)
+- Dependencies: None (blocks all other stories)
+- Estimation: 4 person-days
+- Journey Traceability: Foundation for Steps 2-6
 
-## Estimation
-Effort: 2 days (1 day Clerk integration, 1 day user creation flow)
+[... 49 more stories with ALL decisions embedded]
 ```
 
-**Required Foundation Stories (Epic 01: Foundation)**:
+Write PLAN.md to `product-guidelines/10-backlog/PLAN.md`.
 
-Every backlog MUST include these legal/compliance stories:
-- **Terms of Service/Conditions**: Legal agreement users accept when signing up
-- **Privacy Policy**: How user data is collected, used, stored, and protected
-- **Cookie Policy** (if applicable): Cookie usage and consent management
-- **Data Processing Agreement** (for B2B/Enterprise): GDPR/compliance requirements
+#### Step 6: Human Checkpoint (CRITICAL)
 
-These are P0 priorities - production applications cannot launch without them.
+Display checkpoint message and PAUSE execution:
 
-**Third-Party Integration Stories** (if integrations exist from Session 2a):
+```
+[CHECKPOINT] Session 10 Planning Complete
 
-For EACH third-party integration identified in Session 2a, create stories following these patterns:
+PLAN.md generated with 50 story outlines.
 
-#### Integration Infrastructure (Epic 01: Foundation) - Create Once
-Before individual integration stories, create shared infrastructure:
-- [ ] **Integration credential storage**: Database schema (integration_credentials table), encryption setup (application-layer encryption using libsodium or similar)
-- [ ] **Webhook infrastructure** (if webhooks exist): Endpoint routing, signature verification middleware, async processing queue (Redis/SQS), background workers
-- [ ] **Integration monitoring**: Health checks, success rate tracking (>99.5% target), alerting setup (5+ consecutive failures)
-- [ ] **Rate limiting client**: Client-side rate limiter, track provider limits, queue excess requests
+FILE LOCATION: product-guidelines/10-backlog/PLAN.md
 
-#### Per-Integration Story Patterns
+REVIEW CHECKLIST:
+- [ ] Each business epic traces to a user GOAL (not step range)
+- [ ] Epic count matches activities extracted from journey
+- [ ] Tech stack decisions embedded in stories (no "see Session 3" references)
+- [ ] Database tables embedded in relevant stories
+- [ ] API endpoints embedded in relevant stories
+- [ ] RICE scores calculated for all stories
+- [ ] Journey traceability present (which step, why valuable)
 
-**Pattern 1: API-only integrations** (e.g., SendGrid, Twilio)
+WHAT HAPPENS NEXT:
+If you approve this plan, I will generate 50 story markdown files in batches.
 
-```markdown
-# [STORY-XXX] [Provider] API Integration
+ROLLBACK:
+If you find issues, run /generate-backlog again to regenerate.
 
-Type: Story
-Journey Step: [Which step requires this integration]
-Priority: P0/P1 (P0 if MVP-required from Session 2a)
-
-## User Value
-When a [user persona] wants to [action], they need [integration capability], so they can [outcome].
-
-Example: "When a compliance officer completes assessment, they need email notification via SendGrid, so they can review results immediately (serves Step 4 of journey)."
-
-## Acceptance Criteria
-- [ ] [Provider] SDK/client library installed and configured
-- [ ] API credentials stored securely in integration_credentials table (encrypted at application layer)
-- [ ] [Core API functionality] implemented (send email, create resource, fetch data, etc.)
-- [ ] Error handling with retry logic (exponential backoff: 1s → 2s → 4s → 8s → 16s, max 5 attempts)
-- [ ] Rate limiting client-side (respect provider's rate limits from Session 4 architecture)
-- [ ] Integration health metrics tracked (success rate, latency, error types)
-- [ ] Unit tests for API client wrapper (mock provider responses)
-- [ ] Integration tests with provider's test mode/sandbox environment
-
-## Technical Approach
-Tech Stack: [Backend framework from Session 3], [Provider SDK]
-Database: integration_credentials table for API key storage
-Patterns: Retry with exponential backoff, circuit breaker if non-critical (from Session 4 architecture)
-
-## Dependencies
-Blocked By: STORY-XXX (Integration infrastructure setup)
-
-## Estimation
-Effort: [2-3 days] (1 day setup + SDK integration, 1 day core implementation, 0.5 day testing)
+Type "continue" to proceed with story file generation, or "stop" to review plan first.
 ```
 
-**Pattern 2: Webhook integrations** (e.g., Stripe, Salesforce)
+**CRITICAL**: Do NOT proceed to Phase 2 without explicit user approval.
 
-```markdown
-# [STORY-XXX] [Provider] Webhook Integration
+### PHASE 2: EXECUTION (Generate Story Files in Batches)
 
-Type: Story
-Journey Step: [Which step requires real-time updates]
-Priority: P0 (webhooks are often critical for real-time updates)
+#### Step 7: Wait for User Approval
 
-## User Value
-When [external event occurs], the system needs to receive real-time notification from [provider], so [user] can see [updated state] immediately.
+If user types "continue", "proceed", "yes", "go ahead" → Proceed to Step 8.
 
-Example: "When Stripe confirms payment, system needs webhook notification, so user's account is activated instantly without manual check (serves Step 5 of journey)."
+If user types "stop", "wait", "review" → END here, user will review PLAN.md manually.
 
-## Acceptance Criteria
-- [ ] Webhook endpoint created: POST /webhooks/[provider] (matches Session 8b API contract)
-- [ ] Signature verification implemented (HMAC-SHA256 validation using webhook secret)
-- [ ] Idempotency check (webhook_events table, unique constraint on provider + event_id)
-- [ ] Async processing (enqueue event to Redis/SQS, return 200 within 5 seconds)
-- [ ] Background worker processes webhook events from queue
-- [ ] Retry handling for failed webhook processing (max 5 attempts with exponential backoff)
-- [ ] Webhook events logged to webhook_events table for debugging and audit
-- [ ] Provider's webhook registered in their dashboard (endpoint URL, events to subscribe, verification)
-- [ ] Integration tests with provider's webhook test events
+#### Step 8: Partition Stories by Epic
 
-## Technical Approach
-Tech Stack: [Backend framework], webhook_events table, [Queue: Redis/SQS from Session 4]
-Security: HMAC-SHA256 signature verification using webhook secret (from Session 4 architecture)
-Processing: Async to avoid timeout (provider expects 200 within 5s per Session 8b)
-
-## Dependencies
-Blocked By: STORY-XXX (Webhook infrastructure setup)
-
-## Estimation
-Effort: [3-4 days] (1 day endpoint + verification, 1 day processing logic, 1 day testing, 0.5 day monitoring)
-```
-
-**Pattern 3: Bidirectional sync integrations** (e.g., Salesforce CRM sync)
-
-```markdown
-# [STORY-XXX] [Provider] Bidirectional Sync
-
-Type: Story
-Journey Step: [Which step requires data consistency]
-Priority: P1 (often post-MVP)
-
-## User Value
-When [user action occurs], data should sync to [external system], and when [external event occurs], changes should sync back, so [user] has consistent data everywhere.
-
-Example: "When compliance officer completes assessment, create Salesforce opportunity, and when sales rep closes deal in Salesforce, update user's account status here (serves Step 6 of journey: sharing results with sales team)."
-
-## Acceptance Criteria
-- [ ] Outbound sync: [Action] creates/updates [resource] in [provider] via API
-- [ ] Inbound sync: [Provider webhook/polling] updates [resource] locally
-- [ ] External resource mappings stored (external_resource_mappings table: internal_id ↔ external_id)
-- [ ] Sync jobs tracked (sync_jobs table with status, progress, errors, retry count)
-- [ ] Conflict resolution strategy implemented (last-write-wins, manual review, or custom per Session 2a)
-- [ ] Background sync workers process sync_jobs queue
-- [ ] Sync health dashboard (last sync time, success rate, failed records count)
-- [ ] Manual sync trigger (admin can force re-sync for debugging)
-- [ ] Error handling with retry (max 3 attempts, then flag for manual review)
-
-## Technical Approach
-Tech Stack: [Backend framework], [Provider SDK], sync_jobs + external_resource_mappings tables
-Sync Frequency: [Real-time via webhooks / Scheduled every X minutes based on Session 2a]
-Conflict Resolution: [Strategy based on Session 2a requirements: last-write-wins, timestamp-based, manual review]
-
-## Dependencies
-Blocked By: STORY-XXX ([Provider] API integration), STORY-XXX ([Provider] webhook integration if applicable)
-
-## Estimation
-Effort: [5-8 days] (2 days outbound sync, 2 days inbound sync, 2 days conflict handling + mappings, 1-2 days testing)
-```
-
-**Story Generation Logic**:
-1. Read Session 2a constraints for list of integrations
-2. For each integration, determine type:
-   - API-only: No webhooks mentioned
-   - Webhook: Session 2a mentions "receive events" or "webhooks"
-   - Bidirectional: Session 2a mentions "sync" or "two-way"
-3. Generate infrastructure stories first (once for all integrations)
-4. Generate individual stories per pattern
-5. Set priority based on Session 2a "Integration timeline priority" (MVP-required = P0, post-MVP = P1)
-
-**AI-Specific Stories (if 02c-ai-integration-strategy exists)**:
-
-When AI integration strategy is present, include these stories based on the chosen patterns:
-- **Prompt Engineering**: Stories for crafting and testing prompts for each AI feature
-- **RAG Implementation** (if using RAG): Vector store setup, chunking strategy, retrieval optimization
-- **Model Routing** (if using multiple models): Router implementation, fallback logic
-- **Cost Monitoring**: Usage tracking, budget alerts, optimization stories
-- **AI Quality Assurance**: Response validation, accuracy testing, feedback loops
-- **Compliance Setup** (if regulated): DPA configuration, data retention policies
-
-**Internationalization (i18n) Stories (if 02a-constraints.ctx.md marks i18n as required)**:
-
-Check `product-guidelines/02a-constraints.ctx.md` for "Internationalization requirements (i18n, l10n)" marked as required.
-
-When i18n is required, include these Foundation epic stories:
-
-**i18n Infrastructure Setup**:
-```markdown
-# [STORY-XXX] Set up i18n translation file structure
-
-Type: Story
-Epic: Epic 01 (Foundation)
-Priority: P0
-
-## User Value
-When users from different regions use the product, they want content in their native language, so they can understand and use the product effectively.
-
-Value: Enables multi-language support as required by constraints (Session 2a).
-
-## Acceptance Criteria
-- [ ] Create `/locales/` directory structure with subdirectories for each supported language
-- [ ] Initialize translation files (e.g., `common.json`, `errors.json`) for each locale
-- [ ] Configure i18n library ([from Session 3: next-intl/react-i18next/vue-i18n/etc.])
-- [ ] Implement locale detection (Accept-Language header + user preference)
-- [ ] Add locale fallback chain (e.g., de-CH → de-DE → en-US)
-
-## Technical Approach
-Tech Stack: [i18n library from Session 3], JSON translation files
-Database: User.preferred_locale column (from Session 7)
-API: Accept-Language header support (from Session 8)
-
-## Dependencies
-Blocked By: Database schema setup (User table with preferred_locale)
-
-## Estimation
-Effort: 2 days (1 day structure and config, 1 day locale detection logic)
-```
-
-**Locale Switching UI**:
-```markdown
-# [STORY-XXX] Implement locale switching UI component
-
-Type: Story
-Epic: Epic 01 (Foundation)
-Priority: P0
-
-## User Value
-When users want to change their language preference, they want a simple dropdown/selector, so they can switch languages immediately.
-
-Value: Enables users to override browser defaults and save preferences.
-
-## Acceptance Criteria
-- [ ] Create locale selector component (dropdown or similar)
-- [ ] Display available locales (from Session 2a constraints)
-- [ ] Save preference to user.preferred_locale in database
-- [ ] Page content updates immediately without refresh
-- [ ] Persist selection across sessions
-
-## Technical Approach
-Component: LanguageSelector (design system component)
-API: PATCH /api/users/{id} with preferred_locale field
-State: Update i18n context/provider with new locale
-
-## Dependencies
-Blocked By: i18n infrastructure setup, User API endpoints
-
-## Estimation
-Effort: 1.5 days
-```
-
-**Extract Hardcoded Strings to Translation Keys**:
-```markdown
-# [STORY-XXX] Extract hardcoded UI strings to translation files
-
-Type: Story
-Epic: Epic 01 (Foundation)
-Priority: P1 (can be done incrementally per feature)
-
-## User Value
-When users switch languages, they want ALL UI text translated, so the experience is fully localized.
-
-Value: Ensures consistent multi-language experience across the product.
-
-## Acceptance Criteria
-- [ ] Audit codebase for hardcoded strings in components
-- [ ] Extract strings to translation keys (e.g., "Sign Up" → t('auth.signUp'))
-- [ ] Create translation entries for all supported locales
-- [ ] Verify no hardcoded user-facing strings remain
-- [ ] Document translation key naming convention
-
-## Technical Approach
-Tools: i18n library's translation function (e.g., useTranslation hook, $t function)
-Pattern: Namespace-based keys (e.g., 'auth.signUp', 'errors.validation.required')
-
-## Dependencies
-Blocked By: i18n infrastructure setup
-
-## Estimation
-Effort: 3-5 days (depends on codebase size; can be split by feature/epic)
-```
-
-**Translation Requirement Markers**:
-When generating other user stories, check if they involve user-facing content:
-- If UI components, forms, or messages: Add acceptance criterion "[ ] All user-facing strings use translation keys"
-- If API endpoints: Add acceptance criterion "[ ] Error messages localized based on Accept-Language"
-- If database entities (e.g., Product, Framework): Reference translation table pattern from Session 7
-
-### Step 4: Apply RICE Prioritization
-
-For each story, calculate RICE:
-
-**R (Reach)**: How many users affected per time period?
-**I (Impact)**: Journey improvement (0.25 = minimal, 0.5 = low, 1 = medium, 2 = high, 3 = massive)
-**C (Confidence)**: Evidence level (50% = low, 80% = medium, 100% = high)
-**E (Effort)**: Person-days
-
-**RICE Score** = (R × I × C) ÷ E
-
-**Priority Assignment**:
-- P0: RICE > [threshold], critical for MVP
-- P1: Important, post-MVP
-- P2: Nice-to-have, defer
-
-### Step 5: Map Dependencies
-
-For each story, note:
-- **Blocks**: What stories can't start until this is done?
-- **Blocked By**: What must be done first?
+Group story IDs by epic, create batches of 10 stories per batch:
 
 Example:
-- STORY-001 (OAuth) blocks STORY-010 (User dashboard)
-- STORY-001 blocked by EPIC-04 (Database setup)
+- Batch 1: Epic 01 stories 001-010
+- Batch 2: Epic 01 stories 011-015
+- Batch 3: Epic 02 stories 016-025
+- Batch 4: Epic 02 stories 026-030
+- [etc.]
 
-## Generating the Output
+#### Step 9: Invoke Execution Agent for Each Batch
 
-### Create Directory Structure:
+For each batch, use Task tool to invoke `.claude/agents/write-story-files.md`:
 
 ```
-product-guidelines/10-backlog/
-├── BACKLOG.md (summary)
-└── issues/
-    ├── epic-01-onboarding.md
-    ├── epic-02-core-value.md
-    ├── story-001-oauth-signup.md
-    ├── story-002-document-upload.md
-    └── ... (30-50 stories total)
+Use Task tool with subagent_type "general-purpose":
+
+Prompt: "Generate story files for batch [X] using PLAN.md
+
+INPUTS:
+- PLAN.md path: product-guidelines/10-backlog/PLAN.md
+- Story IDs: [001-010 OR 011-020, etc.]
+- Output directory: product-guidelines/10-backlog/issues/
+
+INSTRUCTIONS:
+Follow the write-story-files agent specification in .claude/agents/write-story-files.md to:
+1. Read PLAN.md (NO guideline re-reading)
+2. Extract story outlines for specified story IDs
+3. Expand each outline to full markdown format using /templates/issue-template.md structure
+4. Write 10 story files to output directory
+5. Report written file paths"
 ```
 
-### BACKLOG.md Contents:
+**Progress Display**: After each batch, show:
+```
+[Batch 1/5] Generated Epic 01 stories 001-010 (10 files written)
+[Batch 2/5] Generated Epic 01 stories 011-015 (5 files written)
+[Batch 3/5] Generated Epic 02 stories 016-025 (10 files written)
+...
+```
 
-- Epic summary (6-8 epics)
-- Priority distribution (X P0 stories, Y P1, Z P2)
-- Estimated timeline (total effort in weeks)
-- Journey mapping (which stories serve which journey steps)
+#### Step 10: Generate BACKLOG.md Summary
 
-### Issue File Contents:
+After all batches complete, create summary file:
 
-Use `/templates/issue-template.md` for EVERY story.
+```markdown
+# Backlog Summary
 
-**Critical**: Each story must have:
-- Journey step reference
-- Clear user value
-- Acceptance criteria (testable)
-- Tech stack components used
-- RICE score and priority
-- Dependencies
+Generated [X] stories across [Y] epics.
 
-## Validation Checklist
+## Epic Structure Rationale
+[Explanation of how epics were derived from journey activities]
 
-### Epic Structure Validations
-- [ ] **Activity extraction validation**: Each business epic traces to a user GOAL (not step range)
-- [ ] **Epic count validation**: Epic count = activities extracted (NOT step count formula)
-- [ ] **Epic naming validation**: Names are goal-based ("Get Access", not "Onboarding (Steps 1-2)")
-- [ ] **Epic numbering validation**: Epic 01 is always Foundation/Enabler
-- [ ] **Business epic order**: Epic 02+ numbered in journey chronological order
-- [ ] **Epic sizing validation**: Each epic estimated at 5-20+ stories (appropriate size)
-- [ ] **Edge cases handled**: Minimum 2 business epics, maximum 10 (unless justified)
-- [ ] **Epic Structure Rationale exists**: BACKLOG.md explains activity extraction and grouping decisions
+## Priority Distribution
+- P0 stories: [A] (critical for MVP)
+- P1 stories: [B] (important, post-MVP)
+- P2 stories: [C] (nice-to-have)
 
-### Story-Level Validations
-- [ ] **Journey alignment**: Every issue references a journey step or foundation requirement
-- [ ] **Acceptance criteria**: All P0 issues have clear acceptance criteria
-- [ ] **Dependencies mapped**: All business epics show "Blocked By: Epic 01 (Foundation)"
-- [ ] **Tech stack alignment**: Stories use Session 3 technology choices
-- [ ] **Required legal stories**: Terms, Privacy Policy, Cookie Policy, DPA included
+## Estimated Timeline
+Total effort: [Z] person-weeks
 
-### Conditional Story Validations
-- [ ] **Third-party integrations**: Integration stories follow pattern (if integrations exist in 02a-constraints)
-- [ ] **AI integration**: AI stories included (if 02c-ai-integration-strategy.ctx.md exists)
-- [ ] **i18n infrastructure**: i18n stories included (if 02a-constraints marks i18n required)
+## Journey Mapping
+- Journey Step 1 → Stories: 001, 002, 003
+- Journey Step 2 → Stories: 004, 005, 006
+[etc.]
+```
+
+Write to `product-guidelines/10-backlog/BACKLOG.md`.
 
 ## After Generation
 
@@ -706,7 +293,10 @@ Your Backlog:
 
 Estimated MVP timeline: [Z] weeks
 
-File created: product-guidelines/10-backlog/BACKLOG.md + [Y] issue files
+Files created:
+- product-guidelines/10-backlog/PLAN.md (synthesized plan)
+- product-guidelines/10-backlog/BACKLOG.md (summary)
+- product-guidelines/10-backlog/issues/*.md ([Y] story files)
 
 Next, we can push these issues to GitHub.
 
@@ -716,52 +306,18 @@ Or check progress: /cascade-status
 
 ## Important Guidelines
 
-1. **Every issue traces to journey**: No "nice to have" features disconnected from user value
-2. **Use specified tech stack**: Stories should reference chosen technologies
-3. **Implement design system**: Stories should reference designed components
-4. **Track metrics**: Include analytics instrumentation stories
-5. **Reasonable estimates**: No story >5 days (break down if larger)
-6. **Clear acceptance criteria**: Every story testable
-7. **Include legal compliance**: Every backlog MUST include Terms of Service, Privacy Policy, and other required legal documents (P0 priority)
+1. **Two-phase execution**: Planning (read all, synthesize once) → Execution (read plan, generate batches)
+2. **Human checkpoint REQUIRED**: User must approve PLAN.md before story file generation
+3. **Embed ALL decisions**: Story outlines in PLAN.md must have NO external references
+4. **Batch processing**: 10 stories per batch (prevents context exhaustion)
+5. **Progress visibility**: Show batch completion status after each agent invocation
+6. **Idempotent regeneration**: Running /generate-backlog twice overwrites files safely
 
 ## Reference
 
 - Template: `/templates/issue-template.md`
-- Example: `/examples/compliance-saas/backlog/` (if created)
-
----
-
-**Now, synthesize all cascade outputs into a complete, prioritized backlog!**
-
-## Session 10 Checkpoint
-
-After generating the backlog, STOP and present this checkpoint:
-
----
-
-**Session 10 complete! Production backlog generated.**
-
-**REVIEW CHECKLIST:**
-- [ ] Each business epic traces to a user GOAL (not step range)
-- [ ] Epic count matches activities extracted from journey (NOT step count)
-- [ ] Epic names are goal-based ("Get Access", not "Onboarding (Steps 1-2)")
-- [ ] Epic 01 is Foundation (enabler epic)
-- [ ] Business epics (Epic 02+) follow journey chronological order
-- [ ] Each epic estimated at 5-20+ stories (weeks/months of work)
-- [ ] Epic Structure Rationale section exists and explains activity extraction
-- [ ] Dependencies clearly mapped (business epics blocked by Epic 01)
-- [ ] Journey traceability: Stories reference specific journey steps and value
-
-**What happens next:**
-Session 11 (`/create-gh-issues`) will push these issues to GitHub. Epic structure becomes your project roadmap.
-
-**If you found issues:**
-Run `/generate-backlog` again to regenerate with fresh analysis.
-
-**If everything looks good:**
-Type "continue" when ready to proceed to Session 11 (push to GitHub).
-
----
+- Execution Agent: `/.claude/agents/write-story-files.md`
+- Research: `reference-material/agentic-context-injection-reference-guide.md` (Lines 73-98)
 
 ## Output Format
 
