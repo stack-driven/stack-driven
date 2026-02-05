@@ -120,188 +120,289 @@ FUNCTION calculate_tier():
 
 ### Step 4: Conditional Sub-Agent Invocation
 
-Invoke sub-agents based on journey requirements (Epic #167 pattern):
+Invoke sub-agents based on journey requirements using Task tool (Epic #167 pattern):
 
-#### ALWAYS Invoked (4 core sub-agents):
+#### 4.1: Select Deployment Strategy (ALWAYS)
 
-**1. Select Deployment Strategy**
-```bash
-Invoke: .claude/agents/select-deployment-strategy.md
-Inputs: {
-  journey_criticality: [extracted from Session 1],
-  sla_requirement: [extracted from Session 2],
-  deployment_frequency_target: [extracted from Session 2],
-  regulated_industry: [from Session 2a],
-  journey_downtime_tolerance: [from Session 1],
-  team_size: [from Session 2],
-  product_stage: [from Session 2]
-}
-Output: Deployment pattern (rolling/blue-green/canary/feature-flags) with journey traceability
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Select deployment strategy`
+- **prompt**:
+  ```
+  Invoke the deployment strategy selection sub-agent to recommend optimal deployment pattern.
 
-**2. Design CI/CD Pipeline**
-```bash
-Invoke: .claude/agents/design-cicd-pipeline.md
-Inputs: {
-  source_control: [from Session 3],
-  tech_stack: [from Session 3],
-  test_strategy: [from Session 9],
-  deployment_targets: ["development", "staging", "production"],
-  container_registry: [inferred from cloud provider]
-}
-Output: CI/CD platform selection, pipeline stages, build optimizations
-```
+  Agent path: .claude/agents/select-deployment-strategy.md
 
-**3. Design IaC Setup**
-```bash
-Invoke: .claude/agents/design-iac-setup.md
-Inputs: {
-  cloud_provider: [from Session 2a constraints OR Session 3],
-  programming_language_preference: [from Session 3],
-  compliance_requirements: [from Session 2a],
-  team_size: [from Session 2],
-  infrastructure_components: [from Session 4 architecture]
-}
-Output: IaC tool selection, module structure, state management, policy-as-code
-```
+  Inputs:
+  - Journey criticality: [From 00-user-journey.ctx.md - life-critical/financial/productivity/entertainment]
+  - SLA requirement: [From 01-product-strategy.ctx.md - 99.999%/99.99%/99.9%/99%/none]
+  - Deployment frequency target: [From 01-product-strategy.ctx.md - hourly/daily/weekly/monthly]
+  - Regulated industry: [From 02a-constraints.ctx.md if exists - boolean]
+  - Journey downtime tolerance: [From 00-user-journey.ctx.md - zero/seconds/minutes/hours]
+  - Team size: [From 01-product-strategy.ctx.md - number]
+  - Product stage: [From 01-product-strategy.ctx.md - startup/growth/scale/enterprise]
 
-**4. Integrate Observability**
-```bash
-Invoke: .claude/agents/integrate-observability.md
-Inputs: {
-  session_14_exists: [check if file exists],
-  monitoring_stack: [from Session 14 OR default recommendations],
-  sla_requirement: [from Session 2],
-  deployment_pattern: [from sub-agent 1 output],
-  slis_defined: [from Session 14 OR defaults]
-}
-Output: DORA metrics tracking, automated rollback triggers, alert routing
-```
+  Follow the agent specification to:
+  1. Validate all required inputs are present
+  2. Apply decision tree based on criticality and SLA
+  3. Recommend deployment pattern (rolling/blue-green/canary/feature-flags)
+  4. Provide journey traceability for recommendation
+  5. Document rollback plan and trade-offs
+
+  Return structured output with:
+  - Recommended deployment pattern
+  - Journey traceability (why this pattern for this journey)
+  - Rollback plan
+  - Trade-offs accepted
+  - Alternatives NOT chosen (2+ patterns)
+  ```
+
+#### 4.2: Design CI/CD Pipeline (ALWAYS)
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Design CI/CD pipeline`
+- **prompt**:
+  ```
+  Invoke the CI/CD pipeline design sub-agent to select platform and define pipeline stages.
+
+  Agent path: .claude/agents/design-cicd-pipeline.md
+
+  Inputs:
+  - Source control: [From 02-tech-stack.ctx.md - GitHub/GitLab/Bitbucket]
+  - Tech stack: [From 02-tech-stack.ctx.md - languages, frameworks, build tools]
+  - Test strategy: [From 09-test-strategy.ctx.md - unit/integration/E2E requirements]
+  - Deployment targets: ["development", "staging", "production"]
+  - Container registry: [Inferred from cloud provider or source control]
+  - Deployment pattern: [From Step 4.1 output - rolling/blue-green/canary]
+
+  Follow the agent specification to:
+  1. Select CI/CD platform based on source control and team size
+  2. Define pipeline stages (lint, security scan, test, build, deploy, verify)
+  3. Design build optimizations (caching, parallelization)
+  4. Configure deployment automation per environment
+  5. Integrate with deployment pattern from Step 4.1
+
+  Return structured output with:
+  - CI/CD platform selection with rationale
+  - Pipeline stages with specific commands
+  - Build optimization strategies
+  - Environment-specific configurations
+  - Integration with deployment pattern
+  ```
+
+#### 4.3: Design IaC Setup (ALWAYS)
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Design Infrastructure as Code setup`
+- **prompt**:
+  ```
+  Invoke the IaC design sub-agent to select IaC tool and define module structure.
+
+  Agent path: .claude/agents/design-iac-setup.md
+
+  Inputs:
+  - Cloud provider: [From 02a-constraints.ctx.md if exists OR 02-tech-stack.ctx.md - AWS/GCP/Azure/multi-cloud]
+  - Programming language preference: [From 02-tech-stack.ctx.md - primary backend language]
+  - Compliance requirements: [From 02a-constraints.ctx.md if exists - HIPAA/SOC2/PCI-DSS]
+  - Team size: [From 01-product-strategy.ctx.md - number]
+  - Infrastructure components: [From 04-architecture.ctx.md - services, databases, message queues]
+  - Deployment complexity: [From Step 3 - startup-simple/saas-moderate/enterprise-complex]
+
+  Follow the agent specification to:
+  1. Select IaC tool (Terraform, Pulumi, CDK, CloudFormation) based on language and team
+  2. Design module structure (networking, compute, data, security)
+  3. Define state management strategy
+  4. Integrate policy-as-code if compliance required
+  5. Plan for multi-environment management
+
+  Return structured output with:
+  - IaC tool selection with rationale
+  - Module structure and organization
+  - State management strategy
+  - Policy-as-code integration (if applicable)
+  - Multi-environment strategy
+  ```
+
+#### 4.4: Integrate Observability (ALWAYS)
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Integrate deployment observability`
+- **prompt**:
+  ```
+  Invoke the observability integration sub-agent to configure deployment monitoring.
+
+  Agent path: .claude/agents/integrate-observability.md
+
+  Inputs:
+  - Session 14 exists: [Check if product-guidelines/14-observability-strategy.md exists]
+  - Monitoring stack: [From 14-observability-strategy.md if exists OR default recommendations]
+  - SLA requirement: [From 01-product-strategy.ctx.md - 99.999%/99.99%/99.9%/99%]
+  - Deployment pattern: [From Step 4.1 output - rolling/blue-green/canary/feature-flags]
+  - SLIs defined: [From 14-observability-strategy.md if exists OR defaults]
+  - Critical journey steps: [From 00-user-journey.ctx.md - top 3 steps]
+
+  Follow the agent specification to:
+  1. Configure DORA metrics tracking (deployment frequency, lead time, MTTR, change failure rate)
+  2. Define automated rollback triggers based on SLIs
+  3. Design alert routing for deployment failures
+  4. Integrate with deployment pattern health checks
+  5. Plan deployment verification tests
+
+  Return structured output with:
+  - DORA metrics configuration
+  - Automated rollback triggers
+  - Alert routing strategy
+  - Deployment verification tests
+  - Health check integration
+  ```
 
 ---
 
-#### CONDITIONAL Invocation (3 sub-agents):
+#### 4.5: Design Kubernetes Config (CONDITIONAL)
 
-**5. Design Kubernetes Config** (if orchestration == "kubernetes" OR replicas > 1)
-```bash
-CONDITION: deployment_complexity in ["saas-moderate", "enterprise-complex"]
-           OR tech_stack mentions "kubernetes"
-           OR microservices architecture
+**Condition**: `deployment_complexity` in ["saas-moderate", "enterprise-complex"] OR tech stack mentions "kubernetes" OR microservices architecture
 
-Invoke: .claude/agents/design-kubernetes-config.md
-Inputs: {
-  sla_requirement: [from Session 2],
-  expected_users: [estimated from Session 2 strategy],
-  expected_requests_per_second: [estimated from journey scale],
-  compliance_requirements: [from Session 2a],
-  journey_load_pattern: [from Session 1: steady/spiky/unpredictable],
-  app_name: [from product name],
-  container_image: [inferred from CI/CD],
-  app_port: [from tech stack],
-  health_check_path: "/healthz"
-}
-Output: Production Kubernetes manifests (Deployment, Service, HPA, PDB)
-```
+**Skip if**: Serverless deployment, managed platforms (Vercel, Railway, Heroku)
 
-**6. Design Disaster Recovery** (if SLA > 99.9% OR criticality in ["life-critical", "financial"])
-```bash
-CONDITION: sla_requirement >= "99.9%"
-           OR journey_criticality in ["life-critical", "financial"]
-           OR compliance_requirements exists
+Use Task tool to invoke `.claude/agents/design-kubernetes-config.md`:
 
-Invoke: .claude/agents/design-disaster-recovery.md
-Inputs: {
-  journey_criticality: [from Session 1],
-  sla_requirement: [from Session 2],
-  database_complexity: [from Session 7],
-  compliance_requirements: [from Session 2a]
-}
-Output: RTO/RPO tier, backup strategy (3-2-1-1-0 rule), failover procedures, chaos engineering
-```
+**Inputs to provide**:
+- SLA requirement: [From 01-product-strategy.ctx.md]
+- Expected users: [Estimated from 01-product-strategy.ctx.md market analysis]
+- Expected requests per second: [Estimated from journey scale and user count]
+- Compliance requirements: [From 02a-constraints.ctx.md if exists]
+- Journey load pattern: [From 00-user-journey.ctx.md - steady/spiky/unpredictable]
+- App name: [From product name in Session 1]
+- Container image: [Inferred from CI/CD registry]
+- App port: [From 02-tech-stack.ctx.md backend framework default]
+- Health check path: "/healthz" or "/health"
 
-**7. Design Security Ops** (if compliance exists OR security_tier == "high")
-```bash
-CONDITION: compliance_requirements exists (Session 2a)
-           OR sla_requirement >= "99.99%"
-           OR journey handles sensitive data
+**Expected output**:
+- Production Kubernetes manifests (Deployment, Service, HPA, PDB)
+- Resource sizing recommendations (CPU, memory requests/limits)
+- Security contexts and network policies
+- Health probe configurations
 
-Invoke: .claude/agents/design-security-ops.md
-Inputs: {
-  orchestration_platform: [kubernetes/ecs/cloud-run],
-  cloud_provider: [from Session 2a OR Session 3],
-  compliance_requirements: [from Session 2a],
-  secret_types: [database_credentials, api_keys, encryption_keys]
-}
-Output: Secret management, NetworkPolicy, TLS automation, compliance controls
-```
+**If condition NOT met**: Skip this agent. Document: "Skipping Kubernetes configuration (deployment strategy is {strategy} - not requiring container orchestration)"
+
+#### 4.6: Design Disaster Recovery (CONDITIONAL)
+
+**Condition**: `sla_requirement` >= "99.9%" OR `journey_criticality` in ["life-critical", "financial"] OR compliance requirements exist
+
+**Skip if**: Low-criticality journeys with SLA < 99.9% and no compliance
+
+Use Task tool to invoke `.claude/agents/design-disaster-recovery.md`:
+
+**Inputs to provide**:
+- Journey criticality: [From 00-user-journey.ctx.md]
+- SLA requirement: [From 01-product-strategy.ctx.md]
+- Database complexity: [From 07-database-schema.ctx.md - number of tables, relationships]
+- Compliance requirements: [From 02a-constraints.ctx.md if exists]
+- RTO/RPO requirements: [From 02a-constraints.ctx.md if exists OR derived from SLA]
+
+**Expected output**:
+- RTO/RPO tier classification
+- Backup strategy (3-2-1-1-0 rule implementation)
+- Failover procedures (automated vs manual)
+- Chaos engineering experiment recommendations
+- DR testing schedule
+
+**If condition NOT met**: Skip this agent. Document: "Skipping disaster recovery planning (SLA {sla} and criticality {criticality} do not require formal DR - basic backups sufficient)"
+
+#### 4.7: Design Security Ops (CONDITIONAL)
+
+**Condition**: Compliance requirements exist (Session 2a) OR `sla_requirement` >= "99.99%" OR journey handles sensitive data (PII, financial, health)
+
+**Skip if**: Internal tools, non-sensitive data, low-security requirements
+
+Use Task tool to invoke `.claude/agents/design-security-ops.md`:
+
+**Inputs to provide**:
+- Orchestration platform: [From Step 4.5 output OR Step 4.2 deployment target - kubernetes/ecs/cloud-run/fargate]
+- Cloud provider: [From 02a-constraints.ctx.md OR 02-tech-stack.ctx.md]
+- Compliance requirements: [From 02a-constraints.ctx.md if exists]
+- Secret types: [database credentials, API keys, encryption keys, third-party tokens]
+- Data sensitivity: [From 00-user-journey.ctx.md - PII/financial/health data handling]
+
+**Expected output**:
+- Secret management solution (AWS Secrets Manager, HashiCorp Vault, etc.)
+- NetworkPolicy/security group configurations
+- TLS certificate automation (cert-manager, ACM)
+- Compliance control implementation (encryption at rest/transit, audit logging)
+- Security scanning integration (container, dependency, secrets)
+
+**If condition NOT met**: Skip this agent. Document: "Skipping security ops planning (no compliance requirements, handles non-sensitive data - basic secret management sufficient)"
 
 ---
 
-### Step 5: Synthesize Sub-Agent Outputs
+### Step 5: Synthesize Sub-Agent Outputs (INCREMENTAL APPROACH)
 
-Combine sub-agent recommendations into unified deployment plan:
+**CRITICAL**: Do NOT load all sub-agent outputs into context simultaneously. Process ONE AT A TIME to prevent context explosion (sub-agents may return 30-50k tokens each = 200k+ total if loaded together).
 
-1. **Deployment Strategy Overview** (from sub-agent 1)
-   - Chosen pattern (rolling/blue-green/canary/feature-flags)
-   - Journey traceability
-   - Rollback plan
-   - Trade-offs accepted
+**Template**: `/templates/13-deployment-plan-template.md`
 
-2. **Environment Architecture**
+**Incremental Synthesis Pattern** (process sequentially, not simultaneously):
+
+1. **Write Header + Overview** → Include deployment complexity tier (from Step 3), total agents invoked, journey criticality, SLA requirement
+
+2. **Write Deployment Strategy Overview** (from Step 4.1):
+   - Extract ONLY Step 4.1 output
+   - Append section: Chosen pattern (rolling/blue-green/canary/feature-flags)
+   - Include journey traceability, rollback plan, trade-offs accepted
+   - **Clear context** before next section
+
+3. **Write Environment Architecture** (orchestrator-generated):
    - dev, staging, production configurations
    - Ephemeral preview environments (if needed)
+   - Infrastructure isolation strategy
 
-3. **CI/CD Pipeline** (from sub-agent 2)
-   - Platform selection
-   - Pipeline stages (lint, security, test, build, deploy, verify)
-   - Build optimizations
+4. **Write CI/CD Pipeline** (from Step 4.2):
+   - Extract ONLY Step 4.2 output
+   - Append section: Platform selection, pipeline stages, build optimizations
+   - **Clear context** before next section
 
-4. **Infrastructure as Code** (from sub-agent 3)
-   - IaC tool and module structure
-   - State management
-   - Policy-as-code integration
+5. **Write Infrastructure as Code** (from Step 4.3):
+   - Extract ONLY Step 4.3 output
+   - Append section: IaC tool, module structure, state management, policy-as-code
+   - **Clear context** before next section
 
-5. **Kubernetes Configuration** (from sub-agent 5 - if invoked)
-   - Production-grade manifests
-   - Resource sizing
-   - Security contexts
-   - Health probes
+6. **Write Kubernetes Configuration** (from Step 4.5 - if invoked):
+   - IF Step 4.5 was invoked:
+     - Extract ONLY Step 4.5 output
+     - Append section: Manifests, resource sizing, security contexts, health probes
+     - **Clear context** before next section
+   - ELSE: Skip this section
 
-6. **Deployment Observability** (from sub-agent 4)
-   - DORA metrics tracking
-   - Automated rollback triggers
-   - Alert routing
+7. **Write Deployment Observability** (from Step 4.4):
+   - Extract ONLY Step 4.4 output
+   - Append section: DORA metrics, rollback triggers, alert routing
+   - **Clear context** before next section
 
-7. **Disaster Recovery** (from sub-agent 6 - if invoked)
-   - RTO/RPO tier
-   - Backup strategy
-   - Failover procedures
-   - Chaos engineering experiments
+8. **Write Disaster Recovery** (from Step 4.6 - if invoked):
+   - IF Step 4.6 was invoked:
+     - Extract ONLY Step 4.6 output
+     - Append section: RTO/RPO tier, backup strategy, failover procedures, chaos engineering
+     - **Clear context** before next section
+   - ELSE: Skip this section
 
-8. **Security Operations** (from sub-agent 7 - if invoked)
-   - Secret management
-   - Network security
-   - TLS automation
-   - Compliance controls
+9. **Write Security Operations** (from Step 4.7 - if invoked):
+   - IF Step 4.7 was invoked:
+     - Extract ONLY Step 4.7 output
+     - Append section: Secret management, network security, TLS automation, compliance controls
+     - **Clear context** before next section
+   - ELSE: Skip this section
 
-9. **Cost Estimation**
-   - Monthly infrastructure cost breakdown
-   - Optimization strategies
-   - [PLACEHOLDER: Reference /reference-material/cost-estimation-2025.md deployment tiers after PR #155 merges]
+10. **Write Closing Sections** (orchestrator-generated):
+    - **Cost Estimation**: Monthly infrastructure cost breakdown, optimization strategies [PLACEHOLDER: Reference /reference-material/cost-estimation-2025.md deployment tiers after PR #155 merges]
+    - **Pre-Deployment Checklist**: Code quality gates, testing validation, communication requirements
+    - **Post-Deployment Verification**: Immediate (0-5 min), short-term (5-30 min), medium-term (30 min - 2 hours)
+    - **Runbooks**: Generate 5-10 runbooks based on journey failure modes (database connection failure, high error rate after deploy, slow performance after deploy)
+    - **What We DIDN'T Choose**: 2+ deployment alternatives NOT selected with rationales
 
-10. **Pre-Deployment Checklist**
-   - Code quality gates
-   - Testing validation
-   - Communication requirements
-
-11. **Post-Deployment Verification**
-   - Immediate (0-5 min), short-term (5-30 min), medium-term (30 min - 2 hours)
-
-12. **Runbooks**
-   - Database connection failure
-   - High error rate after deploy
-   - Slow performance after deploy
-   - [Generate 5-10 runbooks based on journey failure modes]
+**Token Efficiency**: Max 50k tokens per step (vs 200k+ if all loaded together). Only ONE sub-agent output in context at a time.
 
 ---
 
@@ -328,6 +429,29 @@ This will be used by:
 - DevOps/Platform teams managing infrastructure
 - Product managers understanding deploy cadence
 - On-call engineers executing rollbacks
+
+---
+
+## Critical Orchestrator Rules
+
+1. **Always invoke 4 core agents** - Deployment strategy, CI/CD, IaC, observability are universal requirements
+2. **Conditional loading only** - Don't load Kubernetes/DR/SecOps agents for patterns not in journey
+3. **Incremental synthesis (CRITICAL)** - Process sub-agent outputs ONE AT A TIME in Step 5, never load all simultaneously (prevents 200k+ token context explosion)
+4. **Journey-specific synthesis** - Outputs must reference actual journey steps, SLA requirements, compliance constraints
+5. **Token efficiency** - Track and report token savings vs monolithic approach
+6. **Template compliance** - Follow `/templates/13-deployment-plan-template.md` structure exactly
+7. **Explicit Task tool invocation** - All sub-agents invoked via Task tool (no pseudo-code "Invoke:")
+
+---
+
+## Quick Reference
+
+**Conditional Loading Logic** (from Step 4):
+- Kubernetes: IF deployment_complexity in ["saas-moderate", "enterprise-complex"] OR microservices
+- Disaster Recovery: IF sla_requirement >= "99.9%" OR criticality in ["life-critical", "financial"]
+- Security Ops: IF compliance_requirements EXISTS OR sla_requirement >= "99.99%"
+
+**Outputs**: `13-deployment-plan.md` (comprehensive deployment guide, 15-25 pages)
 
 ---
 

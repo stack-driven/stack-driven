@@ -397,6 +397,46 @@ func TestTerraformNetworkingModule(t *testing.T) {
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose, NO code examples.
+
+**Format:**
+```json
+{
+  "iac_tool": "Terraform" | "Pulumi" | "AWS CDK" | "CloudFormation",
+  "rationale": "Terraform chosen for cloud-agnostic support (AWS primary from Session 2a, may add GCP later), team familiar with HCL",
+  "module_structure": {
+    "networking": ["vpc", "subnets", "security-groups"],
+    "compute": ["ecs-cluster", "task-definitions"],
+    "data": ["rds", "s3", "elasticache"],
+    "security": ["iam-roles", "secrets-manager", "kms"]
+  },
+  "state_management": {
+    "backend": "S3 with DynamoDB locking",
+    "encryption": true,
+    "versioning": true,
+    "workspaces": ["dev", "staging", "production"]
+  },
+  "policy_as_code": {
+    "tool": "OPA" | "Sentinel" | "none",
+    "policies": ["require-encryption", "enforce-tagging", "cost-limits"],
+    "enforcement": "advisory" | "hard-fail"
+  },
+  "multi_environment": {
+    "strategy": "Terraform workspaces with tfvars per environment",
+    "variable_precedence": ["workspace-specific", "shared", "defaults"]
+  }
+}
+```
+
+**DO NOT include:**
+- Terraform/Pulumi code samples (orchestrator generates)
+- Detailed module documentation (orchestrator adds)
+- Tool comparison matrices (orchestrator decides)
+
+---
+
 ## References
 
 - **Terraform**: https://www.terraform.io/

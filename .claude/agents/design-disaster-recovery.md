@@ -360,6 +360,71 @@ Generate DR section for `13-deployment-plan.md`:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose explanations.
+
+**Format:**
+```json
+{
+  "rto_rpo_tier": {
+    "tier": "Tier 1: Mission-Critical",
+    "rto": "< 1 hour",
+    "rpo": "< 5 minutes",
+    "rationale": "Financial transactions (Session 1) require minimal data loss"
+  },
+  "dr_strategy": {
+    "pattern": "Active-Active multi-region",
+    "primary_region": "us-east-1",
+    "dr_region": "us-west-2",
+    "traffic_distribution": "50/50 during normal operation"
+  },
+  "backup_strategy": {
+    "3_2_1_1_0": {
+      "3_copies": "Primary DB, replica, S3 backups",
+      "2_media_types": "EBS snapshots, S3 buckets",
+      "1_offsite": "S3 Cross-Region Replication to us-west-2",
+      "1_offline": "Glacier for long-term retention",
+      "0_errors": "Automated backup verification via restore testing"
+    },
+    "frequency": {
+      "continuous": "Database replication (5 min RPO)",
+      "hourly": "EBS snapshots",
+      "daily": "Full backups to S3",
+      "weekly": "Archive to Glacier"
+    },
+    "retention": {
+      "daily": "7 days",
+      "weekly": "4 weeks",
+      "monthly": "12 months",
+      "yearly": "7 years (compliance)"
+    }
+  },
+  "failover_procedures": {
+    "automated": true,
+    "detection": "Route53 health checks every 30s",
+    "trigger": "Primary region unresponsive for 90s",
+    "traffic_shift": "Route53 DNS failover to DR region",
+    "expected_downtime": "< 5 minutes"
+  },
+  "chaos_engineering": {
+    "tool": "Chaos Mesh",
+    "experiments": [
+      {"name": "pod-failure", "frequency": "weekly"},
+      {"name": "network-partition", "frequency": "monthly"},
+      {"name": "regional-failover", "frequency": "quarterly"}
+    ]
+  }
+}
+```
+
+**DO NOT include:**
+- Detailed runbook procedures (orchestrator generates)
+- Tool setup instructions (orchestrator adds)
+- Cost calculations (orchestrator estimates)
+
+---
+
 ## References
 
 - **RTO/RPO Best Practices**: /reference-material/devops-deployment-guide.md (Section: Disaster Recovery)

@@ -390,6 +390,67 @@ Generate CI/CD pipeline section for `13-deployment-plan.md`:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose, NO detailed examples.
+
+**Format:**
+```json
+{
+  "platform": "GitHub Actions" | "GitLab CI" | "CircleCI" | "Jenkins",
+  "rationale": "Native integration with GitHub (source control from Session 3), excellent caching",
+  "pipeline_stages": [
+    {
+      "stage": "lint",
+      "commands": ["npm run lint", "npm run format:check"],
+      "cache": ["node_modules"]
+    },
+    {
+      "stage": "security",
+      "tools": ["Snyk", "Trivy"],
+      "scans": ["dependencies", "container", "secrets"]
+    },
+    {
+      "stage": "test",
+      "commands": ["npm run test:unit", "npm run test:integration"],
+      "coverage_threshold": "80%",
+      "parallel": true
+    },
+    {
+      "stage": "build",
+      "artifacts": ["Docker image", "bundle"],
+      "optimizations": ["BuildKit", "layer caching"]
+    },
+    {
+      "stage": "deploy",
+      "environments": {
+        "dev": "auto",
+        "staging": "auto",
+        "production": "manual approval"
+      }
+    },
+    {
+      "stage": "verify",
+      "smoke_tests": ["/health", "/api/v1/status"],
+      "rollback_on_failure": true
+    }
+  ],
+  "build_optimizations": [
+    "Cache node_modules between runs",
+    "Parallelize unit and integration tests",
+    "Docker BuildKit for layer caching"
+  ],
+  "deployment_integration": "Integrates with canary deployment pattern (from Step 4.1)"
+}
+```
+
+**DO NOT include:**
+- Verbose pipeline YAML (orchestrator generates)
+- Detailed tool explanations (orchestrator has references)
+- Alternative platform comparisons (orchestrator decides)
+
+---
+
 ## References
 
 - **GitHub Actions**: https://docs.github.com/en/actions

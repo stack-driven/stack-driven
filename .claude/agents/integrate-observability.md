@@ -375,6 +375,74 @@ Generate deployment observability section for `13-deployment-plan.md`:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose, NO examples.
+
+**Format:**
+```json
+{
+  "dora_metrics": {
+    "deployment_frequency": {
+      "target": "10 deploys/day",
+      "measurement": "Count successful production deployments",
+      "tool": "GitHub Actions metrics + Datadog"
+    },
+    "lead_time_for_changes": {
+      "target": "< 2 hours",
+      "measurement": "Commit to production deploy time",
+      "tool": "GitHub + CI/CD pipeline timestamps"
+    },
+    "mean_time_to_recover": {
+      "target": "< 15 minutes",
+      "measurement": "Incident detection to resolution",
+      "tool": "PagerDuty + rollback automation"
+    },
+    "change_failure_rate": {
+      "target": "< 5%",
+      "measurement": "% deploys causing incident",
+      "tool": "Track rollbacks and incidents"
+    }
+  },
+  "automated_rollback_triggers": [
+    {
+      "sli": "error_rate",
+      "threshold": "> 1%",
+      "window": "5 minutes",
+      "action": "Automatic rollback"
+    },
+    {
+      "sli": "latency_p99",
+      "threshold": "> 500ms",
+      "window": "5 minutes",
+      "action": "Automatic rollback"
+    }
+  ],
+  "alert_routing": {
+    "critical": {
+      "channels": ["PagerDuty", "Slack #incidents"],
+      "on_call_rotation": true
+    },
+    "warning": {
+      "channels": ["Slack #alerts"],
+      "on_call_rotation": false
+    }
+  },
+  "deployment_verification": {
+    "immediate": ["Health check /health", "Smoke test /api/v1/status"],
+    "short_term": ["Error rate < 0.5%", "Latency p99 < 200ms"],
+    "medium_term": ["Conversion rate stable", "No support ticket spike"]
+  }
+}
+```
+
+**DO NOT include:**
+- Monitoring dashboard screenshots (orchestrator describes)
+- Detailed alert configuration (orchestrator generates)
+- Tool setup instructions (orchestrator adds)
+
+---
+
 ## References
 
 - **DORA Metrics**: https://cloud.google.com/blog/products/devops-sre/using-the-four-keys-to-measure-your-devops-performance
