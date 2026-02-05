@@ -2,9 +2,9 @@
 description: Session 8b - Generate technical API contracts (OpenAPI/Protobuf specs, schemas, endpoints)
 ---
 
-# Generate API Contracts (Session 8b)
+# Generate API Contracts (Session 8b) - Orchestrator
 
-You are helping the user create technical API implementation specifications including OpenAPI/Protobuf schemas, endpoint definitions, request/response examples, and validation rules. This happens after defining high-level API design (Session 8), implementing the paradigm and serialization format decisions.
+You are helping the user create technical API implementation specifications using an agentic architecture. This orchestrator conditionally invokes 5 specialized phase agents to generate OpenAPI/Protobuf schemas, endpoint definitions, security patterns, versioning strategies, performance optimizations, code generation tooling, and format-specific contracts.
 
 ## When to Use This
 
@@ -21,108 +21,130 @@ You are helping the user create technical API implementation specifications incl
 
 ## Your Task
 
-Create technical API implementation specifications:
-- OpenAPI 3.1 specification (if REST)
-- GraphQL SDL schema (if GraphQL)
-- Protocol Buffers schemas (if gRPC)
-- MessagePack/CBOR contract structure (if binary schemaless formats)
-- Endpoint definitions with HTTP methods, paths, and parameters
-- Request and response schemas with validation rules
-- Component schemas and reusable definitions
-- Example requests and responses
-- Validation rules and constraints
+Create technical API implementation specifications by conditionally invoking phase agents:
+- **Phase 1** (ALWAYS): Security & Data Integrity (PII marking, type mapping, validation)
+- **Phase 2** (ALWAYS): API Versioning & Evolution (breaking changes, deprecation)
+- **Phase 3** (CONDITIONAL): Performance Optimization (compression, caching, field selection)
+- **Phase 4** (ALWAYS): Code Generation & Contract Testing (SDK gen, contract tests)
+- **Phase 5** (CONDITIONAL): Format Coverage (GraphQL, MessagePack, CBOR, hybrid)
 
 ---
 
 ## Process
-
-### Step 0: Read API Design Decisions (Session 8)
-
-**CRITICAL - Read this first:**
-
-```
-Read: product-guidelines/08-api-design.ctx.md (context version for token efficiency)
-```
-
-**Extract from API Design**:
-- **API Paradigm**: REST, GraphQL, gRPC, WebSocket, or hybrid
-- **Serialization Format**: JSON, Protobuf, MessagePack, or hybrid
-- **Authentication Strategy**: Method, token placement, lifetime
-- **Rate Limiting Strategy**: Limits by tier, endpoint-specific rules
-- **Pagination Approach**: Cursor-based or offset-based
-- **Error Handling Format**: Standard error structure and status codes
-
-**Why this matters**: Session 8b implements the architectural decisions from Session 8. If API design chose gRPC, you'll create Protocol Buffer schemas. If it chose REST with JSON, you'll create OpenAPI specs. If it chose hybrid (gRPC internal + REST external), you'll create both.
-
----
 
 ### Step 1: Read Previous Outputs
 
 **Required inputs:**
 
 ```
-Read: product-guidelines/00-user-journey.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/02-tech-stack.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/04-architecture.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/07-database-schema.ctx.md  # (context version for token efficiency)
-Read: product-guidelines/08-api-design.ctx.md  # (context version for token efficiency)
+Read: product-guidelines/00-user-journey.ctx.md
+Read: product-guidelines/02-tech-stack.ctx.md
+Read: product-guidelines/04-architecture.ctx.md
+Read: product-guidelines/07-database-schema.ctx.md
+Read: product-guidelines/08-api-design.ctx.md
 ```
-
-**Context Optimization**: We read .ctx.md files for significant context reduction. The database schema context file (~56% smaller) contains table list, ERD, relationships, and data access patterns—sufficient for API implementation without column details, indexes, and migrations. The API design context file contains high-level decisions (paradigm, serialization, auth) without full analysis.
 
 **Optional inputs (if available):**
 
 ```
 Read: product-guidelines/02a-constraints.ctx.md (if exists - regulatory requirements)
-Read: product-guidelines/10-backlog/BACKLOG.md (if exists - backlog comes after API contracts in Session 10)
-Read: product-guidelines/12-project-scaffold.md (if exists - scaffold comes after in Session 12)
 ```
 
-**Extract from Journey**:
+**Context Optimization**: We read .ctx.md files for significant context reduction while retaining all critical decisions.
+
+**Extract key information:**
+
+**From API Design (08-api-design.ctx.md)** - CRITICAL:
+- API Paradigm: REST, GraphQL, gRPC, WebSocket, or hybrid
+- Serialization Format: JSON, Protobuf, MessagePack, or hybrid
+- Authentication Strategy: Method, token placement, lifetime
+- Rate Limiting Strategy: Limits by tier, endpoint-specific rules
+- Pagination Approach: Cursor-based or offset-based
+- Error Handling Format: Standard error structure and status codes
+
+**From Journey (00-user-journey.ctx.md)**:
 - What user actions require API endpoints?
 - What data flows through the system?
 - What are the critical path operations?
 - What integration points exist with external systems?
+- User volume estimates (for Phase 3 conditional)
 
-**Extract from Tech Stack**:
+**From Tech Stack (02-tech-stack.ctx.md)**:
 - Backend framework (FastAPI, Express, NestJS, Django, etc.)
 - Authentication method (JWT, OAuth, API keys, Clerk, Auth0)
 - API style preference (REST, GraphQL, gRPC)
 - Documentation tools (Swagger UI, Redoc, Postman)
+- Supported languages (for Phase 4 SDK generation)
 
-**Extract from Architecture**:
+**From Architecture (04-architecture.ctx.md)**:
 - API design patterns (REST principles, HATEOAS, etc.)
 - Security requirements
 - Rate limiting strategy
 - Caching approach
 - Multi-tenancy implementation
+- Traffic volume estimates (for Phase 3 conditional)
 
-**Extract from Backlog (if available)**:
-- What features need what endpoints?
-- What data operations are required (CRUD, search, bulk)?
-- What integrations are planned (webhooks, third-party APIs)?
-- Note: Backlog is generated AFTER this session, so focus on journey and architecture if backlog doesn't exist yet
-
-**Extract from Database Schema (required):**
+**From Database Schema (07-database-schema.ctx.md)**:
 - What entities exist?
+- What PII fields need marking? (for Phase 1)
 - What relationships need API exposure?
 - What query patterns should be supported?
 
-**Extract from Constraints (if available):**
+**From Constraints (02a-constraints.ctx.md, if available)**:
 - What regulatory requirements apply (GDPR, HIPAA, PCI DSS, SOC 2)?
-- Are there EU users requiring GDPR compliance?
+- Are there EU users requiring GDPR compliance? (for Phase 1)
 - What compliance frameworks are in scope?
-
-**Example**: compliance-saas needs document upload, framework selection, assessment results, report sharing → FastAPI REST API with JWT auth, multi-tenant, rate-limited
+- What third-party integrations exist? (for webhook endpoints)
 
 ---
 
-### Step 2: Identify Core Resources
+### Step 2: Analyze Requirements for Conditional Phases
+
+**CRITICAL**: Before invoking agents, determine which phases are needed based on journey characteristics.
+
+**Check for Phase 3 (Performance Optimization) requirement:**
+
+```
+Does the journey have ANY of:
+1. Mobile users (bandwidth constraints)?
+2. High-volume traffic (>10K requests/day)?
+3. Large payloads (lists with >100 items, nested data)?
+4. Real-time requirements?
+
+IF YES → Set phase3_needed = TRUE
+IF NO → Set phase3_needed = FALSE
+```
+
+**Check for Phase 5 (Format Coverage) requirement:**
+
+```
+What API paradigm and format was chosen in Session 8?
+
+IF REST + JSON only → Set phase5_needed = FALSE
+IF GraphQL → Set phase5_needed = TRUE
+IF gRPC/Protobuf → Set phase5_needed = FALSE (covered in Phases 1-4)
+IF MessagePack → Set phase5_needed = TRUE
+IF CBOR → Set phase5_needed = TRUE
+IF Hybrid (REST+gRPC, REST+GraphQL) → Set phase5_needed = TRUE
+```
+
+**Document conditional decisions:**
+
+```
+Phase 3 (Performance): [INVOKE / SKIP] - Reason: [mobile users / high traffic / simple internal tool]
+Phase 5 (Format Coverage): [INVOKE / SKIP] - Reason: [GraphQL / hybrid / REST+JSON only]
+```
+
+---
+
+### Step 3: Identify Core Resources
+
+**Before invoking phase agents**, identify core API resources from database schema and journey:
 
 **Decision Tree - Resource Identification:**
 
 ```
-For each entity in database schema or backlog, ask:
+For each entity in database schema, ask:
 
 1. Does this entity need CRUD operations via API?
    - YES → Create resource endpoints (/api/resources)
@@ -141,11 +163,250 @@ For each entity in database schema or backlog, ask:
    - NO → Standard REST operations suffice
 ```
 
-**Example**: compliance-saas journey → Resources: `/api/documents` (upload, CRUD), `/api/frameworks` (read-only), `/api/assessments` (create, poll status, results), `/api/teams` (multi-tenancy), special endpoints for sharing (`/api/assessments/:id/share`, `/public/reports/:token`)
+**Output**: List of core resources with their purposes and journey connections.
 
 ---
 
-### Step 3: Define Endpoint Structure
+### Step 4: Invoke Phase 1 Agent (Security & Data Integrity) - ALWAYS REQUIRED
+
+**Phase 1 is mandatory for ALL API contracts.**
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Apply security and data integrity patterns`
+- **prompt**:
+  ```
+  Invoke the api-contracts-phase1-security sub-agent to apply security and data integrity patterns.
+
+  Agent path: .claude/agents/api-contracts-phase1-security.md
+
+  Inputs:
+  - Database schema with PII fields: [From 07-database-schema.ctx.md]
+  - Constraints (GDPR requirements): [From 02a-constraints.ctx.md if exists]
+  - API paradigm: [From 08-api-design.ctx.md]
+  - Core resources list: [From Step 3]
+
+  Follow the agent specification to:
+  1. Identify PII fields from database schema
+  2. Mark all PII fields in API schemas with x-pii: true
+  3. Add GDPR data export endpoint if EU users exist
+  4. Map database types to API types (NUMERIC→string, BIGINT→string, TIMESTAMP→ISO 8601)
+  5. Propagate all DB constraints to API validation (NOT NULL, VARCHAR, CHECK)
+  6. Define DoS prevention limits (max request size, nesting depth, timeout)
+  7. Document deserialization security warnings (no pickle/unsafe YAML)
+
+  Return structured output with:
+  - PII fields marked (list with x-pii annotations)
+  - GDPR export endpoint schema (if applicable)
+  - Type mapping table (DB type → API type)
+  - Validation rules per field type
+  - Security warnings summary
+  ```
+
+**Expected output from Phase 1:**
+- PII fields marked in all schemas
+- GDPR export endpoint (if applicable)
+- Type mappings applied to all schemas
+- Validation rules on all request schemas
+- Security warnings documented
+
+---
+
+### Step 5: Invoke Phase 2 Agent (API Versioning & Evolution) - ALWAYS REQUIRED
+
+**Phase 2 is mandatory for ALL API contracts.**
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Design API versioning and evolution strategy`
+- **prompt**:
+  ```
+  Invoke the api-contracts-phase2-versioning sub-agent to design versioning and evolution strategy.
+
+  Agent path: .claude/agents/api-contracts-phase2-versioning.md
+
+  Inputs:
+  - API paradigm: [From 08-api-design.ctx.md]
+  - Core resources: [From Step 3]
+  - Tech stack: [From 02-tech-stack.ctx.md]
+
+  Follow the agent specification to:
+  1. Document breaking change matrix (what changes break vs safe)
+  2. Choose versioning strategy (URL/header/media type versioning)
+  3. Define Protobuf reserved fields for deleted/renamed fields (if gRPC)
+  4. Add OpenAPI deprecation annotations (deprecated: true, x-sunset-date) (if REST)
+  5. Define migration strategies (dual-write, feature flags, adapter)
+  6. Create deprecation timeline template (6-12 months for public APIs)
+
+  Return structured output with:
+  - Breaking change matrix documented
+  - Versioning strategy chosen
+  - Protobuf reserved fields (if gRPC)
+  - OpenAPI deprecation annotations (if REST)
+  - Migration timeline template
+  ```
+
+**Expected output from Phase 2:**
+- Breaking change matrix documented
+- Versioning strategy chosen and documented
+- Protobuf reserved fields (if gRPC)
+- OpenAPI deprecation annotations (if REST)
+- Migration timeline for future changes
+
+---
+
+### Step 6: Invoke Phase 3 Agent (Performance Optimization) - CONDITIONAL
+
+**Conditional Invocation**: Only invoke if `phase3_needed = TRUE` (from Step 2).
+
+**IF phase3_needed = TRUE:**
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Apply performance optimization patterns`
+- **prompt**:
+  ```
+  Invoke the api-contracts-phase3-performance sub-agent to apply performance optimization patterns.
+
+  Agent path: .claude/agents/api-contracts-phase3-performance.md
+
+  Inputs:
+  - Journey traffic estimates: [From 00-user-journey.ctx.md and 04-architecture.ctx.md]
+  - Mobile users flag: [TRUE/FALSE from journey analysis]
+  - Payload sizes: [From database schema and resource analysis]
+  - API paradigm: [From 08-api-design.ctx.md]
+
+  Follow the agent specification to:
+  1. Define response size limits (default 100, max 1000 for lists)
+  2. Choose compression strategy (gzip/Brotli for JSON, LZ4/Snappy for Protobuf)
+  3. Define field selection patterns (sparse fieldsets, FieldMask, GraphQL)
+  4. Configure HTTP caching (Cache-Control, ETag, Last-Modified)
+  5. Add Protobuf varint guidance (int32/int64 vs fixed32/fixed64)
+
+  Return structured output with:
+  - Response size limits per endpoint type
+  - Compression strategy documented
+  - Field selection patterns defined
+  - Caching headers specified
+  - Protobuf optimization guidance (if gRPC)
+  ```
+
+**Expected output from Phase 3:**
+- Response size limits specified
+- Compression strategy documented
+- Field selection patterns defined
+- HTTP caching rules configured
+- Protobuf varint guidance (if applicable)
+
+**IF phase3_needed = FALSE:**
+
+Document that Phase 3 was skipped:
+```
+Phase 3 (Performance Optimization): SKIPPED
+Reason: [Simple internal tool / Low traffic (<10K/day) / No mobile users / Small payloads]
+Note: Performance optimization can be added later if requirements change.
+```
+
+---
+
+### Step 7: Invoke Phase 4 Agent (Code Generation & Contract Testing) - ALWAYS REQUIRED
+
+**Phase 4 is mandatory for ALL API contracts.**
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate code generation and contract testing tooling`
+- **prompt**:
+  ```
+  Invoke the api-contracts-phase4-codegen sub-agent to generate code generation and contract testing tooling.
+
+  Agent path: .claude/agents/api-contracts-phase4-codegen.md
+
+  Inputs:
+  - Tech stack languages: [From 02-tech-stack.ctx.md - frontend/backend languages]
+  - API paradigm: [From 08-api-design.ctx.md]
+  - Project structure preferences: [From 04-architecture.ctx.md]
+
+  Follow the agent specification to:
+  1. Generate OpenAPI client SDK generation commands (TypeScript, Python, Go, etc.)
+  2. Generate Protobuf client SDK generation commands (if gRPC)
+  3. Define Session 12 integration (where generated code should be placed)
+  4. Add generation scripts to package.json / Makefile
+  5. Choose contract testing tool (Dredd for REST, grpc-testing for gRPC, Pact)
+  6. Create type consistency validation script template
+  7. Provide CI/CD pipeline integration examples
+
+  Return structured output with:
+  - Client SDK generation commands for all languages
+  - Session 12 integration guidance (file paths)
+  - Build scripts (npm run generate:api, make generate-api)
+  - Contract testing tool configuration
+  - Type consistency validation script template
+  - CI/CD pipeline integration examples
+  ```
+
+**Expected output from Phase 4:**
+- Client SDK generation commands for all tech stack languages
+- Session 12 integration guidance (where to place generated code)
+- Contract testing tool configuration
+- Type consistency validation script template
+- CI/CD pipeline integration examples
+
+---
+
+### Step 8: Invoke Phase 5 Agent (Format Coverage) - CONDITIONAL
+
+**Conditional Invocation**: Only invoke if `phase5_needed = TRUE` (from Step 2).
+
+**IF phase5_needed = TRUE:**
+
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Generate format-specific contracts`
+- **prompt**:
+  ```
+  Invoke the api-contracts-phase5-formats sub-agent to generate format-specific contracts.
+
+  Agent path: .claude/agents/api-contracts-phase5-formats.md
+
+  Inputs:
+  - API paradigm: [From 08-api-design.ctx.md]
+  - Serialization format: [From 08-api-design.ctx.md]
+  - Core resources: [From Step 3]
+  - Database schema: [From 07-database-schema.ctx.md]
+  - Journey requirements: [From 00-user-journey.ctx.md]
+
+  Follow the agent specification to:
+  - IF GraphQL: Generate GraphQL SDL schema with types, queries, mutations, subscriptions
+  - IF MessagePack: Define MessagePack contract structure with type mappings
+  - IF CBOR: Define CBOR CDDL schemas with tags
+  - IF Hybrid: Document translation between REST and gRPC, gateway layer, error mapping
+
+  Return structured output with:
+  - GraphQL SDL schema (if GraphQL)
+  - MessagePack contract structure (if MessagePack)
+  - CBOR CDDL schema (if CBOR)
+  - Hybrid architecture mapping (if hybrid)
+  ```
+
+**Expected output from Phase 5:**
+- GraphQL SDL schema (if GraphQL)
+- MessagePack contract structure (if MessagePack)
+- CBOR CDDL schema (if CBOR)
+- Hybrid architecture mapping (if hybrid)
+
+**IF phase5_needed = FALSE:**
+
+Document that Phase 5 was skipped:
+```
+Phase 5 (Format Coverage): SKIPPED
+Reason: [REST + JSON only - OpenAPI 3.1 spec sufficient]
+Note: Only OpenAPI 3.1 specification needed for default REST+JSON paradigm.
+```
+
+---
+
+### Step 9: Define Endpoint Structure and Authentication
 
 **Endpoint Naming Conventions:**
 
@@ -172,7 +433,6 @@ POST   /api/v1/documents/:id/assessments   - Create assessment for document
 Custom actions (non-CRUD):
 POST   /api/v1/documents/:id/process       - Trigger document processing
 POST   /api/v1/assessments/:id/share       - Generate shareable link
-POST   /api/v1/teams/:id/invite            - Invite member to team
 
 Query parameters for filtering, sorting, pagination:
 GET /api/v1/documents?status=pending&sort=created_at&limit=20&cursor=abc123
@@ -187,114 +447,21 @@ GET /api/v1/documents?status=pending&sort=created_at&limit=20&cursor=abc123
 - Service: `DocumentService`
 - RPCs: `GetDocument(GetDocumentRequest)`, `ListDocuments(ListDocumentsRequest)`, `CreateDocument(CreateDocumentRequest)`
 
----
-
-### Step 4: Invoke Phase 1 Agent (Security & Data Integrity) - ALWAYS REQUIRED
-
-**Phase 1 is mandatory for ALL API contracts.**
-
-**Read Phase 1 agent for comprehensive guidance:**
-
-```
-Read: .claude/agents/api-contracts-phase1-security.md
-```
-
-**Apply Phase 1 patterns** (see agent for complete details):
-
-**1. PII Field Identification and Marking:**
-- Scan Session 7 database schema for PII fields (email, name, phone, address, SSN, etc.)
-- Mark all PII fields in API schemas with `x-pii: true` extension
-- Add `x-gdpr-category` for classification (direct-identifier, indirect-identifier, sensitive-data)
-
-**2. GDPR Export Endpoint (Conditional):**
-- **IF** Session 2a indicates EU users or GDPR requirements
-- **THEN** add mandatory `/api/users/{user_id}/export` endpoint
-- Returns all personal data in machine-readable JSON format (Article 20 compliance)
-
-**3. Database-to-API Type Mapping:**
-- `NUMERIC/DECIMAL` (money) → `string` (not float, prevents precision loss)
-- `BIGINT` → `string` in JSON (JavaScript safety, no truncation)
-- `TIMESTAMP` → ISO 8601 with timezone (`2024-01-15T10:30:00Z`)
-- `UUID` → `string` with `format: uuid`
-
-**4. Validation Rules Enforcement:**
-- Propagate all DB constraints to API validation
-- `NOT NULL` → `required: true`
-- `VARCHAR(255)` → `maxLength: 255`
-- `CHECK` constraints → regex patterns or enums
-- Add input sanitization rules per field type (see Phase 1 agent)
-
-**5. DoS Prevention Limits:**
-- Max request body size: 10 MB (50 MB for file uploads)
-- Max nesting depth: 10 levels
-- Max array length: 1,000 items
-- Request timeout: 30 seconds
-- Max URL length: 2,048 characters
-
-**6. Deserialization Security Warnings:**
-- Never use Python pickle, `yaml.load()` without SafeLoader, `eval()`
-- Always use `JSON.parse()`, `yaml.safe_load()`, XML with disabled external entities
-- Document safe deserialization practices in API spec
-
-**Why Phase 1 matters**: Prevents money precision loss ($1.99 becomes $1.9899999), JavaScript ID truncation (large integers corrupted), timezone ambiguity, GDPR violations, and security vulnerabilities.
-
-**Output from Phase 1:**
-- PII fields marked in all schemas
-- GDPR export endpoint (if applicable)
-- Type mappings applied to all schemas
-- Validation rules on all request schemas
-- Security warnings in API documentation
-
----
-
-### Step 5: Define Authentication and Authorization
-
 **Authentication Strategy:**
 
-**Decision Tree - Auth Method:**
-
-```
-From tech stack, determine auth method:
-
-1. What's the auth provider?
-   ├─ Clerk → Use Clerk session tokens
-   ├─ Auth0 → Use Auth0 JWT
-   ├─ Custom JWT → Implement JWT signing/verification
-   ├─ API Keys → Implement API key management
-   └─ OAuth 2.0 → Implement OAuth flow
-
-2. Where is the token sent?
-   ├─ Header → Authorization: Bearer <token> (recommended)
-   ├─ Cookie → Set-Cookie with HttpOnly, Secure flags
-   └─ Query param → ?api_key=xxx (only for public read endpoints)
-
-3. What's the token lifetime?
-   ├─ Short-lived (15min-1hr) + refresh token → High security
-   ├─ Medium (1-7 days) → Balance
-   └─ Long-lived (30+ days) → Convenience over security
-
-4. How to handle authorization?
-   ├─ User owns resource → Check userId matches
-   ├─ Team resource → Check user belongs to team
-   ├─ Admin only → Check user role
-   └─ Public → No auth required
-```
-
-**Example auth**: Clerk JWT in `Authorization: Bearer <token>` header, applied to all endpoints except `/public/*`
-
-**Authorization patterns:**
-- User-owned: `WHERE user_id = :current_user_id`
-- Team resource: `WHERE team_id = :current_user_team_id`
-- Admin only: `WHERE role = 'admin' OR team_id = :id`
-- Rate limit: Check `usage < plan_limits`
+Extract from `08-api-design.ctx.md`:
+- Auth provider (Clerk, Auth0, custom JWT, API keys)
+- Token placement (Authorization header, Cookie, Query param)
+- Token lifetime (short-lived + refresh, medium, long-lived)
+- Authorization patterns (user-owned, team resource, admin only, public)
 
 ---
 
-### Step 6: Define Error Handling
+### Step 10: Define Error Handling
 
 **Error Response Format:**
 
-**Standardize all errors:**
+Standardize all errors:
 
 ```json
 {
@@ -334,391 +501,32 @@ Server Errors:
 504 Gateway Timeout       - Upstream service timeout
 ```
 
-**Example errors**: All use format `{error: {code, message, details?, field?, requestId?}}`
-- 400: `VALIDATION_ERROR` (invalid input)
-- 401: `INVALID_TOKEN` (auth failed)
-- 429: `RATE_LIMIT_EXCEEDED` (includes limit, remaining, resetAt)
-- 422: `INSUFFICIENT_CREDITS` (business logic error)
-
-**Webhook Endpoint Schema Templates (if webhooks exist from Session 2a/8):**
-
-If Session 8 included webhook endpoint design (Step 5c), add OpenAPI schemas for webhook endpoints:
-
-**Reference**: `/examples/integration-patterns-examples.md` Section 5 (OpenAPI Webhook Schema Templates) for complete webhook schemas including:
-- Stripe webhook endpoint (`/webhooks/stripe`) with Stripe-Signature header, event types enum, and 200 OK response
-- Salesforce CDC webhook endpoint (`/webhooks/salesforce`) with X-Salesforce-Signature header and change event structure
-- SendGrid webhook endpoint (`/webhooks/sendgrid`) with X-Twilio-Email-Event-Webhook-Signature header and email events
-- PayPal webhook endpoint (`/webhooks/paypal`) with PAYPAL-* headers and postback verification pattern
-- Generic HMAC webhook pattern (HubSpot, Twilio) with signature verification headers
-
-**Key Webhook Schema Characteristics**:
-- `security: []` (no bearer token, uses signature verification headers instead)
-- Signature header as required parameter (X-Stripe-Signature, X-Salesforce-Signature, etc.)
-- Event ID property (for idempotency tracking)
-- Event type enum (provider-specific event types like payment_intent.succeeded, contact.updated)
-- 200 OK response with `{received: true, duplicate?: boolean}` format
-- 401 Unauthorized response for invalid signature
-
-**Example** (abbreviated Stripe webhook schema):
-
-```yaml
-/webhooks/stripe:
-  post:
-    summary: Stripe webhook receiver
-    description: Receives payment and subscription events from Stripe
-    tags:
-      - Webhooks
-    security: []  # No bearer token
-    parameters:
-      - name: Stripe-Signature
-        in: header
-        required: true
-        schema:
-          type: string
-        description: HMAC-SHA256 signature (format: t=<timestamp>,v1=<signature>)
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required: [id, type, data, created]
-            properties:
-              id:
-                type: string
-                description: Unique event ID (for idempotency)
-                example: "evt_1NqPNJ2eZvKYlo2C9xQpZ8Vz"
-              type:
-                type: string
-                enum:
-                  - payment_intent.succeeded
-                  - customer.subscription.created
-                  - invoice.payment_failed
-              data:
-                type: object
-              created:
-                type: integer
-    responses:
-      '200':
-        description: Webhook received and queued
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                received:
-                  type: boolean
-                  example: true
-                duplicate:
-                  type: boolean
-                  example: false
-      '401':
-        description: Invalid signature
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Error'
-```
-
-**Include webhook schemas for all providers** identified in Session 8 webhook endpoint design. Copy complete schemas from `/examples/integration-patterns-examples.md` Section 5.
-
-**If webhooks do NOT exist**: Skip webhook schema templates.
-
 ---
 
-### Step 7: Invoke Phase 3 Agent (Performance Optimization) - CONDITIONAL
-
-**Conditional Invocation Decision:**
-
-```
-Does the journey have ANY of:
-1. Mobile users (bandwidth constraints)?
-2. High-volume traffic (>10K requests/day)?
-3. Large payloads (lists, nested data)?
-4. Real-time requirements?
-
-├─ YES → Invoke Phase 3 (performance critical)
-└─ NO → Skip Phase 3 (performance not critical)
-```
-
-**If Phase 3 invoked, read the agent:**
-
-```
-Read: .claude/agents/api-contracts-phase3-performance.md
-```
-
-**Apply Phase 3 patterns** (see agent for complete details):
-
-**1. Response Size Limits:**
-- Default list limit: 100 items
-- Maximum list limit: 1000 items
-- Enforce via `limit` query parameter with validation
-
-**2. Compression Strategy:**
-- JSON: gzip (default), Brotli (higher compression, slower)
-- Protobuf: LZ4 (fast, low CPU), Snappy (balanced), or no compression (if already small)
-- Configure `Accept-Encoding` header support
-
-**3. Field Selection Patterns:**
-- REST: Sparse fieldsets (`?fields=id,name,email` excludes other fields)
-- GraphQL: Native field selection (query only needed fields)
-- gRPC: `google.protobuf.FieldMask` for partial responses
-
-**4. HTTP Caching:**
-- GET endpoints: `Cache-Control: max-age=3600` for static data
-- Conditional requests: `ETag` / `If-None-Match` (304 Not Modified)
-- `Last-Modified` / `If-Modified-Since` for time-based caching
-
-**5. Protobuf Varint Optimization:**
-- Use `int32`/`int64` (varint encoding) for small numbers
-- Use `fixed32`/`fixed64` for large numbers (> 2^28)
-
-**Why Phase 3 matters**: Reduces bandwidth usage by 60-80%, improves mobile performance, lowers server costs, prevents DoS from large payloads.
-
-**If Phase 3 skipped**: Document that performance optimization was deferred. Can be added later if needed.
-
----
-
-### Step 8: Invoke Phase 2 Agent (API Versioning & Evolution) - ALWAYS REQUIRED
-
-**Phase 2 is mandatory for ALL API contracts.**
-
-**Read Phase 2 agent for comprehensive guidance:**
-
-```
-Read: .claude/agents/api-contracts-phase2-versioning.md
-```
-
-**Apply Phase 2 patterns** (see agent for complete details):
-
-**1. Breaking Change Matrix:**
-- Document what changes break clients (removed fields, type changes, renamed endpoints)
-- Document safe changes (new optional fields, new endpoints, new enum values with fallback)
-
-**2. Versioning Strategy Selection:**
-- URL versioning: `/api/v1/resources`, `/api/v2/resources` (most common, visible)
-- Header versioning: `X-API-Version: 2` or `Accept: application/vnd.api+json; version=2`
-- Media type versioning: `Accept: application/vnd.myapi.v2+json`
-- Choose ONE strategy, document in API design spec
-
-**3. Protobuf Reserved Fields:**
-- When removing/renaming fields, add to `reserved` statement
-- Prevents field number reuse, ensures backward compatibility
-- Example: `reserved 2, 15, 9 to 11; reserved "foo", "bar";`
-
-**4. OpenAPI Deprecation Annotations:**
-- Mark deprecated endpoints: `deprecated: true`
-- Add sunset date: `x-sunset-date: "2025-12-31"`
-- Add replacement: `x-replacement-endpoint: "/api/v2/resources"`
-
-**5. Migration Strategies:**
-- **Dual-write**: Write to both v1 and v2 schemas during transition
-- **Feature flags**: Gradual rollout of breaking changes
-- **Adapter pattern**: v1 endpoints wrap v2 with translation layer
-
-**6. Deprecation Timeline:**
-- Announce deprecation: 6-12 months before removal (public APIs)
-- Monitor usage: Track deprecated endpoint traffic
-- Sunset date: Hard deadline for removal
-- Communication: Email notifications, API headers (`Sunset: Sat, 31 Dec 2025 23:59:59 GMT`)
-
-**Why Phase 2 matters**: Prevents breaking existing clients, enables evolution without disruption, maintains API contract trust.
-
-**Output from Phase 2:**
-- Breaking change matrix documented
-- Versioning strategy chosen and documented
-- Protobuf reserved fields (if gRPC)
-- OpenAPI deprecation annotations (if REST)
-- Migration timeline for future changes
-
----
-
-### Step 9: Webhook Endpoints (If Applicable)
+### Step 11: Webhook Endpoints (If Applicable)
 
 **Decision Tree - Webhook Requirements:**
 
 ```
-Does the journey require event notifications to external systems?
-├─ YES → Define webhook endpoints
+Does the journey require event notifications from external systems (third-party integrations)?
+├─ YES → Define webhook endpoints for each provider
 └─ NO → Skip webhooks
 ```
 
 **If webhooks needed**, define inbound webhook endpoints for third-party integrations:
 
-**Endpoint Pattern**: `/webhooks/{provider}`
-
-**For each provider that sends webhooks, create specification:**
-
-```yaml
-paths:
-  /webhooks/stripe:
-    post:
-      summary: Stripe webhook handler
-      description: |
-        Receives webhook events from Stripe for payment processing.
-
-        **Security**: Verifies Stripe signature using webhook secret.
-        **Idempotency**: Checks event_id before processing (webhook_events table).
-        **Processing**: Enqueues for async processing, returns 200 immediately.
-      operationId: handleStripeWebhook
-      tags: [Webhooks]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: Unique event identifier (for idempotency)
-                  example: evt_1234567890
-                type:
-                  type: string
-                  description: Event type
-                  example: payment_intent.succeeded
-                data:
-                  type: object
-                  description: Event payload
-      responses:
-        '200':
-          description: Webhook received and queued for processing
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  received:
-                    type: boolean
-                    example: true
-        '400':
-          description: Invalid signature or malformed payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-```
+**Reference**: `/examples/integration-patterns-examples.md` Section 5 for complete webhook schema templates (Stripe, Salesforce, SendGrid, PayPal, generic HMAC patterns).
 
 **Key Elements for Each Webhook Endpoint:**
 - Request body schema (provider-specific)
-- Signature verification method (if applicable)
-- Idempotency strategy (how duplicate events are handled)
-- Response format (typically 200 with `{received: true}`)
-- Error responses (400 for invalid signature, 422 for invalid payload)
+- Signature verification method (X-Provider-Signature header)
+- Idempotency strategy (event ID tracking)
+- Response format (200 with `{received: true}`)
+- Error responses (401 for invalid signature)
 
 ---
 
-### Step 10: Invoke Phase 5 Agent (Format Coverage) - CONDITIONAL
-
-**Conditional Invocation Decision:**
-
-```
-What API paradigm and format was chosen in Session 8?
-
-├─ REST + JSON only → Skip Phase 5 (OpenAPI 3.1 sufficient)
-├─ GraphQL → Invoke Phase 5 (GraphQL SDL generation)
-├─ gRPC/Protobuf → Already covered in Phase 1-4 (Protobuf patterns)
-├─ MessagePack → Invoke Phase 5 (MessagePack contract structure)
-├─ CBOR → Invoke Phase 5 (CBOR contract structure)
-└─ Hybrid (REST+gRPC, REST+GraphQL) → Invoke Phase 5 (mapping between formats)
-```
-
-**If Phase 5 invoked, read the agent:**
-
-```
-Read: .claude/agents/api-contracts-phase5-formats.md
-```
-
-**Apply Phase 5 patterns** (see agent for complete details):
-
-**1. GraphQL SDL Schema Generation:**
-- Define types for all resources
-- Define queries, mutations, subscriptions
-- Add directives for auth, caching, deprecation
-- Validate against journey requirements (no over-fetching)
-
-**2. MessagePack Contract Structure:**
-- Define message schemas (similar to JSON, but binary-efficient)
-- Document type mappings (map keys, arrays, integers, strings)
-- Add validation rules (manual, no schema validation like JSON Schema)
-
-**3. CBOR Contract Structure:**
-- Define CDDL (Concise Data Definition Language) schemas
-- Document CBOR tags for typed data (timestamps, bigints, URIs)
-- Add validation rules using CDDL
-
-**4. Hybrid Architecture Mapping:**
-- Document translation between REST and gRPC
-- Define gateway layer (Envoy, custom REST gateway)
-- Map error codes (gRPC status → HTTP status)
-- Map timestamps (ISO 8601 → google.protobuf.Timestamp)
-
-**Why Phase 5 matters**: Ensures format-specific best practices, prevents over-fetching (GraphQL), optimizes bandwidth (MessagePack/CBOR), enables hybrid architectures.
-
-**If Phase 5 skipped**: Only OpenAPI 3.1 spec needed for REST+JSON (default case).
-
----
-
-### Step 11: Invoke Phase 4 Agent (Code Generation & Contract Testing) - ALWAYS REQUIRED
-
-**Phase 4 is mandatory for ALL API contracts.**
-
-**Read Phase 4 agent for comprehensive guidance:**
-
-```
-Read: .claude/agents/api-contracts-phase4-codegen.md
-```
-
-**Apply Phase 4 patterns** (see agent for complete details):
-
-**1. OpenAPI Client SDK Generation:**
-- TypeScript: `openapi-generator-cli generate -g typescript-axios`
-- Python: `openapi-generator-cli generate -g python`
-- Go: `oapi-codegen` (better than openapi-generator)
-- Document commands, output paths, configuration options
-
-**2. Protobuf Client SDK Generation:**
-- Define `protoc` commands with language-specific plugins
-- TypeScript: `protoc --plugin=protoc-gen-ts_proto --ts_proto_out=./src/api`
-- Python: `python -m grpc_tools.protoc --python_out=. --grpc_python_out=.`
-- Go: `protoc --go_out=. --go-grpc_out=.`
-
-**3. Session 12 Scaffold Integration:**
-- Document WHERE generated code should be placed:
-  - Frontend: `src/api-client/` or `lib/api/`
-  - Backend: `internal/api/` or `src/generated/`
-- Add generation scripts to `package.json` / `Makefile`
-- Define `npm run generate:api` or `make generate-api` commands
-
-**4. Contract Testing Tool Selection:**
-- **REST APIs**: Dredd (OpenAPI contract testing), Pact (consumer-driven)
-- **gRPC APIs**: grpc-testing, protoc-gen-validate
-- **GraphQL APIs**: Apollo Client devtools, GraphQL Inspector
-- Document configuration (dredd.yml, authentication hooks)
-
-**5. Type Consistency Validation:**
-- Create validation script template that checks:
-  - Database schema types → API response types
-  - API request types → Client SDK types
-  - Ensures no type drift across layers
-
-**6. CI/CD Pipeline Integration:**
-- Add contract testing to `.github/workflows/test.yml`
-- Run on every PR, block merge if contracts violated
-- Generate and publish HTML reports
-
-**Why Phase 4 matters**: Eliminates manual client SDK creation, prevents type drift, catches API breaking changes before deployment, ensures client-server compatibility.
-
-**Output from Phase 4:**
-- Client SDK generation commands for all tech stack languages
-- Session 12 integration guidance (where to place generated code)
-- Contract testing tool configuration
-- Type consistency validation script template
-- CI/CD pipeline integration examples
-
----
-
-### Step 12: Generate API Specification
+### Step 12: Synthesize Agent Outputs into API Specification
 
 **Based on paradigm from Session 8, generate the appropriate specification:**
 
@@ -726,37 +534,57 @@ Read: .claude/agents/api-contracts-phase4-codegen.md
 
 Create complete **OpenAPI 3.1** specification. Use template at `/templates/08b-api-contracts-template.md` for detailed structure.
 
-**Why OpenAPI 3.1?**
-- Full JSON Schema 2020-12 support (better validation than 3.0)
-- Improved schema composition (`prefixItems`, `unevaluatedProperties`)
-- Native `null` type (no more `nullable: true` workaround)
-- Better const/enum handling for stricter validation
+**Combine outputs from all invoked phases:**
 
-**Key sections to include:**
-- `info`: title, description (with auth/rate limit/error conventions), version, contact
+1. **From Phase 1 (Security)**:
+   - Mark all PII fields in schemas with `x-pii: true` and `x-gdpr-category`
+   - Add GDPR export endpoint (if applicable)
+   - Apply type mappings (NUMERIC→string, BIGINT→string, TIMESTAMP→ISO 8601, UUID→string with format)
+   - Add validation rules from DB constraints (NOT NULL→required, VARCHAR→maxLength, CHECK→enum/pattern)
+   - Document DoS prevention limits in API description
+   - Add security warnings in components/schemas descriptions
+
+2. **From Phase 2 (Versioning)**:
+   - Document breaking change matrix in overview section
+   - Apply chosen versioning strategy (URL/header/media type)
+   - Mark deprecated endpoints with `deprecated: true`, `x-sunset-date`, `x-replacement-endpoint`
+   - Document migration strategies in overview
+
+3. **From Phase 3 (Performance)** - if invoked:
+   - Add response size limit validation to list endpoints (max: 1000)
+   - Document compression strategy in overview (Accept-Encoding support)
+   - Add field selection parameter to GET endpoints (`?fields=id,name,email`)
+   - Configure caching headers in responses (Cache-Control, ETag)
+
+4. **From Phase 4 (Code Generation)**:
+   - Add SDK generation commands to overview section
+   - Document Session 12 integration (where generated code goes)
+   - Add contract testing tool configuration
+   - Include type validation script template
+
+5. **From Phase 5 (Format Coverage)** - if invoked:
+   - Include GraphQL SDL schema (if GraphQL)
+   - Include MessagePack contract structure (if MessagePack)
+   - Include hybrid mapping documentation (if hybrid)
+
+**OpenAPI 3.1 Key Sections:**
+- `info`: title, description (with auth/rate limit/error conventions, phase summary), version, contact
 - `servers`: production, staging, local development URLs
 - `tags`: group endpoints by resource type
 - `paths`: each endpoint with summary, description, tags, security, parameters, requestBody, responses
-- `components`: securitySchemes (bearerAuth), schemas (all data models), responses (reusable error responses)
-
-**Best practices:**
-- Use `$ref` for reusable schemas and responses
-- Include examples in schemas
-- Mark required fields explicitly
-- Use JSON Schema 2020-12 validation (formats, min/max, enums, patterns)
-- Document all error responses (4xx, 5xx)
+- `components`: securitySchemes (bearerAuth), schemas (all data models with Phase 1 patterns), responses (reusable error responses)
 
 #### For GraphQL APIs:
 
-Create **GraphQL SDL schema** with types, queries, mutations, subscriptions. See Phase 5 agent for complete guidance.
+Create **GraphQL SDL schema** with types, queries, mutations, subscriptions using Phase 5 output.
 
 #### For gRPC APIs:
 
-Create **Protocol Buffers `.proto` files** with service definitions, message types, and field options. Apply patterns from Phases 1-4.
+Create **Protocol Buffers `.proto` files** with service definitions, message types, and field options, applying patterns from Phases 1-4.
 
 #### For Hybrid APIs:
 
-Generate both OpenAPI and Protobuf specs with mapping documentation. See Phase 5 agent for translation layer guidance.
+Generate both OpenAPI and Protobuf specs with mapping documentation using Phase 5 output.
 
 ---
 
@@ -765,57 +593,74 @@ Generate both OpenAPI and Protobuf specs with mapping documentation. See Phase 5
 Write `product-guidelines/08b-api-contracts.md` with:
 
 **Structure:**
+
 1. **Overview**
    - Link to `08-api-design.md` for paradigm/serialization decisions
    - Endpoint count, resource count
-   - Applied phases summary (Phase 1: Security, Phase 2: Versioning, Phase 3: Performance if applicable, Phase 4: Code Generation, Phase 5: Format Coverage if applicable)
+   - Applied phases summary:
+     - Phase 1: Security & Data Integrity (ALWAYS)
+     - Phase 2: API Versioning & Evolution (ALWAYS)
+     - Phase 3: Performance Optimization (if applicable - state INVOKED or SKIPPED with reason)
+     - Phase 4: Code Generation & Contract Testing (ALWAYS)
+     - Phase 5: Format Coverage (if applicable - state INVOKED or SKIPPED with reason)
 
 2. **Core Resources**
    - For each resource: purpose (journey connection), endpoints table
 
 3. **API Specification**
    - OpenAPI 3.1 spec (complete or link to `openapi.yaml`)
-   - GraphQL SDL (if GraphQL)
+   - GraphQL SDL (if GraphQL - from Phase 5)
    - Protobuf schemas (if gRPC, link to `.proto` files)
 
-4. **Phase 1: Security & Data Integrity**
+4. **Phase 1: Security & Data Integrity** (output from Phase 1 agent)
    - PII fields marked in schemas
    - GDPR export endpoint (if applicable)
    - Type mappings applied (NUMERIC→string, BIGINT→string, etc.)
    - Validation rules summary
+   - DoS prevention limits
    - Deserialization security warnings
 
-5. **Phase 2: API Versioning & Evolution**
+5. **Phase 2: API Versioning & Evolution** (output from Phase 2 agent)
    - Breaking change matrix
    - Versioning strategy chosen
    - Deprecation timeline template
    - Migration strategies
+   - Protobuf reserved fields (if gRPC)
+   - OpenAPI deprecation annotations (if REST)
 
-6. **Phase 3: Performance Optimization** (if applicable)
+6. **Phase 3: Performance Optimization** (output from Phase 3 agent, if invoked)
    - Response size limits
    - Compression strategy
    - Field selection patterns
    - HTTP caching rules
+   - Protobuf varint guidance (if gRPC)
+   - OR: "Phase 3 SKIPPED - Reason: [simple internal tool / low traffic]"
 
-7. **Phase 4: Code Generation & Contract Testing**
+7. **Phase 4: Code Generation & Contract Testing** (output from Phase 4 agent)
    - Client SDK generation commands (TypeScript, Python, Go, etc.)
    - Session 12 integration (where generated code goes)
-   - Contract testing tool configuration
+   - Build scripts (npm run generate:api, make generate-api)
+   - Contract testing tool configuration (Dredd/Pact/grpc-testing)
    - Type consistency validation script
+   - CI/CD pipeline integration examples
 
-8. **Phase 5: Format Coverage** (if applicable)
+8. **Phase 5: Format Coverage** (output from Phase 5 agent, if invoked)
    - GraphQL SDL schema (if GraphQL)
    - MessagePack contract structure (if MessagePack)
+   - CBOR CDDL schema (if CBOR)
    - Hybrid architecture mapping (if hybrid)
+   - OR: "Phase 5 SKIPPED - Reason: [REST+JSON only]"
 
 9. **Request/Response Examples**
    - Sample payloads for key endpoints
+   - Apply Phase 1 patterns (type mappings)
+   - Apply Phase 2 patterns (versioning headers)
 
 10. **Testing**
     - Example curl/httpie/grpcurl commands
-    - Dredd/Pact configuration
+    - Contract testing configuration from Phase 4
 
-**Note**: High-level design decisions (paradigm, serialization, auth strategy, rate limiting, pagination) are in `08-api-design.md` (Session 8). This file focuses on technical implementation with all 5 phases applied.
+**Note**: High-level design decisions (paradigm, serialization, auth strategy, rate limiting, pagination) are in `08-api-design.md` (Session 8). This file focuses on technical implementation with all invoked phase patterns applied.
 
 ---
 
@@ -823,38 +668,40 @@ Write `product-guidelines/08b-api-contracts.md` with:
 
 **IMPORTANT**: After writing the full contracts file, invoke the distillation sub-agent:
 
-```bash
-Task tool with:
-- subagent_type: distill-context
-- Source file: product-guidelines/08b-api-contracts.md
-- Output file: product-guidelines/08b-api-contracts.ctx.md
-```
+Use the Task tool:
+- **subagent_type**: `general-purpose`
+- **description**: `Create context version of API contracts`
+- **prompt**:
+  ```
+  Invoke the distill-context sub-agent to create a token-optimized context file.
 
-**Distillation instructions** (for the sub-agent):
+  Agent path: .claude/agents/distill-context.md
 
-```
-Create token-optimized context file from Session 8b API contracts.
+  Inputs:
+  - Source file: product-guidelines/08b-api-contracts.md
+  - Output file: product-guidelines/08b-api-contracts.ctx.md
+  - Target reduction: 80% (API contracts are highly structured, mostly endpoint lists)
 
-Target: 80% token reduction (API contracts are highly structured, mostly endpoint lists).
+  Follow the agent specification to:
 
-KEEP:
-- Endpoint list with methods and paths
-- Core resource list
-- Applied phases summary (Phases 1, 2, 3 if applicable, 4, 5 if applicable)
-- Journey-to-endpoint mapping
-- Client SDK generation commands summary
-- Contract testing tool chosen
+  KEEP:
+  - Endpoint list with methods and paths
+  - Core resource list
+  - Applied phases summary (which phases invoked, which skipped)
+  - Journey-to-endpoint mapping
+  - Client SDK generation commands summary
+  - Contract testing tool chosen
 
-REMOVE:
-- Full OpenAPI/Protobuf/GraphQL schemas (Session 12 reads full file for code gen)
-- Request/response examples
-- Detailed validation rules
-- Testing curl commands
-- Webhook endpoint details
-- Detailed phase explanations
+  REMOVE:
+  - Full OpenAPI/Protobuf/GraphQL schemas (Session 12 reads full file for code gen)
+  - Request/response examples
+  - Detailed validation rules
+  - Testing curl commands
+  - Webhook endpoint details
+  - Detailed phase explanations
 
-Session 12 (scaffold) will read .ctx.md for endpoint overview, then read full .md for complete schemas and generation commands.
-```
+  Session 12 (scaffold) will read .ctx.md for endpoint overview, then read full .md for complete schemas and generation commands.
+  ```
 
 ---
 
@@ -894,9 +741,6 @@ Session 12 (scaffold) will read .ctx.md for endpoint overview, then read full .m
 - [ ] Input sanitization rules documented per field type
 - [ ] DoS prevention limits specified (max request size, nesting depth, timeout)
 - [ ] Deserialization security warnings included (no pickle/unsafe YAML)
-- [ ] Authentication required on protected endpoints
-- [ ] Authorization checks documented
-- [ ] Sensitive data not exposed in URLs
 - [ ] Database NUMERIC/DECIMAL mapped to string (not float) for money
 - [ ] Database BIGINT mapped to string in JSON (JavaScript safety)
 - [ ] Timestamps use ISO 8601 format with timezone
@@ -910,63 +754,38 @@ Session 12 (scaffold) will read .ctx.md for endpoint overview, then read full .m
 - [ ] API versioning strategy chosen (URL/header/query param versioning)
 - [ ] Migration strategies documented for breaking changes (dual-write, feature flags, adapter)
 - [ ] Deprecation timeline defined (6-12 months minimum for public APIs)
-- [ ] Version history documented (what changed between versions)
-- [ ] Backward compatibility rules followed (no removed fields, no type changes)
 
-**Phase 3: Performance Optimization (CONDITIONAL):**
-- [ ] If mobile users OR >10K requests/day OR large payloads → Phase 3 applied
-- [ ] Response size limits specified per endpoint type (default 100, max 1000 for lists)
-- [ ] Compression strategy documented per format (gzip for JSON, LZ4/Snappy for Protobuf)
-- [ ] Field selection patterns documented (sparse fieldsets, FieldMask, GraphQL fields)
-- [ ] Caching headers specified for GET endpoints (Cache-Control, ETag, Last-Modified)
-- [ ] Protobuf varint guidance provided for integer fields (int32/int64 vs fixed32/fixed64)
-- [ ] Pagination prevents large payloads
-- [ ] Heavy operations are async (return 202 Accepted)
+**Phase 3: Performance Optimization (CONDITIONAL - check if invoked):**
+- [ ] If invoked: Response size limits specified per endpoint type
+- [ ] If invoked: Compression strategy documented per format
+- [ ] If invoked: Field selection patterns documented
+- [ ] If invoked: Caching headers specified for GET endpoints
+- [ ] If skipped: Documented why (low traffic / no mobile users / simple tool)
 
 **Phase 4: Code Generation & Contract Testing (ALWAYS REQUIRED):**
-- [ ] Client SDK generation commands documented for all tech stack languages (TypeScript, Python, Go, etc.)
-- [ ] OpenAPI generator configuration specified (typescript-axios, python/httpx, oapi-codegen for Go)
-- [ ] Protobuf/gRPC code generation commands documented (protoc plugins for each language) (if gRPC)
+- [ ] Client SDK generation commands documented for all tech stack languages
 - [ ] Session 12 integration documented (where generated code should be placed)
 - [ ] Build scripts specified (package.json scripts, Makefile targets)
-- [ ] Type consistency validation script template provided (DB → API → Client type checking)
-- [ ] Contract testing tool selection documented (Dredd for REST, grpc-testing for gRPC, Pact for consumer-driven)
-- [ ] Contract testing configuration examples provided (dredd.yml with authentication hooks)
-- [ ] CI/CD pipeline integration examples provided (.github/workflows/test.yml)
+- [ ] Contract testing tool selection documented (Dredd/Pact/grpc-testing)
+- [ ] Type consistency validation script template provided
+- [ ] CI/CD pipeline integration examples provided
 
-**Phase 5: Format Coverage (CONDITIONAL):**
-- [ ] If GraphQL → GraphQL SDL schema generated with journey validation
-- [ ] If MessagePack → MessagePack contract structure documented
-- [ ] If CBOR → CBOR CDDL schema documented
-- [ ] If hybrid (REST+gRPC, REST+GraphQL) → Mapping between formats documented
-
----
-
-## Note on Architectural Alternatives
-
-**Paradigm alternatives** (REST vs GraphQL vs gRPC) are covered in Session 8 (`08-api-design.md`). This session implements the chosen paradigm with technical specifications.
-
-If you discover that the chosen paradigm doesn't fit specific endpoints during implementation, document it but don't override Session 8. Discuss with the user and potentially re-run `/generate-api-design` with updated analysis.
-
----
-
-## Setup Instructions
-
-**FastAPI**: `pip install fastapi[all]` → auto-generated docs at `/docs` (Swagger) and `/redoc`
-**Express**: `npm i swagger-ui-express yamljs` → serve with `app.use('/api-docs', swaggerUi.setup(openapi))`
-**Django**: `pip install drf-spectacular` → configure in settings → `python manage.py spectacular`
-**Client SDKs**: Use `openapi-generator-cli generate -i openapi.yaml -g typescript-axios` (or python, java, etc.)
+**Phase 5: Format Coverage (CONDITIONAL - check if invoked):**
+- [ ] If GraphQL: GraphQL SDL schema generated with journey validation
+- [ ] If MessagePack: MessagePack contract structure documented
+- [ ] If CBOR: CBOR CDDL schema documented
+- [ ] If hybrid: Mapping between formats documented
+- [ ] If skipped: Documented why (REST+JSON only)
 
 ---
 
 ## Output Files
 
-1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, all phases, examples, testing)
+1. **`product-guidelines/08b-api-contracts.md`**: Full technical specification (endpoints, schemas, validation rules, all invoked phases, examples, testing)
 2. **`product-guidelines/08b-api-contracts.ctx.md`**: Condensed version for Session 9b/10 (~80% reduction) - endpoint lists, phases summary, no detailed schemas
 3. **`product-guidelines/08b-api-contracts/openapi.yaml`** (if REST): Complete OpenAPI 3.1 spec (all endpoints, schemas, security)
 4. **`product-guidelines/08b-api-contracts/schema.graphql`** (if GraphQL): GraphQL SDL schema with types, queries, mutations, subscriptions
 5. **`product-guidelines/08b-api-contracts/*.proto`** (if gRPC): Protocol Buffer service and message definitions
-6. **`product-guidelines/08b-api-contracts/postman-collection.json`** (optional): Postman/Insomnia collection with pre-configured requests
 
 **Note**: Session 12 (scaffold) will read full `.md` file to access complete schemas and generation commands for code generation. Context file is for Session 9b/10 only.
 
@@ -986,35 +805,33 @@ If you discover that the chosen paradigm doesn't fit specific endpoints during i
   - Add generation scripts to package.json/Makefile
   - Validate type consistency (DB → API → Client)
 
-**Use contracts for**:
-- Backend implementation (controllers, routes, handlers)
-- Frontend development (auto-generated type-safe API client)
-- API documentation (Swagger UI, Redoc, grpcui)
-- Client SDK generation (openapi-generator, protoc plugins) - **AUTOMATED in Session 12 (Phase 4)**
-- Contract testing (Dredd, Pact, grpc-testing) - **Story added to Session 10 backlog (Phase 4)**
-
 ---
 
 ## Remember
 
-**Implement the decisions from Session 8 (API Design).**
+**This is an ORCHESTRATOR that conditionally invokes phase agents via the Task tool.**
 
-This session focuses on technical implementation with 5-phase enhancement:
-1. **Phase 1** (Always): Security & Data Integrity (PII marking, type mapping, validation)
-2. **Phase 2** (Always): API Versioning & Evolution (breaking changes, deprecation)
-3. **Phase 3** (Conditional): Performance Optimization (compression, caching, field selection)
-4. **Phase 4** (Always): Code Generation & Contract Testing (SDK gen, contract tests)
-5. **Phase 5** (Conditional): Format Coverage (GraphQL, MessagePack, CBOR, hybrid)
+**Execution pattern:**
+1. Read context files (Steps 1-2)
+2. Analyze requirements to determine which phases needed (Step 2)
+3. Identify core resources (Step 3)
+4. **INVOKE Phase 1 agent** via Task tool (Step 4) - ALWAYS
+5. **INVOKE Phase 2 agent** via Task tool (Step 5) - ALWAYS
+6. **INVOKE Phase 3 agent** via Task tool (Step 6) - IF phase3_needed = TRUE
+7. **INVOKE Phase 4 agent** via Task tool (Step 7) - ALWAYS
+8. **INVOKE Phase 5 agent** via Task tool (Step 8) - IF phase5_needed = TRUE
+9. Define endpoint structure and auth (Step 9)
+10. Define error handling (Step 10)
+11. Add webhook endpoints if needed (Step 11)
+12. **SYNTHESIZE agent outputs** into final OpenAPI/Protobuf/GraphQL spec (Step 12)
+13. Write comprehensive documentation (Step 13)
+14. Invoke distill-context agent (Step 14)
+15. Validate against checklist (Step 15)
 
-Don't make new architectural decisions here. Instead:
-1. Read `08-api-design.ctx.md` for paradigm, serialization, auth, rate limiting, pagination decisions
-2. Conditionally invoke phase agents based on requirements
-3. Create technical specs (OpenAPI/Protobuf/GraphQL) that implement those decisions
-4. Apply all relevant phase patterns
-5. Define endpoints, schemas, and validation rules
-6. Provide examples and testing guidance
-
-If you find the API design decisions don't work for a specific endpoint, note it but don't override Session 8. Discuss with the user and potentially re-run Session 8 with updated analysis.
+**Token Efficiency Gains:**
+- Simple journey (REST+JSON, low-traffic): Phases 1, 2, 4 invoked → ~37% token reduction
+- Typical journey (mobile app, REST+JSON, high-traffic): Phases 1, 2, 3, 4 invoked → ~18% token reduction
+- Complex journey (hybrid architecture): All phases invoked → properly architected with no token waste
 
 **Reference files:**
 - **API Design** (Session 8): `product-guidelines/08-api-design.ctx.md` - **READ THIS FIRST**
@@ -1024,7 +841,7 @@ If you find the API design decisions don't work for a specific endpoint, note it
 - Database schema: `product-guidelines/07-database-schema.ctx.md`
 - Constraints: `product-guidelines/02a-constraints.ctx.md` (if exists)
 
-**Phase agents:**
+**Phase agents** (invoked via Task tool):
 - **Phase 1**: `.claude/agents/api-contracts-phase1-security.md` (always invoke)
 - **Phase 2**: `.claude/agents/api-contracts-phase2-versioning.md` (always invoke)
 - **Phase 3**: `.claude/agents/api-contracts-phase3-performance.md` (conditional: mobile/high-volume/large-payloads)
@@ -1033,4 +850,4 @@ If you find the API design decisions don't work for a specific endpoint, note it
 
 ---
 
-**Now, read API design decisions (Session 8), conditionally invoke phase agents, and create technical API contracts!**
+**Now, read API design decisions (Session 8), analyze requirements, conditionally invoke phase agents via Task tool, and synthesize outputs into technical API contracts!**
