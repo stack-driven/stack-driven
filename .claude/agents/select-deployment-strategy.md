@@ -434,6 +434,47 @@ Before returning recommendation, verify:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose, NO rationale, NO examples beyond what's required.
+
+**Format:**
+```json
+{
+  "deployment_pattern": "canary" | "blue-green" | "rolling" | "feature-flags",
+  "journey_traceability": "Financial transaction handling requires <0.1% error rate blast radius (Session 2a: SOC2 compliance)",
+  "rollback_plan": {
+    "automated": true,
+    "max_rollback_time": "5 minutes",
+    "rollback_triggers": ["error_rate > 1%", "latency_p99 > 500ms"],
+    "mechanism": "Automated via Kubernetes or cloud provider"
+  },
+  "trade_offs": {
+    "chosen_for": "Incremental rollout with automated rollback",
+    "cost_implication": "Medium (requires monitoring, gradual rollout infra)",
+    "complexity": "Medium (requires canary tooling)"
+  },
+  "alternatives_not_chosen": [
+    {
+      "pattern": "rolling",
+      "why_rejected": "Cannot limit blast radius to <1% of traffic"
+    },
+    {
+      "pattern": "blue-green",
+      "why_rejected": "100% traffic switch too risky for financial transactions"
+    }
+  ]
+}
+```
+
+**DO NOT include:**
+- Journey analysis (orchestrator already has this)
+- Detailed pattern explanations (orchestrator adds these to final doc)
+- Code examples (orchestrator generates these)
+- Deployment process steps (orchestrator synthesizes)
+
+---
+
 ## References
 
 - **Rolling vs Blue-Green vs Canary**: /reference-material/devops-deployment-guide.md (Section: Deployment Patterns)

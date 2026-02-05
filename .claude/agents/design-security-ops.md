@@ -424,6 +424,58 @@ Generate security operations section for `13-deployment-plan.md`:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO prose, NO YAML examples.
+
+**Format:**
+```json
+{
+  "secret_management": {
+    "tool": "AWS Secrets Manager" | "HashiCorp Vault" | "Azure Key Vault",
+    "rationale": "Native AWS integration (cloud provider from Session 2a), automatic rotation",
+    "injection_pattern": "Kubernetes CSI driver for pod secret mounting",
+    "rotation_policy": {
+      "database_credentials": "90 days",
+      "api_keys": "180 days",
+      "encryption_keys": "365 days"
+    }
+  },
+  "network_security": {
+    "default_policy": "deny-all",
+    "allowed_rules": [
+      {"from": "frontend-pods", "to": "backend-pods", "port": 8080},
+      {"from": "backend-pods", "to": "database", "port": 5432}
+    ],
+    "ingress_protection": "AWS WAF with OWASP Core Rule Set"
+  },
+  "tls_automation": {
+    "tool": "cert-manager",
+    "certificate_authority": "Let's Encrypt",
+    "renewal_window": "30 days before expiry",
+    "domains": ["api.example.com", "*.example.com"]
+  },
+  "compliance_controls": {
+    "encryption_at_rest": "AES-256, KMS-managed keys",
+    "encryption_in_transit": "TLS 1.3 minimum",
+    "audit_logging": "CloudTrail + S3 with 7-year retention",
+    "access_control": "IAM roles with least privilege"
+  },
+  "container_scanning": {
+    "image_scan": "Trivy in CI/CD pipeline",
+    "runtime_protection": "Falco for anomaly detection",
+    "vulnerability_threshold": "Block HIGH+ severity"
+  }
+}
+```
+
+**DO NOT include:**
+- Detailed NetworkPolicy YAML (orchestrator generates)
+- Secret rotation scripts (orchestrator adds)
+- Compliance checklist details (orchestrator references Session 2a)
+
+---
+
 ## References
 
 - **HashiCorp Vault**: https://www.vaultproject.io/

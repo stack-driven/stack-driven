@@ -561,6 +561,62 @@ Before returning configuration, verify:
 
 ---
 
+## Output Format (CRITICAL)
+
+Return **structured data only** (max 5000 tokens). NO full YAML manifests (orchestrator generates).
+
+**Format:**
+```json
+{
+  "deployment_config": {
+    "replicas": 3,
+    "replicas_rationale": "99.99% SLA requires 3 replicas with zone spread",
+    "strategy": "RollingUpdate",
+    "max_surge": 1,
+    "max_unavailable": 0
+  },
+  "resource_sizing": {
+    "requests": {"cpu": "250m", "memory": "512Mi"},
+    "limits": {"cpu": "500m", "memory": "1Gi"},
+    "sizing_rationale": "Based on 1000 req/sec, p99 latency 200ms"
+  },
+  "security_context": {
+    "runAsNonRoot": true,
+    "runAsUser": 1000,
+    "readOnlyRootFilesystem": true,
+    "allowPrivilegeEscalation": false,
+    "capabilities_drop": ["ALL"]
+  },
+  "health_probes": {
+    "startup": {"path": "/health", "failureThreshold": 30},
+    "liveness": {"path": "/health", "periodSeconds": 10},
+    "readiness": {"path": "/ready", "periodSeconds": 5}
+  },
+  "horizontal_pod_autoscaler": {
+    "enabled": true,
+    "min_replicas": 3,
+    "max_replicas": 10,
+    "target_cpu_utilization": 70
+  },
+  "pod_disruption_budget": {
+    "min_available": 2,
+    "rationale": "Maintain HA during node maintenance"
+  },
+  "topology_spread": {
+    "enabled": true,
+    "topology_key": "topology.kubernetes.io/zone",
+    "max_skew": 1
+  }
+}
+```
+
+**DO NOT include:**
+- Full YAML manifests (orchestrator generates from this structure)
+- Kubectl commands (orchestrator adds)
+- Detailed probe implementation code (orchestrator references)
+
+---
+
 ## References
 
 - **Kubernetes Best Practices**: https://kubernetes.io/docs/concepts/configuration/
