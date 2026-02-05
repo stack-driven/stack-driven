@@ -818,6 +818,7 @@ done
 **Exemptions:**
 - Commands currently tracked in Epic #167 (5 bloated commands being refactored)
 - Temporary exemption expires after Epic #167 completion
+- **Phase-based orchestrators with synthesis steps**: Commands that use conditional sub-agent invocation AND require comprehensive synthesis guidance may exceed 400 lines (acceptable up to ~850 lines if synthesis step is 200-400 lines). Example: `/generate-api-contracts` (853 lines) includes 300+ line synthesis step (Step 12) that combines phase outputs into cohesive contract - this orchestrator responsibility cannot be delegated to sub-agents without losing coherence. Justification required in PR description.
 
 ---
 
