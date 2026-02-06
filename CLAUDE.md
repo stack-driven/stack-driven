@@ -182,7 +182,13 @@ Each command follows this pattern:
 
 ### Micro-Session Commands (Internal)
 
-**NOTE:** These commands are invoked by orchestrators (like `/generate-api-design`), not directly by users.
+**NOTE:** These commands are invoked by orchestrators, not directly by users.
+
+**Session 7 Micro-Sessions** (invoked by `/design-database-schema` orchestrator):
+- `/generate-core-tables` - Phase 7a: Core entity tables from journey (~15k tokens)
+- `/generate-relationships` - Phase 7b: Foreign keys and junction tables (~10k tokens)
+- `/generate-special-tables` - Phase 7c: Special patterns (i18n, audit) - conditional (~10k tokens)
+- `/generate-schema-optimization` - Phase 7d: Indexes and final synthesis (~20k tokens)
 
 **Session 8 Micro-Sessions** (invoked by `/generate-api-design` orchestrator):
 - `/generate-api-paradigm` - Phase 8.1: API paradigm selection (~15k tokens)
@@ -190,7 +196,7 @@ Each command follows this pattern:
 - `/generate-api-performance` - Phase 8.3: Performance patterns - conditional (~10k tokens)
 - `/generate-api-synthesis` - Phase 8.4: Synthesis into complete API design (~20k tokens)
 
-Users run only `/generate-api-design`, which orchestrates all phases automatically with state tracking.
+Users run only the orchestrator commands (`/design-database-schema`, `/generate-api-design`), which manage all phases automatically with state tracking.
 
 ### Development Commands
 
@@ -298,6 +304,10 @@ Every decision must trace back to user journey:
 - `14-observability-strategy.md` - Final observability strategy
 
 **Micro-session file naming convention:**
+- **Session 7 intermediate files**: `07a-core-tables.md`, `07b-relationships.md`, `07c-special-tables.md`
+  - Preserved intermediate files from progressive schema building
+  - NO .ctx.md versions (only final 07-database-schema gets both)
+  - Read by subsequent phases (7b reads 07a, 7d reads all)
 - **Session 8 phases**: `08-phase[N]-[name].md` (e.g., `08-phase1-paradigm.md`, `08-phase2-security.md`)
   - These are temporary internal files deleted after synthesis
   - NOT context files (.ctx.md) - they exist only during processing
@@ -305,7 +315,7 @@ Every decision must trace back to user journey:
   - Preserved intermediate file with context version
   - Different pattern because it's retained for backlog generation
 
-**Rationale:** Session 8 phases are internal processing steps (deleted after synthesis), while Session 10a output is preserved as part of the cascade.
+**Rationale:** Session 7 intermediate files enable progressive building with minimal context. Session 8 phases are internal processing steps (deleted after synthesis). Session 10a output is preserved as part of the cascade.
 
 **Why this universal approach?**
 1. **Consistency** - No complex decision matrix needed
@@ -538,8 +548,12 @@ Session 5 (brand-strategy) [reads: 00-04.ctx.md] → Generates .md + .ctx.md
 Session 6 (design) [reads: 00-05.ctx.md] → Generates .md + .ctx.md
   ↓ GENERATES: DTCG token hierarchy (primitive→semantic→component), 2025 CSS architecture (Tailwind v4, Panda CSS, Vanilla Extract with styled-components deprecation), WCAG 2.2 compliance (Target Size, Focus Not Obscured, Accessible Authentication), performance optimization (bundle splitting, icon/font optimization, Core Web Vitals targets)
   ↓
-Session 7 (database-schema) [reads: 00-06.ctx.md] → Generates .md + .ctx.md
-  ↓
+Session 7 (database-schema) → PROGRESSIVE MICRO-SESSIONS → Generates .md + .ctx.md
+  ├── Session 7a (core-tables) [reads: 00.ctx.md, 02.ctx.md] → 07a-core-tables.md (15k tokens)
+  ├── Session 7b (relationships) [reads: 07a-core-tables.md] → 07b-relationships.md (10k tokens)
+  ├── Session 7c (special-tables) [reads: 02a.ctx.md, 04.ctx.md] → 07c-special-tables.md (10k, conditional)
+  └── Session 7d (optimization) [reads: 07a/07b/07c files] → 07-database-schema.md + .ctx.md (20k tokens)
+  ↓ TOTAL: ~55k tokens (83% reduction from 480k monolithic approach)
 Session 8 (api-design) [reads: 00.ctx.md, 02.ctx.md, 04.ctx.md, 07.ctx.md] → Generates .md + .ctx.md
   ↓ GENERATES: Paradigm choice (REST/GraphQL/gRPC), OWASP API Top 10 2023 protections (BOLA, BFLA, SSRF, etc.), input validation strategy, HTTP caching (ETag, Cache-Control), idempotency/retry patterns, circuit breakers for third-party APIs, security headers (HSTS, CSP)
   ↓
@@ -626,19 +640,24 @@ Post-cascade extensions are **optional deep-dive commands** that run AFTER core 
 
 ### Completed Decompositions
 
-**Session 7 (/design-database-schema) - COMPLETED**
-- **Orchestrator:** `design-database-schema.md` (418 lines)
-- **Sub-agents:** 7 specialized agents (2,954 lines total)
-  - `design-core-tables.md` (335 lines) - ALWAYS: Core entity tables from journey
-  - `design-relationships.md` (370 lines) - ALWAYS: Foreign keys, junction tables, constraints
-  - `design-indexes.md` (391 lines) - ALWAYS: Performance indexes based on query patterns
-  - `design-i18n-tables.md` (454 lines) - CONDITIONAL: Translation tables (IF i18n required in Session 2a)
-  - `design-integration-tables.md` (530 lines) - CONDITIONAL: Integration infrastructure (IF third-party integrations in Session 2a)
-  - `design-multi-tenancy.md` (366 lines) - CONDITIONAL: Tenant isolation patterns (IF multi-tenant architecture in Session 4)
-  - `design-audit-logging.md` (508 lines) - CONDITIONAL: Compliance audit tables (IF compliance requirements in Session 2a)
-- **Token efficiency:** 30% reduction for simple journeys (1,514 vs 2,170 lines), 13% for typical journeys (~1,900 lines)
-- **Conditional logic:** Explicit IF/SKIP gates in orchestrator Step 3 (lines 67-107)
-- **PR:** #169
+**Session 7 (/design-database-schema) - COMPLETED (Issue #207)**
+- **Orchestrator:** `design-database-schema.md` (280 lines) - Manages 4 progressive micro-sessions
+- **Micro-sessions:** Progressive schema building with state tracking
+  - `generate-core-tables.md` (Session 7a) - Extract entities, design core tables (15k tokens)
+  - `generate-relationships.md` (Session 7b) - Add foreign keys, junction tables (10k tokens)
+  - `generate-special-tables.md` (Session 7c) - Conditionally add i18n/integration/audit tables (10k tokens)
+  - `generate-schema-optimization.md` (Session 7d) - Indexes, synthesis, migrations (20k tokens)
+- **Sub-agents:** 7 specialized agents (invoked by micro-sessions, not orchestrator)
+  - `design-core-tables.md` (335 lines) - Invoked by Session 7a
+  - `design-relationships.md` (370 lines) - Invoked by Session 7b
+  - `design-indexes.md` (391 lines) - Invoked by Session 7d
+  - `design-i18n-tables.md` (454 lines) - CONDITIONAL: Invoked by Session 7c if i18n required
+  - `design-integration-tables.md` (530 lines) - CONDITIONAL: Invoked by Session 7c if integrations exist
+  - `design-multi-tenancy.md` (366 lines) - CONDITIONAL: Invoked by Session 7c if multi-tenant
+  - `design-audit-logging.md` (508 lines) - CONDITIONAL: Invoked by Session 7c if compliance required
+- **Token efficiency:** 83% reduction (55k typical vs 480k monolithic)
+- **State tracking:** `.cascade/session-7-state.json` enables pause/resume
+- **PR:** #207
 
 ### Decomposition Pattern (from Epic #167)
 

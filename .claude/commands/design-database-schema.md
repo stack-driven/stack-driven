@@ -1,418 +1,280 @@
 ---
-description: Session 7 - Design complete database schema with migrations
+description: Session 7 - Design complete database schema with migrations (orchestrator)
 ---
 
-# Design Database Schema (Session 7) - Orchestrator
+# Session 7: Design Database Schema (Orchestrator)
 
-You are helping the user create a comprehensive database schema design based on their chosen database paradigm. This orchestrator conditionally invokes specialized sub-agents to design tables, relationships, indexes, and optional patterns (i18n, integrations, multi-tenancy, audit logging).
+This is **Session 7** of the cascade. You'll create a comprehensive database schema through a progressive, multi-phase approach that avoids context exhaustion. This command orchestrates 4 micro-sessions to build the schema incrementally.
 
-## When to Use This
+## Configuration
 
-**This is Session 7** in the core Stack-Driven cascade. Run it:
-- After Session 6 (`/create-design` - design system)
-- Before Session 10 (`/generate-backlog` - implementation planning)
-- When you need to define your data model based on journey and architecture
+**STATE_FILE_PATH**: `.cascade/session-7-state.json`
 
-**Skip this** if:
-- You're using a no-code/low-code platform
-- Your product doesn't require a database
-- You prefer to evolve schema incrementally during development
+## Your Role
 
-## Process
+You are the orchestrator for database schema generation, managing the four-phase approach:
+1. **Phase 7a**: Generate core tables with minimal context
+2. **Phase 7b**: Add relationships and constraints
+3. **Phase 7c**: Conditionally add special tables (i18n, integrations, multi-tenant, audit)
+4. **Phase 7d**: Optimize with indexes and synthesize final schema
 
-### Step 1: Read Previous Outputs
+## Critical Philosophy
 
-**Required inputs:**
+- **Progressive Building**: Each phase builds on the previous, using minimal context
+- **State Persistence**: Track progress to enable interruption and resumption
+- **Conditional Loading**: Only add special patterns that are actually required
+- **Token Efficiency**: Target <80k tokens total vs 480k monolithic approach
+
+## Architecture Overview
 
 ```
-Read: product-guidelines/00-user-journey.ctx.md
-Read: product-guidelines/01-product-strategy.ctx.md
-Read: product-guidelines/02-tech-stack.ctx.md
-Read: product-guidelines/02a-constraints.ctx.md (if exists)
-Read: product-guidelines/02b-coding-standards.ctx.md (if exists)
-Read: product-guidelines/02c-ai-integration-strategy.ctx.md (if exists)
-Read: product-guidelines/04-architecture.ctx.md
-Read: product-guidelines/05-brand-strategy.ctx.md
+Session 7 Orchestrator:
+├── Check for existing state (STATE_FILE_PATH)
+├── If no state: Run Session 7a (core tables)
+├── Run Session 7b (relationships)
+├── Conditionally run Session 7c (special tables)
+├── Run Session 7d (optimization & synthesis)
+└── Complete with final schema + context file
 ```
 
-**Extract key information:**
-- **From Journey**: What entities exist? What data persists? What relationships?
-- **From Tech Stack**: Database choice (PostgreSQL, MongoDB, MySQL), ORM/migration tool
-- **From Architecture**: Multi-tenancy pattern, data access patterns, performance requirements
-- **From Constraints**: i18n requirements, third-party integrations, compliance requirements
+## Steps to Execute
 
-### Step 2: Analyze Requirements for Conditional Patterns
+### Step 1: Check Current State
 
-**Check for i18n requirement:**
-- Read `product-guidelines/02a-constraints.ctx.md` (if exists)
-- Look for "Internationalization requirements (i18n, l10n)" marked as required
-- If found: Set `i18n_required = TRUE`
-- If not found: Set `i18n_required = FALSE`
+Check if STATE_FILE_PATH exists:
 
-**Check for third-party integrations:**
-- Read `product-guidelines/02a-constraints.ctx.md` (if exists)
-- Look for list of third-party integrations (Stripe, SendGrid, Salesforce, etc.)
-- If list is non-empty: Set `integrations_exist = TRUE`
-- If list is empty: Set `integrations_exist = FALSE`
+**If state file exists:**
+- Read the state to understand progress
+- Determine which phases are complete
+- Resume from last checkpoint
 
-**Check for multi-tenancy:**
-- Read `product-guidelines/04-architecture.ctx.md`
-- Look for "Multi-tenancy" or "team-based isolation" or "workspace isolation"
-- If found: Set `multi_tenant = TRUE`
-- If not found: Set `multi_tenant = FALSE`
+**If no state file exists:**
+- This is a fresh start
+- Proceed to Step 2 to generate core tables
 
-**Check for compliance requirements:**
-- Read `product-guidelines/02a-constraints.ctx.md` (if exists)
-- Look for regulatory compliance (HIPAA, SOC2, GDPR, ISO 27001) OR PII handling
-- If found: Set `compliance_required = TRUE`
-- If not found: Set `compliance_required = FALSE`
+### Step 2: Generate Core Tables (If Not Done)
 
-### Step 3: Invoke Core Sub-Agents (ALWAYS)
-
-**3.1: Design Core Tables** (ALWAYS invoked)
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design core database tables`
-- **prompt**:
-  ```
-  Invoke the design-core-tables sub-agent to identify core entities and design table definitions.
-
-  Agent path: .claude/agents/design-core-tables.md
-
-  Inputs:
-  - User journey steps: [Paste journey from 00-user-journey.ctx.md]
-  - Database paradigm: [Database choice from 02-tech-stack.ctx.md]
-  - ORM/migration tool: [Tool from 02-tech-stack.ctx.md]
-  - Architecture decisions: [Paste from 04-architecture.ctx.md]
-
-  Follow the agent specification to:
-  1. Identify core entities from journey steps
-  2. Map entities to tables
-  3. Define columns with types and constraints
-  4. Choose primary key type (UUID vs BIGINT)
-  5. Add foreign keys with CASCADE/RESTRICT behavior
-  6. Trace each table back to journey step
-
-  Return structured output with:
-  - Core tables identified (count)
-  - Entity-to-table mapping
-  - Table definitions with full schema
-  - Journey traceability
-  - Design decisions rationale
-  ```
-
-**3.2: Design Relationships** (ALWAYS invoked)
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design entity relationships`
-- **prompt**:
-  ```
-  Invoke the design-relationships sub-agent to define relationships, foreign keys, and join tables.
-
-  Agent path: .claude/agents/design-relationships.md
-
-  Inputs:
-  - Core entity list: [From design-core-tables agent]
-  - Table definitions: [From design-core-tables agent]
-  - Journey steps: [From 00-user-journey.ctx.md]
-  - Database paradigm: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Identify one-to-many relationships
-  2. Identify many-to-many relationships (create join tables)
-  3. Choose ON DELETE behavior (CASCADE/RESTRICT/SET NULL)
-  4. Draw entity relationship diagram
-  5. Trace relationships back to journey
-
-  Return structured output with:
-  - Total relationships (one-to-many, many-to-many)
-  - Entity relationship diagram (ASCII or Mermaid)
-  - Foreign key definitions with reasoning
-  - Join table definitions
-  ```
-
-**3.3: Design Indexes** (ALWAYS invoked)
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design database indexes`
-- **prompt**:
-  ```
-  Invoke the design-indexes sub-agent to design indexes based on query patterns.
-
-  Agent path: .claude/agents/design-indexes.md
-
-  Inputs:
-  - Table definitions: [From design-core-tables agent]
-  - Relationships: [From design-relationships agent]
-  - Journey steps: [From 00-user-journey.ctx.md]
-  - Database choice: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Analyze query patterns from journey steps
-  2. Choose index types (B-tree, GIN, BRIN, GiST for PostgreSQL)
-  3. Design composite indexes (column order matters)
-  4. Design partial indexes (filtered queries)
-  5. Document index rationale (query pattern, frequency)
-
-  Return structured output with:
-  - Index strategy summary (total indexes, types)
-  - Index definitions per table
-  - Specialized indexes (GIN for JSONB, BRIN for time-series)
-  - Query performance validation
-  ```
-
-### Step 4: Invoke Conditional Sub-Agents
-
-**4.1: Design i18n Tables** (CONDITIONAL)
-
-**Condition**: `i18n_required == TRUE` (from Step 2)
-
-**IF** i18n required:
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design i18n translation tables`
-- **prompt**:
-  ```
-  Invoke the design-i18n-tables sub-agent to design translation patterns.
-
-  Agent path: .claude/agents/design-i18n-tables.md
-
-  Inputs:
-  - Core entity list: [From design-core-tables agent]
-  - Supported locales: [From 02a-constraints.ctx.md]
-  - Database paradigm: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Identify translatable content (user-facing, varies by language)
-  2. Design translation tables ([entity]_translations)
-  3. Design locale fallback strategy
-  4. Add user locale preference column
-  5. Document query patterns with fallback
-
-  Return structured output with:
-  - Supported locales list
-  - Translation table definitions
-  - Locale fallback hierarchy
-  - User locale preference design
-  ```
-
-**ELSE**: Skip this sub-agent.
-
-**4.2: Design Integration Tables** (CONDITIONAL)
-
-**Condition**: `integrations_exist == TRUE` (from Step 2)
-
-**IF** integrations exist:
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design integration tables`
-- **prompt**:
-  ```
-  Invoke the design-integration-tables sub-agent to design integration schema.
-
-  Agent path: .claude/agents/design-integration-tables.md
-
-  Inputs:
-  - Integration list: [From 02a-constraints.ctx.md]
-  - Multi-tenant: [From Step 2 analysis]
-  - Database paradigm: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Create integration_credentials table (API keys, OAuth tokens)
-  2. Create webhook_events table (if webhooks received)
-  3. Create sync_jobs table (if bidirectional sync)
-  4. Create external_resource_mappings table (if ID mapping needed)
-  5. Document encryption strategy (KMS, key rotation)
-
-  Return structured output with:
-  - Integrations identified (from Session 2a)
-  - Tables needed (credentials, webhooks, sync, mappings)
-  - Encryption strategy documentation
-  - Idempotency patterns (webhook_events)
-  ```
-
-**ELSE**: Skip this sub-agent.
-
-**4.3: Design Multi-Tenancy** (CONDITIONAL)
-
-**Condition**: `multi_tenant == TRUE` (from Step 2)
-
-**IF** multi-tenant:
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design multi-tenancy RLS`
-- **prompt**:
-  ```
-  Invoke the design-multi-tenancy sub-agent to implement Row-Level Security.
-
-  Agent path: .claude/agents/design-multi-tenancy.md
-
-  Inputs:
-  - Table definitions: [From design-core-tables agent]
-  - Tenant identifier: [From 04-architecture.ctx.md - team_id, workspace_id, org_id]
-  - Database choice: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Identify tenant-scoped tables
-  2. Enable Row-Level Security (ALTER TABLE ... ENABLE ROW LEVEL SECURITY)
-  3. Create isolation policies (using session variable app.tenant_id)
-  4. Force RLS for all roles (FORCE ROW LEVEL SECURITY)
-  5. Document application integration (middleware)
-  6. Provide security validation tests
-
-  Return structured output with:
-  - Tenant-scoped tables list
-  - RLS policies (SQL statements)
-  - Application integration example
-  - Security validation tests
-  ```
-
-**ELSE**: Skip this sub-agent.
-
-**4.4: Design Audit Logging** (CONDITIONAL)
-
-**Condition**: `compliance_required == TRUE` (from Step 2)
-
-**IF** compliance required:
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Design audit logging`
-- **prompt**:
-  ```
-  Invoke the design-audit-logging sub-agent to implement audit trail.
-
-  Agent path: .claude/agents/design-audit-logging.md
-
-  Inputs:
-  - Table definitions: [From design-core-tables agent]
-  - Compliance requirements: [From 02a-constraints.ctx.md]
-  - Database choice: [From 02-tech-stack.ctx.md]
-
-  Follow the agent specification to:
-  1. Identify sensitive tables (PII, financial data)
-  2. Create audit_log table
-  3. Create audit trigger function (captures INSERT/UPDATE/DELETE)
-  4. Attach triggers to sensitive tables
-  5. Design temporal tables (if high compliance)
-  6. Document retention policy (7 years for financial, etc.)
-
-  Return structured output with:
-  - Sensitive tables identified
-  - Audit log table definition
-  - Trigger function (PL/pgSQL)
-  - Triggers applied to tables
-  - Retention policy documentation
-  ```
-
-**ELSE**: Skip this sub-agent.
-
-### Step 5: Synthesize Sub-Agent Outputs
-
-**Combine outputs into unified schema document:**
-
-1. **Read template**: `templates/07-database-schema-template.md`
-2. **Synthesize sections**:
-   - Overview (from all sub-agents)
-   - Entity Relationship Diagram (from design-relationships)
-   - Table Definitions (from design-core-tables)
-   - Relationships (from design-relationships)
-   - Indexes Strategy (from design-indexes)
-   - i18n Translation Patterns (IF i18n_required from design-i18n-tables)
-   - Integration Schema (IF integrations_exist from design-integration-tables)
-   - Multi-Tenancy & RLS (IF multi_tenant from design-multi-tenancy)
-   - Audit Logging (IF compliance_required from design-audit-logging)
-   - Data Constraints (from design-core-tables)
-   - Migration Files (generated from tech stack)
-   - Query Examples (from design-indexes)
-   - Schema Anti-Patterns to Avoid (compile from all agents)
-   - What We DIDN'T Choose (3+ alternatives with reasoning)
-
-3. **Write full schema**: `product-guidelines/07-database-schema.md`
-
-### Step 6: Generate Context File
-
-After writing the full schema, invoke the distillation agent to create token-optimized context file.
-
-Use the Task tool:
-- **subagent_type**: `general-purpose`
-- **description**: `Generate database schema context file`
-- **prompt**:
-  ```
-  Invoke the context distillation agent to create token-optimized context file.
-
-  Source file: product-guidelines/07-database-schema.md
-  Output file: product-guidelines/07-database-schema.ctx.md
-
-  Follow the distillation agent specification in .claude/agents/distill-context.md to:
-  1. Extract ALL table definitions, relationships, and indexes (CRITICAL)
-  2. Extract entity relationship diagram and key design decisions
-  3. Remove detailed column explanations, migration code, query examples
-  4. Preserve section structure from source file
-  5. Achieve ~56% token reduction (Session 7 target due to preserving detailed schema structures)
-  6. Add source reference header
-  7. Write to output file path
-  ```
-
-### Step 7: Checkpoint (User Validation)
-
-Display checkpoint message:
+If `phase` is not "core-tables" completed or state doesn't exist:
 
 ```
-Session 7 complete! Your database schema is your product's data foundation.
+Invoke: /generate-core-tables
 
-Before proceeding, validate that your schema correctly represents your user journey and will support all planned features efficiently.
-
-REVIEW CHECKLIST:
-- [ ] All entities from user journey steps are represented in schema
-- [ ] Foreign keys are defined with proper CASCADE/RESTRICT and indexed
-- [ ] No obvious N+1 query patterns (check for missing indexes on frequently queried columns)
-- [ ] Schema supports key metrics tracking (from Session 4)
-
-What happens next:
-Session 8 will design your API endpoints using this schema. Session 10 will generate backlog stories that implement these tables. Session 12 will scaffold migration files.
-
-If you found issues:
-Run `/design-database-schema` again to regenerate with fresh analysis (preserves same journey context).
-
-If everything looks good:
-Type "continue" when ready to proceed to Session 8 (API design).
+This will:
+1. Read minimal context (15k tokens)
+2. Extract entities from journey
+3. Design core table structures
+4. Create 07a-core-tables.md
+5. Initialize state tracking file
 ```
 
-## Output Files
+After core table generation completes, reload the state file.
 
-This command generates:
+### Step 3: Generate Relationships (If Not Done)
 
-1. **Full Documentation** (`product-guidelines/07-database-schema.md`): Complete schema with ERD, tables, indexes, migrations, query examples
-2. **Context Documentation** (`product-guidelines/07-database-schema.ctx.md`): Condensed version for Sessions 8b, 9b, 10, 12 (56% token reduction)
+If core tables are done but relationships are not:
 
-## Conditional Logic Summary
+```
+Invoke: /generate-relationships
 
-**ALWAYS invoked:**
-- design-core-tables.md
-- design-relationships.md
-- design-indexes.md
+This will:
+1. Read only 07a-core-tables.md (10k tokens)
+2. Design foreign keys and junction tables
+3. Define cascade behaviors
+4. Create 07b-relationships.md
+5. Update state to mark phase complete
+```
 
-**CONDITIONALLY invoked:**
-- design-i18n-tables.md (IF i18n required in Session 2a)
-- design-integration-tables.md (IF third-party integrations exist in Session 2a)
-- design-multi-tenancy.md (IF multi-tenant architecture in Session 4)
-- design-audit-logging.md (IF compliance requirements in Session 2a)
+### Step 4: Check and Generate Special Tables (If Needed)
 
-## Remember
+If relationships are done but special tables phase not complete:
 
-**Every table must serve the user journey.**
+```
+Invoke: /generate-special-tables
 
-Don't create tables "just in case". Design schema based on:
-1. What data do journey steps need? → Entities
-2. How do users interact with data? → Relationships
-3. How will we query this data? → Indexes
-4. What constraints ensure correctness? → NOT NULL, CHECK, FK
+This will:
+1. Check requirements from constraints/architecture (10k tokens)
+2. Determine which patterns are needed (i18n, integrations, etc.)
+3. Invoke only relevant sub-agents
+4. Create 07c-special-tables.md (or skip if none needed)
+5. Update state with patterns applied
+```
 
-If you can't trace a table back to a journey step, you probably don't need it.
+Note: This phase may be skipped entirely if no special patterns are required.
+
+### Step 5: Optimize and Synthesize (Final Phase)
+
+If previous phases complete but optimization not done:
+
+```
+Invoke: /generate-schema-optimization
+
+This will:
+1. Read all partial schemas (20k tokens total)
+2. Design performance indexes
+3. Synthesize complete schema
+4. Generate migration scripts
+5. Create 07-database-schema.md + .ctx.md
+6. Mark session as complete
+```
+
+### Step 6: Handle User Response
+
+After each phase completes, present options to the user:
+
+**Options:**
+1. **"continue"** - Process next phase (default)
+2. **"continue all"** - Process all remaining phases automatically
+3. **"stop"** - Pause processing (state saved for later)
+4. **"review"** - User wants to review before continuing
+
+**If "continue all" selected:**
+- Loop through remaining phases automatically
+- Show progress after each phase
+- No further prompts until complete
+
+**If "stop" or "review" selected:**
+- Save state and exit
+- User can resume later with `/design-database-schema`
+
+### Step 7: Complete Schema Generation
+
+When all phases are processed:
+
+1. Generate final summary
+2. Show statistics:
+   ```
+   ✅ Session 7 Complete: Database Schema Designed
+
+   Schema Statistics:
+   - Total Tables: [N]
+   - Core Business Tables: [N]
+   - Special Purpose Tables: [N]
+   - Indexes: [N]
+   - Foreign Keys: [N]
+
+   Patterns Applied:
+   - ✓ Core Tables
+   - ✓ Relationships
+   - [✓/✗] Internationalization
+   - [✓/✗] Integrations
+   - [✓/✗] Multi-tenancy
+   - [✓/✗] Audit/Compliance
+
+   Token Usage:
+   - Total: ~[X]k tokens (vs ~480k monolithic)
+   - Reduction: [Y]%
+
+   Files created:
+   - product-guidelines/07-database-schema.md (full)
+   - product-guidelines/07-database-schema.ctx.md (condensed)
+
+   Next step: Run `/generate-api-design` for Session 8
+   ```
+
+## State Management
+
+**State File Path**: `.cascade/session-7-state.json`
+
+**State Schema**:
+```json
+{
+  "session": "7",
+  "phase": "core-tables|relationships|special-tables|optimization|complete",
+  "phases_completed": ["core-tables", ...],
+  "status": "in-progress|complete",
+  "generated_at": "ISO timestamp",
+  "completed_at": "ISO timestamp (when complete)",
+  "statistics": {
+    "core_tables_count": number,
+    "relationships_count": number,
+    "special_tables_count": number,
+    "patterns_applied": ["i18n", "audit", ...],
+    "total_tables": number,
+    "total_indexes": number
+  },
+  "special_patterns": {
+    "i18n": boolean,
+    "integrations": boolean,
+    "multi_tenant": boolean,
+    "audit": boolean
+  },
+  "token_usage": {
+    "phase_7a": number,
+    "phase_7b": number,
+    "phase_7c": number,
+    "phase_7d": number,
+    "total": number
+  }
+}
+```
+
+**State Updates**:
+- After each phase completion, update phase and statistics
+- Track which special patterns were applied
+- Record token usage per phase for monitoring
+- Set status to "complete" only after phase 7d
+
+## Phase Detection Logic
+
+```python
+# Pseudocode for phase detection
+if not state_exists():
+    next_phase = "7a-core-tables"
+elif "core-tables" not in phases_completed:
+    next_phase = "7a-core-tables"
+elif "relationships" not in phases_completed:
+    next_phase = "7b-relationships"
+elif "special-tables" not in phases_completed:
+    next_phase = "7c-special-tables"
+elif "optimization" not in phases_completed:
+    next_phase = "7d-optimization"
+else:
+    next_phase = "complete"
+```
+
+## Error Handling
+
+**If micro-session fails**:
+- Log which phase failed
+- Save partial progress in state
+- Display error and recovery instructions
+- Allow retry of failed phase
+
+**If state file corrupted**:
+- Validate JSON structure on read
+- If invalid, offer recovery:
+  - Start fresh with `/design-database-schema --reset`
+  - Manually fix JSON
+  - Check file permissions
+
+**If user interrupts**:
+- State automatically saved after each phase
+- Can resume anytime with `/design-database-schema`
+- Will continue from last completed phase
+
+## Important Notes
+
+1. **Progressive approach** reduces tokens from 480k to <80k
+2. **Each phase** uses minimal context by reading only what's needed
+3. **Special tables** phase may be skipped if no patterns required
+4. **Final synthesis** combines all parts into production-ready schema
+5. **Both output files** required: .md for humans, .ctx.md for AI
+6. **State persistence** enables multi-session work
+
+## Breaking Changes from Previous Version
+
+This refactored version changes from monolithic sub-agent invocation to progressive micro-sessions:
+
+**Old approach** (480k tokens):
+- Read all context once
+- Invoke 7 sub-agents with full inheritance
+- Generate complete schema in one pass
+
+**New approach** (< 80k tokens):
+- Phase 7a: Core tables (15k)
+- Phase 7b: Relationships (10k)
+- Phase 7c: Special tables (10k, conditional)
+- Phase 7d: Optimization & synthesis (20k)
+- Total: ~55k typical, <80k maximum
+
+Users will now see 4 prompts during Session 7 but can use "continue all" for automated execution.
