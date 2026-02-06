@@ -140,12 +140,18 @@ CORE CASCADE (Required - Always Start Here)
 [x] 06-design-system.ctx.md    (Session 6 - Not started)
 [x] 07-database-schema.md         (Session 7 - Not started)
 [x] 08-api-design.md              (Session 8 - Not started)
-[x] 08-api-design.ctx.md   (Session 8 - Not started)
+    └─ Check for micro-sessions if partially complete:
+       [x] 08a-api-paradigm.md    (Phase 8a - Not started)
+       [x] 08b-api-security.md    (Phase 8b - Not started)
+       [x] 08c-api-performance.md (Phase 8c - Not started)
+[x] 08-api-design.ctx.md          (Session 8 - Not started)
 [x] 08b-api-contracts.md          (Session 8b - Not started)
 [x] 08b-api-contracts.ctx.md (Session 8b - Not started)
 [x] 09-test-strategy.md           (Session 9 - Not started)
 [x] 09b-application-architecture.md (Session 9b - Not started)
 [x] 10-backlog/                   (Session 10 - Not started)
+    └─ Check for epic structure if partially complete:
+       [x] 10a-epics.md           (Phase 10a - Epic structure)
 [x] 12-project-scaffold.md        (Session 12 - Not started)
 [x] 13-deployment-plan.md         (Session 13 - Not started)
 [x] 14-observability-strategy.md  (Session 14 - Not started)
@@ -217,7 +223,14 @@ Based on what files exist, determine the next recommended action:
   - `/create-financial-model` (product-guidelines/22-financial-model.md)
 
 **If 00-07 database exists (Session 7 complete)**:
-- **Recommend**: Session 8 (`/generate-api-design`)
+- **Check Session 8 micro-session progress**:
+  - Check for `.cascade/session-8-state.json`
+  - Check for intermediate files: `08a-api-paradigm.md`, `08b-api-security.md`, `08c-api-performance.md`
+  - If no state file or Session 8 not started: **Recommend**: Session 8 (`/generate-api-design`)
+  - If Session 8 partially complete (state shows incomplete phases):
+    - Show micro-session progress: "Session 8a ✓, 8b ✓, 8c in progress..."
+    - **Recommend**: Continue Session 8 (`/generate-api-design` to resume)
+  - If `08-api-design.md` exists: Session 8 complete, proceed to next
 
 **If 00-08 api design exists (Session 8 complete)**:
 - **Recommend**: Session 8b (`/generate-api-contracts`)
@@ -229,7 +242,14 @@ Based on what files exist, determine the next recommended action:
 - **Recommend**: Session 9b (`/model-application`)
 
 **If 00-09b application architecture exists (Session 9b complete)**:
-- **Recommend**: Session 10 (`/generate-backlog`)
+- **Check Session 10 state progress**:
+  - Check for `.cascade/session-10-state.json`
+  - Check for intermediate file: `10a-epics.md`
+  - If no state file or Session 10 not started: **Recommend**: Session 10 (`/generate-backlog`)
+  - If Session 10a complete but stories in progress:
+    - Show progress: "Epic structure complete, generating stories..."
+    - **Recommend**: Continue Session 10 (`/generate-backlog` to resume)
+  - If `10-backlog/` directory has stories: Session 10 complete, proceed to next
 
 **If 00-10 backlog exists (Session 10 complete)**:
 - **Recommend**: Session 11 (`/create-gh-issues`)
