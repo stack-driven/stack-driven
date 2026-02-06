@@ -62,6 +62,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug Claude Action Environment
+        run: |
+          echo "📊 Debug Information:"
+          echo "- Event Name: ${{ github.event_name }}"
+          echo "- PR Number: ${{ steps.get-pr.outputs.pr_number }}"
+          echo "- Token Set: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}"
+
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
@@ -228,13 +235,91 @@ jobs:
           # This ensures consistency with your manual review process
           claude_args: '--allowed-tools "Bash(gh:*),Read,Grep,Glob"'
 
+      - name: Debug Claude Action Outputs
+        if: always()
+        run: |
+          echo "🔍 Checking Claude Action outputs:"
+          echo "- Outcome: ${{ steps.claude-review.outcome }}"
+          echo "- Conclusion: ${{ steps.claude-review.conclusion }}"
+          echo ""
+          echo "Available outputs:"
+          echo "- stdout: '${{ steps.claude-review.outputs.stdout }}'"
+          echo "- stderr: '${{ steps.claude-review.outputs.stderr }}'"
+          echo "- output: '${{ steps.claude-review.outputs.output }}'"
+          echo "- response: '${{ steps.claude-review.outputs.response }}'"
+          echo "- result: '${{ steps.claude-review.outputs.result }}'"
+          echo ""
+          echo "Full step context (JSON):"
+          echo '${{ toJSON(steps.claude-review) }}'
+
       - name: Post review comment
         if: success()
         run: |
-          # Save Claude's review to a file and post it as a comment
-          cat << 'EOF' > review.md
-          ${{ steps.claude-review.outputs.stdout }}
+          # Try multiple output methods to capture the Claude review
+          REVIEW_CONTENT=""
+
+          # Method 1: Try stdout
+          if [ -n "${{ steps.claude-review.outputs.stdout }}" ]; then
+            echo "✅ Found review in stdout"
+            REVIEW_CONTENT="${{ steps.claude-review.outputs.stdout }}"
+          # Method 2: Try output
+          elif [ -n "${{ steps.claude-review.outputs.output }}" ]; then
+            echo "✅ Found review in output"
+            REVIEW_CONTENT="${{ steps.claude-review.outputs.output }}"
+          # Method 3: Try response
+          elif [ -n "${{ steps.claude-review.outputs.response }}" ]; then
+            echo "✅ Found review in response"
+            REVIEW_CONTENT="${{ steps.claude-review.outputs.response }}"
+          # Method 4: Try result
+          elif [ -n "${{ steps.claude-review.outputs.result }}" ]; then
+            echo "✅ Found review in result"
+            REVIEW_CONTENT="${{ steps.claude-review.outputs.result }}"
+          # Method 5: Check if a review file was created
+          elif [ -f "claude_review.md" ]; then
+            echo "✅ Found review in claude_review.md file"
+            REVIEW_CONTENT=$(cat claude_review.md)
+          elif [ -f "review.md" ]; then
+            echo "✅ Found existing review.md file"
+            REVIEW_CONTENT=$(cat review.md)
+          fi
+
+          # Save the review content to a file
+          if [ -n "$REVIEW_CONTENT" ]; then
+            echo "$REVIEW_CONTENT" > review.md
+          else
+            echo "❌ No review content found in any expected location"
+
+            # Create a fallback message
+            cat << 'EOF' > review.md
+          ## Code Review - Round ${{ steps.get-iteration.outputs.next_round }}/5
+
+          ⚠️ **Automated review generation failed**
+
+          The Claude Code review action completed but produced no output. This could be due to:
+          - Missing or invalid CLAUDE_CODE_OAUTH_TOKEN secret
+          - API rate limiting or connection issues
+          - Workflow configuration issues with output capture
+
+          Please check:
+          1. Repository secret `CLAUDE_CODE_OAUTH_TOKEN` is set correctly
+          2. GitHub Actions logs for debug output to identify where the review should be
+          3. The Claude Code Action documentation for correct output format
+
+          Debug information from the action:
+          - Action outcome: ${{ steps.claude-review.outcome }}
+          - PR number: ${{ steps.get-pr.outputs.pr_number }}
+          - Review round: ${{ steps.get-iteration.outputs.next_round }}
+
+          ---
+          *Manual review recommended for this PR*
           EOF
+          fi
+
+          # Verify the review file has content before posting
+          if [ ! -s review.md ]; then
+            echo "❌ Review file is still empty after all attempts"
+            exit 1
+          fi
 
           # Post the review as a comment
           gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body-file review.md
