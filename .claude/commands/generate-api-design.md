@@ -8,15 +8,15 @@ This is **Session 8** of the cascade. You'll create a comprehensive API design s
 
 ## Configuration
 
-**STATE_FILE_PATH**: `.cascade/session-8-state.json`
+**STATE_FILE_PATH**: `product-guidelines/session-8.state`
 
 ## Your Role
 
 You are the orchestrator for API design generation, managing the four-phase approach:
-1. **Phase 8a**: Select API paradigm and serialization format (~15k tokens)
-2. **Phase 8b**: Design OWASP security patterns and validation (~10k tokens)
-3. **Phase 8c**: Apply conditional performance patterns (~10k tokens)
-4. **Phase 8d**: Synthesize into complete API design (~20k tokens)
+1. **Phase 8.1**: Select API paradigm and serialization format (~15k tokens)
+2. **Phase 8.2**: Design OWASP security patterns and validation (~10k tokens)
+3. **Phase 8.3**: Apply conditional performance patterns (~10k tokens)
+4. **Phase 8.4**: Synthesize into complete API design (~20k tokens)
 
 Total: <100k tokens (vs 700k+ in previous architecture)
 
@@ -44,9 +44,9 @@ Total: <100k tokens (vs 700k+ in previous architecture)
 ```
 Session 8 Orchestrator:
 ├── Check for existing state (STATE_FILE_PATH)
-├── If no state: Start with Phase 8a (paradigm selection)
+├── If no state: Start with Phase 8.1 (paradigm selection)
 ├── If state exists: Resume from last incomplete phase
-├── Run phases sequentially (8a → 8b → 8c → 8d)
+├── Run phases sequentially (8.1 → 8.2 → 8.3 → 8.4)
 ├── Each phase reads minimal context
 ├── Update state after each phase
 └── Complete when 08-api-design.md is generated
@@ -67,11 +67,11 @@ Check if STATE_FILE_PATH exists:
 **If no state file exists:**
 - This is a fresh start
 - Initialize state tracking
-- Proceed to Phase 8a
+- Proceed to Phase 8.1
 
-### Step 2: Execute Phase 8a - API Paradigm Selection
+### Step 2: Execute Phase 8.1 - API Paradigm Selection
 
-If phase 8a is not complete:
+If Phase 8.1 is not complete:
 
 ```
 Invoke: /generate-api-paradigm
@@ -85,14 +85,14 @@ This will:
 6. Initialize/update state with paradigm decision and conditional flags
 ```
 
-After phase 8a completes:
+After Phase 8.1 completes:
 - Reload state file to get paradigm decision
 - Check conditional pattern flags
-- Proceed to phase 8b
+- Proceed to Phase 8.2
 
-### Step 3: Execute Phase 8b - API Security Design
+### Step 3: Execute Phase 8.2 - API Security Design
 
-If phase 8b is not complete:
+If Phase 8.2 is not complete:
 
 ```
 Invoke: /generate-api-security
@@ -106,13 +106,13 @@ This will:
 6. Update state with completion status
 ```
 
-After phase 8b completes:
+After Phase 8.2 completes:
 - Reload state file
-- Proceed to phase 8c
+- Proceed to Phase 8.3
 
-### Step 4: Execute Phase 8c - API Performance Patterns
+### Step 4: Execute Phase 8.3 - API Performance Patterns
 
-If phase 8c is not complete:
+If Phase 8.3 is not complete:
 
 ```
 Invoke: /generate-api-performance
@@ -130,13 +130,13 @@ This will:
 5. Update state with applied patterns
 ```
 
-After phase 8c completes:
+After Phase 8.3 completes:
 - Reload state file
-- Proceed to phase 8d
+- Proceed to Phase 8.4
 
-### Step 5: Execute Phase 8d - API Synthesis
+### Step 5: Execute Phase 8.4 - API Synthesis
 
-If phase 8d is not complete:
+If Phase 8.4 is not complete:
 
 ```
 Invoke: /generate-api-synthesis
@@ -151,7 +151,7 @@ This will:
 7. Mark session complete in state
 ```
 
-After phase 8d completes:
+After Phase 8.4 completes:
 - Session 8 is complete
 - Display checkpoint message for user review
 
@@ -233,7 +233,7 @@ If the user runs `/generate-api-design` after partial completion:
 
 ## After This Session
 
-The checkpoint message from Phase 8d will guide the user to:
+The checkpoint message from Phase 8.4 will guide the user to:
 - Run `/generate-api-contracts` (Session 8b) for technical implementation
 - Session 8b will read `08-api-design.ctx.md` for decisions
 

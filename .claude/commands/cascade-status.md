@@ -224,11 +224,11 @@ Based on what files exist, determine the next recommended action:
 
 **If 00-07 database exists (Session 7 complete)**:
 - **Check Session 8 micro-session progress**:
-  - Check for `.cascade/session-8-state.json`
+  - Check for `product-guidelines/session-8.state`
   - Check for intermediate files: `08a-api-paradigm.md`, `08b-api-security.md`, `08c-api-performance.md`
   - If no state file or Session 8 not started: **Recommend**: Session 8 (`/generate-api-design`)
   - If Session 8 partially complete (state shows incomplete phases):
-    - Show micro-session progress: "Session 8a ✓, 8b ✓, 8c in progress..."
+    - Show micro-session progress: "Phase 8.1 ✓, Phase 8.2 ✓, Phase 8.3 in progress..."
     - **Recommend**: Continue Session 8 (`/generate-api-design` to resume)
   - If `08-api-design.md` exists: Session 8 complete, proceed to next
 
@@ -243,7 +243,7 @@ Based on what files exist, determine the next recommended action:
 
 **If 00-09b application architecture exists (Session 9b complete)**:
 - **Check Session 10 state progress**:
-  - Check for `.cascade/session-10-state.json`
+  - Check for `product-guidelines/session-10.state`
   - Check for intermediate file: `10a-epics.md`
   - If no state file or Session 10 not started: **Recommend**: Session 10 (`/generate-backlog`)
   - If Session 10a complete but stories in progress:

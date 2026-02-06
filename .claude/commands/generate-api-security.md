@@ -1,21 +1,21 @@
 ---
-description: Session 8b - Design OWASP API security patterns and input validation (micro-session 2 of 4)
+description: Phase 8.2 - Design OWASP API security patterns and input validation (micro-session 2 of 4)
 ---
 
-# Generate API Security (Session 8b)
+# Generate API Security (Phase 8.2)
 
 You are an API security specialist. This is the SECOND micro-session of Session 8, where you design OWASP API Top 10 2023 protection patterns and input validation strategies with minimal context usage.
 
 ## Your Role
 
-Design comprehensive security patterns based on journey requirements and the paradigm selected in Session 8a. You will use minimal context (~10k tokens) to preserve capacity for later micro-sessions.
+Design comprehensive security patterns based on journey requirements and the paradigm selected in Phase 8.1. You will use minimal context (~10k tokens) to preserve capacity for later micro-sessions.
 
 ## Critical Philosophy
 
 - **Journey-Driven Security**: Protection patterns must address specific journey risks
 - **OWASP API Top 10 2023**: Apply the 7 applicable risks systematically
 - **Paradigm-Aware**: Security patterns adapt to REST/GraphQL/gRPC paradigm
-- **State Continuation**: Update state tracking from Session 8a
+- **State Continuation**: Update state tracking from Phase 8.1
 
 ## Steps to Execute
 
@@ -23,7 +23,7 @@ Design comprehensive security patterns based on journey requirements and the par
 
 Read state and context files (targeting ~10k tokens total):
 
-1. `.cascade/session-8-state.json` - Get paradigm decision from 8a
+1. `product-guidelines/session-8.state` - Get paradigm decision from Phase 8.1
 2. `product-guidelines/08a-api-paradigm.md` - Paradigm and serialization choices
 3. `product-guidelines/00-user-journey.ctx.md` - For security touchpoints
 4. `product-guidelines/07-database-schema.ctx.md` - For data relationships
@@ -103,7 +103,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 
 ### Step 3: Design Input Validation Strategy
 
-Based on paradigm from Session 8a:
+Based on paradigm from Phase 8.1:
 
 #### 3.1: Select Validation Approach
 **REST**: Schema validation (JSON Schema, OpenAPI)
@@ -135,11 +135,11 @@ Numbers: Range validation, precision limits
 Write `product-guidelines/08b-api-security.md`:
 
 ```markdown
-# API Security Design (Session 8b)
+# API Security Design (Phase 8.2)
 
 Generated: [timestamp]
-Session: 8b of 8 (API Design micro-sessions)
-Paradigm: [from Session 8a]
+Phase: 8.2 of 8 (API Design micro-sessions)
+Paradigm: [from Phase 8.1]
 
 ## OWASP API Top 10 2023 Protection Patterns
 
@@ -250,13 +250,13 @@ X-Request-ID: [request tracking]
 - Binary protocol security
 
 ## Next Steps
-- Session 8c will add performance patterns (caching, idempotency, etc.)
-- Session 8d will synthesize into complete API design
+- Phase 8.3 will add performance patterns (caching, idempotency, etc.)
+- Phase 8.4 will synthesize into complete API design
 ```
 
 ### Step 5: Update State Tracking
 
-Update `.cascade/session-8-state.json`:
+Update `product-guidelines/session-8.state`:
 
 ```json
 {
@@ -288,17 +288,17 @@ Output completion message with security summary.
 - [ ] Input validation strategy matches paradigm
 - [ ] Security headers documented
 - [ ] State file updated
-- [ ] Ready for performance patterns in Session 8c
+- [ ] Ready for performance patterns in Phase 8.3
 
 ## Output Format
 
 The command should create/update:
 1. `product-guidelines/08b-api-security.md` - Security patterns with journey traceability
-2. `.cascade/session-8-state.json` - Updated state tracking
+2. `product-guidelines/session-8.state` - Updated state tracking
 
 Then output:
 ```
-✅ Session 8b Complete: API Security Designed
+✅ Phase 8.2 Complete: API Security Designed
 
 OWASP API Top 10 Coverage:
 - BOLA: [Protection approach]
@@ -314,7 +314,7 @@ Input Validation:
 - Rules defined for [N] input types
 - Sanitization strategy documented
 
-Next: Session 8c will add performance patterns based on requirements.
+Next: Phase 8.3 will add performance patterns based on requirements.
 Run `/generate-api-design` to continue the API design process.
 ```
 

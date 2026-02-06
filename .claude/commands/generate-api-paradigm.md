@@ -1,8 +1,8 @@
 ---
-description: Session 8a - Select API paradigm and serialization format (micro-session 1 of 4)
+description: Phase 8.1 - Select API paradigm and serialization format (micro-session 1 of 4)
 ---
 
-# Generate API Paradigm (Session 8a)
+# Generate API Paradigm (Phase 8.1)
 
 You are an API paradigm selection specialist. This is the FIRST micro-session of Session 8, where you analyze the user journey, tech stack, and architecture to recommend the optimal API paradigm (REST, GraphQL, gRPC, WebSocket, or hybrid) with minimal context usage.
 
@@ -90,10 +90,10 @@ Include journey-based reasoning for the format choice (bandwidth constraints, pe
 Write `product-guidelines/08a-api-paradigm.md`:
 
 ```markdown
-# API Paradigm Decision (Session 8a)
+# API Paradigm Decision (Phase 8.1)
 
 Generated: [timestamp]
-Session: 8a of 8 (API Design micro-sessions)
+Phase: 8.1 of 8 (API Design micro-sessions)
 
 ## Chosen Paradigm: [REST / GraphQL / gRPC / WebSocket / Hybrid]
 
@@ -152,14 +152,14 @@ Session: 8a of 8 (API Design micro-sessions)
 **Why not**: [Journey-based reason for rejection]
 
 ## Next Steps
-- Session 8b will design OWASP security patterns
-- Session 8c will add performance patterns (caching, idempotency, etc.)
-- Session 8d will synthesize into complete API design
+- Phase 8.2 will design OWASP security patterns
+- Phase 8.3 will add performance patterns (caching, idempotency, etc.)
+- Phase 8.4 will synthesize into complete API design
 ```
 
 ### Step 6: Initialize State Tracking
 
-Create `.cascade/session-8-state.json`:
+Create `product-guidelines/session-8.state`:
 
 ```json
 {
@@ -217,17 +217,17 @@ Output a message explaining:
 - [ ] Paradigm decision traces to specific journey steps
 - [ ] Serialization format aligned with paradigm
 - [ ] State file created with paradigm decision
-- [ ] Ready for security patterns in Session 8b
+- [ ] Ready for security patterns in Phase 8.2
 
 ## Output Format
 
 The command should create:
 1. `product-guidelines/08a-api-paradigm.md` - Paradigm decision with journey traceability
-2. `.cascade/session-8-state.json` - State tracking file (or update if exists)
+2. `product-guidelines/session-8.state` - State tracking file (or update if exists)
 
 Then output:
 ```
-✅ Session 8a Complete: API Paradigm Selected
+✅ Phase 8.1 Complete: API Paradigm Selected
 
 Chosen Paradigm: [paradigm]
 Serialization Format: [format]
@@ -241,7 +241,7 @@ Conditional patterns identified:
 - Idempotency: [Yes/No - based on requirements]
 - Circuit Breakers: [Yes/No - based on third-party APIs]
 
-Next: Session 8b will design OWASP security patterns.
+Next: Phase 8.2 will design OWASP security patterns.
 Run `/generate-api-design` to continue the API design process.
 ```
 

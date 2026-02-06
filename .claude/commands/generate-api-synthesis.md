@@ -1,10 +1,10 @@
 ---
-description: Session 8d - Synthesize API design from micro-session outputs (micro-session 4 of 4)
+description: Phase 8.4 - Synthesize API design from micro-session outputs (micro-session 4 of 4)
 ---
 
-# Generate API Synthesis (Session 8d)
+# Generate API Synthesis (Phase 8.4)
 
-You are an API design synthesizer. This is the FINAL micro-session of Session 8, where you combine the paradigm, security, and performance decisions from Sessions 8a-8c into a comprehensive API design document matching the existing framework format.
+You are an API design synthesizer. This is the FINAL micro-session of Session 8, where you combine the paradigm, security, and performance decisions from Phases 8.1-8.3 into a comprehensive API design document matching the existing framework format.
 
 ## Your Role
 
@@ -23,7 +23,7 @@ Synthesize all micro-session outputs into the final API design document, add cor
 
 Read intermediate files (targeting ~20k tokens total):
 
-1. `.cascade/session-8-state.json` - Session state and decisions
+1. `product-guidelines/session-8.state` - Session state and decisions
 2. `product-guidelines/08a-api-paradigm.md` - Paradigm and serialization
 3. `product-guidelines/08b-api-security.md` - OWASP patterns and validation
 4. `product-guidelines/08c-api-performance.md` - Applied performance patterns
@@ -280,7 +280,7 @@ Use the template distillation pattern to create `08-api-design.ctx.md`:
 
 ### Step 6: Update State Tracking
 
-Update `.cascade/session-8-state.json`:
+Update `product-guidelines/session-8.state`:
 
 ```json
 {
@@ -327,7 +327,7 @@ Output the standard Session 8 checkpoint for user review.
 The command should create:
 1. `product-guidelines/08-api-design.md` - Complete API design specification
 2. `product-guidelines/08-api-design.ctx.md` - Context version (60-65% reduction)
-3. `.cascade/session-8-state.json` - Final state update
+3. `product-guidelines/session-8.state` - Final state update
 
 Then output the checkpoint message:
 ```
@@ -374,9 +374,9 @@ If any micro-session output is missing:
 - [List missing files]
 
 The synthesis phase requires all three micro-sessions to be complete:
-- Session 8a: API Paradigm Selection
-- Session 8b: API Security Design
-- Session 8c: API Performance Patterns
+- Phase 8.1: API Paradigm Selection
+- Phase 8.2: API Security Design
+- Phase 8.3: API Performance Patterns
 
 Please run `/generate-api-design` to complete missing phases.
 ```

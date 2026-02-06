@@ -1,8 +1,8 @@
 ---
-description: Session 8c - Design conditional API performance patterns (micro-session 3 of 4)
+description: Phase 8.3 - Design conditional API performance patterns (micro-session 3 of 4)
 ---
 
-# Generate API Performance (Session 8c)
+# Generate API Performance (Phase 8.3)
 
 You are an API performance optimization specialist. This is the THIRD micro-session of Session 8, where you design conditional performance patterns (caching, idempotency, circuit breakers, i18n, webhooks) based on journey requirements with minimal context usage.
 
@@ -14,7 +14,7 @@ Design performance patterns ONLY for those that apply to the journey and archite
 
 - **Conditional Application**: Only apply patterns that match requirements
 - **Journey-Driven Performance**: Each pattern must serve specific journey needs
-- **Paradigm-Aware**: Patterns adapt to REST/GraphQL/gRPC from Session 8a
+- **Paradigm-Aware**: Patterns adapt to REST/GraphQL/gRPC from Phase 8.1
 - **State Continuation**: Check conditional flags from state file
 
 ## Steps to Execute
@@ -23,7 +23,7 @@ Design performance patterns ONLY for those that apply to the journey and archite
 
 Read state and context files (targeting ~10k tokens total):
 
-1. `.cascade/session-8-state.json` - Get paradigm and conditional flags
+1. `product-guidelines/session-8.state` - Get paradigm and conditional flags
 2. `product-guidelines/08a-api-paradigm.md` - Paradigm choice
 3. `product-guidelines/04-architecture.ctx.md` - For integrations and scale
 4. `product-guidelines/02a-constraints.ctx.md` (if exists) - For i18n and compliance
@@ -189,11 +189,11 @@ Scale-Forward:
 Write `product-guidelines/08c-api-performance.md`:
 
 ```markdown
-# API Performance Patterns (Session 8c)
+# API Performance Patterns (Phase 8.3)
 
 Generated: [timestamp]
-Session: 8c of 8 (API Design micro-sessions)
-Paradigm: [from Session 8a]
+Phase: 8.3 of 8 (API Design micro-sessions)
+Paradigm: [from Phase 8.1]
 
 ## Applied Performance Patterns
 
@@ -284,13 +284,13 @@ Paradigm: [from Session 8a]
 - [Pattern]: Not needed because [reason from journey/architecture]
 
 ## Next Steps
-- Session 8d will synthesize all decisions into final API design
+- Phase 8.4 will synthesize all decisions into final API design
 - Will combine paradigm, security, and performance patterns
 ```
 
 ### Step 5: Update State Tracking
 
-Update `.cascade/session-8-state.json`:
+Update `product-guidelines/session-8.state`:
 
 ```json
 {
@@ -323,17 +323,17 @@ Output completion message with applied patterns summary.
 - [ ] Each pattern has journey/architecture justification
 - [ ] Skipped patterns explicitly noted with reasons
 - [ ] State file updated
-- [ ] Ready for synthesis in Session 8d
+- [ ] Ready for synthesis in Phase 8.4
 
 ## Output Format
 
 The command should create/update:
 1. `product-guidelines/08c-api-performance.md` - Performance patterns (only applicable ones)
-2. `.cascade/session-8-state.json` - Updated state tracking
+2. `product-guidelines/session-8.state` - Updated state tracking
 
 Then output:
 ```
-✅ Session 8c Complete: Performance Patterns Designed
+✅ Phase 8.3 Complete: Performance Patterns Designed
 
 Patterns Applied:
 [List only those with flag = true]
@@ -349,7 +349,7 @@ Patterns Skipped:
 
 Total patterns: [X] applied, [Y] skipped
 
-Next: Session 8d will synthesize all API decisions into final design.
+Next: Phase 8.4 will synthesize all API decisions into final design.
 Run `/generate-api-design` to continue the API design process.
 ```
 
@@ -359,7 +359,7 @@ Run `/generate-api-design` to continue the API design process.
 
 Avoid pattern collection. Each performance optimization must:
 1. Address a specific journey requirement
-2. Match the paradigm from Session 8a
+2. Match the paradigm from Phase 8.1
 3. Align with architecture decisions
 4. Provide measurable value
 
