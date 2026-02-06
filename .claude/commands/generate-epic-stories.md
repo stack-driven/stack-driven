@@ -19,7 +19,7 @@ Load the current state, identify the next unprocessed epic, generate 10-15 stori
 
 ## Steps to Execute
 
-### Step 1: Load Current State
+### Step 1: Load and Validate Current State
 
 Read `.cascade/session-10-state.json` to understand:
 - Which epics have been processed
@@ -28,6 +28,28 @@ Read `.cascade/session-10-state.json` to understand:
 - Current processing status
 
 If state file doesn't exist, error and tell user to run `/generate-epics` first.
+
+### Step 1.5: Validate State Structure
+
+**Required validation before using state:**
+
+Verify the state file contains all required fields:
+- `epics` (array) - Each epic must have `id`, `processed` (boolean), `name`, `type`
+- `processed_count` (number) - Must be >= 0 and <= total epic count
+- `phase` (string) - Must be one of: "epic-generation", "story-generation", "complete"
+- `session` (string) - Must be "10"
+- `status` (string) - Valid values
+
+**If validation fails:**
+- Display specific error about missing/invalid fields
+- Example: "State file missing 'epics' array" or "'processed_count' is not a number"
+- Suggest recovery options:
+  1. Run `/generate-backlog --reset` to start fresh
+  2. Manually fix the JSON structure
+  3. Check if file was corrupted during write
+
+**If validation passes:**
+- Continue to Step 2
 
 ### Step 2: Determine Next Epic
 

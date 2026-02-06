@@ -68,9 +68,11 @@ For each epic, define:
 - **Priority**: P0 (Must Have) | P1 (Should Have) | P2 (Nice to Have)
 - **Estimated Story Count**: Rough estimate (10-15 stories per epic typically)
 
-### Step 5: Write Epics File
+### Step 5: Generate and Write Epic Definition File
 
-Create `product-guidelines/10a-epics.md` with this structure:
+**IMPORTANT**: You MUST create the file `product-guidelines/10a-epics.md` with the epic structure. This file is required for Session 10b to read.
+
+Write the epic definitions to `product-guidelines/10a-epics.md` with this structure:
 
 ```markdown
 # Product Backlog - Epic Structure
@@ -180,8 +182,10 @@ Output a message explaining:
 ## Output Format
 
 The command should create:
-1. `product-guidelines/10a-epics.md` - Epic definitions
+1. `product-guidelines/10a-epics.md` - Epic definitions (full version for humans and Session 10b)
 2. `.cascade/session-10-state.json` - State tracking file
+
+**Note on Context Files**: Session 10a does NOT create a `.ctx.md` file. Unlike Sessions 1-9b which create both .md and .ctx.md files, Session 10a is an intermediate processing step within Session 10. The `10a-epics.md` file is already minimal (~2-3k tokens) and is read directly by Session 10b without needing further distillation.
 
 Then output:
 ```

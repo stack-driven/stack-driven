@@ -6,6 +6,10 @@ description: Session 10 - Generate complete backlog from journey through to tech
 
 This is **Session 10** of the cascade. You'll create a production-ready backlog where every issue traces to user value and is informed by technical specifications. This command now orchestrates a multi-phase, iterative approach to handle large backlogs without context exhaustion.
 
+## Configuration
+
+**STATE_FILE_PATH**: `.cascade/session-10-state.json`
+
 ## Your Role
 
 You are the orchestrator for backlog generation, managing the two-phase approach:
@@ -23,7 +27,7 @@ You are the orchestrator for backlog generation, managing the two-phase approach
 
 ```
 Session 10 Orchestrator:
-├── Check for existing state (.cascade/session-10-state.json)
+├── Check for existing state (STATE_FILE_PATH)
 ├── If no state: Run Session 10a (generate epics)
 ├── Loop: Run Session 10b for each unprocessed epic
 ├── User prompts between epics (continue/stop)
@@ -34,7 +38,7 @@ Session 10 Orchestrator:
 
 ### Step 1: Check Current State
 
-Check if `.cascade/session-10-state.json` exists:
+Check if STATE_FILE_PATH (`.cascade/session-10-state.json`) exists:
 
 **If state file exists:**
 - Read the state to understand progress
@@ -65,7 +69,7 @@ After epic generation completes, reload the state file.
 
 ### Step 3: Check Processing Status
 
-Read `.cascade/session-10-state.json` and determine:
+Read STATE_FILE_PATH and determine:
 - Total number of epics
 - Number of epics processed
 - Total stories generated so far
@@ -144,7 +148,7 @@ When all epics are processed:
 
 ## State Management
 
-The orchestrator relies on `.cascade/session-10-state.json`:
+The orchestrator relies on STATE_FILE_PATH:
 
 ```json
 {
@@ -178,18 +182,41 @@ If the user runs `/generate-backlog` after partial completion:
 ## Error Recovery
 
 **If Session 10a fails:**
-- Delete `.cascade/session-10-state.json`
+- Delete STATE_FILE_PATH
 - Re-run `/generate-backlog` to start fresh
+- Check for missing product-guidelines files that caused failure
 
 **If Session 10b fails for an epic:**
-- State shows which epic failed
-- Can retry that specific epic
-- Or skip and continue with next epic
+- State shows which epic failed (check `current_epic` field)
+- Can retry that specific epic by running `/generate-epic-stories`
+- Or manually mark epic as processed in state file to skip it
+- State file preserves already-generated stories
+
+**Partial story generation within an epic:**
+- If story generation is interrupted mid-epic:
+  - Stories already written to disk are preserved
+  - STATE_FILE_PATH shows last epic being processed
+  - Re-run `/generate-epic-stories` to complete the epic
+  - Agent will append remaining stories to existing file
+
+**Network failures during state updates:**
+- If network fails when updating state:
+  - Previous state is preserved (atomic writes)
+  - Epic stories already written remain valid
+  - Re-run command to sync state with actual files
+
+**Malformed story data from sub-agent:**
+- If write-epic-stories agent returns invalid data:
+  - Error displayed with specific epic ID
+  - Manual inspection of `product-guidelines/10-backlog/epic-XX-*.md`
+  - Fix malformed stories manually or delete and regenerate epic
 
 **If state file is corrupted:**
-- Detect invalid JSON
-- Prompt user to delete and restart
-- Or manually fix state file
+- Detect invalid JSON with clear error message
+- Show which fields are missing/invalid
+- Option 1: Delete STATE_FILE_PATH and restart (`/generate-backlog --reset`)
+- Option 2: Manually fix JSON structure (preserve `processed: true` for completed epics)
+- Option 3: Reconstruct state from existing `10-backlog/` files
 
 ## Command Options
 
@@ -223,7 +250,7 @@ The refactored approach achieves:
 - `/generate-epics` (Session 10a) - Creates epic structure
 - `/generate-epic-stories` (Session 10b) - Processes individual epics
 - `.claude/agents/write-epic-stories.md` - Expands story outlines to files
-- `.cascade/session-10-state.json` - Tracks progress
+- STATE_FILE_PATH - Tracks progress
 
 ## Output Structure
 
