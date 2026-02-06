@@ -125,6 +125,22 @@ Only include if paradigm from 8a is REST:
 - Collection: {data: [...], pagination: {...}}
 - Errors: {error: {...}}
 
+### Step 3.5: Validate Security and Performance Requirements
+
+Before writing final API design, verify all required patterns per VALIDATION-CHECKLIST.md Category 11:
+
+**Required Security Patterns (from Phase 8.2):**
+- ✓ OWASP API Top 10 2023 coverage complete
+- ✓ Input validation strategy present
+- ✓ Authentication strategy defined
+
+**Conditional Performance Patterns (from Phase 8.3):**
+- If REST paradigm → HTTP caching strategy must be present
+- If financial/high-traffic → Idempotency patterns must be present
+- If third-party APIs → Circuit breaker patterns must be present
+
+If any required pattern is missing, include warning in output header.
+
 ### Step 4: Write Final API Design
 
 Write `product-guidelines/08-api-design.md` following template structure:
@@ -263,13 +279,19 @@ Run `/generate-api-contracts` (Session 8b) to create:
 
 ### Step 5: Create Context Version
 
-After writing the full API design, create the context version:
+After writing the full API design, invoke the distillation agent to create the context version:
 
-Use the template distillation pattern to create `08-api-design.ctx.md`:
+```
+Use Task tool to invoke .claude/agents/distill-context.md:
+- Source: product-guidelines/08-api-design.md
+- Output: product-guidelines/08-api-design.ctx.md
+- Target: 60-65% reduction
+```
+
+The distillation agent will:
 - Extract ALL decisions (paradigm, serialization, auth, security patterns)
 - Remove rationale and examples
 - Preserve section structure
-- Target 60-65% reduction
 
 **Critical to preserve**:
 - API paradigm and serialization choices

@@ -256,15 +256,45 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 - `08-api-design.md`
 - `08-api-design.ctx.md`
 
-**Reads:**
+**Architecture:** Micro-session orchestrator managing 4 sequential phases
+
+**Phase 8.1 - API Paradigm Selection:**
 ```
-├─ [FULL] product-guidelines/00-user-journey.md
-├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [FULL] product-guidelines/04-architecture.md
-├─ [CTX] product-guidelines/07-database-schema.ctx.md
-├─ [TMPL] /templates/08-api-design-template.md
-└─ [REF] /reference-material/serialization-guide.md
+├─ [CTX] product-guidelines/00-user-journey.ctx.md
+├─ [CTX] product-guidelines/02-tech-stack.ctx.md
+└─ [CTX] product-guidelines/04-architecture.ctx.md
 ```
+Outputs: `08-phase1-paradigm.md`
+
+**Phase 8.2 - Security Patterns:**
+```
+├─ [PHASE] product-guidelines/08-phase1-paradigm.md
+├─ [CTX] product-guidelines/00-user-journey.ctx.md
+└─ [CTX] product-guidelines/07-database-schema.ctx.md
+```
+Outputs: `08-phase2-security.md`
+
+**Phase 8.3 - Performance Patterns (Conditional):**
+```
+├─ [PHASE] product-guidelines/08-phase1-paradigm.md
+├─ [CTX] product-guidelines/04-architecture.ctx.md
+└─ [CTX] product-guidelines/02a-constraints.ctx.md (if exists)
+```
+Outputs: `08-phase3-performance.md`
+
+**Phase 8.4 - Synthesis:**
+```
+├─ [PHASE] product-guidelines/08-phase1-paradigm.md
+├─ [PHASE] product-guidelines/08-phase2-security.md
+├─ [PHASE] product-guidelines/08-phase3-performance.md
+├─ [STATE] product-guidelines/session-8.state
+└─ [TMPL] /templates/08-api-design-template.md
+```
+Outputs: `08-api-design.md` + `08-api-design.ctx.md`
+
+**State Management:**
+- Orchestrator reads/writes `product-guidelines/session-8.state`
+- Enables interruption/resumption between phases
 
 **Dependencies:** Sessions 1, 3, 4, 7
 
@@ -284,9 +314,9 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 **Reads:**
 ```
 ├─ [FULL] product-guidelines/08-api-design.md
-├─ [FULL] product-guidelines/00-user-journey.md
-├─ [FULL] product-guidelines/02-tech-stack.md
-├─ [FULL] product-guidelines/04-architecture.md
+├─ [CTX] product-guidelines/00-user-journey.ctx.md
+├─ [CTX] product-guidelines/02-tech-stack.ctx.md
+├─ [CTX] product-guidelines/04-architecture.ctx.md
 ├─ [CTX] product-guidelines/07-database-schema.ctx.md
 └─ [TMPL] /templates/08b-api-contracts-template.md
 ```

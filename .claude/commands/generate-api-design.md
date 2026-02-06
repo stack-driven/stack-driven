@@ -157,6 +157,18 @@ After Phase 8.4 completes:
 
 ## State Management
 
+### State Initialization
+
+**Who creates the initial state file?**
+- Phase 8.1 creates the state file in Step 6 if it doesn't exist
+- If state exists but is empty/corrupted, Phase 8.1 will recreate it
+
+**Recovery scenarios:**
+- Missing state file → Phase 8.1 recreates from scratch
+- Partial completion → Resume from last completed phase
+- Corrupted state → Detect invalid JSON and restart from Phase 8.1
+- One phase crashed → State preserves completion up to crash point, resume from failed phase
+
 The orchestrator maintains state in `product-guidelines/session-8.state`:
 
 ```json
