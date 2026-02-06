@@ -110,7 +110,7 @@ The cascade order is **sacred** - user journey comes first, everything flows fro
 - **Session 8 (api-design)** uses **agentic sub-agent architecture** (decomposed from 2,160 → 416 lines orchestrator + 7 specialized sub-agents, issue #165); invokes sub-agents conditionally based on journey requirements: (1) select-api-paradigm.md (always), (2) design-owasp-security-patterns.md (always, OWASP API Top 10 2023: BOLA, property-level auth, BFLA, business flows, SSRF, security misconfiguration, unsafe third-party consumption), (3) design-input-validation.md (always), (4) design-http-caching.md (if REST/HTTP paradigm), (5) design-idempotency-retry.md (if financial ops or high traffic), (6) design-circuit-breakers.md (if third-party APIs exist), (7) design-i18n-headers.md (if Session 2a requires i18n); achieves 30-50% token reduction through conditional loading
 - Session 8b (api-contracts) reads 08-api-design + 00-journey + 02-tech-stack + 04-architecture + 07-database-schema.ctx.md
 - Session 9b (application-architecture) reads 00-journey + 02-tech-stack + 02b-coding-standards.ctx.md + 04-architecture + 07-database-schema.ctx.md + 08b-api-contracts.ctx.md
-- **Session 10 (backlog)** checks 02a-constraints for i18n requirement → generates i18n infrastructure stories (translation setup, locale switching UI, string extraction) if needed
+- **Session 10 (backlog)** split into **Session 10a** (epic generation) and **Session 10b** (story generation per epic) to prevent context exhaustion; checks 02a-constraints for i18n requirement → generates i18n infrastructure stories (translation setup, locale switching UI, string extraction) if needed
 - **Session 12 (scaffold)** checks 02a-constraints for i18n requirement → generates `/locales/` folder structure, translation files, and i18n config if needed
 
 **Never skip sessions** - later sessions need previous outputs for context.
@@ -130,13 +130,13 @@ Stack-Driven implements **Human-in-the-Loop (HITL) checkpoints** at critical cas
 - **Session 3** (`/choose-tech-stack`) - Tech stack validation
 - **Session 4** (`/generate-strategy`) - Mission, metrics (framework + hierarchy), monetization, architecture, analytics validation
 - **Session 7** (`/design-database-schema`) - Database schema validation
-- **Session 10** (`/generate-backlog`) - Backlog quality validation
+- **Session 10** (`/generate-backlog`) - Backlog quality validation (orchestrates Session 10a epic generation and Session 10b story generation)
 
 **Why checkpoints matter:**
 Decisions made in Sessions 3, 4, 7, and 10 cascade through all remaining sessions. For example:
 - Session 4 mission → informs Session 5 brand strategy, Session 6 design system
 - Session 7 schema → informs Session 8 API design, Session 10 backlog stories, Session 12 scaffold
-- Session 10 backlog → determines implementation order and effort estimates
+- Session 10 backlog → determines implementation order and effort estimates (epic-by-epic processing prevents context exhaustion)
 
 Early validation prevents hours of downstream rework if issues exist.
 
@@ -276,8 +276,9 @@ Every decision must trace back to user journey:
 - `08b-api-contracts.md` + `08b-api-contracts.ctx.md` (80% reduction)
 - `09-test-strategy.md` + `09-test-strategy.ctx.md` (66% reduction)
 - `09b-application-architecture.md` + `09b-application-architecture.ctx.md` (60% reduction)
+- `10a-epics.md` + `10a-epics.ctx.md` (60% reduction) - Session 10a intermediate output for epic structure
 
-**NO context files for final outputs (sessions 10-14):**
+**NO context files for final outputs (sessions 10b-14):**
 - `10-backlog/` - User stories are already concise (Session 11 reads directly from backlog files)
 - Session 11 - No output file (pushes Session 10 issues to GitHub via `gh` CLI)
 - `12-project-scaffold.md` - Final scaffold documentation
@@ -430,7 +431,7 @@ Every recommendation needs reasoning:
 ### 4. Cascade Coherence
 Sessions must build on each other:
 - Session 9b (application-architecture) models services/repositories/controllers from database schema (Session 7) and API contracts (Session 8b)
-- Session 10 (backlog) reads outputs from Sessions 1-9b and **extracts activities/goals from journey** to generate business epics (Jeff Patton Story Mapping methodology: activities → epics), then adds Foundation epic (always Epic 01) + conditional enabler epics (0-5 based on requirements)
+- Session 10 (backlog) uses **epic-by-epic processing architecture** to prevent context exhaustion. Split into two sub-sessions: **Session 10a (generate-epics)** reads outputs from Sessions 1-9b and **extracts activities/goals from journey** to generate business epics (Jeff Patton Story Mapping methodology: activities → epics), creating epic structure with minimal context (<20k tokens). **Session 10b (generate-epic-stories)** then processes one epic at a time (<15k tokens per epic), generating stories iteratively with state tracking in `.cascade/session-10-state.json` for interruption/resumption. The orchestrator (`/generate-backlog`) manages both phases seamlessly, adding Foundation epic (always Epic 01) + conditional enabler epics (0-5 based on requirements)
 - Session 12 (scaffold) **generatively creates** code skeletons by analyzing tech stack (Session 3), coding standards (Session 3b), and architecture (Session 9b) - uses framework-specific best practices, NOT generic templates (places generated code in repository root, not product-guidelines/)
 - Session 14 (observability) measures metrics from Session 4
 
@@ -528,7 +529,9 @@ Session 9 (test-strategy) [reads: 00-08b.ctx.md] → Generates .md + .ctx.md
 Session 9b (application-architecture) [reads: 00.ctx.md, 02.ctx.md, 02b.ctx.md, 04.ctx.md, 07.ctx.md, 08b.ctx.md] → Generates .md + .ctx.md
   ↓ USES 6 CONDITIONAL SUB-AGENTS: validate-architectural-style (if team>5 OR entities>10), model-domain-layer (if entities>5 AND complex), design-transaction-boundaries (if external_apis OR multi_entity), choose-orm-pattern (if entities>10 OR heavy_testing), design-rate-limiting (if public_endpoints), design-cross-cutting-concerns (always)
   ↓
-Session 10 (backlog) [reads: ALL .ctx.md files from 00-09b] → Generates backlog stories (no .ctx.md)
+Session 10 (backlog) [orchestrator manages two phases] → Generates epic structure and stories
+  ├── Session 10a (generate-epics) [reads: ALL .ctx.md files from 00-09b] → Generates 10a-epics.md + .ctx.md
+  └── Session 10b (generate-epic-stories) [reads: 10a-epics.ctx.md + selected .ctx.md per epic] → Generates 10-backlog/ stories
   ↓
 Session 11 (create-gh-issues) [reads: 10-backlog/] → Pushes to GitHub
   ↓
