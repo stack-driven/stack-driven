@@ -159,7 +159,7 @@ Phase: 8.1 of 8 (API Design micro-sessions)
 
 ### Step 6: Initialize State Tracking
 
-Create `product-guidelines/session-8.state`:
+Create `.cascade/session-8-state.json`:
 
 ```json
 {
@@ -223,7 +223,7 @@ Output a message explaining:
 
 The command should create:
 1. `product-guidelines/08-phase1-paradigm.md` - Paradigm decision with journey traceability
-2. `product-guidelines/session-8.state` - State tracking file (or update if exists)
+2. `.cascade/session-8-state.json` - State tracking file (or update if exists)
 
 Then output:
 ```

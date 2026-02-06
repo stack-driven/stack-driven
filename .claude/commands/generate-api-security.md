@@ -24,7 +24,7 @@ Design comprehensive security patterns based on journey requirements and the par
 Before starting, verify that required files from Phase 8.1 exist:
 
 **Check for state file:**
-- If `product-guidelines/session-8.state` does NOT exist:
+- If `.cascade/session-8-state.json` does NOT exist:
   - ❌ Error: "Phase 8.1 must complete before Phase 8.2. Run `/generate-api-design` to start from Phase 8.1."
   - Exit without proceeding
 
@@ -39,7 +39,7 @@ Before starting, verify that required files from Phase 8.1 exist:
 
 Read state and context files (targeting ~10k tokens total):
 
-1. `product-guidelines/session-8.state` - Get paradigm decision from Phase 8.1
+1. `.cascade/session-8-state.json` - Get paradigm decision from Phase 8.1
 2. `product-guidelines/08-phase1-paradigm.md` - Paradigm and serialization choices
 3. `product-guidelines/00-user-journey.ctx.md` - For security touchpoints
 4. `product-guidelines/07-database-schema.ctx.md` - For data relationships
@@ -272,7 +272,7 @@ X-Request-ID: [request tracking]
 
 ### Step 6: Update State Tracking
 
-Update `product-guidelines/session-8.state`:
+Update `.cascade/session-8-state.json`:
 
 ```json
 {
@@ -310,7 +310,7 @@ Output completion message with security summary.
 
 The command should create/update:
 1. `product-guidelines/08-phase2-security.md` - Security patterns with journey traceability
-2. `product-guidelines/session-8.state` - Updated state tracking
+2. `.cascade/session-8-state.json` - Updated state tracking
 
 Then output:
 ```

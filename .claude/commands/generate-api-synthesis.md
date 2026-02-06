@@ -23,7 +23,7 @@ Synthesize all micro-session outputs into the final API design document, add cor
 
 Read intermediate files (targeting ~20k tokens total):
 
-1. `product-guidelines/session-8.state` - Session state and decisions
+1. `.cascade/session-8-state.json` - Session state and decisions
 2. `product-guidelines/08-phase1-paradigm.md` - Paradigm and serialization
 3. `product-guidelines/08-phase2-security.md` - OWASP patterns and validation
 4. `product-guidelines/08-phase3-performance.md` - Applied performance patterns
@@ -302,7 +302,7 @@ The distillation agent will:
 
 ### Step 6: Update State Tracking
 
-Update `product-guidelines/session-8.state`:
+Update `.cascade/session-8-state.json`:
 
 ```json
 {
@@ -349,7 +349,7 @@ Output the standard Session 8 checkpoint for user review.
 The command should create:
 1. `product-guidelines/08-api-design.md` - Complete API design specification
 2. `product-guidelines/08-api-design.ctx.md` - Context version (60-65% reduction)
-3. `product-guidelines/session-8.state` - Final state update
+3. `.cascade/session-8-state.json` - Final state update
 
 Then output the checkpoint message:
 ```

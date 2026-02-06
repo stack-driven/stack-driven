@@ -258,6 +258,10 @@ This document shows EXACTLY what each session reads as inputs, making it easy to
 
 **Architecture:** Micro-session orchestrator managing 4 sequential phases
 
+**Token Efficiency:** Micro-session architecture reduces context from 700k → <100k tokens (85% reduction)
+
+**Intermediate Files:** Phase outputs (`08-phase1-paradigm.md`, `08-phase2-security.md`, `08-phase3-performance.md`) are NOT context files (.ctx.md) - they are temporary files deleted after synthesis
+
 **Phase 8.1 - API Paradigm Selection:**
 ```
 ├─ [CTX] product-guidelines/00-user-journey.ctx.md
@@ -287,7 +291,7 @@ Outputs: `08-phase3-performance.md`
 ├─ [PHASE] product-guidelines/08-phase1-paradigm.md
 ├─ [PHASE] product-guidelines/08-phase2-security.md
 ├─ [PHASE] product-guidelines/08-phase3-performance.md
-├─ [STATE] product-guidelines/session-8.state
+├─ [STATE] .cascade/session-8-state.json
 └─ [TMPL] /templates/08-api-design-template.md
 ```
 Outputs: `08-api-design.md` + `08-api-design.ctx.md`
@@ -313,7 +317,7 @@ Outputs: `08-api-design.md` + `08-api-design.ctx.md`
 
 **Reads:**
 ```
-├─ [FULL] product-guidelines/08-api-design.md
+├─ [CTX] product-guidelines/08-api-design.ctx.md
 ├─ [CTX] product-guidelines/00-user-journey.ctx.md
 ├─ [CTX] product-guidelines/02-tech-stack.ctx.md
 ├─ [CTX] product-guidelines/04-architecture.ctx.md

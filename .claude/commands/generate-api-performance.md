@@ -23,7 +23,7 @@ Design performance patterns ONLY for those that apply to the journey and archite
 
 Read state and context files (targeting ~10k tokens total):
 
-1. `product-guidelines/session-8.state` - Get paradigm and conditional flags
+1. `.cascade/session-8-state.json` - Get paradigm and conditional flags
 2. `product-guidelines/08-phase1-paradigm.md` - Paradigm choice
 3. `product-guidelines/04-architecture.ctx.md` - For integrations and scale
 4. `product-guidelines/02a-constraints.ctx.md` (if exists) - For i18n and compliance
@@ -290,7 +290,7 @@ Paradigm: [from Phase 8.1]
 
 ### Step 5: Update State Tracking
 
-Update `product-guidelines/session-8.state`:
+Update `.cascade/session-8-state.json`:
 
 ```json
 {
@@ -329,7 +329,7 @@ Output completion message with applied patterns summary.
 
 The command should create/update:
 1. `product-guidelines/08-phase3-performance.md` - Performance patterns (only applicable ones)
-2. `product-guidelines/session-8.state` - Updated state tracking
+2. `.cascade/session-8-state.json` - Updated state tracking
 
 Then output:
 ```

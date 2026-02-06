@@ -8,7 +8,7 @@ This is **Session 8** of the cascade. You'll create a comprehensive API design s
 
 ## Configuration
 
-**STATE_FILE_PATH**: `product-guidelines/session-8.state`
+**STATE_FILE_PATH**: `.cascade/session-8-state.json`
 
 ## Your Role
 

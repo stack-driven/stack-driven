@@ -224,7 +224,7 @@ Based on what files exist, determine the next recommended action:
 
 **If 00-07 database exists (Session 7 complete)**:
 - **Check Session 8 micro-session progress**:
-  - Check for `product-guidelines/session-8.state`
+  - Check for `.cascade/session-8-state.json`
   - Check for intermediate files: `08-phase1-paradigm.md`, `08-phase2-security.md`, `08-phase3-performance.md`
   - If no state file or Session 8 not started: **Recommend**: Session 8 (`/generate-api-design`)
   - If Session 8 partially complete (state shows incomplete phases):
