@@ -143,7 +143,28 @@ Example updated state:
 }
 ```
 
-### Step 7: Prompt for Continuation
+### Step 7: Report Token Usage
+
+After processing each epic, report token usage to validate architecture efficiency:
+
+```
+✅ Epic 02: User Management processed
+   Stories generated: 12
+   Token usage: 14.2k tokens (94% of 15k target)
+   Context efficiency: Within target range ✓
+```
+
+If token usage exceeds target:
+```
+⚠️ Epic 03: Analytics Dashboard processed
+   Stories generated: 15
+   Token usage: 16.8k tokens (112% of 15k target)
+   Note: Slightly exceeded target due to complex requirements
+```
+
+This helps validate the multi-phase architecture is achieving its token efficiency goals and provides transparency about resource usage.
+
+### Step 8: Prompt for Continuation
 
 Based on remaining epics, output one of these messages:
 
@@ -203,6 +224,96 @@ If state shows `current_epic` is set, resume processing that epic:
 ```
 ℹ️ Resuming Epic [N]: [Name]
 Previous processing was interrupted. Continuing from where we left off...
+```
+
+## Error Recovery Documentation
+
+### Corrupted State Files
+
+**Symptoms:** Invalid JSON, missing required fields, or type mismatches in state file.
+
+**Recovery Steps:**
+1. Display clear error message showing which fields are invalid
+2. Offer recovery options:
+   - Option A: Delete state and restart (`rm .cascade/session-10-state.json && /generate-backlog`)
+   - Option B: Manually fix JSON structure (preserve `processed: true` for completed epics)
+   - Option C: Reconstruct state from existing `10-backlog/` files
+
+**Example recovery prompt:**
+```
+❌ State file is corrupted: Missing field 'epics_generated'
+
+Recovery options:
+1. Start fresh: Delete .cascade/session-10-state.json
+2. Fix manually: Add missing field to JSON
+3. Reconstruct: Analyze existing 10-backlog/ files to rebuild state
+
+Run `/generate-backlog --reset` to start over.
+```
+
+### Partial Epic Processing Failures
+
+**Symptoms:** Story generation fails mid-epic (network issues, token limits, malformed data).
+
+**Recovery Steps:**
+1. Stories already written to disk are preserved
+2. Check state file for `current_epic` field
+3. Re-run `/generate-epic-stories` to complete the epic
+4. Agent will detect existing stories and append only missing ones
+
+**Example recovery:**
+```
+⚠️ Epic 03 partially processed (7 of 12 stories generated)
+
+Detected existing stories in:
+10-backlog/epic-03-user-management.md
+
+Generating remaining 5 stories...
+```
+
+### Network Failures During State Updates
+
+**Symptoms:** Command completes but state file not updated.
+
+**Recovery Steps:**
+1. State file uses atomic writes (temp file + rename)
+2. Previous valid state is preserved
+3. Re-run command to sync state with actual files
+4. Command detects existing story files and updates state accordingly
+
+**Example:**
+```
+ℹ️ Detected state/file mismatch
+
+State shows Epic 04 as pending, but stories exist in:
+10-backlog/epic-04-notifications.md (15 stories found)
+
+Updating state to mark Epic 04 as processed...
+```
+
+### Malformed Story Data from Sub-Agent
+
+**Symptoms:** Write-epic-stories agent returns invalid JSON or malformed story structure.
+
+**Recovery Steps:**
+1. Display error with specific epic ID and field causing issue
+2. Provide path to problematic file
+3. Options:
+   - Manual fix: Edit the markdown file directly
+   - Regenerate: Delete epic file and re-run for that epic
+   - Skip: Mark epic as processed and continue with next
+
+**Example:**
+```
+❌ Epic 05 story generation failed: Invalid story format
+
+File: 10-backlog/epic-05-analytics.md
+Issue: Missing 'Acceptance Criteria' section in Story 08
+
+Options:
+1. Fix manually: Edit the file and add missing sections
+2. Regenerate: rm 10-backlog/epic-05-analytics.md && /generate-epic-stories
+3. Skip epic: Mark as processed and continue
 ```
 
 ## Success Criteria

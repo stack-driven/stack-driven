@@ -38,7 +38,7 @@ Session 10 Orchestrator:
 
 ### Step 1: Check Current State
 
-Check if STATE_FILE_PATH (`.cascade/session-10-state.json`) exists:
+Check if STATE_FILE_PATH exists:
 
 **If state file exists:**
 - Read the state to understand progress
@@ -148,27 +148,43 @@ When all epics are processed:
 
 ## State Management
 
-The orchestrator relies on STATE_FILE_PATH:
+The orchestrator relies on STATE_FILE_PATH with the following JSON schema:
 
 ```json
 {
   "session": "10",
   "phase": "epic-generation|story-generation|complete",
-  "epics_generated": true,
+  "generated_at": "2024-01-15T10:30:00Z",
+  "epics_generated": boolean,
   "epics": [
     {
       "id": "epic-01",
       "name": "Foundation Infrastructure",
-      "processed": true,
-      "stories_generated": 15
+      "type": "foundation|business|enabler",
+      "priority": "P0|P1|P2",
+      "estimated_stories": 15,
+      "processed": boolean,
+      "stories_generated": 15,
+      "file_path": "10-backlog/epic-01-foundation-infrastructure.md"
     }
   ],
+  "total_epics": 5,
   "processed_count": 1,
   "total_stories_generated": 15,
-  "current_epic": null,
-  "status": "awaiting_continuation|complete"
+  "current_epic": "epic-02|null",
+  "status": "ready_for_story_generation|awaiting_continuation|complete",
+  "last_updated": "2024-01-15T10:35:00Z"
 }
 ```
+
+**Field Descriptions:**
+- `phase`: Current processing phase (epic generation, story generation, or complete)
+- `epics_generated`: Whether Session 10a has completed
+- `epics`: Array of all epics with their processing status
+- `processed_count`: Number of epics fully processed
+- `total_stories_generated`: Running total of all stories created
+- `current_epic`: Epic currently being processed (null if none)
+- `status`: Overall workflow status
 
 ## Resumption Logic
 

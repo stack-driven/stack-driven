@@ -126,7 +126,20 @@ Estimated Total Stories: [sum of estimates]
 [Continue for all epics...]
 ```
 
-### Step 6: Initialize State Tracking
+### Step 6: Generate Context File for Session 10b
+
+After generating the epic structure, create a condensed context version for token efficiency:
+
+Use Task tool to invoke distillation agent:
+- **Source**: `product-guidelines/10a-epics.md`
+- **Output**: `product-guidelines/10a-epics.ctx.md`
+- **Critical to preserve**: ALL epic numbers, names, types, priorities, estimated story counts
+- **Remove**: Detailed descriptions, journey alignment explanations, key components lists
+- **Target reduction**: 60-70%
+
+This maintains consistency with the framework pattern where all intermediate outputs have .ctx.md versions for token efficiency.
+
+### Step 7: Initialize State Tracking
 
 Create `.cascade/session-10-state.json`:
 
@@ -162,7 +175,7 @@ Create `.cascade/session-10-state.json`:
 }
 ```
 
-### Step 7: Provide User Instructions
+### Step 8: Provide User Instructions
 
 Output a message explaining:
 1. Epic structure has been generated
@@ -182,10 +195,11 @@ Output a message explaining:
 ## Output Format
 
 The command should create:
-1. `product-guidelines/10a-epics.md` - Epic definitions (full version for humans and Session 10b)
-2. `.cascade/session-10-state.json` - State tracking file
+1. `product-guidelines/10a-epics.md` - Epic definitions (full version for humans)
+2. `product-guidelines/10a-epics.ctx.md` - Condensed context version for Session 10b (60-70% reduction)
+3. `.cascade/session-10-state.json` - State tracking file
 
-**Note on Context Files**: Session 10a does NOT create a `.ctx.md` file. Unlike Sessions 1-9b which create both .md and .ctx.md files, Session 10a is an intermediate processing step within Session 10. The `10a-epics.md` file is already minimal (~2-3k tokens) and is read directly by Session 10b without needing further distillation.
+**Note on Context Files**: Session 10a creates both .md and .ctx.md files to maintain consistency with the framework pattern established by Sessions 1-9b. While 10a is an intermediate step within Session 10, the context file provides token efficiency when Session 10b reads the epic structure.
 
 Then output:
 ```

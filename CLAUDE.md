@@ -78,11 +78,6 @@ No traditional build/test commands - this is a prompt-driven framework executed 
 - Directory structure maintained for future examples
 - Will demonstrate how different journeys lead to different tech stacks
 
-**`/aspects/`** - High-level framework documentation (13 aspects)
-- Explains concepts like core-design, style-guide, user-journey, backlog-organization
-- Reference material, not prescriptive guides
-- Provides context for the philosophy behind the framework
-
 **`/reference-material/`** - Educational guides and reference documentation
 - Standalone educational resources not tied to specific cascade sessions
 - Referenced by commands but not generated as cascade outputs
@@ -447,7 +442,6 @@ Sessions must build on each other:
 - Commands (`/.claude/commands/`)
 - Templates (`/templates/`)
 - Documentation (`README.md`, `COMMAND-REFERENCE.md`)
-- Aspects (`/aspects/`)
 
 **What's NOT committed (gitignored):**
 - User-specific cascade outputs (`/product-guidelines/*`)
