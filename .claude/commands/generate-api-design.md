@@ -169,7 +169,7 @@ After Phase 8.4 completes:
 - Corrupted state → Detect invalid JSON and restart from Phase 8.1
 - One phase crashed → State preserves completion up to crash point, resume from failed phase
 
-The orchestrator maintains state in `product-guidelines/session-8.state`:
+The orchestrator maintains state in `.cascade/session-8-state.json`:
 
 ```json
 {
