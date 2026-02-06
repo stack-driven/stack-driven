@@ -87,7 +87,7 @@ Include journey-based reasoning for the format choice (bandwidth constraints, pe
 
 ### Step 5: Write API Paradigm Decision
 
-Write `product-guidelines/08a-api-paradigm.md`:
+Write `product-guidelines/08-phase1-paradigm.md`:
 
 ```markdown
 # API Paradigm Decision (Phase 8.1)
@@ -164,27 +164,27 @@ Create `product-guidelines/session-8.state`:
 ```json
 {
   "session": "8",
-  "phase": "8a-paradigm",
+  "phase": "paradigm",
   "generated_at": "[timestamp]",
   "phases": {
-    "8a": {
+    "phase1": {
       "name": "API Paradigm Selection",
       "complete": true,
       "timestamp": "[timestamp]",
       "paradigm": "[selected-paradigm]",
       "serialization": "[selected-format]"
     },
-    "8b": {
+    "phase2": {
       "name": "API Security Design",
       "complete": false,
       "timestamp": null
     },
-    "8c": {
+    "phase3": {
       "name": "API Performance Patterns",
       "complete": false,
       "timestamp": null
     },
-    "8d": {
+    "phase4": {
       "name": "API Synthesis",
       "complete": false,
       "timestamp": null
@@ -222,7 +222,7 @@ Output a message explaining:
 ## Output Format
 
 The command should create:
-1. `product-guidelines/08a-api-paradigm.md` - Paradigm decision with journey traceability
+1. `product-guidelines/08-phase1-paradigm.md` - Paradigm decision with journey traceability
 2. `product-guidelines/session-8.state` - State tracking file (or update if exists)
 
 Then output:

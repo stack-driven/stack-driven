@@ -19,22 +19,38 @@ Design comprehensive security patterns based on journey requirements and the par
 
 ## Steps to Execute
 
-### Step 1: Read Session State and Minimal Context
+### Step 1: Validate Prerequisites
+
+Before starting, verify that required files from Phase 8.1 exist:
+
+**Check for state file:**
+- If `product-guidelines/session-8.state` does NOT exist:
+  - ❌ Error: "Phase 8.1 must complete before Phase 8.2. Run `/generate-api-design` to start from Phase 8.1."
+  - Exit without proceeding
+
+**Check for paradigm file:**
+- If `product-guidelines/08-phase1-paradigm.md` does NOT exist:
+  - ❌ Error: "Phase 8.1 output missing. Run `/generate-api-design` to regenerate Phase 8.1."
+  - Exit without proceeding
+
+**If both files exist:** Proceed to Step 2.
+
+### Step 2: Read Session State and Minimal Context
 
 Read state and context files (targeting ~10k tokens total):
 
 1. `product-guidelines/session-8.state` - Get paradigm decision from Phase 8.1
-2. `product-guidelines/08a-api-paradigm.md` - Paradigm and serialization choices
+2. `product-guidelines/08-phase1-paradigm.md` - Paradigm and serialization choices
 3. `product-guidelines/00-user-journey.ctx.md` - For security touchpoints
 4. `product-guidelines/07-database-schema.ctx.md` - For data relationships
 
 Skip architecture and other files to preserve context capacity.
 
-### Step 2: Analyze OWASP API Top 10 2023 Risks
+### Step 3: Analyze OWASP API Top 10 2023 Risks
 
 Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 
-#### 2.1: API1 - Broken Object Level Authorization (BOLA)
+#### 3.1: API1 - Broken Object Level Authorization (BOLA)
 **Journey Analysis**: Which journey steps access user-owned resources?
 **Risk Pattern**: Users accessing other users' data
 **Protection Strategy**:
@@ -43,7 +59,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Team/organization boundaries
 - Example: "User in Step 3 uploads document → BOLA protection via user_id ownership check"
 
-#### 2.2: API2 - Broken Authentication
+#### 3.2: API2 - Broken Authentication
 **Journey Analysis**: How do users authenticate in the journey?
 **Risk Pattern**: Weak authentication mechanisms
 **Protection Strategy**:
@@ -53,7 +69,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Token rotation
 - Example: "Journey requires financial operations → MFA on payment endpoints"
 
-#### 2.3: API3 - Broken Object Property Level Authorization
+#### 3.3: API3 - Broken Object Property Level Authorization
 **Journey Analysis**: Which fields contain sensitive data?
 **Risk Pattern**: Exposing sensitive fields inappropriately
 **Protection Strategy**:
@@ -62,7 +78,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Sensitive field masking
 - Example: "PII in user profiles → Property filtering based on viewer relationship"
 
-#### 2.4: API5 - Broken Function Level Authorization (BFLA)
+#### 3.4: API5 - Broken Function Level Authorization (BFLA)
 **Journey Analysis**: What admin/privileged operations exist?
 **Risk Pattern**: Regular users accessing admin functions
 **Protection Strategy**:
@@ -71,7 +87,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Admin endpoint isolation
 - Example: "Journey has admin review step → BFLA protection on review endpoints"
 
-#### 2.5: API8 - Security Misconfiguration
+#### 3.5: API8 - Security Misconfiguration
 **Journey Analysis**: What are the deployment and configuration risks?
 **Risk Pattern**: Insecure defaults, verbose errors, missing security headers
 **Protection Strategy**:
@@ -81,7 +97,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Environment-specific configs
 - Example: "Production deployment → Strict CORS, sanitized errors"
 
-#### 2.6: API9 - Improper Inventory Management
+#### 3.6: API9 - Improper Inventory Management
 **Journey Analysis**: How will API versions evolve?
 **Risk Pattern**: Deprecated endpoints, undocumented APIs
 **Protection Strategy**:
@@ -91,7 +107,7 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Endpoint inventory
 - Example: "Journey evolves quarterly → Versioning via URL path (/v1/, /v2/)"
 
-#### 2.7: API10 - Unsafe Consumption of Third-Party APIs
+#### 3.7: API10 - Unsafe Consumption of Third-Party APIs
 **Journey Analysis**: Which third-party services are integrated?
 **Risk Pattern**: Trusting external API responses
 **Protection Strategy**:
@@ -101,16 +117,16 @@ Evaluate the 7 applicable risks from OWASP API Top 10 2023:
 - Timeout configuration
 - Example: "Payment provider integration → Validate webhook signatures"
 
-### Step 3: Design Input Validation Strategy
+### Step 4: Design Input Validation Strategy
 
 Based on paradigm from Phase 8.1:
 
-#### 3.1: Select Validation Approach
+#### 4.1: Select Validation Approach
 **REST**: Schema validation (JSON Schema, OpenAPI)
 **GraphQL**: Type system validation, query depth limiting
 **gRPC**: Protobuf validation, field requirements
 
-#### 3.2: Define Validation Rules by Type
+#### 4.2: Define Validation Rules by Type
 
 Common input types and validation:
 ```
@@ -123,16 +139,16 @@ Text: Length limits, XSS sanitization
 Numbers: Range validation, precision limits
 ```
 
-#### 3.3: Sanitization Strategy
+#### 4.3: Sanitization Strategy
 - HTML sanitization for user content
 - SQL injection prevention (parameterized queries)
 - Command injection prevention
 - Path traversal prevention
 - Example: "User submits markdown → Sanitize HTML, prevent XSS"
 
-### Step 4: Write API Security Design
+### Step 5: Write API Security Design
 
-Write `product-guidelines/08b-api-security.md`:
+Write `product-guidelines/08-phase2-security.md`:
 
 ```markdown
 # API Security Design (Phase 8.2)
@@ -254,7 +270,7 @@ X-Request-ID: [request tracking]
 - Phase 8.4 will synthesize into complete API design
 ```
 
-### Step 5: Update State Tracking
+### Step 6: Update State Tracking
 
 Update `product-guidelines/session-8.state`:
 
@@ -262,8 +278,8 @@ Update `product-guidelines/session-8.state`:
 {
   ...existing state...,
   "phases": {
-    "8a": {...existing...},
-    "8b": {
+    "phase1": {...existing...},
+    "phase2": {
       "name": "API Security Design",
       "complete": true,
       "timestamp": "[timestamp]",
@@ -277,7 +293,7 @@ Update `product-guidelines/session-8.state`:
 }
 ```
 
-### Step 6: Provide User Instructions
+### Step 7: Provide User Instructions
 
 Output completion message with security summary.
 
@@ -293,7 +309,7 @@ Output completion message with security summary.
 ## Output Format
 
 The command should create/update:
-1. `product-guidelines/08b-api-security.md` - Security patterns with journey traceability
+1. `product-guidelines/08-phase2-security.md` - Security patterns with journey traceability
 2. `product-guidelines/session-8.state` - Updated state tracking
 
 Then output:

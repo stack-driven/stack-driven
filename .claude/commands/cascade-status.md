@@ -141,9 +141,9 @@ CORE CASCADE (Required - Always Start Here)
 [x] 07-database-schema.md         (Session 7 - Not started)
 [x] 08-api-design.md              (Session 8 - Not started)
     └─ Check for micro-sessions if partially complete:
-       [x] 08a-api-paradigm.md    (Phase 8a - Not started)
-       [x] 08b-api-security.md    (Phase 8b - Not started)
-       [x] 08c-api-performance.md (Phase 8c - Not started)
+       [x] 08-phase1-paradigm.md    (Phase 8.1: Paradigm Selection - Not started)
+       [x] 08-phase2-security.md    (Phase 8.2: Security Patterns - Not started)
+       [x] 08-phase3-performance.md (Phase 8.3: Performance Optimization - Not started)
 [x] 08-api-design.ctx.md          (Session 8 - Not started)
 [x] 08b-api-contracts.md          (Session 8b - Not started)
 [x] 08b-api-contracts.ctx.md (Session 8b - Not started)
@@ -225,7 +225,7 @@ Based on what files exist, determine the next recommended action:
 **If 00-07 database exists (Session 7 complete)**:
 - **Check Session 8 micro-session progress**:
   - Check for `product-guidelines/session-8.state`
-  - Check for intermediate files: `08a-api-paradigm.md`, `08b-api-security.md`, `08c-api-performance.md`
+  - Check for intermediate files: `08-phase1-paradigm.md`, `08-phase2-security.md`, `08-phase3-performance.md`
   - If no state file or Session 8 not started: **Recommend**: Session 8 (`/generate-api-design`)
   - If Session 8 partially complete (state shows incomplete phases):
     - Show micro-session progress: "Phase 8.1 ✓, Phase 8.2 ✓, Phase 8.3 in progress..."

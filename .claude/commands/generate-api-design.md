@@ -81,7 +81,7 @@ This will:
 2. Apply 5-factor decision tree
 3. Select API paradigm (REST/GraphQL/gRPC/WebSocket/Hybrid)
 4. Choose serialization format
-5. Write 08a-api-paradigm.md
+5. Write 08-phase1-paradigm.md
 6. Initialize/update state with paradigm decision and conditional flags
 ```
 
@@ -102,7 +102,7 @@ This will:
 2. Analyze 7 OWASP API Top 10 2023 risks
 3. Design protection patterns (BOLA, BFLA, etc.)
 4. Define input validation strategy
-5. Write 08b-api-security.md
+5. Write 08-phase2-security.md
 6. Update state with completion status
 ```
 
@@ -126,7 +126,7 @@ This will:
    - Circuit Breakers (if third-party APIs)
    - i18n Headers (if i18n required)
    - Webhooks (if webhook integrations)
-4. Write 08c-api-performance.md
+4. Write 08-phase3-performance.md
 5. Update state with applied patterns
 ```
 
@@ -157,33 +157,33 @@ After Phase 8.4 completes:
 
 ## State Management
 
-The orchestrator maintains state in `.cascade/session-8-state.json`:
+The orchestrator maintains state in `product-guidelines/session-8.state`:
 
 ```json
 {
   "session": "8",
-  "phase": "8a-paradigm|8b-security|8c-performance|8d-synthesis|complete",
+  "phase": "paradigm|security|performance|synthesis|complete",
   "generated_at": "timestamp",
   "phases": {
-    "8a": {
+    "phase1": {
       "name": "API Paradigm Selection",
       "complete": boolean,
       "timestamp": "when completed",
       "paradigm": "REST|GraphQL|gRPC|WebSocket|Hybrid",
       "serialization": "JSON|Protobuf|MessagePack"
     },
-    "8b": {
+    "phase2": {
       "name": "API Security Design",
       "complete": boolean,
       "timestamp": "when completed"
     },
-    "8c": {
+    "phase3": {
       "name": "API Performance Patterns",
       "complete": boolean,
       "timestamp": "when completed",
       "patternsApplied": ["list of applied patterns"]
     },
-    "8d": {
+    "phase4": {
       "name": "API Synthesis",
       "complete": boolean,
       "timestamp": "when completed"
@@ -218,7 +218,7 @@ If the user runs `/generate-api-design` after partial completion:
 - Only the failed phase will re-execute
 
 **If state file is corrupted:**
-- Check for existing output files (08a, 08b, 08c)
+- Check for existing output files (08-phase1-paradigm.md, 08-phase2-security.md, 08-phase3-performance.md)
 - Rebuild state from existing files
 - Continue from last successful phase
 

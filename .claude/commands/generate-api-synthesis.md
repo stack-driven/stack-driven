@@ -24,9 +24,9 @@ Synthesize all micro-session outputs into the final API design document, add cor
 Read intermediate files (targeting ~20k tokens total):
 
 1. `product-guidelines/session-8.state` - Session state and decisions
-2. `product-guidelines/08a-api-paradigm.md` - Paradigm and serialization
-3. `product-guidelines/08b-api-security.md` - OWASP patterns and validation
-4. `product-guidelines/08c-api-performance.md` - Applied performance patterns
+2. `product-guidelines/08-phase1-paradigm.md` - Paradigm and serialization
+3. `product-guidelines/08-phase2-security.md` - OWASP patterns and validation
+4. `product-guidelines/08-phase3-performance.md` - Applied performance patterns
 5. `product-guidelines/02-tech-stack.ctx.md` - For auth method and framework
 6. `/templates/08-api-design-template.md` - Target output structure
 
@@ -144,7 +144,7 @@ Session: 8 - API Design (Synthesized from 8a-8d micro-sessions)
 
 ## API Paradigm Decision
 
-[Copy paradigm section from 08a-api-paradigm.md]
+[Copy paradigm section from 08-phase1-paradigm.md]
 
 ## REST Design Patterns
 [Include ONLY if paradigm = REST]
@@ -163,7 +163,7 @@ Session: 8 - API Design (Synthesized from 8a-8d micro-sessions)
 
 ## Serialization Format Decision
 
-[Copy from 08a-api-paradigm.md]
+[Copy from 08-phase1-paradigm.md]
 
 ## Authentication Strategy
 
@@ -171,36 +171,36 @@ Session: 8 - API Design (Synthesized from 8a-8d micro-sessions)
 
 ## Security Protection Patterns (OWASP API Top 10 2023)
 
-[Copy security patterns from 08b-api-security.md]
+[Copy security patterns from 08-phase2-security.md]
 
 ## Input Validation Strategy
 
-[Copy validation section from 08b-api-security.md]
+[Copy validation section from 08-phase2-security.md]
 
 ## HTTP Caching Strategy
 [Include if applied in 8c]
 
-[Copy from 08c-api-performance.md if httpCaching = true]
+[Copy from 08-phase3-performance.md if httpCaching = true]
 
 ## Idempotency and Retry Strategies
 [Include if applied in 8c]
 
-[Copy from 08c-api-performance.md if idempotency = true]
+[Copy from 08-phase3-performance.md if idempotency = true]
 
 ## Circuit Breaker Configuration
 [Include if applied in 8c]
 
-[Copy from 08c-api-performance.md if circuitBreakers = true]
+[Copy from 08-phase3-performance.md if circuitBreakers = true]
 
 ## Internationalization Support
 [Include if applied in 8c]
 
-[Copy from 08c-api-performance.md if i18nHeaders = true]
+[Copy from 08-phase3-performance.md if i18nHeaders = true]
 
 ## Webhook Endpoint Design
 [Include if applied in 8c]
 
-[Copy from 08c-api-performance.md if webhooks = true]
+[Copy from 08-phase3-performance.md if webhooks = true]
 
 ## Rate Limiting Strategy
 
@@ -286,10 +286,10 @@ Update `product-guidelines/session-8.state`:
 {
   ...existing state...,
   "phases": {
-    "8a": {...existing...},
-    "8b": {...existing...},
-    "8c": {...existing...},
-    "8d": {
+    "phase1": {...existing...},
+    "phase2": {...existing...},
+    "phase3": {...existing...},
+    "phase4": {
       "name": "API Synthesis",
       "complete": true,
       "timestamp": "[timestamp]",

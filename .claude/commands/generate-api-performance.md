@@ -24,7 +24,7 @@ Design performance patterns ONLY for those that apply to the journey and archite
 Read state and context files (targeting ~10k tokens total):
 
 1. `product-guidelines/session-8.state` - Get paradigm and conditional flags
-2. `product-guidelines/08a-api-paradigm.md` - Paradigm choice
+2. `product-guidelines/08-phase1-paradigm.md` - Paradigm choice
 3. `product-guidelines/04-architecture.ctx.md` - For integrations and scale
 4. `product-guidelines/02a-constraints.ctx.md` (if exists) - For i18n and compliance
 
@@ -186,7 +186,7 @@ Scale-Forward:
 
 ### Step 4: Write API Performance Patterns
 
-Write `product-guidelines/08c-api-performance.md`:
+Write `product-guidelines/08-phase3-performance.md`:
 
 ```markdown
 # API Performance Patterns (Phase 8.3)
@@ -296,9 +296,9 @@ Update `product-guidelines/session-8.state`:
 {
   ...existing state...,
   "phases": {
-    "8a": {...existing...},
-    "8b": {...existing...},
-    "8c": {
+    "phase1": {...existing...},
+    "phase2": {...existing...},
+    "phase3": {
       "name": "API Performance Patterns",
       "complete": true,
       "timestamp": "[timestamp]",
@@ -328,7 +328,7 @@ Output completion message with applied patterns summary.
 ## Output Format
 
 The command should create/update:
-1. `product-guidelines/08c-api-performance.md` - Performance patterns (only applicable ones)
+1. `product-guidelines/08-phase3-performance.md` - Performance patterns (only applicable ones)
 2. `product-guidelines/session-8.state` - Updated state tracking
 
 Then output:
