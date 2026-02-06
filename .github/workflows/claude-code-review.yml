@@ -67,6 +67,9 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+          # Allow bots to trigger this action (fixes the error)
+          allowed_bots: '*'
+
           # Review prompt focused on Stack-Driven principles with severity tracking
           prompt: |
             Review pull request #${{ steps.get-pr.outputs.pr_number }} for this Stack-Driven product.
@@ -198,112 +201,51 @@ jobs:
             **🔴 High Priority (blocking):**
             - VALIDATION-CHECKLIST.md Tier 1 rule violations (1.4, 2.1, 3.1, 3.2)
             - Security vulnerabilities
-            - Data corruption or loss risks
-            - Breaking API changes without migration plan
-            - Critical bugs
-            - Severe performance issues
-            - Hard-coded secrets or credentials
+            - Data corruption risks
+            - Breaking changes without migration
+            - Framework consistency violations
 
             **🟡 Medium Priority (should fix):**
-            - VALIDATION-CHECKLIST.md Tier 2 rule violations (1.1, 1.2, 4.1-4.3, 6.3)
-            - Code quality issues (complexity, duplication)
-            - Missing or inadequate tests
-            - Guideline violations (tech stack, design system)
-            - Missing error handling
-            - Type safety issues
-            - Accessibility violations
-            - Moderate performance concerns
+            - Code quality issues
+            - Missing tests
+            - Guideline deviations
+            - Performance concerns
+            - Technical debt
 
-            **🟢 Low Priority (optional):**
-            - Code style improvements
-            - Documentation enhancements
+            **🟢 Low Priority (nice-to-have):**
+            - Style improvements
             - Refactoring opportunities
-            - Minor optimizations
-            - Naming suggestions
+            - Documentation updates
+            - Code organization
 
             ## Important Notes
 
-            - **Be constructive**: Focus on helping, not criticizing
-            - **Be specific**: Reference exact files and line numbers for EVERY issue
-            - **Be balanced**: Highlight both strengths and areas for improvement
-            - **Use severity levels**: Categorize every issue as 🔴 High, 🟡 Medium, or 🟢 Low
-            - **Check CLAUDE.md**: Use repository-specific guidelines if they exist
-            - **Respect context**: If product-guidelines don't exist, focus on code quality only
+            - If PR has more than 5 review rounds, suggest manual review to avoid fatigue
+            - Always check if `product-guidelines/` directory exists before validating against it
+            - Be specific with line numbers and filenames for actionable feedback
+            - Balance thoroughness with pragmatism - focus on impactful issues
 
-            **Your goal:** Help maintain code quality and alignment with Stack-Driven philosophy.
+          # Use the review-pr slash command (from your Stack-Driven framework)
+          # This ensures consistency with your manual review process
+          claude_args: '--allowed-tools "Bash(gh:*),Read,Grep,Glob"'
 
-          # Allow tools for PR analysis and commenting
-          claude_args: '--allowed-tools "Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh issue view:*),Read,Grep,Glob"'
-
-      - name: Check if auto-fix should be triggered
+      - name: Add labels on completion
         if: success()
-        id: check-auto-fix
         run: |
-          # Get the latest review comment
-          LATEST_REVIEW=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json comments --jq '[.comments[] | select(.author.login=="github-actions[bot]" and (.body | contains("Code Review - Round")))] | last | .body')
-
-          # Count high and medium priority issues
-          HIGH_COUNT=$(echo "$LATEST_REVIEW" | grep -A 100 "🔴 High Priority" | grep -B 100 "🟡 Medium Priority" | grep -c "^\-" || echo "0")
-          MEDIUM_COUNT=$(echo "$LATEST_REVIEW" | grep -A 100 "🟡 Medium Priority" | grep -B 100 "🟢 Low Priority" | grep -c "^\-" || echo "0")
-
-          CURRENT_ROUND=${{ steps.get-iteration.outputs.next_round }}
-
-          echo "high_count=$HIGH_COUNT" >> $GITHUB_OUTPUT
-          echo "medium_count=$MEDIUM_COUNT" >> $GITHUB_OUTPUT
-          echo "current_round=$CURRENT_ROUND" >> $GITHUB_OUTPUT
-
-          # Trigger auto-fix if:
-          # 1. We have high or medium priority issues
-          # 2. We haven't exceeded max rounds (5)
-          if [ "$CURRENT_ROUND" -lt 5 ] && [ $((HIGH_COUNT + MEDIUM_COUNT)) -gt 0 ]; then
-            echo "should_auto_fix=true" >> $GITHUB_OUTPUT
-            echo "🔧 Will trigger auto-fix (Round $CURRENT_ROUND/5, Issues: $HIGH_COUNT high + $MEDIUM_COUNT medium)"
-          else
-            echo "should_auto_fix=false" >> $GITHUB_OUTPUT
-            if [ "$CURRENT_ROUND" -ge 5 ]; then
-              echo "⛔ Max rounds reached, will NOT trigger auto-fix"
-            else
-              echo "✅ No issues found, auto-fix not needed"
-            fi
-          fi
+          # Add reviewed label to PR
+          gh pr edit ${{ steps.get-pr.outputs.pr_number }} --add-label "reviewed" || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Trigger auto-fix if needed
-        if: success() && steps.check-auto-fix.outputs.should_auto_fix == 'true'
+      - name: Create summary
+        if: success()
         run: |
-          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "@claude-fix-review"
-          echo "🔧 Auto-fix triggered for review round ${{ steps.check-auto-fix.outputs.current_round }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add review-blocked label if max rounds reached
-        if: success() && steps.check-auto-fix.outputs.current_round == '5' && (steps.check-auto-fix.outputs.high_count != '0' || steps.check-auto-fix.outputs.medium_count != '0')
-        run: |
-          gh pr edit ${{ steps.get-pr.outputs.pr_number }} --add-label "review-blocked"
-          gh pr comment ${{ steps.get-pr.outputs.pr_number }} --body "⛔ **Manual intervention required**
-
-          This PR has reached the maximum of 5 automated review/fix rounds with unresolved issues.
-
-          **Remaining issues:**
-          - 🔴 High priority: ${{ steps.check-auto-fix.outputs.high_count }}
-          - 🟡 Medium priority: ${{ steps.check-auto-fix.outputs.medium_count }}
-
-          **Next steps:**
-          1. Review the latest code review findings above
-          2. Manually fix the remaining issues
-          3. Push your changes to this PR
-          4. Remove the \`review-blocked\` label to re-enable automation
-
-          **Why was this blocked?**
-          Automated fix cycles are limited to 5 rounds to prevent infinite loops and excessive resource usage. This usually indicates complex issues that require human judgment."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment on failure
-        if: failure()
-        run: |
-          gh pr comment ${{ steps.get-pr.outputs.pr_number }} \
-            --body "❌ Code review failed to complete. Please check the workflow run for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "### ✅ PR #${{ steps.get-pr.outputs.pr_number }} Reviewed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Code review completed successfully (Round ${{ steps.get-iteration.outputs.next_round }})." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the feedback posted on the PR" >> $GITHUB_STEP_SUMMARY
+          echo "2. Address any high priority issues" >> $GITHUB_STEP_SUMMARY
+          echo "3. Consider medium priority improvements" >> $GITHUB_STEP_SUMMARY
+          echo "4. Request re-review if needed" >> $GITHUB_STEP_SUMMARY

@@ -180,6 +180,18 @@ Each command follows this pattern:
 - Pauses at major milestones for user confirmation
 - Handles interruptions gracefully (resume later)
 
+### Micro-Session Commands (Internal)
+
+**NOTE:** These commands are invoked by orchestrators (like `/generate-api-design`), not directly by users.
+
+**Session 8 Micro-Sessions** (invoked by `/generate-api-design` orchestrator):
+- `/generate-api-paradigm` - Phase 8.1: API paradigm selection (~15k tokens)
+- `/generate-api-security` - Phase 8.2: OWASP security patterns (~10k tokens)
+- `/generate-api-performance` - Phase 8.3: Performance patterns - conditional (~10k tokens)
+- `/generate-api-synthesis` - Phase 8.4: Synthesis into complete API design (~20k tokens)
+
+Users run only `/generate-api-design`, which orchestrates all phases automatically with state tracking.
+
 ### Development Commands
 
 **`/plan-issue [issue-number]`** - Create implementation plan for GitHub issue
@@ -284,6 +296,16 @@ Every decision must trace back to user journey:
 - `12-project-scaffold.md` - Final scaffold documentation
 - `13-deployment-plan.md` - Final deployment plan
 - `14-observability-strategy.md` - Final observability strategy
+
+**Micro-session file naming convention:**
+- **Session 8 phases**: `08-phase[N]-[name].md` (e.g., `08-phase1-paradigm.md`, `08-phase2-security.md`)
+  - These are temporary internal files deleted after synthesis
+  - NOT context files (.ctx.md) - they exist only during processing
+- **Session 10a intermediate**: `10a-epics.md` (letter-suffixed)
+  - Preserved intermediate file with context version
+  - Different pattern because it's retained for backlog generation
+
+**Rationale:** Session 8 phases are internal processing steps (deleted after synthesis), while Session 10a output is preserved as part of the cascade.
 
 **Why this universal approach?**
 1. **Consistency** - No complex decision matrix needed
