@@ -15,12 +15,17 @@ on:
 jobs:
   plan-issue:
     # Trigger if:
-    # 1. Issue opened/labeled with "needs-plan"
-    # 2. Comment contains @claude-plan or /plan-issue
+    # 1. Issue opened/labeled with "needs-plan" (but NOT by bots)
+    # 2. Comment contains @claude-plan or /plan-issue (but NOT from bots)
     # 3. Manual workflow dispatch
     if: |
-      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'needs-plan') || contains(github.event.issue.body, '@claude-plan'))) ||
-      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '/plan-issue') || contains(github.event.comment.body, '@claude-plan'))) ||
+      (github.event_name == 'issues' &&
+       github.actor != 'github-actions[bot]' &&
+       github.actor != 'dependabot[bot]' &&
+       (contains(github.event.issue.labels.*.name, 'needs-plan') || contains(github.event.issue.body, '@claude-plan'))) ||
+      (github.event_name == 'issue_comment' &&
+       github.event.comment.user.type != 'Bot' &&
+       (contains(github.event.comment.body, '/plan-issue') || contains(github.event.comment.body, '@claude-plan'))) ||
       github.event_name == 'workflow_dispatch'
 
     runs-on: ubuntu-latest

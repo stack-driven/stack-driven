@@ -20,12 +20,17 @@ on:
 jobs:
   implement-issue:
     # Trigger if:
-    # 1. Comment contains @claude-implement or /implement-issue
-    # 2. Issue labeled with "auto-implement" or "ready-to-implement"
+    # 1. Comment contains @claude-implement or /implement-issue (but NOT from bots)
+    # 2. Issue labeled with "auto-implement" or "ready-to-implement" (but NOT by bots)
     # 3. Manual workflow dispatch
     if: |
-      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '@claude-implement') || contains(github.event.comment.body, '/implement-issue'))) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'auto-implement') || contains(github.event.issue.labels.*.name, 'ready-to-implement'))) ||
+      (github.event_name == 'issue_comment' &&
+       github.event.comment.user.type != 'Bot' &&
+       (contains(github.event.comment.body, '@claude-implement') || contains(github.event.comment.body, '/implement-issue'))) ||
+      (github.event_name == 'issues' &&
+       github.actor != 'github-actions[bot]' &&
+       github.actor != 'dependabot[bot]' &&
+       (contains(github.event.issue.labels.*.name, 'auto-implement') || contains(github.event.issue.labels.*.name, 'ready-to-implement'))) ||
       github.event_name == 'workflow_dispatch'
 
     runs-on: ubuntu-latest

@@ -15,9 +15,12 @@ on:
 
 jobs:
   fix-review-findings:
-    # Only run on PR comments containing @claude-fix-review
+    # Only run on PR comments containing @claude-fix-review (but NOT from bots)
     if: |
-      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude-fix-review')) ||
+      (github.event_name == 'issue_comment' &&
+       github.event.comment.user.type != 'Bot' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '@claude-fix-review')) ||
       github.event_name == 'workflow_dispatch'
 
     runs-on: ubuntu-latest
@@ -45,8 +48,8 @@ jobs:
       - name: Check review round count
         id: check-rounds
         run: |
-          # Count existing review rounds
-          REVIEW_COUNT=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json comments --jq '[.comments[] | select(.author.login=="github-actions[bot]" and (.body | contains("Code Review - Round")))] | length' || echo "0")
+          # Count existing review rounds (both "Code Review - Round" and "## Code Review" patterns)
+          REVIEW_COUNT=$(gh pr view ${{ steps.get-pr.outputs.pr_number }} --json comments --jq '[.comments[] | select(.author.login=="github-actions[bot]" and ((.body | contains("Code Review - Round")) or (.body | contains("## Code Review"))))] | length' || echo "0")
 
           echo "review_count=$REVIEW_COUNT" >> $GITHUB_OUTPUT
           echo "📊 Current review rounds: $REVIEW_COUNT"
