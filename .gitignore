@@ -50,3 +50,6 @@ issue-*-evaluation.md
 
 # Ephemeral artifacts (generated during cascade, not committed)
 .github/ISSUE-PLAN.json
+
+# Cascade state tracking (user-specific session state)
+.cascade/
