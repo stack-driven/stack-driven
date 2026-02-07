@@ -152,6 +152,7 @@ CORE CASCADE (Required - Always Start Here)
 [x] 10-backlog/                   (Session 10 - Not started)
     └─ Check for epic structure if partially complete:
        [x] 10a-epics.md           (Phase 10a - Epic structure)
+[x] 11-github-issues.md           (Session 11 - Not started)
 [x] 12-project-scaffold.md        (Session 12 - Not started)
 [x] 13-deployment-plan.md         (Session 13 - Not started)
 [x] 14-observability-strategy.md  (Session 14 - Not started)
@@ -182,6 +183,16 @@ Status: 0 of 8 post-core extensions complete (optional)
 Based on what files exist, determine the next recommended action:
 
 #### Decision Logic:
+
+### Step 1.5: Check for Session 11 Completion Marker
+
+Session 11 (GitHub Issues) creates a completion marker file to enable detection:
+
+```bash
+test -f product-guidelines/11-github-issues.md && echo "Session 11 complete" || echo "Session 11 not complete"
+```
+
+Store this result to accurately display Session 11 status in the progress tracker.
 
 **If no core cascade files exist**:
 - **Recommend**: Start with Session 1 (`/refine-journey`)
@@ -252,9 +263,11 @@ Based on what files exist, determine the next recommended action:
   - If `10-backlog/` directory has stories: Session 10 complete, proceed to next
 
 **If 00-10 backlog exists (Session 10 complete)**:
-- **Recommend**: Session 11 (`/create-gh-issues`)
+- **Check Session 11 completion**: Look for `product-guidelines/11-github-issues.md`
+  - If `11-github-issues.md` exists: Session 11 complete, proceed to next
+  - If `11-github-issues.md` NOT found: **Recommend**: Session 11 (`/create-gh-issues`)
 
-**If 00-10 backlog + GitHub issues exist (Session 11 complete)**:
+**If 00-10 backlog + 11-github-issues.md exist (Session 11 complete)**:
 - **Recommend**: Session 12 (`/scaffold-project`)
 
 **If 00-12 scaffold exists (Session 12 complete)**:
