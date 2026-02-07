@@ -212,7 +212,7 @@ Use this decision logic to determine what to execute:
 - Suggest optional post-cascade extensions
 - Suggest they start building
 
-### Step 2.5: Handle Micro-Session State Tracking
+### Step 2a: Handle Micro-Session State Tracking
 
 **For Sessions 7, 8, 10, and 11 (decomposed into micro-sessions):**
 
