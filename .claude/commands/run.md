@@ -302,9 +302,25 @@ Your choice:
 ```
 
 **Handling State File Errors:**
-- If state file is corrupted or invalid JSON: Ignore it, detect from file system
-- If state file shows phase complete but output missing: Re-run that phase
-- If no state file but partial outputs exist: Reconstruct state from files
+
+1. **Validate JSON format:**
+   ```bash
+   # Try parsing state file with jq to validate JSON
+   if [ -f ".cascade/session-7-state.json" ]; then
+     if cat .cascade/session-7-state.json | jq . >/dev/null 2>&1; then
+       # Valid JSON - proceed to read state
+       STATE=$(cat .cascade/session-7-state.json)
+     else
+       # Invalid/corrupted JSON - ignore and fall back to file system
+       echo "Warning: Corrupted state file, falling back to file detection"
+     fi
+   fi
+   ```
+
+2. **Handle specific error scenarios:**
+   - If state file is corrupted or invalid JSON: Ignore it, detect from file system
+   - If state file shows phase complete but output missing: Re-run that phase
+   - If no state file but partial outputs exist: Reconstruct state from files
 
 ### Step 3: Execute Sessions with Progress Tracking
 
