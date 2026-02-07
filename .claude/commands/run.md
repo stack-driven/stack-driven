@@ -283,12 +283,11 @@ fi
 
 **Progress Visualization Format:**
 ```
-Session 7 Progress: [██████░░░░] 60% (3/5 phases)
+Session 7 Progress: [███████░░░] 75% (3/4 phases)
   [✓] 7a: Core Tables (generate-core-tables)
   [✓] 7b: Relationships (generate-relationships)
   [✓] 7c: Special Tables (generate-special-tables)
   [→] 7d: Optimization (generate-schema-optimization) ← NEXT
-  [ ] 7e: Final Synthesis
 ```
 
 **User Prompt Format:**
@@ -305,11 +304,10 @@ Your choice:
 
 1. **Validate JSON format:**
    ```bash
-   # Try parsing state file with jq to validate JSON
+   # Validate and capture in one step (single read + parse for efficiency)
    if [ -f ".cascade/session-7-state.json" ]; then
-     if cat .cascade/session-7-state.json | jq . >/dev/null 2>&1; then
-       # Valid JSON - proceed to read state
-       STATE=$(cat .cascade/session-7-state.json)
+     if STATE=$(cat .cascade/session-7-state.json | jq . 2>/dev/null); then
+       # Valid JSON - STATE already contains parsed value
      else
        # Invalid/corrupted JSON - ignore and fall back to file system
        echo "Warning: Corrupted state file, falling back to file detection"
@@ -321,6 +319,34 @@ Your choice:
    - If state file is corrupted or invalid JSON: Ignore it, detect from file system
    - If state file shows phase complete but output missing: Re-run that phase
    - If no state file but partial outputs exist: Reconstruct state from files
+
+3. **Reconstructing State from Partial Outputs:**
+
+   If state file missing but outputs exist, rebuild state from detected files:
+
+   ```bash
+   # Session 7 example: Check for partial micro-session outputs
+   PHASES_COMPLETED=()
+   [ -f ".cascade/07a-core-tables.md" ] && PHASES_COMPLETED+=("core-tables")
+   [ -f ".cascade/07b-relationships.md" ] && PHASES_COMPLETED+=("relationships")
+   [ -f ".cascade/07c-special-tables.md" ] && PHASES_COMPLETED+=("special-tables")
+   [ -f ".cascade/07d-optimization.md" ] && PHASES_COMPLETED+=("optimization")
+
+   # Determine current phase (first missing output)
+   CURRENT_PHASE=""
+   [ ! -f ".cascade/07a-core-tables.md" ] && CURRENT_PHASE="core-tables"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07b-relationships.md" ] && CURRENT_PHASE="relationships"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07c-special-tables.md" ] && CURRENT_PHASE="special-tables"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07d-optimization.md" ] && CURRENT_PHASE="optimization"
+
+   # Build reconstructed state object
+   # (In practice, you would format this as JSON and write to .cascade/session-7-state.json)
+   ```
+
+   **Apply this pattern to all decomposed sessions:**
+   - **Session 8:** Check for `.cascade/08.1-api-paradigm.md`, `.cascade/08.2-api-security.md`, etc.
+   - **Session 10:** Check for `.cascade/10a-epics.md`, `.cascade/10b-stories.md`
+   - **Session 11:** Check for `.cascade/11a-index.md`, `.cascade/11b-plan.md`, `.cascade/11c-execute.md`
 
 ### Step 3: Execute Sessions with Progress Tracking
 
