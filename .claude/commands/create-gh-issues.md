@@ -14,11 +14,11 @@ You're orchestrating the three-phase workflow that creates GitHub issues from `p
 
 **True Batch Isolation**: This command uses a three-phase progressive approach to eliminate context accumulation:
 
-**Phase 11a (Indexing)**: Scan all issue files (filenames + metadata only) → Create lightweight index (~2k tokens for 100 issues)
+**Session 11a (Indexing)**: Scan all issue files (filenames + metadata only) → Create lightweight index (~2k tokens for 100 issues)
 
-**Phase 11b (Batch Planning)**: Read index only → Organize into batches (epics first, 10 stories per batch) → Create batch definitions (~3k tokens)
+**Session 11b (Batch Planning)**: Read index only → Organize into batches (epics first, 10 stories per batch) → Create batch definitions (~3k tokens)
 
-**Phase 11c (Batch Execution)**: For each batch, read ONLY 10 issue files just-in-time (~15k tokens) → Create GitHub issues → Repeat
+**Session 11c (Batch Execution)**: For each batch, read ONLY 10 issue files just-in-time (~15k tokens) → Create GitHub issues → Repeat
 
 **Why this works**: Each batch execution is isolated (reads only 10 files), enabling 500+ issue creation without exhaustion. Context per batch: <20% regardless of total backlog size.
 
@@ -91,15 +91,15 @@ Progress file: .cascade/batch-progress.json
 
 Resuming execution from batch [current_batch]...
 
-Skipping to Phase 11c (Batch Execution) to resume.
+Skipping to Session 11c (Batch Execution) to resume.
 ```
 
-Jump directly to Step 5 (Phase 11c).
+Jump directly to Step 5 (Session 11c).
 
 **If starting fresh**:
-Proceed to Step 3 (Phase 11a).
+Proceed to Step 3 (Session 11a).
 
-### Step 3: Phase 11a - Issue Indexing
+### Step 3: Session 11a - Issue Indexing
 
 Invoke the indexing command using SlashCommand tool:
 
@@ -112,14 +112,14 @@ This will:
 - Extract metadata (IDs, titles, priorities, types)
 - Create `.cascade/issue-index.json` (~2k tokens for 100 issues)
 
-Wait for Phase 11a to complete before proceeding.
+Wait for Session 11a to complete before proceeding.
 
 **Expected output**:
 ```
 [✓] Session 11a complete! Issue index created.
 ```
 
-### Step 4: Phase 11b - Batch Planning
+### Step 4: Session 11b - Batch Planning
 
 Invoke the planning command using SlashCommand tool:
 
@@ -133,14 +133,14 @@ This will:
 - Create `.cascade/issue-batches.json` (~3k tokens)
 - Initialize `.cascade/batch-progress.json` (execution tracker)
 
-Wait for Phase 11b to complete before proceeding.
+Wait for Session 11b to complete before proceeding.
 
 **Expected output**:
 ```
 [✓] Session 11b complete! Batch plan created.
 ```
 
-### Step 5: Phase 11c - Batch Execution
+### Step 5: Session 11c - Batch Execution
 
 Invoke the execution command using SlashCommand tool:
 
@@ -158,7 +158,7 @@ This will:
   - Prompt user to continue or stop
 - Create `product-guidelines/11-github-issues.md` completion marker when done
 
-**User interaction**: Phase 11c will prompt after each batch:
+**User interaction**: Session 11c will prompt after each batch:
 ```
 Continue with next batch?
 
@@ -167,7 +167,7 @@ Options:
 - Type "stop" or "pause" to stop execution (progress saved, resume later)
 ```
 
-Wait for Phase 11c to complete.
+Wait for Session 11c to complete.
 
 **Expected output**:
 ```
@@ -215,14 +215,14 @@ Progress saved: .cascade/batch-progress.json
 
 Resume anytime by running: /create-gh-issues
 
-The orchestrator will automatically detect existing progress and skip to Phase 11c (Batch Execution) to continue from the last completed batch.
+The orchestrator will automatically detect existing progress and skip to Session 11c (Batch Execution) to continue from the last completed batch.
 ```
 
 ## Reference
 
-- Phase 11a Command: `.claude/commands/create-gh-issues-index.md`
-- Phase 11b Command: `.claude/commands/create-gh-issues-plan.md`
-- Phase 11c Command: `.claude/commands/create-gh-issues-execute.md`
+- Session 11a Command: `.claude/commands/create-gh-issues-index.md`
+- Session 11b Command: `.claude/commands/create-gh-issues-plan.md`
+- Session 11c Command: `.claude/commands/create-gh-issues-execute.md`
 - Label Schema: `.github/labels.yml`
 
 ## Output Format

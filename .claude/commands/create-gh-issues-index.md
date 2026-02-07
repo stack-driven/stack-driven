@@ -14,7 +14,7 @@ You're scanning `product-guidelines/10-backlog/issues/*.md` files and creating a
 
 **Just-In-Time Loading**: Instead of loading all issue files upfront (100k+ tokens), we create an index first (~2k tokens) that contains only the essential metadata needed for batch planning. File contents are loaded later, only when needed for execution.
 
-**Why this works**: Scanning 100 files for metadata (~20 lines per file) uses ~15k tokens. The resulting index (`issue-index.json`) is ~2k tokens for 100 issues. This 7x reduction enables Phase 11b to plan batches without exhausting context.
+**Why this works**: Scanning 100 files for metadata (~20 lines per file) uses ~15k tokens. The resulting index (`issue-index.json`) is ~2k tokens for 100 issues. This 7x reduction enables Session 11b to plan batches without exhausting context.
 
 ## Process
 
