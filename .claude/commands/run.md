@@ -96,15 +96,51 @@ Use this decision logic to determine what to execute:
 
 **If 00-06 design exists (Session 6 complete):**
 - User has reached first major milestone
-- Ask: "Continue with Session 7 (/design-database-schema) or explore optional extensions?"
+- Check Session 7 status (micro-sessions or monolithic)
+- If `07-database-schema.md` exists: Session 7 complete, continue to Session 8
+- If `.cascade/session-7-state.json` exists: Check micro-session progress
+- Otherwise: Start Session 7 with `/generate-core-tables` (7a)
+- Ask: "Continue with Session 7 or explore optional extensions?"
 - Options:
   - Continue to Session 7 (database schema)
   - Run optional: `/design-user-experience`, `/setup-analytics`, `/design-growth-strategy`, `/create-financial-model`
   - Stop here
 
-**If 00-07 exist:**
-- Run Session 8: `/generate-api-design`
-- Then ask user if they want to continue
+**If Session 7 in progress (state file exists):**
+- Read `.cascade/session-7-state.json`
+- Display micro-session progress visualization
+- Identify next pending micro-session
+- Execute next micro-session:
+  - 7a: `/generate-core-tables` (Core Tables)
+  - 7b: `/generate-relationships` (Relationships)
+  - 7c: `/generate-special-tables` (Special Tables - conditional)
+  - 7d: `/generate-schema-optimization` (Optimization & Synthesis)
+- After each micro-session, prompt: "Continue with [next micro-session]? [yes/all/stop]"
+  - yes: Run next micro-session only
+  - all: Run all remaining Session 7 micro-sessions
+  - stop: Pause execution
+- Only proceed to Session 8 after `07-database-schema.md` exists
+
+**If 00-07 exist (Session 7 complete):**
+- Check Session 8 status (micro-sessions or monolithic)
+- If `08-api-design.md` exists: Session 8 complete, continue to Session 8b
+- If `.cascade/session-8-state.json` exists: Check micro-session progress
+- Otherwise: Start Session 8 with `/generate-api-paradigm` (8.1)
+
+**If Session 8 in progress (state file exists):**
+- Read `.cascade/session-8-state.json`
+- Display micro-session progress visualization
+- Identify next pending micro-session
+- Execute next micro-session:
+  - 8.1: `/generate-api-paradigm` (API Paradigm)
+  - 8.2: `/generate-api-security` (API Security)
+  - 8.3: `/generate-api-performance` (API Performance)
+  - 8.4: `/generate-api-synthesis` (API Synthesis)
+- After each micro-session, prompt: "Continue with [next micro-session]? [yes/all/stop]"
+  - yes: Run next micro-session only
+  - all: Run all remaining Session 8 micro-sessions
+  - stop: Pause execution
+- Only proceed to Session 8b after `08-api-design.md` exists
 
 **If 00-08 api design exist (both full and context files):**
 - Run Session 8b: `/generate-api-contracts`
@@ -119,12 +155,45 @@ Use this decision logic to determine what to execute:
 - Then ask user if they want to continue
 
 **If 00-09b exist (both full and context files):**
-- Run Session 10: `/generate-backlog`
-- Then ask user if they want to continue
+- Check Session 10 status (micro-sessions or monolithic)
+- If `10-backlog/` directory exists: Session 10 complete, continue to Session 11
+- If `.cascade/session-10-state.json` exists: Check micro-session progress
+- Otherwise: Start Session 10 with `/generate-epics` (10a)
+
+**If Session 10 in progress (state file exists):**
+- Read `.cascade/session-10-state.json`
+- Display micro-session progress visualization
+- Identify next pending micro-session
+- Execute next micro-session:
+  - 10a: `/generate-epics` (Epic Structure)
+  - 10b: `/generate-epic-stories` (Stories per Epic - iterative)
+- After each micro-session, prompt: "Continue with [next micro-session]? [yes/all/stop]"
+  - yes: Run next micro-session only
+  - all: Run all remaining Session 10 micro-sessions
+  - stop: Pause execution
+- Only proceed to Session 11 after `10-backlog/` directory exists
 
 **If 00-10 backlog exists:**
 - Ask user: "Run Session 11 to push to GitHub? (/create-gh-issues)"
 - This requires GitHub access, so confirm first
+- Check Session 11 status (micro-sessions or monolithic)
+- If Session 11 already complete: Skip to Session 12
+- If `.cascade/session-11-state.json` exists: Check micro-session progress
+- Otherwise: Start Session 11 with `/create-gh-issues-index` (11a)
+
+**If Session 11 in progress (state file exists):**
+- Read `.cascade/session-11-state.json`
+- Display micro-session progress visualization
+- Identify next pending micro-session
+- Execute next micro-session:
+  - 11a: `/create-gh-issues-index` (Index backlog)
+  - 11b: `/create-gh-issues-plan` (Plan batches)
+  - 11c: `/create-gh-issues-execute` (Execute creation - iterative)
+- After each micro-session, prompt: "Continue with [next micro-session]? [yes/all/stop]"
+  - yes: Run next micro-session only
+  - all: Run all remaining Session 11 micro-sessions
+  - stop: Pause execution
+- Only proceed to Session 12 after all Session 11 micro-sessions complete
 
 **If 00-11 GitHub issues complete:**
 - Run Session 12: `/scaffold-project`
@@ -142,6 +211,142 @@ Use this decision logic to determine what to execute:
 - Congratulate user
 - Suggest optional post-cascade extensions
 - Suggest they start building
+
+### Step 2a: Handle Micro-Session State Tracking
+
+**For Sessions 7, 8, 10, and 11 (decomposed into micro-sessions):**
+
+These sessions use state files in `.cascade/` directory to track micro-session progress:
+- `.cascade/session-7-state.json` - Database schema micro-sessions
+- `.cascade/session-8-state.json` - API design micro-sessions
+- `.cascade/session-10-state.json` - Backlog generation micro-sessions
+- `.cascade/session-11-state.json` - GitHub issue creation micro-sessions
+
+**State File Format:**
+```json
+{
+  "session": 7,
+  "status": "in_progress",
+  "phases_completed": ["core-tables", "relationships"],
+  "phases_remaining": ["special-tables", "optimization"],
+  "current_phase": "special-tables",
+  "started_at": "2026-02-07T10:00:00Z",
+  "last_updated": "2026-02-07T10:30:00Z"
+}
+```
+
+**Checking Micro-Session Status:**
+
+1. **Priority Order** (check in this order):
+   - First: Check if monolithic output file exists (backward compatibility)
+     - Session 7: `07-database-schema.md`
+     - Session 8: `08-api-design.md`
+     - Session 10: `10-backlog/` directory
+     - Session 11: GitHub issues pushed marker
+   - Second: Check if state file exists in `.cascade/`
+   - Third: Assume session not started
+
+2. **Reading State Files:**
+```bash
+# Check if state file exists
+if [ -f ".cascade/session-7-state.json" ]; then
+  cat .cascade/session-7-state.json
+fi
+```
+
+3. **Determining Next Micro-Session:**
+
+**Session 7 Micro-Sessions:**
+- Phase "core-tables" → Command: `/generate-core-tables`
+- Phase "relationships" → Command: `/generate-relationships`
+- Phase "special-tables" → Command: `/generate-special-tables`
+- Phase "optimization" → Command: `/generate-schema-optimization`
+- Complete when: `07-database-schema.md` exists
+
+**Session 8 Micro-Sessions:**
+- Phase "paradigm" → Command: `/generate-api-paradigm`
+- Phase "security" → Command: `/generate-api-security`
+- Phase "performance" → Command: `/generate-api-performance`
+- Phase "synthesis" → Command: `/generate-api-synthesis`
+- Complete when: `08-api-design.md` exists
+
+**Session 10 Micro-Sessions:**
+- Phase "epics" → Command: `/generate-epics`
+- Phase "stories" → Command: `/generate-epic-stories`
+- Complete when: `10-backlog/` directory exists with all files
+
+**Session 11 Micro-Sessions:**
+- Phase "index" → Command: `/create-gh-issues-index`
+- Phase "plan" → Command: `/create-gh-issues-plan`
+- Phase "execute" → Command: `/create-gh-issues-execute`
+- Complete when: All batches pushed to GitHub
+
+**Progress Visualization Format:**
+```
+Session 7 Progress: [███████░░░] 75% (3/4 phases)
+  [✓] 7a: Core Tables (generate-core-tables)
+  [✓] 7b: Relationships (generate-relationships)
+  [✓] 7c: Special Tables (generate-special-tables)
+  [→] 7d: Optimization (generate-schema-optimization) ← NEXT
+```
+
+**User Prompt Format:**
+```
+Continue with 7d: Optimization (generate-schema-optimization)?
+  [yes]  - Run next micro-session only
+  [all]  - Run all remaining micro-sessions for Session 7
+  [stop] - Pause here (resume later with /run)
+
+Your choice:
+```
+
+**Handling State File Errors:**
+
+1. **Validate JSON format:**
+   ```bash
+   # Validate and capture in one step (single read + parse for efficiency)
+   if [ -f ".cascade/session-7-state.json" ]; then
+     if STATE=$(cat .cascade/session-7-state.json | jq . 2>/dev/null); then
+       # Valid JSON - STATE already contains parsed value
+     else
+       # Invalid/corrupted JSON - ignore and fall back to file system
+       echo "Warning: Corrupted state file, falling back to file detection"
+     fi
+   fi
+   ```
+
+2. **Handle specific error scenarios:**
+   - If state file is corrupted or invalid JSON: Ignore it, detect from file system
+   - If state file shows phase complete but output missing: Re-run that phase
+   - If no state file but partial outputs exist: Reconstruct state from files
+
+3. **Reconstructing State from Partial Outputs:**
+
+   If state file missing but outputs exist, rebuild state from detected files:
+
+   ```bash
+   # Session 7 example: Check for partial micro-session outputs
+   PHASES_COMPLETED=()
+   [ -f ".cascade/07a-core-tables.md" ] && PHASES_COMPLETED+=("core-tables")
+   [ -f ".cascade/07b-relationships.md" ] && PHASES_COMPLETED+=("relationships")
+   [ -f ".cascade/07c-special-tables.md" ] && PHASES_COMPLETED+=("special-tables")
+   [ -f ".cascade/07d-optimization.md" ] && PHASES_COMPLETED+=("optimization")
+
+   # Determine current phase (first missing output)
+   CURRENT_PHASE=""
+   [ ! -f ".cascade/07a-core-tables.md" ] && CURRENT_PHASE="core-tables"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07b-relationships.md" ] && CURRENT_PHASE="relationships"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07c-special-tables.md" ] && CURRENT_PHASE="special-tables"
+   [ -z "$CURRENT_PHASE" ] && [ ! -f ".cascade/07d-optimization.md" ] && CURRENT_PHASE="optimization"
+
+   # Build reconstructed state object
+   # (In practice, you would format this as JSON and write to .cascade/session-7-state.json)
+   ```
+
+   **Apply this pattern to all decomposed sessions:**
+   - **Session 8:** Check for `.cascade/08.1-api-paradigm.md`, `.cascade/08.2-api-security.md`, etc.
+   - **Session 10:** Check for `.cascade/10a-epics.md`, `.cascade/10b-stories.md`
+   - **Session 11:** Check for `.cascade/11a-index.md`, `.cascade/11b-plan.md`, `.cascade/11c-execute.md`
 
 ### Step 3: Execute Sessions with Progress Tracking
 
@@ -372,16 +577,33 @@ Continue? (yes/no)
 **Core cascade order:**
 1. `/refine-journey` → 00-user-journey.md
 2. `/create-product-strategy` → 01-product-strategy.md, 01-product-strategy.ctx.md
-3. `/choose-tech-stack` → 02
+2a. `/document-constraints` → 02a-constraints.md, 02a-constraints.ctx.md
+3. `/choose-tech-stack` → 02-tech-stack.md
+3b. `/define-coding-standards` → 02b-coding-standards.md, 02b-coding-standards.ctx.md
+3c. `/define-ai-integration-strategy` → 02c-ai-integration-strategy.md (conditional)
 4. `/generate-strategy` → 03a-mission, 03b-metrics, 03c-monetization, 04-architecture
 5. `/create-brand-strategy` → 05-brand-strategy
 6. `/create-design` → 06-design-system
-7. `/design-database-schema` → 07-database-schema
-8. `/generate-api-design` → 08-api-design.md, 08-api-design.ctx.md
+7. **Session 7 - Database Schema (micro-sessions):**
+   - 7a: `/generate-core-tables` → Core tables
+   - 7b: `/generate-relationships` → Relationships
+   - 7c: `/generate-special-tables` → Special tables (conditional)
+   - 7d: `/generate-schema-optimization` → 07-database-schema.md
+8. **Session 8 - API Design (micro-sessions):**
+   - 8.1: `/generate-api-paradigm` → API paradigm
+   - 8.2: `/generate-api-security` → API security
+   - 8.3: `/generate-api-performance` → API performance
+   - 8.4: `/generate-api-synthesis` → 08-api-design.md, 08-api-design.ctx.md
 8b. `/generate-api-contracts` → 08b-api-contracts.md, 08b-api-contracts.ctx.md
 9. `/create-test-strategy` → 09-test-strategy
-10. `/generate-backlog` → 10-backlog/
-11. `/create-gh-issues` → GitHub
+9b. `/model-application` → 09b-application-architecture.md, 09b-application-architecture.ctx.md
+10. **Session 10 - Backlog Generation (micro-sessions):**
+   - 10a: `/generate-epics` → Epic structure
+   - 10b: `/generate-epic-stories` → 10-backlog/ directory
+11. **Session 11 - GitHub Issues (micro-sessions):**
+   - 11a: `/create-gh-issues-index` → Index backlog
+   - 11b: `/create-gh-issues-plan` → Plan batches
+   - 11c: `/create-gh-issues-execute` → Push to GitHub
 12. `/scaffold-project` → 12-project-scaffold
 13. `/plan-deployment` → 13-deployment-plan
 14. `/design-observability` → 14-observability-strategy
