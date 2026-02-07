@@ -1,6 +1,6 @@
 ---
 description: Session 7d - Optimize schema with indexes and synthesize final database design
-size_exemption: Phase-based orchestrator with synthesis step (414 lines)
+size_exemption: Phase-based orchestrator with synthesis step (423 lines)
 exemption_rationale: Synthesis step (lines 99-293) combines 7a/7b/7c outputs, generates migrations, and creates final .md/.ctx.md - cannot be delegated to sub-agents without losing coherence
 ---
 
@@ -23,7 +23,7 @@ Read all partial schemas from previous phases (7a, 7b, 7c), design performance i
 
 This progressive approach reduces total token consumption:
 - **Old monolithic approach**: ~480k tokens
-- **New progressive approach**: <80k tokens
+- **New progressive approach**: ~55k tokens typical, <80k maximum
 - **Reduction**: 83%
 
 ## Steps to Execute

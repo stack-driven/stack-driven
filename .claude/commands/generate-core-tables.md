@@ -187,6 +187,10 @@ Type "continue" to run Session 7b (generate-relationships)
 Or type "stop" to review and resume later
 ```
 
+## Configuration
+
+**STATE_FILE_PATH**: `.cascade/session-7-state.json`
+
 ## State Management
 
 **State File Path**: `.cascade/session-7-state.json`

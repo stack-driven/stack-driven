@@ -40,10 +40,13 @@ Session flow is sacred - user journey comes first, everything flows from it.
 **Session 6** `/create-design` [reads: 00-05.ctx.md] → 06-design-system.md + .ctx.md
 - DTCG token hierarchy, 2025 CSS architecture, WCAG 2.2 compliance
 
-**Session 7** `/design-database-schema` → 07-database-schema.md + .ctx.md
+**Session 7** `/design-database-schema` → 07-database-schema.md + .ctx.md (Progressive 4-Phase)
 - CHECKPOINT: Validate schema
-- Uses 4 micro-sessions (7a-7d) for progressive building
-- 83% token reduction vs monolithic approach
+- **Session 7a**: Generate Core Tables (15k tokens) → 07a-core-tables.md
+- **Session 7b**: Generate Relationships (10k tokens) → 07b-relationships.md
+- **Session 7c**: Generate Special Tables (10k tokens, conditional) → 07c-special-tables.md
+- **Session 7d**: Optimize & Synthesize (20k tokens) → 07-database-schema.md + .ctx.md
+- 83% token reduction vs monolithic approach (480k → <80k)
 
 **Session 8** `/generate-api-design` [reads: context] → 08-api-design.md + .ctx.md
 - Uses conditional sub-agents based on requirements
