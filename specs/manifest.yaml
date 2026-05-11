@@ -42,6 +42,9 @@ authority:
   promotion_rule: >-
     A generated spec becomes human_reviewed or authoritative only after an
     explicit human review/checkpoint records that status.
+  template_policy:
+    template_paths_are_authoritative_for_structure: true
+    missing_template_means: Use the manifest command/sub-agent workflow rather than guessing a template filename.
 
 loading_defaults:
   prefer_ctx_when_available: true
@@ -71,6 +74,11 @@ specs:
         - product-guidelines/00-user-journey.md
       ctx_paths:
         - product-guidelines/00-user-journey.ctx.md
+    templates:
+      paths:
+        - templates/00-user-journey-interview-template.md
+        - templates/00-user-journey-template.md
+      role: interview_and_structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -105,6 +113,10 @@ specs:
         - product-guidelines/01-product-strategy.md
       ctx_paths:
         - product-guidelines/01-product-strategy.ctx.md
+    templates:
+      paths:
+        - templates/01-product-strategy-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -140,6 +152,10 @@ specs:
         - product-guidelines/02a-constraints.md
       ctx_paths:
         - product-guidelines/02a-constraints.ctx.md
+    templates:
+      paths:
+        - templates/02a-constraints-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record why constraints are unknown, irrelevant, or intentionally deferred.
@@ -175,6 +191,10 @@ specs:
         - product-guidelines/02-tech-stack.md
       ctx_paths:
         - product-guidelines/02-tech-stack.ctx.md
+    templates:
+      paths:
+        - templates/02-tech-stack-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -210,6 +230,10 @@ specs:
         - product-guidelines/02b-coding-standards.md
       ctx_paths:
         - product-guidelines/02b-coding-standards.ctx.md
+    templates:
+      paths:
+        - templates/02b-coding-standards-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -246,6 +270,10 @@ specs:
         - product-guidelines/02c-ai-integration-strategy.md
       ctx_paths:
         - product-guidelines/02c-ai-integration-strategy.ctx.md
+    templates:
+      paths:
+        - templates/02c-ai-integration-strategy-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that AI integration is not required or is deferred.
@@ -284,6 +312,10 @@ specs:
         - product-guidelines/03a-mission.md
       ctx_paths:
         - product-guidelines/03a-mission.ctx.md
+    templates:
+      paths:
+        - templates/03a-mission-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -322,6 +354,10 @@ specs:
         - product-guidelines/03b-metrics.md
       ctx_paths:
         - product-guidelines/03b-metrics.ctx.md
+    templates:
+      paths:
+        - templates/03b-metrics-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -358,6 +394,10 @@ specs:
         - product-guidelines/03c-monetization.md
       ctx_paths:
         - product-guidelines/03c-monetization.ctx.md
+    templates:
+      paths:
+        - templates/03c-monetization-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -396,6 +436,10 @@ specs:
         - product-guidelines/04-architecture.md
       ctx_paths:
         - product-guidelines/04-architecture.ctx.md
+    templates:
+      paths:
+        - templates/04-architecture-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -431,6 +475,10 @@ specs:
         - product-guidelines/03d-analytics-strategy.md
       ctx_paths:
         - product-guidelines/03d-analytics-strategy.ctx.md
+    templates:
+      paths:
+        - templates/03d-analytics-strategy-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -470,6 +518,10 @@ specs:
         - product-guidelines/05-brand-strategy.md
       ctx_paths:
         - product-guidelines/05-brand-strategy.ctx.md
+    templates:
+      paths:
+        - templates/05-brand-strategy-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -506,6 +558,10 @@ specs:
         - product-guidelines/06-design-system.md
       ctx_paths:
         - product-guidelines/06-design-system.ctx.md
+    templates:
+      paths:
+        - templates/06-design-system-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -541,6 +597,9 @@ specs:
       paths:
         - product-guidelines/07a-core-tables.md
       ctx_paths: []
+    templates:
+      paths: []
+      role: generated_by_subagent
     skip_policy:
       allowed: false
       skip_reason: null
@@ -574,6 +633,9 @@ specs:
       paths:
         - product-guidelines/07b-relationships.md
       ctx_paths: []
+    templates:
+      paths: []
+      role: generated_by_subagent
     skip_policy:
       allowed: false
       skip_reason: null
@@ -609,6 +671,9 @@ specs:
       paths:
         - product-guidelines/07c-special-tables.md
       ctx_paths: []
+    templates:
+      paths: []
+      role: generated_by_subagent
     skip_policy:
       allowed: true
       skip_reason: Record that no special-purpose schema requirements were detected.
@@ -647,6 +712,10 @@ specs:
         - product-guidelines/07-database-schema.md
       ctx_paths:
         - product-guidelines/07-database-schema.ctx.md
+    templates:
+      paths:
+        - templates/07-database-schema-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -685,6 +754,10 @@ specs:
         - product-guidelines/08-api-design.md
       ctx_paths:
         - product-guidelines/08-api-design.ctx.md
+    templates:
+      paths:
+        - templates/08-api-design-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -720,6 +793,10 @@ specs:
         - product-guidelines/08b-api-contracts.md
       ctx_paths:
         - product-guidelines/08b-api-contracts.ctx.md
+    templates:
+      paths:
+        - templates/08b-api-contracts-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -757,6 +834,10 @@ specs:
         - product-guidelines/09-test-strategy.md
       ctx_paths:
         - product-guidelines/09-test-strategy.ctx.md
+    templates:
+      paths:
+        - templates/09-test-strategy-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -796,6 +877,10 @@ specs:
         - product-guidelines/09b-application-architecture.md
       ctx_paths:
         - product-guidelines/09b-application-architecture.ctx.md
+    templates:
+      paths:
+        - templates/09b-application-architecture-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -834,6 +919,9 @@ specs:
       paths:
         - product-guidelines/10-backlog/
       ctx_paths: []
+    templates:
+      paths: []
+      role: generated_by_command
     skip_policy:
       allowed: false
       skip_reason: null
@@ -866,6 +954,10 @@ specs:
       paths:
         - product-guidelines/11-github-issues.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/issue-template.md
+      role: github_issue_structure
     skip_policy:
       allowed: true
       skip_reason: Record alternate issue tracker or manual backlog publication path.
@@ -904,6 +996,9 @@ specs:
         - product-guidelines/12-project-scaffold.md
         - product-guidelines/12-project-scaffold/
       ctx_paths: []
+    templates:
+      paths: []
+      role: generated_by_command
     skip_policy:
       allowed: false
       skip_reason: null
@@ -941,6 +1036,10 @@ specs:
       paths:
         - product-guidelines/13-deployment-plan.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/13-deployment-plan-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -977,6 +1076,10 @@ specs:
       paths:
         - product-guidelines/14-observability-strategy.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/14-observability-strategy-template.md
+      role: structure
     skip_policy:
       allowed: false
       skip_reason: null
@@ -1010,6 +1113,10 @@ specs:
       paths:
         - product-guidelines/15-brand-naming.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/15-brand-naming-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record existing name, out-of-scope naming, or postponed brand work.
@@ -1043,6 +1150,10 @@ specs:
       paths:
         - product-guidelines/16-brand-messaging.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/16-brand-messaging-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that messaging is not needed yet or is handled outside the cascade.
@@ -1078,6 +1189,10 @@ specs:
       paths:
         - product-guidelines/17-brand-identity.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/17-brand-identity-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that visual identity is postponed or managed by a separate design process.
@@ -1112,6 +1227,10 @@ specs:
       paths:
         - product-guidelines/18-content-guidelines.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/18-content-guidelines-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that content standards are not needed yet or are governed externally.
@@ -1147,6 +1266,10 @@ specs:
       paths:
         - product-guidelines/19-user-experience.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/19-user-experience-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that design system detail is sufficient or UX is handled externally.
@@ -1182,6 +1305,10 @@ specs:
       paths:
         - product-guidelines/20-analytics-plan.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/20-analytics-plan-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that analytics setup is postponed or covered by an external plan.
@@ -1218,6 +1345,10 @@ specs:
       paths:
         - product-guidelines/21-growth-strategy.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/21-growth-strategy-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that growth strategy is postponed until product-market fit or launch readiness.
@@ -1253,6 +1384,10 @@ specs:
       paths:
         - product-guidelines/22-financial-model.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/22-financial-model-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record that financial modeling is not required for the current stage.
@@ -1289,6 +1424,10 @@ specs:
       paths:
         - product-guidelines/23-compliance-plan.md
       ctx_paths: []
+    templates:
+      paths:
+        - templates/23-compliance-plan-template.md
+      role: structure
     skip_policy:
       allowed: true
       skip_reason: Record why no compliance plan is required at this stage.
