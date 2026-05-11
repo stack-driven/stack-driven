@@ -39,6 +39,8 @@ Each entry under `specs:` follows this shape:
 | `root_dependency` | yes | `true` only for the user journey root. |
 | `outputs.paths` | yes | Full generated output path(s), usually under `product-guidelines/`. |
 | `outputs.ctx_paths` | yes | Condensed `.ctx.md` path(s), or an empty list when none exists. |
+| `templates.paths` | yes | Template file(s) to use for guided spec creation, or an empty list when the command/sub-agent workflow generates the artifact. |
+| `templates.role` | yes | How mapped templates should be used, such as `structure`, `interview_and_structure`, or `generated_by_command`. |
 | `skip_policy` | yes | Whether the spec may be skipped/deferred and how to revisit. |
 | `relevance` | yes | Loading hints for agents and future Phase II automation. |
 
@@ -69,6 +71,14 @@ Generated `product-guidelines/` outputs default to `ai_drafted` unless the manif
 - `conditional`: required only when the condition is true.
 - `optional`: post-core extension or specialized deep-dive.
 - `support`: intermediate or implementation-support artifact that feeds an authoritative output.
+
+## Product-run state
+
+Guided Pi workflows record product-specific creation, review, skip, and defer decisions in `product-guidelines/spec-status.yaml`. This file is generated per product and must not change framework-level lifecycle metadata in `specs/manifest.yaml`.
+
+## Template mapping
+
+Guided workflows use `templates.paths` from the manifest instead of guessing filenames. Empty template mappings mean the manifest `command` or a sub-agent workflow creates the artifact without a single direct Markdown template.
 
 ## Skip and defer model
 
