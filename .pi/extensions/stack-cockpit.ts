@@ -351,7 +351,11 @@ function registerActionCommands(pi: ExtensionAPI): void {
 				return;
 			}
 
-			const reason = reasonParts.join(" ").trim() || "No reason provided yet.";
+			const reason = reasonParts.join(" ").trim();
+			if (!reason) {
+				notify(ctx, "Skipping requires a reason so future agents know why this spec is deferred. Usage: /stack:skip <spec-id> <reason>", "warning");
+				return;
+			}
 			pi.sendUserMessage(`Record a Stack-Driven skip/defer decision for ${target.id} (${target.title}). Reason: ${reason}. Update only the appropriate delivery/spec authority record and include revisit guidance.`);
 		},
 	});
