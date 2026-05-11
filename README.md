@@ -295,6 +295,10 @@ These guides provide foundational knowledge referenced by cascade sessions but a
 
 ## Repository Structure
 
+### `/specs/` - Spec Authority Model
+
+Committed registry for the framework's canonical specs, dependencies, lifecycle states, review status, output paths, `.ctx.md` loading hints, and skip/defer rules. See `specs/manifest.yaml`, `specs/index.md`, and `specs/README.md`.
+
 ### `/product-guidelines/` - YOUR Generated Strategy
 
 **This is gitignored** - each user generates their own cascade:
@@ -318,12 +322,17 @@ product-guidelines/
 ├── 03b-metrics.ctx.md (Session 4)
 ├── 03c-monetization.md (Session 4)
 ├── 03c-monetization.ctx.md (Session 4)
+├── 03d-analytics-strategy.md (Session 4)
+├── 03d-analytics-strategy.ctx.md (Session 4)
 ├── 04-architecture.md (Session 4)
 ├── 04-architecture.ctx.md (Session 4)
 ├── 05-brand-strategy.md (Session 5)
 ├── 05-brand-strategy.ctx.md (Session 5)
 ├── 06-design-system.md (Session 6)
 ├── 06-design-system.ctx.md (Session 6)
+├── 07a-core-tables.md (Session 7a)
+├── 07b-relationships.md (Session 7b)
+├── 07c-special-tables.md (Session 7c - conditional)
 ├── 07-database-schema.md (Session 7)
 ├── 07-database-schema.ctx.md (Session 7)
 ├── 08-api-design.md (Session 8)
@@ -335,6 +344,7 @@ product-guidelines/
 ├── 09b-application-architecture.md (Session 9b)
 ├── 09b-application-architecture.ctx.md (Session 9b)
 ├── 10-backlog/ (Session 10)
+├── 11-github-issues.md (Session 11)
 ├── 12-project-scaffold/ (Session 12 - actual code files)
 │   ├── 12-project-scaffold.md (decisions documentation)
 │   ├── package.json (or pyproject.toml)
@@ -343,7 +353,16 @@ product-guidelines/
 │   ├── .github/workflows/ci.yml
 │   └── README.md (setup instructions)
 ├── 13-deployment-plan.md (Session 13)
-└── 14-observability-strategy.md (Session 14)
+├── 14-observability-strategy.md (Session 14)
+├── 15-brand-naming.md (optional)
+├── 16-brand-messaging.md (optional)
+├── 17-brand-identity.md (optional)
+├── 18-content-guidelines.md (optional)
+├── 19-user-experience.md (optional)
+├── 20-analytics-plan.md (optional)
+├── 21-growth-strategy.md (optional)
+├── 22-financial-model.md (optional)
+└── 23-compliance-plan.md (optional)
 ```
 
 ### `/examples/` - Reference Implementations (Coming Soon)
