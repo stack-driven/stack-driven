@@ -1,0 +1,1302 @@
+schema_version: 1
+manifest_id: stack-driven.spec-authority
+status: active
+review_status: ai_drafted
+last_updated: "2026-05-11"
+purpose: >-
+  Canonical registry of Stack-Driven specs, sessions, dependencies,
+  lifecycle status, output paths, context files, optionality, and loading hints.
+
+authority:
+  source_of_truth: specs/manifest.yaml
+  product_output_root: product-guidelines/
+  ctx_files_are_authority: false
+  lifecycle_values:
+    - active
+    - deferred
+    - skipped
+    - superseded
+    - deprecated
+  review_status_values:
+    - ai_drafted
+    - human_reviewed
+    - authoritative
+  required_mode_values:
+    - required
+    - recommended
+    - conditional
+    - optional
+    - support
+  conflict_hierarchy:
+    - rank: 1
+      source: Human-reviewed or authoritative spec listed in this manifest
+    - rank: 2
+      source: Approved issue plan or reviewed ADR that explicitly amends a spec
+    - rank: 3
+      source: Implementation detail in code or command files
+    - rank: 4
+      source: AI-drafted generated output
+    - rank: 5
+      source: Templates, examples, or informal notes
+  default_generated_review_status: ai_drafted
+  promotion_rule: >-
+    A generated spec becomes human_reviewed or authoritative only after an
+    explicit human review/checkpoint records that status.
+
+loading_defaults:
+  prefer_ctx_when_available: true
+  missing_ctx_means: Use the full source output path.
+  phase_ii_note: >-
+    Phase II loaders should use relevance hints to choose the smallest useful
+    spec set while preserving dependency and conflict rules.
+
+specs:
+  - id: journey.user
+    title: User Journey
+    session: "1"
+    command: /refine-journey
+    group: core
+    kind: product_spec
+    purpose: Defines the primary user, problem, journey, value, and metrics root for all downstream decisions.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required: []
+      optional: []
+    root_dependency: true
+    outputs:
+      paths:
+        - product-guidelines/00-user-journey.md
+      ctx_paths:
+        - product-guidelines/00-user-journey.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Starting or validating any cascade.
+        - Resolving journey traceability conflicts.
+      prefer_ctx: true
+      phase_ii_hint: Always include directly or transitively for product-facing work.
+
+  - id: strategy.product
+    title: Product Strategy
+    session: "2"
+    command: /create-product-strategy
+    group: core
+    kind: product_spec
+    purpose: Translates the user journey into product vision, positioning, market context, principles, and roadmap themes.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+      optional: []
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/01-product-strategy.md
+      ctx_paths:
+        - product-guidelines/01-product-strategy.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Planning features or roadmap work.
+        - Choosing technical or go-to-market direction.
+      prefer_ctx: true
+      phase_ii_hint: Load with journey for strategy, market, and prioritization decisions.
+
+  - id: constraints.operational
+    title: Constraints
+    session: "2a"
+    command: /document-constraints
+    group: core
+    kind: product_spec
+    purpose: Captures business, technical, organizational, compliance, and tooling constraints that bound later choices.
+    required_mode: recommended
+    condition: Recommended for all products; may be skipped only with documented rationale.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+      optional: []
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/02a-constraints.md
+      ctx_paths:
+        - product-guidelines/02a-constraints.ctx.md
+    skip_policy:
+      allowed: true
+      skip_reason: Record why constraints are unknown, irrelevant, or intentionally deferred.
+      revisit_when: Revisit before tech stack, compliance, deployment, or any externally constrained decision.
+      revisit_owner: Product/technical lead
+    relevance:
+      load_priority: high
+      load_when:
+        - Selecting stack, architecture, compliance, deployment, integrations, or cost model.
+      prefer_ctx: true
+      phase_ii_hint: Treat absence as an explicit risk unless skip rationale exists.
+
+  - id: stack.tech
+    title: Tech Stack
+    session: "3"
+    command: /choose-tech-stack
+    group: core
+    kind: product_spec
+    purpose: Chooses product-specific frontend, backend, data, infrastructure, AI, build, and state-management technology.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/02-tech-stack.md
+      ctx_paths:
+        - product-guidelines/02-tech-stack.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Planning implementation, scaffolding, coding standards, or runtime architecture.
+      prefer_ctx: true
+      phase_ii_hint: Load before any code-generation or dependency recommendation.
+
+  - id: standards.coding
+    title: Coding Standards and Patterns
+    session: "3b"
+    command: /define-coding-standards
+    group: core
+    kind: product_spec
+    purpose: Defines framework-specific code organization, patterns, naming, security, error handling, and AI implementation conventions.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - stack.tech
+      optional: []
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/02b-coding-standards.md
+      ctx_paths:
+        - product-guidelines/02b-coding-standards.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Implementing code, reviewing code, scaffolding, or defining architecture.
+      prefer_ctx: true
+      phase_ii_hint: Pair with tech stack for implementation tasks.
+
+  - id: strategy.ai_integration
+    title: AI Integration Strategy
+    session: "3c"
+    command: /define-ai-integration-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines AI provider, model routing, prompt engineering, cost, security, compliance, RAG, and evaluation decisions when AI is required.
+    required_mode: conditional
+    condition: Required only when the tech stack marks AI integration as required.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - stack.tech
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/02c-ai-integration-strategy.md
+      ctx_paths:
+        - product-guidelines/02c-ai-integration-strategy.ctx.md
+    skip_policy:
+      allowed: true
+      skip_reason: Record that AI integration is not required or is deferred.
+      revisit_when: Revisit when AI features enter scope or the tech stack changes to require AI.
+      revisit_owner: Product/technical lead
+    relevance:
+      load_priority: high
+      load_when:
+        - Designing AI features, AI cost controls, AI security, or AI observability.
+      prefer_ctx: true
+      phase_ii_hint: Conditional loader should inspect stack.tech before loading.
+
+  - id: strategy.mission
+    title: Mission Statement
+    session: "4"
+    command: /generate-strategy
+    group: core
+    kind: product_spec
+    purpose: Distills the user journey and product strategy into a mission that guides feature and partnership decisions.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - stack.tech
+        - standards.coding
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/03a-mission.md
+      ctx_paths:
+        - product-guidelines/03a-mission.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Validating strategic alignment or product principles.
+      prefer_ctx: true
+      phase_ii_hint: Load with metrics and architecture for strategy checks.
+
+  - id: metrics.success
+    title: Success Metrics
+    session: "4"
+    command: /generate-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines the north-star metric, metric tree, health metrics, and analytics decision drivers.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - stack.tech
+        - standards.coding
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/03b-metrics.md
+      ctx_paths:
+        - product-guidelines/03b-metrics.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Prioritizing backlog, analytics, growth, observability, or success criteria.
+      prefer_ctx: true
+      phase_ii_hint: Use to rank implementation work and define quality gates.
+
+  - id: monetization.strategy
+    title: Monetization Strategy
+    session: "4"
+    command: /generate-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines pricing, value metric, unit economics, and revenue assumptions derived from user value.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - metrics.success
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/03c-monetization.md
+      ctx_paths:
+        - product-guidelines/03c-monetization.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: medium
+      load_when:
+        - Designing pricing, billing, financial model, or growth strategy.
+      prefer_ctx: true
+      phase_ii_hint: Load for revenue-sensitive product or architecture decisions.
+
+  - id: architecture.principles
+    title: Architecture Principles
+    session: "4"
+    command: /generate-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines architecture principles, scaling posture, integration strategy, and decision guardrails.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - stack.tech
+        - standards.coding
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/04-architecture.md
+      ctx_paths:
+        - product-guidelines/04-architecture.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Designing data, API, application architecture, deployment, or implementation.
+      prefer_ctx: true
+      phase_ii_hint: Resolve architecture conflicts before implementation details.
+
+  - id: analytics.strategy
+    title: Analytics Strategy
+    session: "4"
+    command: /generate-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines event taxonomy and measurement strategy aligned with the north-star metric.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - metrics.success
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/03d-analytics-strategy.md
+      ctx_paths:
+        - product-guidelines/03d-analytics-strategy.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: medium
+      load_when:
+        - Implementing analytics, observability, growth, or metric instrumentation.
+      prefer_ctx: true
+      phase_ii_hint: Prefer before setup-analytics; use metrics.success for authority on metric intent.
+
+  - id: brand.strategy
+    title: Brand Strategy
+    session: "5"
+    command: /create-brand-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines brand purpose, values, personality, promise, visual direction, and differentiation from journey value.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - strategy.product
+        - strategy.mission
+        - metrics.success
+        - monetization.strategy
+        - architecture.principles
+      optional:
+        - analytics.strategy
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/05-brand-strategy.md
+      ctx_paths:
+        - product-guidelines/05-brand-strategy.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Designing UI, content, naming, messaging, or brand identity.
+      prefer_ctx: true
+      phase_ii_hint: Load after strategy specs for brand-facing work.
+
+  - id: design.system
+    title: Design System
+    session: "6"
+    command: /create-design
+    group: core
+    kind: product_spec
+    purpose: Defines design tokens, components, accessibility, responsive strategy, and journey-mapped interaction patterns.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - brand.strategy
+        - architecture.principles
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/06-design-system.md
+      ctx_paths:
+        - product-guidelines/06-design-system.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Implementing UI, UX, accessibility, or visual identity work.
+      prefer_ctx: true
+      phase_ii_hint: Use with brand.strategy for front-end decisions.
+
+  - id: data.core_tables
+    title: Database Core Tables
+    session: "7a"
+    command: /generate-core-tables
+    group: phase
+    kind: phase_spec
+    purpose: Identifies core entities and first-pass tables for the database schema.
+    required_mode: support
+    condition: Internal phase of Session 7.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - stack.tech
+        - architecture.principles
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/07a-core-tables.md
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: medium
+      load_when:
+        - Resuming or debugging Session 7 before final schema synthesis.
+      prefer_ctx: false
+      phase_ii_hint: Support artifact; final authority is data.schema after synthesis.
+
+  - id: data.relationships
+    title: Database Relationships and Constraints
+    session: "7b"
+    command: /generate-relationships
+    group: phase
+    kind: phase_spec
+    purpose: Defines relationships, foreign keys, junction tables, and integrity constraints for schema synthesis.
+    required_mode: support
+    condition: Internal phase of Session 7.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - data.core_tables
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/07b-relationships.md
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: medium
+      load_when:
+        - Resuming or debugging Session 7 before final schema synthesis.
+      prefer_ctx: false
+      phase_ii_hint: Support artifact; final authority is data.schema after synthesis.
+
+  - id: data.special_tables
+    title: Database Special Tables
+    session: "7c"
+    command: /generate-special-tables
+    group: phase
+    kind: phase_spec
+    purpose: Adds specialized tables for i18n, integrations, multi-tenancy, compliance, audit, or other conditional needs.
+    required_mode: conditional
+    condition: Required only when prior specs show special-purpose table requirements.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - data.core_tables
+        - data.relationships
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/07c-special-tables.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that no special-purpose schema requirements were detected.
+      revisit_when: Revisit when i18n, integrations, multi-tenancy, audit, compliance, or AI data needs enter scope.
+      revisit_owner: Technical lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Designing specialized persistence or resuming Session 7.
+      prefer_ctx: false
+      phase_ii_hint: Conditional loader should check constraints, tech stack, and architecture requirements.
+
+  - id: data.schema
+    title: Database Schema
+    session: "7"
+    command: /design-database-schema
+    group: core
+    kind: product_spec
+    purpose: Final authoritative database schema, indexes, migration guidance, query patterns, and data-model decisions.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - data.core_tables
+        - data.relationships
+        - architecture.principles
+        - stack.tech
+      optional:
+        - data.special_tables
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/07-database-schema.md
+      ctx_paths:
+        - product-guidelines/07-database-schema.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Designing APIs, repositories, data migrations, tests, or implementation plans.
+      prefer_ctx: true
+      phase_ii_hint: Use this over phase artifacts for final data authority.
+
+  - id: api.design
+    title: API Design
+    session: "8"
+    command: /generate-api-design
+    group: core
+    kind: product_spec
+    purpose: Defines API paradigm, security, performance, authentication, validation, pagination, caching, and endpoint design principles.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - architecture.principles
+        - data.schema
+        - stack.tech
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/08-api-design.md
+      ctx_paths:
+        - product-guidelines/08-api-design.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Designing endpoints, contracts, services, controllers, or API security.
+      prefer_ctx: true
+      phase_ii_hint: Load before api.contracts and implementation planning.
+
+  - id: api.contracts
+    title: API Contracts
+    session: "8b"
+    command: /generate-api-contracts
+    group: core
+    kind: product_spec
+    purpose: Defines detailed OpenAPI/contract artifacts, versioning, code generation, and contract testing expectations.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - api.design
+        - data.schema
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/08b-api-contracts.md
+      ctx_paths:
+        - product-guidelines/08b-api-contracts.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Implementing API clients, handlers, validation, contract tests, or generated SDKs.
+      prefer_ctx: true
+      phase_ii_hint: Pair with api.design for API implementation tasks.
+
+  - id: testing.strategy
+    title: Testing Strategy
+    session: "9"
+    command: /create-test-strategy
+    group: core
+    kind: product_spec
+    purpose: Defines test philosophy, unit/integration/E2E/security/performance testing, coverage, data, and quality gates.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - stack.tech
+        - data.schema
+        - api.contracts
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/09-test-strategy.md
+      ctx_paths:
+        - product-guidelines/09-test-strategy.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Writing tests, planning validation, reviewing PRs, or defining CI quality gates.
+      prefer_ctx: true
+      phase_ii_hint: Load for all test and review tasks.
+
+  - id: architecture.application
+    title: Application Architecture
+    session: "9b"
+    command: /model-application
+    group: core
+    kind: product_spec
+    purpose: Defines services, repositories, controllers, domain boundaries, transaction boundaries, cross-cutting concerns, and code organization.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - architecture.principles
+        - standards.coding
+        - data.schema
+        - api.contracts
+        - testing.strategy
+      optional:
+        - constraints.operational
+        - strategy.ai_integration
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/09b-application-architecture.md
+      ctx_paths:
+        - product-guidelines/09b-application-architecture.ctx.md
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: critical
+      load_when:
+        - Implementing features, scaffolding code, reviewing architecture, or planning issues.
+      prefer_ctx: true
+      phase_ii_hint: Primary implementation-planning input with tech stack and coding standards.
+
+  - id: backlog.product
+    title: Product Backlog
+    session: "10"
+    command: /generate-backlog
+    group: core
+    kind: product_spec
+    purpose: Converts strategy and technical specs into prioritized epics and user stories with acceptance criteria.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - metrics.success
+        - architecture.application
+        - testing.strategy
+      optional:
+        - brand.strategy
+        - analytics.strategy
+        - compliance.plan
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/10-backlog/
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Creating issues, planning implementation, or validating delivery scope.
+      prefer_ctx: false
+      phase_ii_hint: Load story-specific files just-in-time rather than the whole directory.
+
+  - id: delivery.github_issues
+    title: GitHub Issues
+    session: "11"
+    command: /create-gh-issues
+    group: delivery
+    kind: execution_record
+    purpose: Records or executes publication of backlog stories into GitHub issues.
+    required_mode: required
+    condition: Required for the full GitHub-backed workflow; may be bypassed only in non-GitHub environments with an equivalent delivery record.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - backlog.product
+      optional: []
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/11-github-issues.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record alternate issue tracker or manual backlog publication path.
+      revisit_when: Revisit before implementation tracking or handover.
+      revisit_owner: Delivery lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Auditing issue publication or reconciling backlog with GitHub.
+      prefer_ctx: false
+      phase_ii_hint: Treat as delivery metadata, not product strategy authority.
+
+  - id: scaffold.project
+    title: Project Scaffold
+    session: "12"
+    command: /scaffold-project
+    group: core
+    kind: scaffold
+    purpose: Generates development environment, repository structure, config files, and code skeletons from prior specs.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - stack.tech
+        - standards.coding
+        - architecture.application
+        - testing.strategy
+        - backlog.product
+      optional:
+        - delivery.github_issues
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/12-project-scaffold.md
+        - product-guidelines/12-project-scaffold/
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Creating a new codebase or verifying generated scaffolding against specs.
+      prefer_ctx: false
+      phase_ii_hint: Generated code must still obey human-reviewed specs above it.
+
+  - id: deployment.plan
+    title: Deployment Plan
+    session: "13"
+    command: /plan-deployment
+    group: core
+    kind: product_spec
+    purpose: Defines environments, CI/CD, deployment pattern, IaC, secrets, migration, rollback, and release operations.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - stack.tech
+        - architecture.principles
+        - data.schema
+        - scaffold.project
+      optional:
+        - constraints.operational
+        - testing.strategy
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/13-deployment-plan.md
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Planning infrastructure, CI/CD, release, or rollback work.
+      prefer_ctx: false
+      phase_ii_hint: Load after architecture and scaffold for delivery tasks.
+
+  - id: observability.strategy
+    title: Observability Strategy
+    session: "14"
+    command: /design-observability
+    group: core
+    kind: product_spec
+    purpose: Defines golden signals, logs, metrics, tracing, dashboards, SLOs, alerts, runbooks, and incident response.
+    required_mode: required
+    condition: null
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - metrics.success
+        - analytics.strategy
+        - deployment.plan
+        - testing.strategy
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/14-observability-strategy.md
+      ctx_paths: []
+    skip_policy:
+      allowed: false
+      skip_reason: null
+      revisit_when: null
+      revisit_owner: null
+    relevance:
+      load_priority: high
+      load_when:
+        - Implementing monitoring, alerting, production readiness, or SLO work.
+      prefer_ctx: false
+      phase_ii_hint: Load with deployment and metrics for production operations.
+
+  - id: brand.naming
+    title: Brand Naming
+    session: "15"
+    command: /discover-naming
+    group: post_core
+    kind: product_spec
+    purpose: Generates and evaluates product name candidates from journey, positioning, and brand strategy.
+    required_mode: optional
+    condition: Run when the product needs naming exploration or validation.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - brand.strategy
+      optional:
+        - backlog.product
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/15-brand-naming.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record existing name, out-of-scope naming, or postponed brand work.
+      revisit_when: Revisit before public launch, marketing collateral, or brand identity work.
+      revisit_owner: Product/brand lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Naming, messaging, visual identity, or launch work.
+      prefer_ctx: false
+      phase_ii_hint: Optional extension; do not load unless brand/naming task requires it.
+
+  - id: brand.messaging
+    title: Brand Messaging
+    session: "16"
+    command: /define-messaging
+    group: post_core
+    kind: product_spec
+    purpose: Defines value proposition, messaging pillars, voice, sample copy, terminology, and objection handling.
+    required_mode: optional
+    condition: Run when the product needs customer-facing messaging or launch copy.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - brand.strategy
+      optional:
+        - brand.naming
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/16-brand-messaging.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that messaging is not needed yet or is handled outside the cascade.
+      revisit_when: Revisit before marketing site, sales collateral, onboarding copy, or public launch.
+      revisit_owner: Product/brand lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Writing customer-facing content or evaluating brand consistency.
+      prefer_ctx: false
+      phase_ii_hint: Load with content.guidelines for copy work.
+
+  - id: brand.identity
+    title: Brand Identity
+    session: "17"
+    command: /design-brand-identity
+    group: post_core
+    kind: product_spec
+    purpose: Defines logo concepts, visual identity, typography, color application, usage rules, and brand applications.
+    required_mode: optional
+    condition: Run when visual identity needs more detail than the core brand and design specs provide.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - brand.strategy
+        - design.system
+      optional:
+        - brand.naming
+        - brand.messaging
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/17-brand-identity.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that visual identity is postponed or managed by a separate design process.
+      revisit_when: Revisit before logo, marketing asset, or visual refresh decisions.
+      revisit_owner: Brand/design lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Creating visual assets, logo rules, or brand-system implementation.
+      prefer_ctx: false
+      phase_ii_hint: Optional; load only for brand identity or visual design tasks.
+
+  - id: content.guidelines
+    title: Content Guidelines
+    session: "18"
+    command: /create-content-guidelines
+    group: post_core
+    kind: product_spec
+    purpose: Defines content style, microcopy patterns, accessibility writing, localization guidance, and content review rules.
+    required_mode: optional
+    condition: Run when product copy, content operations, or localization require a dedicated guide.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - brand.strategy
+      optional:
+        - brand.messaging
+        - design.system
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/18-content-guidelines.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that content standards are not needed yet or are governed externally.
+      revisit_when: Revisit before localization, onboarding copy, error states, or content-heavy features.
+      revisit_owner: Content/product lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Writing microcopy, onboarding, docs, localization, or content QA.
+      prefer_ctx: false
+      phase_ii_hint: Optional; load for content tasks instead of broad brand docs when possible.
+
+  - id: ux.design
+    title: User Experience Design
+    session: "19"
+    command: /design-user-experience
+    group: post_core
+    kind: product_spec
+    purpose: Defines detailed UX research, information architecture, user flows, wireframes, interactions, and usability testing.
+    required_mode: optional
+    condition: Run after core brand/design when detailed UX deliverables are needed.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - journey.user
+        - brand.strategy
+        - design.system
+      optional:
+        - constraints.operational
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/19-user-experience.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that design system detail is sufficient or UX is handled externally.
+      revisit_when: Revisit before high-fidelity UI, usability testing, or complex workflow implementation.
+      revisit_owner: Product/design lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Implementing flows, screens, accessibility, interaction details, or usability tests.
+      prefer_ctx: false
+      phase_ii_hint: Optional; use when UI tasks need screen-level detail beyond design.system.
+
+  - id: analytics.implementation
+    title: Analytics Implementation Plan
+    session: "20"
+    command: /setup-analytics
+    group: post_core
+    kind: product_spec
+    purpose: Converts metrics and analytics strategy into implementation events, user properties, funnels, dashboards, tools, and privacy rules.
+    required_mode: optional
+    condition: Run when analytics instrumentation needs detailed implementation guidance.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - metrics.success
+        - analytics.strategy
+      optional:
+        - constraints.operational
+        - observability.strategy
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/20-analytics-plan.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that analytics setup is postponed or covered by an external plan.
+      revisit_when: Revisit before instrumentation, growth experiments, or observability dashboards.
+      revisit_owner: Product/analytics lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Implementing event tracking, funnels, dashboards, or privacy-aware analytics.
+      prefer_ctx: false
+      phase_ii_hint: Optional; load after core metrics only for analytics implementation tasks.
+
+  - id: growth.strategy
+    title: Growth Strategy
+    session: "21"
+    command: /design-growth-strategy
+    group: post_core
+    kind: product_spec
+    purpose: Defines growth model, channels, loops, activation, retention, monetization optimization, experiments, and growth metrics.
+    required_mode: optional
+    condition: Run when growth planning is in scope after core product strategy exists.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - strategy.product
+        - metrics.success
+        - monetization.strategy
+      optional:
+        - analytics.implementation
+        - brand.messaging
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/21-growth-strategy.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that growth strategy is postponed until product-market fit or launch readiness.
+      revisit_when: Revisit before acquisition campaigns, referral loops, or growth experiments.
+      revisit_owner: Growth/product lead
+    relevance:
+      load_priority: medium
+      load_when:
+        - Planning acquisition, activation, retention, monetization experiments, or growth metrics.
+      prefer_ctx: false
+      phase_ii_hint: Optional; load for growth-specific decisions only.
+
+  - id: finance.model
+    title: Financial Model
+    session: "22"
+    command: /create-financial-model
+    group: post_core
+    kind: product_spec
+    purpose: Defines unit economics, revenue projections, cost structure, scenarios, risks, funding, and financial milestones.
+    required_mode: optional
+    condition: Run when financial planning, fundraising, or monetization validation is needed.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - strategy.product
+        - metrics.success
+        - monetization.strategy
+      optional:
+        - growth.strategy
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/22-financial-model.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record that financial modeling is not required for the current stage.
+      revisit_when: Revisit before pricing changes, fundraising, hiring plan, or revenue forecasting.
+      revisit_owner: Product/business lead
+    relevance:
+      load_priority: low
+      load_when:
+        - Modeling revenue, costs, funding, pricing, or financial risk.
+      prefer_ctx: false
+      phase_ii_hint: Optional; avoid loading for implementation tasks unless revenue/cost is relevant.
+
+  - id: compliance.plan
+    title: Compliance Plan
+    session: "23"
+    command: /create-compliance-plan
+    group: post_core
+    kind: product_spec
+    purpose: Defines applicable regulations, implementation mapping, compliance backlog, monitoring, roadmap, cost, and risks.
+    required_mode: optional
+    condition: Run when constraints, product domain, geography, or customers create compliance obligations.
+    lifecycle: active
+    default_review_status: ai_drafted
+    dependencies:
+      required:
+        - constraints.operational
+      optional:
+        - data.schema
+        - api.contracts
+        - backlog.product
+        - deployment.plan
+    root_dependency: false
+    outputs:
+      paths:
+        - product-guidelines/23-compliance-plan.md
+      ctx_paths: []
+    skip_policy:
+      allowed: true
+      skip_reason: Record why no compliance plan is required at this stage.
+      revisit_when: Revisit when regulated data, enterprise customers, payments, healthcare, EU users, or audit requirements enter scope.
+      revisit_owner: Product/legal/security lead
+    relevance:
+      load_priority: high
+      load_when:
+        - Handling regulated data, security controls, audit, privacy, payments, or enterprise readiness.
+      prefer_ctx: false
+      phase_ii_hint: Conditional by domain; load before implementation if compliance constraints are present.

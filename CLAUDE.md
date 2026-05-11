@@ -54,6 +54,7 @@ Stack-Driven is a **generative product development framework** that transforms u
 ## Repository Quick Reference
 
 **Framework Core:**
+- `/specs/` - Canonical spec authority model and manifest
 - `/.claude/commands/` - Slash commands (sessions + dev + meta)
 - `/.claude/agents/` - Sub-agents for complex operations
 - `/templates/` - Output structure templates
@@ -67,12 +68,13 @@ Stack-Driven is a **generative product development framework** that transforms u
 
 ## Critical Rules
 
-1. **Always respect cascade order** - Never skip sessions, dependencies matter
-2. **Journey traceability required** - Every decision must reference user value
-3. **Specificity over genericity** - Outputs must be product-specific, not generic
-4. **Context efficiency** - Sessions 1-9b always create .ctx.md versions (60-70% reduction)
-5. **Anti-bloat enforcement** - Commands <400 lines, use conditional sub-agents
-6. **Human checkpoints** - Pause at Sessions 3, 4, 7, 10 for validation
+1. **Always respect cascade order** - Never skip required sessions; only skip/defer recommended, conditional, or optional specs when `specs/manifest.yaml` permits it and records reason/revisit guidance
+2. **Respect spec authority** - `specs/manifest.yaml` defines canonical specs, dependencies, lifecycle, and loading hints
+3. **Journey traceability required** - Every decision must reference user value
+4. **Specificity over genericity** - Outputs must be product-specific, not generic
+5. **Context efficiency** - Sessions 1-9b always create .ctx.md versions (60-70% reduction)
+6. **Anti-bloat enforcement** - Commands <400 lines, use conditional sub-agents
+7. **Human checkpoints** - Pause at Sessions 3, 4, 7, 10 for validation
 
 ---
 
